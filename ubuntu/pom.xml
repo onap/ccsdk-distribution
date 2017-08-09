@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>org.onap.ccsdk.distribution</groupId>
+		<artifactId>distribution-root</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+	<artifactId>distribution-ubuntu</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<name>Distribution - ubuntu</name>
+	<description>Creates base ubuntu Docker container</description>
+
+	<properties>
+		<image.name>onap/ccsdk-ubuntu-image</image.name>
+		<ccsdk.project.version>${project.version}</ccsdk.project.version>
+	</properties>
+
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.codehaus.groovy.maven</groupId>
+				<artifactId>gmaven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<source>
+								println project.properties['ccsdk.project.version'];
+								def versionArray;
+								if ( project.properties['ccsdk.project.version'] != null ) {
+									versionArray =
+									project.properties['ccsdk.project.version'].split('\\.');
+								}
+
+								if (project.properties['ccsdk.project.version'].endsWith("-SNAPSHOT")) {
+									project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
+								} else {
+									project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
+								}
+
+								println 'New Tag for docker:' +
+								project.properties['project.docker.latesttag.version'];
+							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.16.5</version>
+				<inherited>false</inherited>
+				<configuration>
+
+					<images>
+						<image>
+							<name>${image.name}</name>
+							<build>
+								<cleanup>try</cleanup>
+								<dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
+								<dockerFile>${basedir}/target/docker-stage/Dockerfile</dockerFile>
+								<tags>
+									<tag>${project.version}</tag>
+									<tag>${project.version}-STAGING-${maven.build.timestamp}</tag>
+									<tag>${project.docker.latesttag.version}</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-images</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>push-images</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-dockerfile</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals><!-- here the phase you need -->
+						<phase>validate</phase>
+						<configuration>
+							<outputDirectory>${basedir}/target/docker-stage</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/docker</directory>
+									<includes>
+										<include>Dockerfile</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+	<organization>
+		<name>openECOMP</name>
+	</organization>
+</project>
