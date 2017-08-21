@@ -1,0 +1,346 @@
+
+
+
+[
+    {
+        "id": "c7f3b902.c0fcc8",
+        "type": "dgstart",
+        "name": "DGSTART",
+        "outputs": 1,
+        "x": 148,
+        "y": 123,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "72236e27.a51f78"
+            ]
+        ]
+    },
+    {
+        "id": "612aaed1.f30978",
+        "type": "comment",
+        "name": "ASDC update to VF license model",
+        "info": "",
+        "comments": "",
+        "x": 550,
+        "y": 45,
+        "z": "b94f5cde.40937",
+        "wires": []
+    },
+    {
+        "id": "72236e27.a51f78",
+        "type": "service-logic",
+        "name": "ASDC-API 1.0.0",
+        "module": "ASDC-API",
+        "version": "${project.version}",
+        "comments": "",
+        "xml": "<service-logic xmlns='http://www.att.com/sdnctl/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.att.com/sdnctl/svclogic ./svclogic.xsd' module='ASDC-API' version='${project.version}'>",
+        "outputs": 1,
+        "x": 340,
+        "y": 124,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "e6c56f71.e6a96"
+            ]
+        ]
+    },
+    {
+        "id": "e6c56f71.e6a96",
+        "type": "method",
+        "name": "method vf-license-model-update",
+        "xml": "<method rpc='vf-license-model-update' mode='sync'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 588,
+        "y": 124,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "90b82ce5.7ff2a"
+            ]
+        ]
+    },
+    {
+        "id": "90b82ce5.7ff2a",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 222,
+        "y": 230,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "6a527c25.be62c4",
+                "b37c86cb.130b8",
+                "1c4b640e.56b174"
+            ]
+        ]
+    },
+    {
+        "id": "6a527c25.be62c4",
+        "type": "GenericXML",
+        "name": "record",
+        "xml": "<record  plugin=\"com.att.sdnctl.sli.recording.Slf4jRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/svclogic.log\"/>\n<parameter name=\"field1\" value=\"__TIMESTAMP__\"/>\n<parameter name=\"field2\" value=\"vf-license-model\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 374,
+        "y": 230,
+        "z": "b94f5cde.40937",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b37c86cb.130b8",
+        "type": "set",
+        "name": "set resource-plugin",
+        "xml": "<set>\n<parameter name='resource-plugin' value='com.att.sdnctl.sli.resource.gamma.GammaResource' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 410,
+        "y": 281,
+        "z": "b94f5cde.40937",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1c4b640e.56b174",
+        "type": "switchNode",
+        "name": "switch: length of feature-group list > 0",
+        "xml": "<switch test='`$vf-license-model-update-input.vf-license-model.feature-group-list.feature-group_length > 0`'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 459,
+        "y": 344,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "1b40f4f1.7134f3"
+            ]
+        ]
+    },
+    {
+        "id": "1b40f4f1.7134f3",
+        "type": "outcomeTrue",
+        "name": "true",
+        "xml": "<outcome value='true'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 695,
+        "y": 343,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "9b76ec90.614c08"
+            ]
+        ]
+    },
+    {
+        "id": "9b76ec90.614c08",
+        "type": "for",
+        "name": "for: feature groups",
+        "xml": "<for index='i' start='0' end='`$vf-license-model-update-input.vf-license-model.feature-group-list.feature-group_length`' >\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 855,
+        "y": 343,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "3dbfa83c.5d206"
+            ]
+        ]
+    },
+    {
+        "id": "44241b8a.fe4ddc",
+        "type": "save",
+        "name": "save VNF_MODEL_LICENSES",
+        "xml": "<save plugin='`$resource-plugin`' resource='vnf-model-licenses' key='att-part-number = $vf-license-model-update-input.vf-license-model.feature-group-list.feature-group[$i].att-part-number and license-assignment-group = $tmp-license-group' force='true'>\n<parameter name='att-part-number' value='`$vf-license-model-update-input.vf-license-model.feature-group-list.feature-group[$i].att-part-number`' />\n<parameter name='license-assignment-group' value='`$tmp-license-group`'/>\n<parameter name='license-required' value='`$tmp-license-required`'/>\n<parameter name='entitlement-assignment-group' value='`$tmp-entitlement-group`'/>\n<parameter name='entitlement-required' value='`$tmp-entitlement-required`'/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1254,
+        "y": 544,
+        "z": "b94f5cde.40937",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "90633ed7.848e18",
+        "type": "switchNode",
+        "name": "switch: length of license key groups == 0",
+        "xml": "<switch test='`$vf-license-model-update-input.vf-license-model.feature-group-list.feature-group[$i].license-key-group-list.license-key-group_length == 0`'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1275,
+        "y": 294,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "a36e3c96.3c6238",
+                "fb2fe0dd.5e4d38"
+            ]
+        ]
+    },
+    {
+        "id": "a36e3c96.3c6238",
+        "type": "outcomeTrue",
+        "name": "true",
+        "xml": "<outcome value='true'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1523,
+        "y": 293,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "fc3c75a8.272ad"
+            ]
+        ]
+    },
+    {
+        "id": "fc3c75a8.272ad",
+        "type": "set",
+        "name": "set license required to 0",
+        "xml": "<set>\n<parameter name='tmp-license-required' value='0' />\n<parameter name='tmp-license-group' value='NONE' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1737,
+        "y": 293,
+        "z": "b94f5cde.40937",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fb2fe0dd.5e4d38",
+        "type": "outcomeFalse",
+        "name": "false",
+        "xml": "<outcome value='false'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1521,
+        "y": 346,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "2d606ecc.b12bba"
+            ]
+        ]
+    },
+    {
+        "id": "2d606ecc.b12bba",
+        "type": "set",
+        "name": "set license required to 1",
+        "xml": "<set>\n<parameter name='tmp-license-required' value='1' />\n<parameter name='tmp-license-group' value='`$vf-license-model-update-input.vf-license-model.feature-group-list.feature-group[$i].license-key-group-list.license-key-group[0].license-key-group-uuid`' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1732,
+        "y": 348,
+        "z": "b94f5cde.40937",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "64fd0671.15f188",
+        "type": "switchNode",
+        "name": "switch: length of entitlement pool == 0",
+        "xml": "<switch test='`$vf-license-model-update-input.vf-license-model.feature-group-list.feature-group[$i].entitlement-pool-list.entitlement-pool_length == 0`'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1277,
+        "y": 405,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "7ebbe15a.bb3988",
+                "9213bc2a.81103"
+            ]
+        ]
+    },
+    {
+        "id": "7ebbe15a.bb3988",
+        "type": "outcomeTrue",
+        "name": "true",
+        "xml": "<outcome value='true'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1525,
+        "y": 404,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "eb5a3c7b.4c3dc"
+            ]
+        ]
+    },
+    {
+        "id": "eb5a3c7b.4c3dc",
+        "type": "set",
+        "name": "set entitlement required to 0",
+        "xml": "<set>\n<parameter name='tmp-entitlement-required' value='0' />\n<parameter name='tmp-entitlement-group' value='NONE' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1739,
+        "y": 404,
+        "z": "b94f5cde.40937",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9213bc2a.81103",
+        "type": "outcomeFalse",
+        "name": "false",
+        "xml": "<outcome value='false'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1523,
+        "y": 457,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "b64ce482.a1f508"
+            ]
+        ]
+    },
+    {
+        "id": "b64ce482.a1f508",
+        "type": "set",
+        "name": "set entitlement required to 1",
+        "xml": "<set>\n<parameter name='tmp-entitlement-required' value='1' />\n<parameter name='tmp-entitlement-group' value='`$vf-license-model-update-input.vf-license-model.feature-group-list.feature-group[$i].entitlement-pool-list.entitlement-pool[0].entitlement-pool-uuid`' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1734,
+        "y": 459,
+        "z": "b94f5cde.40937",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3dbfa83c.5d206",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1022,
+        "y": 344,
+        "z": "b94f5cde.40937",
+        "wires": [
+            [
+                "90633ed7.848e18",
+                "64fd0671.15f188",
+                "44241b8a.fe4ddc"
+            ]
+        ]
+    }
+]
