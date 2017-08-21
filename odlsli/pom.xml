@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>org.onap.ccsdk.distribution</groupId>
+        <artifactId>distribution-root</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <artifactId>distribution-odlsli</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+
+    <name>Distribution - odlsli</name>
+    <description>Creates SDN Controller Docker container</description>
+
+    <properties>
+        <image.name>onap/ccsdk-odlsli-image</image.name>
+        <ccsdk.project.version>${project.version}</ccsdk.project.version>
+        <ccsdk.core.version>${project.version}</ccsdk.core.version>
+        <ccsdk.adaptors.version>${project.version}</ccsdk.adaptors.version>
+        <ccsdk.northbound.version>${project.version}</ccsdk.northbound.version>
+        <ccsdk.plugins.version>${project.version}</ccsdk.plugins.version>
+        <ccsdk.mysql-connector-java.version>5.1.39</ccsdk.mysql-connector-java.version>
+        <docker.buildArg.https_proxy>${https_proxy}</docker.buildArg.https_proxy>
+    </properties>
+
+
+    <build>
+        <plugins>
+
+
+            <plugin>
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                println project.properties['ccsdk.project.version'];
+                                def versionArray;
+                                if ( project.properties['ccsdk.project.version'] != null ) {
+                                    versionArray = project.properties['ccsdk.project.version'].split('\\.');
+                                }
+
+                                if (project.properties['ccsdk.project.version'].endsWith("-SNAPSHOT"))
+                                {
+                                    project.properties['project.docker.latesttag.version']=versionArray[0]  + '.' + versionArray[1] + "-STAGING-latest";
+                                } else {
+                                    project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
+                                }
+
+                                println 'New Tag for docker:' +
+                                project.properties['project.docker.latesttag.version'];
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-dockerfile</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals><!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/docker</directory>
+                                    <includes>
+                                        <include>Dockerfile</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>copy-scripts</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals><!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/sdnc/bin</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/scripts</directory>
+                                    <includes>
+                                        <include>*.sh</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>copy-tarballs</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals><!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>idmlight.db.mv.db</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-data</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals><!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/sdnc/data</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>*.dump</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-properties</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals><!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/sdnc/data/properties</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/properties</directory>
+                                    <includes>
+                                        <include>*.properties</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-keystores</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals><!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/sdnc/data/stores</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>../src/main/stores</directory>
+                                    <includes>
+                                        <include>*.jks</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <version>1.5.0</version>
+                <executions>
+
+                    <execution>
+                        <id>Get features</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>/bin/bash</executable>
+                            <environmentVariables>
+                                <SDNC_CORE_VERSION>${ccsdk.core.version}</SDNC_CORE_VERSION>
+                                <SDNC_ADAPTORS_VERSION>${ccsdk.adaptors.version}</SDNC_ADAPTORS_VERSION>
+                                <SDNC_NORTHBOUND_VERSION>${ccsdk.northbound.version}</SDNC_NORTHBOUND_VERSION>
+                                <SDNC_PLUGINS_VERSION>${ccsdk.plugins.version}</SDNC_PLUGINS_VERSION>
+                                <SDNC_OAM_VERSION>${project.version}</SDNC_OAM_VERSION>
+                            </environmentVariables>
+                            <arguments>
+                                <argument>${basedir}/src/main/scripts/installZips.sh</argument>
+                                <argument>${basedir}/target/docker-stage/opt/onap/sdnc</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>change shell permissions</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>/usr/bin/find</executable>
+                            <arguments>
+                                <argument>${basedir}/target/docker-stage/opt/onap/sdnc</argument>
+                                <argument>-name</argument>
+                                <argument>*.sh</argument>
+                                <argument>-exec</argument>
+                                <argument>chmod</argument>
+                                <argument>+x</argument>
+                                <argument>{}</argument>
+                                <argument>;</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+        </plugins>
+
+    </build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.16.5</version>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>${image.name}</name>
+                                    <build>
+                                        <cleanup>try</cleanup>
+                                        <dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
+                                        <dockerFile>${basedir}/target/docker-stage/Dockerfile</dockerFile>
+                                        <tags>
+                                            <tag>${project.version}</tag>
+                                            <tag>${project.version}-STAGING-${maven.build.timestamp}</tag>
+                                            <tag>${project.docker.latesttag.version}</tag>
+                                        </tags>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>generate-images</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+
+                            <execution>
+                                <id>push-images</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <organization>
+        <name>openECOMP</name>
+    </organization>
+</project>
