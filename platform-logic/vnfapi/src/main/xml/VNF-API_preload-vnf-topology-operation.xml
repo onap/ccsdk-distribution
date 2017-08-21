@@ -1,0 +1,43 @@
+<service-logic xmlns='http://www.openecomp.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.openecomp.org/sdnc/svclogic ./svclogic.xsd' module='VNF-API' version='${project.version}'><method rpc="preload-vnf-topology-operation" mode="sync"><block atomic="true"><switch test="`$preload-vnf-topology-operation-input.request-information.request-action`">
+<!--
+leaf request-action { 
+				type enumeration { 
+					enum "VNFActivateRequest";
+					enum "ChangeVNFActivateRequest";
+					enum "DisconnectVNFRequest";
+					enum "PreloadVNFRequest";
+					enum "DeletePreloadVNFRequest";
+				} 
+}
+-->
+
+<outcome value='PreloadVNFRequest'><block atomic="true"><set>
+<parameter name="ack-final" value="Y"/></set><set only-if-unset="true">
+<parameter name="sql-resource-plugin" value="org.openecomp.sdnc.sli.resource.sql.SqlResource"/></set><get-resource plugin="`$sql-resource-plugin`" resource="vnf-profile" key="SELECT * from VNF_PROFILE WHERE vnf_type = $preload-vnf-topology-operation-input.vnf-topology-information.vnf-topology-identifier.vnf-type">
+<outcome value='not-found'>
+<return status='failure'>
+	<parameter name="error-code" value="404" />
+	<parameter name="error-message" value="preload vnf-type not found as valid vnf " /></return></outcome><outcome value='failure'>
+<return status='failure'>
+	<parameter name="error-code" value="404" />
+	<parameter name="error-message" value="preload vnf-type not found as valid vnf " /></return></outcome></get-resource><set>
+<parameter name="preload-data." value="" />
+</set><set>
+<parameter name="preload-data." value="preload-vnf-topology-operation-input." />
+</set><set>
+	<parameter name="preload-data.oper-status.order-status" value="PendingAssignment"/></set><return status="success">
+	<parameter name="error-code" value="200" /></return></block></outcome><outcome value='DeletePreloadVNFRequest'><block atomic="true"><get-resource plugin="`$sql-resource-plugin`" resource="generic-vnf" key="SELECT * FROM VNF_PROFILE vnf-type = $preload-vnf-topology-operation-input.vnf-topology-information.vnf-topology-identifier.vnf-type">
+<outcome value='success'>
+<return status='failure'>
+	<parameter name="error-code" value="3000" />
+	<parameter name="error-message" value="preload vnf-type cannot be deleted while vnf is in use" /></return></outcome></get-resource><set>
+<parameter name="preload-data." value="" />
+</set><return status="success">
+	<parameter name="error-code" value="200" /></return></block></outcome><outcome value="Other">
+
+ <return status="failure">
+	<parameter name='error-code' value='2000'/>
+	<parameter name='error-message' value='Invalid Request `$preload-vnf-topology-operation-input.request-information.request-action`'/>
+
+ 
+</return></outcome></switch></block></method></service-logic>
