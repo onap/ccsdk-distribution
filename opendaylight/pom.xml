@@ -58,97 +58,55 @@
                             <source>
                                 println project.properties['ccsdk.project.version'];
                                 def versionArray;
-                                if ( project.properties['ccsdk.project.version'] != null ) {
-                                    versionArray =
-                                    project.properties['ccsdk.project.version'].split('\\.');
+                                if (project.properties['ccsdk.project.version'] != null ) {
+                                    versionArray = project.properties['ccsdk.project.version'].split('\\.');
                                 }
 
-                                if (project.properties['ccsdk.project.version'].endsWith("-SNAPSHOT")) {
+                                if (project.properties['ccsdk.project.version'].endsWith("-SNAPSHOT"))
+                                {
                                     project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
                                 } else {
-                                    project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
+                                    project.properties['project.docker.latesttag.version']=versionArray[0]+ '.' + versionArray[1] +"-STAGING-latest";
                                 }
 
-                                println 'New Tag for docker:' +
-                                project.properties['project.docker.latesttag.version'];
+                                println 'New Tag for docker:' + project.properties['project.docker.latesttag.version'];
                             </source>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
+
+
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.16.5</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>${image.name}</name>
-                            <build>
-                                <cleanup>try</cleanup>
-                                <dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
-                                <dockerFile>${basedir}/target/docker-stage/Dockerfile</dockerFile>
-                                <tags>
-                                    <tag>${project.version}</tag>
-                                    <tag>${project.version}-STAGING-${maven.build.timestamp}</tag>
-                                    <tag>${project.docker.latesttag.version}</tag>
-                                </tags>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <id>generate-images</id>
-                        <phase>package</phase>
+                        <id>get-odl-distribution</id>
+                        <phase>validate</phase>
                         <goals>
-                            <goal>build</goal>
+                            <goal>copy</goal>
                         </goals>
-                    </execution>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.opendaylight.integration</groupId>
+                                    <artifactId>distribution-karaf</artifactId>
+                                    <version>${ccsdk.opendaylight.version}</version>
+                                    <type>tar.gz</type>
 
-                    <execution>
-                        <id>push-images</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
                     </execution>
                 </executions>
-            </plugin>
-
-
-            <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.0.0</version>
-            <executions>
-                <execution>
-                    <id>get-odl-distribution</id>
-                    <phase>validate</phase>
-                    <goals>
-                        <goal>copy</goal>
-                    </goals>
-                    <configuration>
-                        <artifactItems>
-                            <artifactItem>
-                                <groupId>org.opendaylight.integration</groupId>
-                                <artifactId>distribution-karaf</artifactId>
-                                <version>${ccsdk.opendaylight.version}</version>
-                                <type>tar.gz</type>
-
-                                <overWrite>true</overWrite>
-                                <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
-                            </artifactItem>
-                        </artifactItems>
-                        <overWriteReleases>false</overWriteReleases>
-                        <overWriteSnapshots>true</overWriteSnapshots>
-                        <overWriteIfNewer>true</overWriteIfNewer>
-                    </configuration>
-                </execution>
-            </executions>
             </plugin>
 
             <plugin>
@@ -213,6 +171,59 @@
         </plugins>
 
     </build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.16.5</version>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>${image.name}</name>
+                                    <build>
+                                        <cleanup>try</cleanup>
+                                        <dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
+                                        <dockerFile>${basedir}/target/docker-stage/Dockerfile</dockerFile>
+                                        <tags>
+                                            <tag>${project.version}</tag>
+                                            <tag>${project.version}-STAGING-${maven.build.timestamp}</tag>
+                                            <tag>${project.docker.latesttag.version}</tag>
+                                        </tags>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>generate-images</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+
+                            <execution>
+                                <id>push-images</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
     <organization>
         <name>openECOMP</name>
     </organization>
