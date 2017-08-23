@@ -41,7 +41,7 @@ SDNC_ADAPTORS_FEATURES=" \
 
 SDNC_NORTHBOUND_FEATURES=" \
   asdcApi \
-  dataChange
+ dataChange"
 
 SDNC_PLUGINS_FEATURES=" \
   properties-node \
