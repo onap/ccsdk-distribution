@@ -10,9 +10,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,7 @@
 # ============LICENSE_END=========================================================
 ###
 
-SDNC_HOME=${SDNC_HOME:-/opt/openecomp/sdnc}
+SDNC_HOME=${SDNC_HOME:-/opt/onap/sdnc}
 MYSQL_PASSWD=${MYSQL_PASSWD:-openECOMP1.0}
 
 SDNC_DB_USER=${SDNC_DB_USER:-sdnctl}
@@ -41,5 +41,5 @@ END
 
 if [ -f ${SDNC_HOME}/data/sdnctl.dump ]
 then
-  mysql -h dbhost -u root -p${MYSQL_PASSWD} sdnctl < ${SDNC_HOME}/data/sdnctl.dump
+mysql -h dbhost -u root -p${MYSQL_PASSWD} sdnctl < ${SDNC_HOME}/data/odlsli.dump
 fi
