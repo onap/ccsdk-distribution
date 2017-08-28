@@ -1,0 +1,18 @@
+if [ "$#" != "1" ]
+then
+	echo "Usage $0 full_path_to_the_source_file"
+	exit
+fi
+fileName=$(basename $1)
+dirName=$(dirname $1)
+cd $dirName
+glog=$(git log --pretty=format:'%H %cD %an %s' -n 25 ${fileName}|awk ' ORS=" "{print \
+"\n{\n" \
+"\"commit\": \"" $1 "\",\n" \
+"\"date\": \""$2 " "$3" "$4" "$5 " "$6 "\",\n" \
+"\"author\": \"" $8 ", "$9 "\",\n" \
+"\"comment\": \""} { s = ""; for (i = 10; i <= NF; i++) s = s $i " "; print s } { print  "\"\n},"}')
+echo "["
+update_glog=$(echo $glog|sed -e 's/,$//g')
+echo $update_glog
+echo "]"

@@ -1,0 +1,223 @@
+<!--
+  Copyright 2013 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/x-red" data-template-name="block">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+	<div> 
+	<table border='0' width='100%' style='cellspacing:5px;'>
+	<tr>
+	<td>
+        <input type="checkbox" id="node-input-atomic-chkBox" onclick=updateXml()>
+        <input type="hidden" id="node-input-atomic" value="">
+	</td>
+	<td>
+	<span style="font-size:.8em;">Atomic</span>
+	</td>
+	</tr>
+	</table>
+	</div>
+        <label for="node-input-xml"><i class="fa fa-wrench"></i> Node XML</label>
+        <input type="hidden" id="node-input-xml" autofocus="autofocus">
+        <div style="height: 450px;" class="node-text-editor" id="node-input-xml-editor" onkeyup="resetStatus()" ></div>
+    </div>
+    <div class="form-row">
+    <a href="#" class="btn btn-mini" id="node-input-validate" style="margin-top: 4px;"><b>Validate XML</b></a>
+    <a href="#" class="btn btn-mini" id="node-input-show-sli-values" style="margin-top: 4px;"><b>Show Values</b></a>
+    <input type="hidden" id="node-input-comments">
+    <a href="#" class="btn btn-mini" id="node-input-btnComments" style="margin-top: 4px;"><b>Add Comments</b></a>
+    <div id="node-validate-result" class="form-tips" style="float:right;font-size:10px"></div>
+    </div>
+    <div class="form-tips">See the Info tab for help using this node.</div>
+</script>
+
+<script type="text/x-red" data-help-name="block">
+	<p>A block node.</p>
+	<p>Name can be anything.</p>
+	<p>Do not include closing tag - it will be automatically generated.</p>
+
+	<div class="section">
+<h3><a name="Flow_Control"></a>Flow Control</h3>
+<div class="section">
+<h4><a name="Block_node"></a>Block node</h4>
+<div class="section">
+<h5><a name="Description"></a>Description</h5>
+<p>A <b>block</b> node is used to executes a set of nodes. </p></div>
+<div class="section">
+<h5><a name="Attributes"></a>Attributes</h5>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td align="center"><b>atomic</b></td>
+<td align="left">if <i>true</i>, then if a node returns failure, subsequent nodes will not be executed and nodes already executed will be backed out.</td></tr></table></div>
+<div class="section">
+<h5><a name="Parameters"></a>Parameters</h5>
+<p>None</p></div>
+<div class="section">
+<h5><a name="Outcomes"></a>Outcomes</h5>
+<p>None</p></div>
+<div class="section">
+<h5><a name="Example"></a>Example</h5>
+<div class="source">
+<pre>&lt;block&gt;
+  &lt;record plugin=&quot;org.onap.ccsdk.sli.core.sli.recording.FileRecorder&quot;&gt;
+    &lt;parameter name=&quot;file&quot; value=&quot;/tmp/sample_r1.log&quot; /&gt;
+    &lt;parameter name=&quot;field1&quot; value=&quot;__TIMESTAMP__&quot;/&gt;
+    &lt;parameter name=&quot;field2&quot; value=&quot;RESERVED&quot;/&gt;
+    &lt;parameter name=&quot;field3&quot; value=&quot;$asePort.uni_circuit_id&quot;/&gt;
+  &lt;/record&gt;
+  &lt;return status=&quot;success&quot;&gt;
+    &lt;parameter name=&quot;uni-circuit-id&quot; value=&quot;$asePort.uni_circuit_id&quot; /&gt;
+  &lt;/return&gt;
+&lt;/block&gt;</pre></div></div></div>
+
+</script>
+
+
+<script type="text/javascript">
+ var blockXmlEditor ; 
+    RED.nodes.registerType('block',{
+        color:"#fdd0a2",
+        category: 'DGElogic',
+        defaults: {
+            name: {value:"block"},
+            xml: {value:"<block>\n"},
+	    atomic: {value:"false"},	
+	    comments:{value:""},	
+            outputs: {value:1}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "arrow-in.png",
+        label: function() {
+            return this.name;
+        },
+        oneditprepare: function() {
+            $( "#node-input-outputs" ).spinner({
+                min:1
+            });
+
+	     var comments = $( "#node-input-comments").val();
+	     if(comments != null){
+		comments = comments.trim();
+		if(comments != ''){
+			$("#node-input-btnComments").html("<span style='color:blue;'><b>View Comments</b></span>");
+		}
+	     }
+
+		var atomic = $( "#node-input-atomic").val();
+		if(atomic == "true"){
+			$('#node-input-atomic-chkBox').prop('checked', true);
+		}else{
+			$('#node-input-atomic-chkBox').prop('checked', false);
+		}
+
+
+            function functionDialogResize(ev,ui) {
+                $("#node-input-xml-editor").css("height",(ui.size.height-275)+"px");
+            };
+
+            $( "#dialog" ).dialog( "option", "width", 1200 );
+            $( "#dialog" ).dialog( "option", "height", 750 );
+            $( "#dialog" ).on("dialogresize", functionDialogResize);
+            $( "#dialog" ).one("dialogopen", function(ev) {
+                var size = $( "#dialog" ).dialog('option','sizeCache-function');
+                if (size) {
+                    functionDialogResize(null,{size:size});
+                }
+            });
+
+	    /* close dialog when ESC is pressed and released */	
+            $( "#dialog" ).keyup(function(event){
+     		if(event.which == 27 ) {
+            		$("#node-dialog-cancel").click();
+		}
+ 	    }); 
+
+            $( "#dialog" ).one("dialogclose", function(ev,ui) {
+                var height = $( "#dialog" ).dialog('option','height');
+                $( "#dialog" ).off("dialogresize",functionDialogResize);
+            });
+            var that = this;
+            require(["orion/editor/edit"], function(edit) {
+                that.editor = edit({
+                    parent:document.getElementById('node-input-xml-editor'),
+                    lang:"html",
+                    contents: $("#node-input-xml").val()
+                });
+		blockXmlEditor=that.editor;
+                RED.library.create({
+                    url:"functions", // where to get the data from
+                    type:"function", // the type of object the library is for
+                    editor:that.editor, // the field name the main text body goes to
+                    fields:['name','outputs']
+                });
+                $("#node-input-name").focus();
+		$("#node-input-validate").click(function(){
+				//console.log("validate clicked.");
+				//console.dir(that.editor);
+				//console.log("getText:" + that.editor.getText());
+				var val = that.editor.getText();
+				validateXML(val); 
+		});
+		$("#node-input-show-sli-values").click(function(){
+				//console.log("SLIValues clicked.");
+				showValuesBox(that.editor,sliValuesObj);
+		});
+
+            });
+	    //for click of add comments button
+	    $("#node-input-btnComments").click(function(e){
+			showCommentsBox();
+	    });	
+        },
+        oneditsave: function() {
+		
+            $("#node-input-xml").val(this.editor.getText());
+		var resp=validateXML(this.editor.getText());
+		if(resp){
+			this.status = {fill:"green",shape:"dot",text:"OK"};
+		}else{
+			this.status = {fill:"red",shape:"dot",text:"ERROR"};
+		}	
+           	delete this.editor;
+		delete blockXmlEditor;
+        }
+    });
+function updateXml(){
+	if($("#node-input-atomic-chkBox").is(':checked')){
+		$("#node-input-name").val("block : atomic");
+		$("#node-input-atomic").val("true");
+		//alert($("#node-input-xml-editor div.textview div.textviewContent").text());
+		var xmlStr = blockXmlEditor.getText();
+		var re = new RegExp("<block[^<]+");
+		xmlStr=xmlStr.replace(re,"<block atomic='true'>");
+		//$("#node-input-xml-editor div.textview div.textviewContent").text(xmlStr);
+		blockXmlEditor.setText(xmlStr);
+		//console.log("block xmlStr:" + xmlStr);
+	}else{
+		$("#node-input-name").val("block");
+		$("#node-input-atomic").val("false");
+		var xmlStr = blockXmlEditor.getText();
+		var re = new RegExp("<block[^<]+");
+		xmlStr=xmlStr.replace(re,"<block>");
+		blockXmlEditor.setText(xmlStr);
+		//$("#node-input-xml-editor div.textview div.textviewContent").text(xmlStr);
+		//console.log("block xmlStr:" + xmlStr);
+	}
+}
+</script>

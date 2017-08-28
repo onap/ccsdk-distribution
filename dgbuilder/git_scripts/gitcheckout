@@ -1,0 +1,17 @@
+if [ "$#" != "2" ]
+then
+	echo "Usage $0 gitLocalRepositoryDir branch"
+	exit
+fi
+branch=$2
+localGitRepository=$1
+cd $localGitRepository
+if [ -e "$localGitRepository" ]
+then
+	git checkout $branch
+	echo
+	echo -n  "Now on Branch:"
+	git rev-parse --abbrev-ref HEAD
+else
+	echo Git Local repository not set
+fi

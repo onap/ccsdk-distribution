@@ -1,0 +1,192 @@
+<!--
+  Copyright 2013 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="get-resource">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-xml"><i class="fa fa-wrench"></i> Node XML</label>
+        <input type="hidden" id="node-input-xml" autofocus="autofocus">
+        <div style="height: 450px;" class="node-text-editor" id="node-input-xml-editor" onkeyup="resetStatus()" ></div>
+    </div>
+    <div class="form-row">
+    <a href="#" class="btn btn-mini" id="node-input-validate" style="margin-top: 4px;"><b>Validate XML</b></a>
+    <a href="#" class="btn btn-mini" id="node-input-show-sli-values" style="margin-top: 4px;"><b>Show Values</b></a> 
+    <input type="hidden" id="node-input-comments">
+    <a href="#" class="btn btn-mini" id="node-input-btnComments" style="margin-top: 4px;"><b>Add Comments</b></a>
+    <div id="node-validate-result" class="form-tips" style="float:right;font-size:10px"></div>
+    </div>
+    <div class="form-tips">See the Info tab for help using this node.</div>
+</script>
+
+<script type="text/x-red" data-help-name="get-resource">
+	<p>A get-resource node.</p>
+	<p>First line of XML must contain opening tag.</p>
+	<p>Do not include closing tag - it will be automatically generated.</p>
+
+<div class="section">
+<h4><a name="Get-resource_node"></a>Get-resource node</h4>
+<div class="section">
+<h5><a name="Description"></a>Description</h5>
+<p>A <b>get-resource</b> node is used to retrieve information about a particular resource and make it available to other nodes in the service logic tree. For example, this might be used to retrieve information about a particular uni-port.</p></div>
+<div class="section">
+<h5><a name="Attributes"></a>Attributes</h5>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td align="center"><b>plugin</b></td>
+<td align="left">Fully qualified Java class of resource adaptor to be used</td></tr>
+<tr class="b">
+<td align="center"><b>resource</b></td>
+<td align="left">Type of resource to retrieve</td></tr>
+<tr class="a">
+<td align="center"><b>key</b></td>
+<td align="left">SQL-like string specifying criteria for retrieval</td></tr></table></div>
+<div class="section">
+<h5><a name="Parameters"></a>Parameters</h5>
+<p>None</p></div>
+<div class="section">
+<h5><a name="Outcomes"></a>Outcomes</h5>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td align="center"><b>success</b></td>
+<td align="left">Resource successfully released</td></tr>
+<tr class="b">
+<td align="center"><b>not-found</b></td>
+<td align="left">Resource referenced does not exist</td></tr>
+<tr class="a">
+<td align="center"><b>failure</b></td>
+<td align="left">Resource release failed for some other reason</td></tr></table></div>
+<div class="section">
+<h5><a name="Example"></a>Example</h5>
+<div class="source">
+<pre>&lt;get-resource plugin=&quot;org.onap.ccsdk.sli.resource.samplesvc.SampleServiceResource&quot;
+              resource=&quot;ase-port&quot;
+              key=&quot;uni_circuit_id == $uni-circuit-id&quot;&gt;
+  &lt;outcome value=&quot;success&quot;&gt;
+    &lt;return status=&quot;success&quot;/&gt;
+  &lt;/outcome&gt;
+  &lt;outcome value=&quot;not-found&quot;&gt;
+    &lt;return status=&quot;failure&quot;/&gt;
+  &lt;/outcome&gt;
+  &lt;outcome value=&quot;failure&quot;&gt;
+    &lt;return status=&quot;failure&quot;/&gt;
+  &lt;/outcome&gt;
+&lt;/get-resource&gt;</pre></div></div></div>
+
+</script>
+
+
+<script type="text/javascript">
+    RED.nodes.registerType('get-resource',{
+        color:"#fdd0a2",
+        category: 'DGElogic',
+        defaults: {
+            name: {value:"get-resource"},
+            xml: {value:"<get-resource plugin='' resource='' key='' >\n"},
+	    comments:{value:""},	
+            outputs: {value:1}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "arrow-in.png",
+        label: function() {
+            return this.name;
+        },
+        oneditprepare: function() {
+            $( "#node-input-outputs" ).spinner({
+                min:1
+            });
+
+
+	     var comments = $( "#node-input-comments").val();
+	     if(comments != null){
+		comments = comments.trim();
+		if(comments != ''){
+			$("#node-input-btnComments").html("<span style='color:blue;'><b>View Comments</b></span>");
+		}
+	     }
+
+            function functionDialogResize(ev,ui) {
+                $("#node-input-xml-editor").css("height",(ui.size.height-275)+"px");
+            };
+
+            $( "#dialog" ).dialog( "option", "width", 1200 );
+            $( "#dialog" ).dialog( "option", "height", 750 );
+            $( "#dialog" ).on("dialogresize", functionDialogResize);
+            $( "#dialog" ).one("dialogopen", function(ev) {
+                var size = $( "#dialog" ).dialog('option','sizeCache-function');
+                if (size) {
+                    functionDialogResize(null,{size:size});
+                }
+            });
+
+	    /* close dialog when ESC is pressed and released */	
+            $( "#dialog" ).keyup(function(event){
+     		if(event.which == 27 ) {
+            		$("#node-dialog-cancel").click();
+		}
+ 	    }); 
+
+            $( "#dialog" ).one("dialogclose", function(ev,ui) {
+                var height = $( "#dialog" ).dialog('option','height');
+                $( "#dialog" ).off("dialogresize",functionDialogResize);
+            });
+            var that = this;
+            require(["orion/editor/edit"], function(edit) {
+                that.editor = edit({
+                    parent:document.getElementById('node-input-xml-editor'),
+                    lang:"html",
+                    contents: $("#node-input-xml").val()
+                });
+                RED.library.create({
+                    url:"functions", // where to get the data from
+                    type:"function", // the type of object the library is for
+                    editor:that.editor, // the field name the main text body goes to
+                    fields:['name','outputs']
+                });
+                $("#node-input-name").focus();
+		$("#node-input-validate").click(function(){
+				console.log("validate clicked.");
+				//console.dir(that.editor);
+				//console.log("getText:" + that.editor.getText());
+				var val = that.editor.getText();
+				validateXML(val); 
+		});
+		$("#node-input-show-sli-values").click(function(){
+				console.log("SLIValues clicked.");
+				showValuesBox(that.editor,sliValuesObj);
+		});
+
+            });
+	    //for click of add comments button
+	    $("#node-input-btnComments").click(function(e){
+			showCommentsBox();
+	    });	
+        },
+        oneditsave: function() {
+            $("#node-input-xml").val(this.editor.getText());
+		var resp=validateXML(this.editor.getText());
+		if(resp){
+			this.status = {fill:"green",shape:"dot",text:"OK"};
+		}else{
+			this.status = {fill:"red",shape:"dot",text:"ERROR"};
+		}	
+           	delete this.editor;
+        }
+    });
+</script>

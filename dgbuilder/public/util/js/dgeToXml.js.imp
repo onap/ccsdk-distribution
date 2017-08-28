@@ -1,0 +1,147 @@
+function getNodeToXml(){
+		var nodeSet=[];
+		var activeWorkspace=RED.view.getWorkspace();
+		RED.nodes.eachNode(function(n) {
+			if (n.z == activeWorkspace) {
+                    		nodeSet.push({n:n});
+                	}
+        	});
+
+		var exportableNodeSet = RED.nodes.createExportableNodeSet(nodeSet);
+		console.dir(exportableNodeSet);
+		console.log(JSON.stringify(exportableNodeSet));
+
+		function getDgStartNode(nodeList){
+			for(var i=0;i<nodeList.length;i++){
+				if(nodeList[i].type == 'dgstart'){
+					return nodeList[i];
+				}	
+			}
+			return null;
+		}
+		function getNode(id){
+			for(var i=0;i<exportableNodeSet.length;i++){
+				if(exportableNodeSet[i].id == id){
+					return exportableNodeSet[i];
+				}	
+			}
+			return null;
+		}
+
+		function getStartTag(node){
+			var startTag="";
+			var xmlStr="";
+			if(node != null && node.type != 'dgstart'){
+				xmlStr=node.xml;
+				var regex = /(<)([\w-]+)(.*)?/;
+                		var match = regex.exec(xmlStr);
+                		if(match != null){
+                        		if(match[1] != undefined && match[2] != undefined){
+                                		startTag = match[2];
+                        		}
+                		}else{
+					console.log("startTag not found.");
+				}	
+			}
+			return startTag;
+		}
+
+		var dgstartNode = getDgStartNode(exportableNodeSet);
+
+		var level=0;
+		var fullXmlStr="";
+
+		printXml(dgstartNode);
+		
+
+		function printXml(node){
+			var xmlStr="";
+			var startTag = "";
+			if(node != null && node.type != 'dgstart'){
+				xmlStr=node.xml;
+				startTag = getStartTag(node);
+				if(level > 0){
+					var spacing = Array(level).join("  ");	
+					xmlStr=xmlStr.replace(/\n/g,spacing);
+					fullXmlStr +=xmlStr;
+					
+					console.log(xmlStr);
+				}else{
+					fullXmlStr +=xmlStr;
+					console.log(xmlStr);
+				}
+			}
+
+			//console.log("startTag:" + startTag);
+	
+			var wiredNodes = [];
+			if(node != null && node.wires != null && node.wires[0] != null &&  node.wires[0] != undefined && node.wires[0].length >0 ){
+				wiredNodes=node.wires[0];
+				//sort based on y position
+				wiredNodes.sort(function(a, b){
+					return a.y-b.y;
+				});
+			}
+
+			for(var k=0;wiredNodes != null && k<wiredNodes.length;k++){
+				level++;
+				var nd = getNode(wiredNodes[k]);
+				printXml(nd);
+			}
+
+			//append end tag
+			if(startTag != ""){
+				if(level >0){
+					var spacing = Array(level).join("  ");	
+					fullXmlStr += spacing + "</" + startTag + ">";
+					console.log(spacing + "</" + startTag + ">");
+				}else{
+					fullXmlStr += "</" + startTag + ">";
+					console.log("</" + startTag + ">");
+				}
+			}	
+
+			if(level>0){
+				level=level-1;
+			}
+			console.log("endTag:" + startTag);
+			//console.log("xml:" + fullXmlStr);
+		}
+		console.log("fullXmlStr:" + fullXmlStr);
+
+		/*
+		for (var link in allLinks){
+			var nd = RED.nodes.node(link);
+			console.dir(nd);						 
+			var obj = RED.nodes.getNodeSet(RED.view.getWorkspace());
+			console.dir(obj);
+		}
+		*/
+
+
+		//console.dir(RED.nodes.getAllFlowNodes());
+		//console.dir(RED.nodes.getType());
+		/*
+		console.dir(RED.nodes.nodes);
+		RED.nodes.nodes.forEach(function (node){
+			console.dir(node);
+		});
+		*/
+
+	    /*var map = {68: false, 69: false, 86: false};
+	    $("#node-input-validate").keydown(function(e) {
+    		if (e.keyCode in map) {
+			map[e.keyCode] = true;
+			if (map[68] && map[69] && map[86]) {
+            			// FIRE EVENT
+				return "abcd";
+                        }
+    		}
+		}).keyup(function(e) {
+    			if (e.keyCode in map) {
+        			map[e.keyCode] = false;
+    			}
+		});
+	*/	
+	return fullXmlStr;
+}

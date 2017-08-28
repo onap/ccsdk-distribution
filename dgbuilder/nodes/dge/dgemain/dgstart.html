@@ -1,0 +1,1322 @@
+<!--
+  Copyright 2013 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<div id="svclogicPageDiv" ></div>
+<!-- dgbuilder javascript files START -->
+<script src="util/js/validateNodeXml.js"/>
+<script src="util/js/sliValues.js"/>
+<script src="util/js/dgeToXml.js"/>
+<script src="util/js/vkbeautify.0.99.00.beta.js"/>
+<!-- dgbuilder javascript files END -->
+
+<script type="text/x-red" data-template-name="dgstart">
+    <div class="form-tips">See the Info tab for help using this node.</div>
+</script>
+<style>
+.no-close .ui-dialog-titlebar-close {display: none }
+.alertDialogButton {
+   border-top: 1px solid #96d1f8;
+   background: #65a9d7;
+   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+   background: -o-linear-gradient(top, #3e779d, #65a9d7);
+   padding: 5px 10px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 14px;
+   font-family: Georgia, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.alertDialogButton:hover {
+   border-top-color: #28597a;
+   background: #28597a;
+   color: #ccc;
+   }
+
+.alertDialogButton:active {
+   border-top-color: #1b435e;
+   background: #1b435e;
+   }
+.disabled-button {
+   border-top: 1px solid #96d1f8;
+   background: lightgrey;
+   background: -webkit-gradient(linear, left top, left bottom, from(grey), to(lightgrey));
+   background: -webkit-linear-gradient(top, grey, grey);
+   background: -moz-linear-gradient(top, grey, grey);
+   background: -ms-linear-gradient(top, grey, grey);
+   background: -o-linear-gradient(top, grey, grey);
+   padding: 5px 10px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: lightgrey;
+   font-size: 14px;
+   font-family: Georgia, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+</style>
+<script type="text/javascript">
+
+function activateDG(module,rpc,version,mode,displayOnlyCurrent){
+	var paramsObj = {'module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : false};
+	if(displayOnlyCurrent){
+		paramsObj = {'module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : true};
+	}
+	var dgInfo = "<div><table width='100%' border='1'><tr style='background-color:#65a9d7;color:white;' ><th>Module</th><th>RPC</th><th>Version</th></tr><tr style='background-color:white'><td>" + module +"</td><td>" + rpc + "</td><td>" +version +  "</td></tr></table></div><br>";
+	var alertMsg = dgInfo + "<p>Are you sure you want to Activate this DG ?</p>"; 
+$( "#alertdialog" ).dialog({
+  dialogClass: "no-close",
+  autoOpen :false,
+  modal:true,
+  draggable : true,
+  /*dialogClass: "alert",*/
+  title: "Confirm Activate",
+  width: 600,
+  buttons: [
+    {
+      text: "Activate",
+      class:"alertDialogButton",
+      click: function() {
+	$.get("/activateDG" , paramsObj)
+	.done(function( data ) {
+                  //RED.notify("<strong>Activated Successfully</strong>");
+		var htmlStr = "";
+		var title ="";
+		if(displayOnlyCurrent){
+			 htmlStr=getHtmlStr(data,true);
+			 title="Service Logic Administration  Module=" + module + " and RPC=" + rpc;
+		}else{
+			 htmlStr=getHtmlStr(data);
+			 title= "Service Logic Administration - " + data.dbHost; 
+		}
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: title,
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.fail(function( err ) {
+                  RED.notify("<strong>Could not Activate</strong>");
+		var htmlStr = "<p>" + "could not activate" + module + " " + rpc + " " + version +"</p> <a onclick='javascript:showSLA()'></a>";
+		if(displayOnlyCurrent == true){
+			 htmlStr = "<p>" + "could not activate" + module + " " + rpc + " " + version +"</p> <a onclick='javascript:showCurrentDGs(\"" + module + "\",\"" + rpc + "\")'>Back to DG List</a>";
+		}
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: "Service Logic Administration - " + err.dbHost, 
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.always(function() { 
+		// $('.ui-dialog:has(#alertdialog)').empty().remove();
+		$("#alertdialog" ).dialog('close');
+		
+	});
+	}
+    },
+    {
+      text: "Cancel",
+      class:"alertDialogButton",
+      click: function() {
+	//$('.ui-dialog:has(#alertdialog)').empty().remove();
+        $( this ).dialog( "close" );
+      }
+    }
+  ]
+}).html(alertMsg).dialog('open');
+//var dialogClass = $("#alertdialog").dialog( "option", "dialogClass" );
+//$( "#alertdialog" ).dialog( "option", "dialogClass", "alert" );
+//$("#alertdialog").dialog("widget").find(".ui-dialog-buttonpane").css("background-color", "#ECECFF");
+/*
+$('#alertdialog').css("background-color", "#ECECEC");
+$("#alertdialog").dialog("widget").find(".ui-dialog-buttonpane").css("background-color", "#ECECEC");
+
+// button pane style
+$("#alertdialog").dialog("widget").find(".ui-dialog-buttonpane").css({"padding":".1em .1em .1em 0","margin":"0 0 0 0"} )
+
+// button style
+$("#alertdialog").dialog("widget").find("button").css({"padding":"0 .2em 0 .2em","margin":"0 .5em 0 0"} )
+$("#alertdialog").dialog("widget").find("button").addClass("alertDialogButton");
+*/
+//console.dir($("#alertdialog"));
+}
+
+
+function deActivateDG(module,rpc,version,mode,displayOnlyCurrent){
+	var paramsObj = {'module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : false};
+	if(displayOnlyCurrent){
+		paramsObj = {'module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : true};
+	}
+	var dgInfo = "<div ><table width='100%' border='1'><tr style='background-color:#65a9d7;color:white;'><th>Module</th><th>RPC</th><th>Version</th></tr><tr style='background-color:white'><td>" + module +"</td><td>" + rpc + "</td><td>" +version +  "</td></tr></table></div><br>";
+	var alertMsg = dgInfo + "<p>Are you sure you want to De-Activate this DG ?</p>"; 
+$( "#alertdialog" ).dialog({
+  dialogClass: "no-close",
+  autoOpen : false,	
+  modal:true,
+  draggable : true,
+  title: "Confirm De-Activate",
+  width: 600,
+  buttons: [
+    {
+      text: "De-Activate",
+      class:"alertDialogButton",
+      click: function() {
+	$.get("/deActivateDG" , paramsObj)
+	.done(function( data ) {
+                  //RED.notify("<strong>deActivated Successfully</strong>");
+		var htmlStr = "";
+		var title ="";
+		if(displayOnlyCurrent){
+			 htmlStr=getHtmlStr(data,true);
+			 title="Service Logic Administration  Module=" + module + " and RPC=" + rpc;
+		}else{
+			 htmlStr=getHtmlStr(data);
+			 title= "Service Logic Administration - " + data.dbHost; 
+		}
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: title,
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.fail(function( err ) {
+                  RED.notify("<strong>Could not De-Activate</strong>");
+		var htmlStr = "<p>" + "could not deactivate" + module + " " + rpc + " " + version +"</p>  <a onclick='javascript:showSLA()'></a>";
+		if(displayOnlyCurrent == true){
+			 htmlStr = "<p>" + "could not deactivate" + module + " " + rpc + " " + version +"</p> <a onclick='javascript:showCurrentDGs(\"" + module + "\",\"" + rpc + "\")'>Back to DG List</a>";
+		}
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: "Service Logic Administration - " + err.dbHost, 
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.always(function() { 
+		 //$('.ui-dialog:has(#alertdialog)').empty().remove();
+        	$( "#alertdialog" ).dialog( "close" );
+		//$("#alertdialog" ).dialog('destroy').remove();
+	});
+      }
+    },
+    {
+      text: "Cancel",
+      class:"alertDialogButton",
+      click: function() {
+	//$('.ui-dialog:has(#alertdialog)').empty().remove();
+	//$(this).dialog('destroy').remove()
+        //$( this ).dialog( "close" );
+	/*if ($("#alertdialog").hasClass('ui-dialog-content')) {
+		$("#alertdialog" ).dialog('close');
+	}else{
+        	$( this ).dialog( "close" );
+	}
+	*/
+        $( this ).dialog( "close" );
+      }
+    }
+  ]
+}).html(alertMsg).dialog("open");
+}
+
+function deleteDG(module,rpc,version,mode,displayOnlyCurrent){
+	var paramsObj = {'module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : false};
+	if(displayOnlyCurrent){
+		paramsObj = {'module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : true};
+	}
+	var dgInfo = "<div ><table width='100%' border='1'><tr style='background-color:#65a9d7;color:white;'><th>Module</th><th>RPC</th><th>Version</th></tr><tr style='background-color:white'><td>" + module +"</td><td>" + rpc + "</td><td>" +version +  "</td></tr></table></div><br>";
+	var alertMsg = dgInfo + "<p>Are you sure you want to Delete this DG ?</p>"; 
+$( "#alertdialog" ).dialog({
+  dialogClass: "no-close",
+  autoOpen: false,
+  modal:true,
+  draggable : true,
+  title: "Confirm Delete",
+  width: 600,
+  buttons: [
+    {
+      text: "Delete",
+      class:"alertDialogButton",
+      click: function() {
+	$.get("/deleteDG" , paramsObj)
+	.done(function( data ) {
+                  RED.notify("<strong>Deleted " + module + " " + rpc + " " + version + " Successfully</strong>");
+		var htmlStr = "";
+		var title ="";
+		if(displayOnlyCurrent){
+			 htmlStr=getHtmlStr(data,true);
+			 title="Service Logic Administration  Module=" + module + " and RPC=" + rpc;
+		}else{
+			 htmlStr=getHtmlStr(data);
+			 title= "Service Logic Administration - " + data.dbHost; 
+		}
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: title,
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.fail(function( err ) {
+                  //RED.notify("<strong>Could not Delete" +  module + " " + rpc + " " + version +  "</strong>");
+		var htmlStr = "<p>" + "could not delete" + module + " " + rpc + " " + version +"</p>  <a onclick='javascript:showSLA()'></a>";
+		if(displayOnlyCurrent == true){
+			 htmlStr = "<p>" + "could not delete" + module + " " + rpc + " " + version +"</p> <a onclick='javascript:showCurrentDGs(\"" + module + "\",\"" + rpc + "\")'>Back to DG List</a>";
+		}
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: "Service Logic Administration - " + err.dbHost, 
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.always(function() { 
+        	$( "#alertdialog" ).dialog( "close" );
+		 //$('.ui-dialog:has(#alertdialog)').empty().remove();
+		//$("#alertdialog" ).dialog('destroy').remove();
+	});
+      }
+    },
+    {
+      text: "Cancel",
+      class:"alertDialogButton",
+      click: function() {
+	/*
+	if ($("#alertdialog").hasClass('ui-dialog-content')) {
+		$("#alertdialog" ).dialog('close');
+	}else{
+        	$( this ).dialog( "close" );
+	}
+	*/
+        //$( "#alertdialog" ).dialog( "close" );
+	//$('.ui-dialog:has(#alertdialog)').empty().remove();
+        //$( this ).dialog( "close" );
+        $( this ).dialog( "close" );
+      }
+    }
+  ]
+}).html(alertMsg).dialog("open");
+}
+/*
+function downloadDGXml(_module,rpc,version,mode){
+	var paramsObj = {'_module': _module , 'rpc' : rpc , 'version' : version , 'mode' : mode};
+	var form = $('<form id="dwnldDbXmlFormId" method="POST" action="/downloadDGXml"></form>');
+	form.append('<input type="hidden" name="_module" value="' + _module + '"/>');
+	form.append('<input type="hidden" name="rpc" value="' + rpc + '"/>');
+	form.append('<input type="hidden" name="version" value="' + version + '"/>');
+	form.append('<input type="hidden" name="mode" value="' + mode + '"/>');
+	form.appendTo('body');
+	$("#dwnldDbXmlFormId").submit();
+}
+*/
+
+function displayXml(module,rpc,version,mode,displayOnlyCurrent){
+	var paramsObj = {'_module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : false};
+	var title="Service Logic Administration";
+	if(displayOnlyCurrent){
+		paramsObj = {'_module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : true};
+		title="Service Logic Administration  Module=" + module + " and RPC=" + rpc;
+	}else{
+		title="Service Logic Administration";
+	}
+	//var headingStr = "<a style='color: #337ab7;' onclick='javascript:showSLA()'>&lt;&lt;Back to DG List</a><br><div style='background-color:#337ab7;clear:both;'><table style='width:100%;' border='0'>" +
+	var headingStr = "<a style='color: #337ab7;cursor:pointer;' onclick='javascript:showSLA()'>&lt;&lt;Back to DG List</a><br><div style='clear:both;'><table style='width:25%' border='0'>" ;
+		if(displayOnlyCurrent == true){
+			headingStr = "<a style='color: #337ab7;cursor:pointer;' onclick='javascript:showCurrentDGs(\"" + module + "\",\"" + rpc + "\")'>&lt;&lt;Back to DG List</a><br><div style='clear:both;'><table style='width:25%' border='0'>" ;
+		}
+			headingStr += "<tr><td><b>Module</b></td><td>" + module + "</td></tr>" +
+			"<tr><td><b>RPC</b></td><td>" + rpc + "</td></tr>" +
+			"<tr><td><b>Version</b></td><td>" + version + "</td></tr>" +
+			"<tr><td><b>Mode</b></td><td>" + mode + "</td></tr>" +
+			"</table></div>";
+
+	//var urlStr = "/displayXml?_module=" + module + "&rpc=" + rpc + "&version=" + version + "&mode=" + mode; 
+	$.get("/displayXml",paramsObj)
+	.done(function( data ) {
+		//var htmlStr= headingStr + '<div style="clear:both;"></div><div style="background-color:lightgrey;border-style: solid;border-color:#337ab7;clear:both;">' + data.xmldata + "</div>";
+		var htmlStr= headingStr + '<hr style="clear:both;height:5px;background-color:#337ab7;"><div>' + data.xmldata + "</div>";
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: title,
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.fail(function( err ) {
+                  //RED.notify("<strong>Could not display XML</strong>");
+		var htmlStr = "<p>" + "Could not display xml for" + module + " " + rpc + " " + version + "</p><a style='color: #337ab7;cursor:pointer;' onclick='javascript:showSLA()'>Back to DG List</a><br>";
+		if(displayOnlyCurrent == true){
+			 htmlStr = "<p>" + "could not display XML" + module + " " + rpc + " " + version +"</p> <a onclick='javascript:showCurrentDGs(\"" + module + "\",\"" + rpc + "\")'>Back to DG List</a>";
+		}
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: "Service Logic Administration",
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.always(function() { 
+	});
+}
+
+function displayDG(module,rpc,version,mode,displayOnlyCurrent){
+	var paramsObj = {'_module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : false};
+	var title="Service Logic Administration";
+	if(displayOnlyCurrent){
+		paramsObj = {'_module': module , 'rpc' : rpc , 'version' : version , 'mode' : mode,'displayOnlyCurrent' : true};
+	}
+	//var headingStr = "<a style='color: #337ab7;cursor:pointer' onclick='javascript:showSLA()'>&lt;&lt;Back to DG List</a><br><div><table id='msgTable' style='width:25%;background-color:lightgrey' border='0'>" +
+	var headingStr = "<a style='color: #337ab7;cursor:pointer;' onclick='javascript:showSLA()'>&lt;&lt;Back to DG List</a><br><div><table id='msgTable' style='width:25%;' border='0'>" ;
+		if(displayOnlyCurrent == true){
+			headingStr = "<a style='color: #337ab7;cursor:pointer;' onclick='javascript:showCurrentDGs(\"" + module + "\",\"" + rpc + "\")'>&lt;&lt;Back to DG List</a><br><div style='clear:both;'><table style='width:25%' border='0'>" ;
+		       title="Service Logic Administration  Module=" + module + " and RPC=" + rpc;
+		}
+			headingStr +="<tr><td><b>Module</b></td><td>" + module + "</td></tr>" +
+			"<tr><td><b>RPC</b></td><td>" + rpc + "</td></tr>" +
+			"<tr><td><b>Version</b></td><td>" + version + "</td></tr>" +
+			"<tr><td><b>Mode</b></td><td>" + mode + "</td></tr>" +
+			"</table></div>";
+
+	//var urlStr = "/displayAsGv?_module=" + module + "&rpc=" + rpc + "&version=" + version + "&mode=" + mode; 
+	$.get("/displayAsGv",paramsObj)
+	.done(function( data ) {
+		var htmlStr= headingStr + '<div style="background-color:white;">' + data.svg_html + "</div>";
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: "Service Logic Administration",
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.fail(function( err ) {
+                  //RED.notify("<strong>Could not display XML</strong>");
+		var htmlStr = "<p>" + "Could not display DG for" + module + " " + rpc + " " + version + "</p><a style='color: #337ab7;cursor:pointer;' onclick='javascript:showSLA()'>Back to DG List</a><br>";
+		if(displayOnlyCurrent == true){
+			 htmlStr = "<p>" + "could not display DG for" + module + " " + rpc + " " + version +"</p> <a onclick='javascript:showCurrentDGs(\"" + module + "\",\"" + rpc + "\")'>Back to DG List</a>";
+		}
+		$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: "Service Logic Administration",
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+	  })
+	.always(function() { 
+	});
+}
+
+function getHtmlStr(data,displayOnlyCurrent,module,rpc){
+	var styleStr = "<style> " + 
+			"table#t01 { width:100%; } \n" +
+				"table#t01 th,table#t01 td { border: 1px solid black; border-collapse: collapse; } \n" +
+				/*"table, th, td { border: 1px solid #65a9d7; border-collapse: collapse; } \n" +*/
+				"table#t01 th,table#t01 td { padding: 5px; text-align: left; } \n" +
+				"table#t01 tr:nth-child(even) { background-color: #eee; }\n" +
+				"table#t01 tr:nth-child(odd) { background-color:#fff; }\n" +
+				"table#t01 th	{ background-color: #65a9d7; color: white; }\n" +
+				"table#t01 a { color: #337ab7; }\n" +
+				"table#t01 a:link { color: #65a9d7; }\n" +
+				"table#t01 a:visited { color: #636; }\n" + 
+				"table#t01 a:hover { color: #3366CC; cursor: pointer }\n" + 
+				"table#t01 a:active { color: #65a9d7 }\n" +
+				"</style>";
+			if(data != null && data.rows != undefined && data.error == undefined){
+				var alertDialog = '<div id="alertdialog"></div>';
+				htmlStr= alertDialog +  "<div style='width:1050;height:650'>" + styleStr;
+				htmlStr += "<table id='t01' >";
+				htmlStr += "<tr>";
+				htmlStr += "<th>Module</th>" ;
+				htmlStr += "<th>RPC</th>" ;
+				htmlStr += "<th>Version</th>" ;
+				htmlStr += "<th>Mode</th>" ;
+				htmlStr += "<th>Active</th>" ;
+				htmlStr += "<th>Activate/Deactivate</th>";
+				htmlStr += "<th>Display DG</th>";
+				htmlStr += "<th>XML</th>";
+				htmlStr += "<th>Delete</th>";
+				htmlStr += "</tr>";
+				var rows = data.rows;
+				if(rows != null && rows.length == 0){
+					htmlStr += "<tr>";
+					htmlStr += "<td><b>No rows found</b></td>";
+					htmlStr += "</tr></table></div>";
+					return htmlStr;
+				}
+				for(var i=0;i<rows.length;i++){
+					var row = rows[i];
+					var _module = row.module;
+					var rpc = row.rpc;
+					var version = row.version;
+					var mode = row.mode;
+					var active = row.active;
+					htmlStr += "<tr>";
+					htmlStr += "<td>" + _module + "</td>";
+					htmlStr += "<td>" + rpc + "</td>";
+					htmlStr += "<td>" + version + "</td>";
+					htmlStr += "<td>" + mode + "</td>";
+					htmlStr += "<td>" + active + "</td>";
+
+					var methodParams =  "'" + _module +  "','" + rpc + "','" + version + "','"  + mode + "'";
+					if(displayOnlyCurrent){
+						methodParams+= ",true";
+					}
+					if(active == 'Y'){
+							htmlStr += "<td><a onclick=\"javascript:deActivateDG(" +  methodParams + ")\">DeActivate</a></td>";
+					}else{
+						htmlStr += "<td><a onclick=\"javascript:activateDG(" + methodParams +  ")\">Activate</a></td>";
+					}
+					htmlStr += "<td><a onclick=\"javascript:displayDG(" + methodParams + ")\">Display</a></td>";
+
+					htmlStr += "<td><a onclick=\"javascript:displayXml(" + methodParams + ")\">XML</a></td>";
+
+					htmlStr += "<td><a onclick=\"javascript:deleteDG(" + methodParams + ")\">Delete</a></td>";
+					htmlStr += "</tr>";
+				}
+				htmlStr += "</table>";
+				htmlStr += "</div>";
+			}
+	return htmlStr;
+}
+
+function showSLA(){
+	var htmlStr = "";
+	try{
+		$.get("/listSLA")
+		.done(function( data ) {
+			var htmlStr=getHtmlStr(data);
+			$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: "Service Logic Administration - " + data.dbHost, 
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+		})
+		.fail(function(err) {
+		 	htmlStr= "<div>Error occured displaying the DG list</div>";
+			$("#svclogicPageDiv").dialog({
+				modal:true,	
+				title: "Service Logic Administration - " + data.dbHost, 
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+		})
+		.always(function() { 
+		});
+	}catch(err){
+	}
+}
+
+function showCurrentDGs(module,rpc){
+	var htmlStr = "";
+	try{
+		var params="?module=" + module + "&rpc=" + rpc;
+		var url="/listCurrentDGs" + params;
+		//console.log("url:" + url);
+		$.get(url)
+		.done(function( data ) {
+			var htmlStr=getHtmlStr(data,true);
+			$("#svclogicPageDiv").dialog({
+				modal:true,	
+			        title:"Service Logic Administration  Module=" + module + " and RPC=" + rpc,
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+		})
+		.fail(function(err) {
+		 	htmlStr= "<div>Error occured displaying the DG list</div>";
+			$("#svclogicPageDiv").dialog({
+				modal:true,	
+			        title:"Service Logic Administration  Module=" + module + " and RPC=" + rpc,
+             			width: 1200,
+             			height: 750,
+                       		minWidth : 600, 
+                       		minHeight :450, 
+				}).html(htmlStr);
+		})
+		.always(function() { 
+		});
+	}catch(err){
+	}
+}
+
+
+function displaySLA(callback){
+	var htmlStr = "";
+	try{
+		$.get("/listSLA")
+		.done(function( data ) {
+			var htmlStr=getHtmlStr(data);
+			callback(htmlStr,data.dbHost);
+		})
+		.fail(function(err) {
+		 	htmlStr= "<div>Error occured displaying the DG list</div>";
+			callback(htmlStr,err.dbHost);
+		})
+		.always(function() { 
+		});
+	}catch(err){
+			callback(htmlStr,"");
+	}
+}
+
+function displayCurrentDGs(module,rpc,callback){
+	var htmlStr = "";
+	try{
+		var params="?module=" + module + "&rpc=" + rpc;
+		var url="/listCurrentDGs" + params;
+		//console.log("url:" + url);
+		$.get(url )
+		.done(function( data ) {
+			var htmlStr=getHtmlStr(data,true);
+			callback(htmlStr,data.dbHost);
+		})
+		.fail(function(err) {
+		 	htmlStr= "<div>Error occured displaying the Current DG list</div>";
+			callback(htmlStr,err.dbHost);
+		})
+		.always(function() { 
+		});
+	}catch(err){
+			callback(htmlStr,"");
+	}
+}
+
+
+window.onbeforeunload = function (event) {
+	var dis = $('#btn-deploy').attr('class')
+	if ( dis.indexOf('disabled') == -1 ) {
+    		var message = 'Important: You have changes that were not \'deployed\'.';
+    		if (typeof event == 'undefined') {
+        		event = window.event;
+    		}
+    		if (event) {
+        		event.returnValue = message;
+    		}
+    		return message;
+	}
+};
+</script>
+<script type="text/x-red" data-help-name="dgstart">
+	<p>This node starts a flow. This node is required on every flow.</p>
+	<p>This node has a button to its left, when clicked generates the XML for the flow</p>
+	<img src="images/dgstart.png"></img>
+</script>
+<style>
+.textview{
+	font-size:20px;
+}
+</style>
+
+<div id="screenInfoId"></div>
+<script type="text/javascript">
+function getAttributeValue(xmlStr,attribute){
+        var attrVal=null;
+        try{
+                var myRe = new RegExp(attribute + "[\s+]?=[\s+]?['\"]([^'\"]+)['\"]","m");
+                var myArray = myRe.exec(xmlStr);
+                if(myArray != null && myArray[1] != null){
+                        attrVal=myArray[1];
+                }
+        }catch(err){
+                console.log(err);
+        }
+        return attrVal;
+
+}
+
+
+function showDgStartGenerateXmlStatus(){
+	var htmlStr="<div id='dgstart-generate-xml-div' style='width:375;height:225'><p>Generating XML. Please wait... </p><img src='images/page-loading.gif'></div>"
+	$("#dgstart-generate-xml-dialog").dialog({
+		modal:true,	
+		title: "DGBuilder XML Generation Status",
+             	width: 400,
+             	height: 250,
+                minWidth : 400, 
+                minHeight :200, 
+		}).html(htmlStr);
+}
+
+    RED.nodes.registerType('dgstart',{
+        color:"#fdd0a2",
+        category: 'DGEmain',
+        defaults: {
+            name: {value:"DGSTART"},
+            outputs: {value:1}
+        },
+        inputs:0,
+        outputs:1,
+        icon: "inject.png",
+        label: function() {
+            return this.name;
+        },
+	onpaletteadd: function() {
+		//console.log("DGSTART Added to the palette.");
+	},
+        button: {
+            onclick: function() {
+		//$('#processingStatusId').text('working...');
+		//$('#processingStatusId').html("<span><p>    Processing Please Wait...</span><img src='images/page-loading.gif'>");
+		$('#processingStatusId').html("<span style='font-size:0.2em;color:green'>   Processing...</span>");
+    		var timerObj = window.setTimeout(function() {
+		//document.getElementById("processingStatusId").innerHTML ="<img src='images/page-loading.gif'>";
+
+		/*
+		var target = $(event.target);
+		//target.text("Validating XML");
+		target.css({ "background-image": "url('images/page-loading.gif')" });
+		target.css({ "background-repeat": "no-repeat" });
+		target.css({ "background-size": "25px 25px" });
+		*/
+
+		//deploy button 
+		//$("#btn-deploy")
+		var loopDetectionEnabled = true;
+		console.log("loopDetectionEnabled:" +loopDetectionEnabled);
+		if(loopDetectionEnabled){
+			var msecs1= Date.now();
+			var isLoopDetected = detectLoop();
+			var msecs2= Date.now();
+			console.log("Time taken for loop detection:" + (msecs2 - msecs1));
+			if(isLoopDetected){
+                         	//RED.notify("<strong>Error</strong>: Loop Detected","error");
+				//target.css({ "background-image": "none" });
+				return false;
+			}
+		}
+		var nodeSetWithUpdatedDgNumbers = updateDgNumbers();
+		validateEachNodeXml();
+	    	//var nodeToXmlStr = getNodeToXml();
+	    	var unformatted_xml_str = getNodeToXml();
+		//console.log("Size of unformatted_xml_str" + unformatted_xml_str.length);	
+	    	//console.log("output:" + nodeToXmlStr);
+		var formatted_xml = vkbeautify.xml(unformatted_xml_str); 	
+		/*
+		var minified_xml = vkbeautify.xmlmin(unformatted_xml_str,true); 	
+		var lengthOfMinifiedXml = minified_xml.length;
+		if(lengthOfMinifiedXml >0){
+			var val = lengthOfMinifiedXml/(1024*1024)
+			var minSizeStr = val.toFixed(4) + " MB";
+			console.log("minified XML size:" + minSizeStr);
+		}
+		*/
+		var lengthOfXml = formatted_xml.length;
+		var sizeStr = "";
+		if(lengthOfXml >0){
+			var val = lengthOfXml/(1024*1024)
+			sizeStr = val.toFixed(4) + " MB";
+			console.log("length:" + val);
+		}
+		var xmlLines = formatted_xml.split("\n");
+		console.log("Number of lines " + xmlLines.length);
+		var numberOfLines = xmlLines.length;
+		//var display_formatted_xml = formatted_xml.replace("&lt;","<");
+		var currentNodeSet = getCurrentFlowNodeSet();
+		//get max x and y coordinates
+		var x=0;
+		var y=0;
+		var maxX=0;
+		var maxY=0;
+		var moduleName = "";
+		var dgVersion = "";
+		var methodName = "";
+		var formattedMethodName = "";
+		var origModuleName = "";
+		var origMethodName = "";
+		for(var i=0;currentNodeSet != null && i<currentNodeSet.length;i++){
+			if(currentNodeSet[i].type == "service-logic"){
+				//moduleName = currentNodeSet[i].name;
+				moduleName = currentNodeSet[i].module;
+				dgVersion = currentNodeSet[i].version;
+				origModuleName = getAttributeValue(currentNodeSet[i].xml,"module");
+			}
+			if(currentNodeSet[i].type == "method"){
+				//methodName = currentNodeSet[i].name;
+				origMethodName = getAttributeValue(currentNodeSet[i].xml,"rpc");;
+				methodName = origMethodName;
+				if(methodName == ""){
+					methodName = "rpc_not_set";
+				}
+			}
+			x = currentNodeSet[i].x;	
+			y = currentNodeSet[i].y;	
+			if(x>maxX){
+				maxX=x;
+			}
+			if(y>maxY){
+				maxY=y;
+			}
+		}
+		//add 5 more pixels to that
+		maxX= Math.ceil(maxX) + 5;
+		maxY= Math.ceil(maxY) + 5;
+		//console.log("maxX:" + maxX);
+		//console.log("maxY:" + maxY);
+		var unformatted_json_str=JSON.stringify(currentNodeSet);
+		var formatted_json = vkbeautify.json(unformatted_json_str);
+		//var displayHtmlStr="<div><textarea readonly='1' style='width:1100px;height:700px;border:none'>" + formatted_xml + "</textarea></div>";
+		var displayHtmlStr="<div style='font-size:20px;'><xmp>" + formatted_xml + "</xmp></div>";
+		var xmlInfoStr = "<div id='xml-info-div'><p>" + "XML size:" + sizeStr +  " <br>Number of Lines:" + numberOfLines +  "</p></div>";
+		var htmlCode ="";
+		$( "#xmldialog" ).dialog({
+			title: "XML Generated",
+             		width: 1200,
+             		height: 750,
+                       	minWidth : 800, 
+                       	minHeight :450, 
+			dialogClass : "no-close",
+			closeOnEscape : false,	
+			autoOpen : false,
+			resize: function( event, ui ) {
+                  		/*
+					$( this ).dialog( "option", "title",
+	         			ui.size.height + " x " + ui.size.width );
+				*/
+			},
+             		modal: true,
+             		/*show: {
+                 		effect: "slide",
+                 		duration: 1000
+             		},
+			*/
+             		/*hide: {
+                 		effect: "slide",
+                 		duration: 500
+             		},
+			*/
+                        buttons: {
+			/*	
+                           "+" : function () {
+					var size= $("#xmldialog").find('.textview').css("font-size");
+					console.log("size:" + size);
+					size=size.replace("px","");
+					var fsize=Number(size) +1;
+					if(fsize<19){
+						fsize+=4;
+					}
+					if(fsize >= 26){
+						return;
+					}
+					$("#xmldialog").find('.textview').css("font-size",fsize);
+			    	},
+                           "-" : function () {
+					var size= $("#xmldialog").find('.textview').css("font-size");
+					console.log("size:" + size);
+					size=size.replace(/px/,"");
+					var fsize=Number(size) -1;
+					if(fsize <= 14){
+						return;
+					}
+					$("#xmldialog").find('.textview').css("font-size",fsize);
+				},
+			*/
+                           "Validate XML" : function (event) {
+				if(!event) event = window.event;
+				var target = $(event.target);
+			        target.text("Validating XML");
+			        target.css({ "background-image": "url('images/page-loading.gif')" });
+			        target.css({ "background-repeat": "no-repeat" });
+			        target.css({ "background-size": "25px 25px" });
+
+				var resp= validateFinalXML(unformatted_xml_str);
+				console.log("errorList:" + errList);
+				if(!resp){
+					showErrors();	
+				}
+			        target.text("Validate XML");
+			        target.css({ "background-image": "none" });
+                           },
+                           "Email Flow" : function (event) {
+				if(!event) event = window.event;
+				var target = $(event.target);
+			        target.text("Processing");
+			        target.css({ "background-image": "url('images/page-loading.gif')" });
+			        target.css({ "background-repeat": "no-repeat" });
+			        target.css({ "background-size": "25px 25px" });
+				d3.xhr("style.css").get(function(err,resp){
+					console.log("resp:" + resp);
+					//console.dir(resp);
+					var styleSheetText = resp.responseText;
+					/*var htmlCode = "<style>"  + styleSheetText + "</style></head>" + 
+						 '<body><div id="chart" class="ui-droppable">' +
+					*/
+					//var svgTagInfo = '<div style="overflow:auto;border:1px solid #D76D2D;height:600px;"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 768" preserveAspectRatio="xMidYMid meet">';
+					//var svgTagInfo = '<div style="overflow-x:auto;overflow-y:auto;border:1px solid #D76D2D;width:1200px;height:750px;"> <svg version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" width="3500px" height="3200px" viewBox="0 0 5500 5000" >';
+					var svgTagInfo = '<div style="overflow-x:auto;overflow-y:auto;border:1px solid #D76D2D;width:1200px;height:750px;"> <svg version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" width="3500px" height="3200px" viewBox="0 0 8000 7500" >';
+					var svgHtmlCode = $("svg").html();
+					//svgHtmlCode = svgHtmlCode.replace('<rect width="5000" height="5000"','<rect width="' + maxX +  '" height="' + maxY +'"');
+					var find = 'href="icons/arrow-in.png"';
+					var re = new RegExp(find, 'g');
+                                        svgHtmlCode = svgHtmlCode.replace(re, 'href=""');
+					find = 'href="icons/inject.png"';
+					re = new RegExp(find, 'g');
+                                        svgHtmlCode = svgHtmlCode.replace(re, 'href=""');
+					htmlCode = "\n<style>\n"  + styleSheetText + "</style></head>\n<body>" + svgTagInfo + svgHtmlCode + "\n</svg></div>";
+					//console.log($("svg").html());
+					 //console.log(htmlCode);		
+					//html,xml,json form id
+				/*
+					//using form to submit
+					var form = $('<form id="hxjFormId" method="POST" action="/sendEmail"></form>');
+					form.append('<input id="flowHtmlId" type="hidden" name="flowHtml" value=""/>');
+					form.append('<input id="flowXmlId" type="hidden" name="flowXml" value=""/>');
+					form.append('<input id="flowJsonId"  type="hidden" name="flowJson" value=""/>');
+					$("#screenInfoId").append(form);
+					//console.log($("#screenInfoId").html());
+					document.getElementById("flowHtmlId").value=htmlCode;
+					document.getElementById("flowXmlId").value=formatted_xml;
+					document.getElementById("flowJsonId").value=formatted_json;
+					//console.log($("#screenInfoId").html());
+					$("#hxjFormId").submit();
+					console.log("Submitted.");
+					*/
+					var reqData = {
+						"flowHtml" : htmlCode,
+						"flowXml" : formatted_xml,
+						"flowJson" : formatted_json
+					};
+
+					$.post( "/sendEmail",reqData )
+					.done(function( data ) {
+    						//console.log( "Data Loaded: " + data );
+						if(data != null && data.envelope != undefined && data.envelope != null){
+							var toAddress = data.envelope.to;
+							RED.notify("Email sent successfully to " + toAddress);
+						}else{
+							RED.notify("Email sent successfully.");
+						}
+					})
+					.fail(function(err) {
+						 console.log( "error" + err ); 
+						RED.notify("Email send Failed.");
+					}) 
+					.always(function() { 
+						console.log( "finished" ); 
+			        		target.text("Email Flow");
+			        		target.css({ "background-image": "none" });
+					});
+
+					/*
+					d3.xhr("/sendEmail").post(reqData,function(err,resp){
+						console.log("Error:" + JSON.stringify(err));
+						console.log("resp:" + JSON.stringify(resp));
+						console.dir(resp);
+					});
+					*/
+				});
+                           },
+				/*
+                           Deploy : function () {
+				$("#btn-deploy").click();	
+                           },
+				*/
+                           "Upload XML" : function (event) {
+				if(!event) event = window.event;
+				//Save the flows.json
+				//RED.view.dirty(true);
+				//$('#btn-deploy').click();
+				console.log("Deployed..");
+				var target = $(event.target);
+			        target.text("Processing");
+			        target.css({ "background-image": "url('images/page-loading.gif')" });
+			        target.css({ "background-repeat": "no-repeat" });
+			        target.css({ "background-size": "25px 25px" });
+				var date = new Date();	
+				
+				var fileName = date.getTime() + ".xml"; 
+				var reqData = {
+					"flowXml" : unformatted_xml_str,
+					"module" : origModuleName,
+					"rpc" : origMethodName
+					};
+				$.post("/uploadxml", reqData )
+					.done(function( data ) {
+					console.log("calling uploadxml. sending to server");
+						//var successHtmlStr = "<object width='600' height='450' type='text/html' data='"  + data.url + "' />";
+						
+						if( data != undefined  && data != null &&  (data.stdout.indexOf('Saving SvcLogicGraph to database') != -1 || data.stderr.indexOf('Saving SvcLogicGraph to database') != -1)){
+                         				//RED.notify("<strong>Uploaded Successfully</strong>");
+							//console.dir(data);
+							var _moduleName = data.module;
+							var _rpc = data.rpc;
+							var msg = "";
+							var actualMsg = "";
+							var msg_lines = "";
+							msg_lines += data.stderr;
+							msg_lines += data.stdout;
+								
+						        msgHtmlStr="<div><p><b>Uploaded the XML.<br>Additional Details<br><textarea style='width:90%;height:100%' readonly='1' rows='10' cols='90' >" + msg_lines + "</textarea></div>";
+								$("#upload-xml-status-dialog").dialog({
+									modal:true,	
+									title: "Upload XML ",
+             								width: 900,
+             								height: 750,
+                       							minWidth : 600, 
+                       							minHeight :450, 
+  									buttons: [
+    										{
+      										text: "ViewDGList",
+      										class:"alertDialogButton",
+      										click: function() {
+											$(this).dialog("close");
+											displayCurrentDGs(_moduleName,_rpc,function(htmlStr,dbHost){
+												$("#svclogicPageDiv").dialog({
+												modal:true,	
+			 									title:"Service Logic Administration  Module=" + _moduleName + " and RPC=" + _rpc,
+             											width: 1200,
+             											height: 750,
+                       										minWidth : 600, 
+                       										minHeight :450, 
+												}).html(htmlStr);
+											});	
+											}
+										},
+										{
+      										text: "Close",
+      										class:"alertDialogButton",
+      										click: function() {
+											$(this).dialog("close");
+										}
+										}
+										]
+								}).html(msgHtmlStr);
+						}else{
+							console.log("Could not upload.");
+						 	var emsg =JSON.parse( data.responseText);
+							var msg = "";
+							var actualMsg = "";
+							var msg_lines = "";
+							if( emsg.stderr != "COMPILE_ERROR"){
+								msg = JSON.stringify(emsg.stderr);
+								actualMsg = msg;
+								msg = msg.replace('\\t',"");
+								msg1 = msg.split('\\n');
+								for(var k=0;k<=msg1.length && k<=10;k++){
+									/*
+									if(k == 0){
+										//msg_lines += "<span style='color:blue'>" + msg1[k] + "</span><br>";	
+										//msg_lines +=  msg1[k]  +"\n";
+									}else{
+										if(msg1[k].indexOf("Caused by:") != -1){
+											//msg_lines += "<span style='color:red'> " + msg1[k] + "</span><br>";	
+											msg_lines += msg1[k] ;
+											break;
+										}
+									}
+									*/
+									if(msg1[k] != null && msg1[k].indexOf("Caused by:") != -1){
+										msg_lines +=  msg1[k] ;
+										if((k+1)<=msg1.length){
+											msg_lines +=   "\n" + msg1[k+1] ;
+										}	
+										if((k+2)<=msg1.length){
+											msg_lines +=   "\n" + msg1[k+2] ;
+										}	
+										break;
+									}
+								}
+						        }
+						        htmlStr="<div><p><b>Could not upload the XML. Status:" + data.status + " Message:" + data.statusText + "</b><br></p><br>Additional Details<br><textarea style='width:90%;height:100%' readonly='1' rows='10' cols='90' >" + msg_lines + "</textarea></div>";
+						$("#svclogicPageDiv").dialog({
+							modal:true,	
+							title: "Upload XML ",
+             						width: 900,
+             						height: 750,
+                       					minWidth : 600, 
+                       					minHeight :450, 
+						}).html(htmlStr);
+						}
+					})
+					.fail(function(err) {
+						 //console.log( "error" + JSON.stringify(err) ); 
+						 //console.log( JSON.stringify(err.responseText)); 
+						 var emsg =JSON.parse( err.responseText);
+						 //console.log( emsg.stderr); 
+						var msg = "";
+						var actualMsg = "";
+						var msg_lines = "";
+						if( emsg != null &&  emsg.stderr != 'COMPILE_ERROR'){
+							msg = JSON.stringify(emsg.stderr);
+							actualMsg = msg;
+							//msg = msg.replace("Caused by:","<span style='color:red'>Caused by:</span>"); 
+							msg = msg.replace(/\\t/g,"");
+							msg1 = msg.split('\\n');
+							for(var k=0;k<=msg1.length && k<=msg1.length;k++){
+								/*
+								if(k == 0){
+									//msg_lines += "<span style='color:blue'>" + msg1[k] + "</span><br>";	
+									//msg_lines +=  msg1[k] + "\n" ;
+								}else{
+									if(msg1[k].indexOf("Caused by:") != -1){
+										//msg_lines += "<span style='color:red'> " + msg1[k] + "</span><br>";	
+										msg_lines +=  msg1[k] ;
+										break;
+									}
+								}
+								*/
+								if(msg1[k] != null && msg1[k].indexOf("Caused by:") != -1){
+									msg_lines +=  msg1[k] ;
+									if((k+1)<=msg1.length){
+										msg_lines +=   "\n" + msg1[k+1] ;
+									}	
+									if((k+2)<=msg1.length){
+										msg_lines +=   "\n" + msg1[k+2] ;
+									}	
+									break;
+								}
+							}
+						}else{
+								msg = JSON.stringify(emsg.stdout);
+                                                                actualMsg = msg;
+                                                                msg = msg.replace('\\t',"");
+                                                                msg1 = msg.split('\\n');
+								msg_lines=msg1;
+						}
+						  var  htmlStr="<div><p><b>Could not upload the XML. Status:" + err.status + " Message:" + err.statusText + "</b><br></p><br><b>Additional Details</b><br><textarea style='width:90%;height:100%' readonly='1' rows='15' cols='90'>" + msg_lines + "</textarea></div>";
+						$("#svclogicPageDiv").dialog({
+							modal:true,	
+							title: "Upload XML ",
+             						width: 900,
+             						height: 750,
+                       					minWidth : 600, 
+                       					minHeight :450, 
+						}).html(htmlStr);
+                         			//RED.notify("<strong>ERROR:</strong>:" + err,"error");
+					}) 
+					.always(function() { 
+						console.log( "finished" ); 
+			        		target.text("Upload XML");
+			        		target.css({ "background-image": "none" });
+					});
+				/*
+                		d3.xhr("/uploadxml?fileName=" + fileName).post(function(err,resp) {
+                        		if ( resp != null && resp.status == 200) {
+                         			RED.notify("<strong>Uploaded Successfully</strong>");
+					}else{
+                         			RED.notify("<strong>ERROR:</strong>:" + err,"error");
+						console.log(err);
+						//console.dir(resp);
+					}
+				});
+				*/
+                           },
+                           "View DG List": function () {
+
+					displayCurrentDGs(origModuleName,origMethodName,function(htmlStr,dbHost){
+						//console.log("htmlStr:" + htmlStr);
+						$("#svclogicPageDiv").dialog({
+							modal:true,	
+							title: "Service Logic Administration for Module=" + origModuleName + "  and RPC=" + origMethodName, 
+             						width: 1200,
+             						height: 750,
+                       					minWidth : 600, 
+                       					minHeight :450, 
+						}).html(htmlStr);
+					});	
+                           },
+                           "Download XML": function () {
+				$(document).ready(function(){
+					errList=[];
+					if(moduleName != undefined && moduleName != null && moduleName != ""){
+						moduleName=moduleName.replace(/\s/g, "_");
+					}else{
+						errList.push("Module name is required in the service-logic node.");
+					}
+
+					if(dgVersion == undefined || dgVersion == null || dgVersion == ""){
+						errList.push("Module version is required in the service-logic node.");
+					}
+
+					if(methodName != undefined && methodName != null && methodName != ""){
+						methodName=methodName.replace(/\s/g, "_");
+						//formattedMethodName=methodName + "_" + dgVersion;
+						formattedMethodName=methodName ;
+					}else{
+						errList.push("rpc name is required in the method node.");
+					}
+					console.log("Download Xml moduleName:" + moduleName);	
+					console.log("Download Xml methodName:" + formattedMethodName);	
+
+					if(errList != null && errList.length > 0 ){
+						showErrors();
+						return;
+					}
+
+					$("#dwnldXmlFormId").empty().remove();
+					//using form to submit
+					var form = $('<form id="dwnldXmlFormId" method="POST" action="/downloadXml"></form>');
+					form.append('<input id="flowXmlId"  type="hidden" name="flowXml"/>');
+					form.append('<input type="hidden" name="moduleName" value="' + moduleName + '"/>');
+					form.append('<input type="hidden" name="methodName" value="' + formattedMethodName + '"/>');
+					form.appendTo('body');
+					//$("#flowXmlId").val(formatted_xml);
+					$("#flowXmlId").val(unformatted_xml_str);
+					$("#dwnldXmlFormId").submit();
+					//console.log("Form submitted.");
+				});
+                           },
+                           "Download JSON": function () {
+				$(document).ready(function(){
+					errList=[];
+					if(moduleName != undefined && moduleName != null && moduleName != ""){
+						moduleName=moduleName.replace(/\s/g, "_");
+					}else{
+						errList.push("Module name is required in the service-logic node.");
+					}
+
+					if(dgVersion == undefined || dgVersion == null || dgVersion == ""){
+						errList.push("Module version is required in the service-logic node.");
+					}
+
+					if(methodName != undefined && methodName != null && methodName != ""){
+						methodName=methodName.replace(/\s/g, "_");
+						//formattedMethodName=methodName + "_" + dgVersion;
+						formattedMethodName=methodName ;
+					}else{
+						errList.push("rpc name is required in the method node.");
+					}
+					console.log("Download Xml moduleName:" + moduleName);	
+					console.log("Download Xml methodName:" + formattedMethodName);	
+
+					if(errList != null && errList.length > 0 ){
+						showErrors();
+						return;
+					}
+					//console.log("formatted_json:" + formatted_json);	
+					$("#dwnldJsonFormId").empty().remove();
+					//using form to submit
+					var form = $('<form id="dwnldJsonFormId" method="POST" action="/downloadJson"></form>');
+					form.append('<input id="flowJsonId" type="hidden" name="flowJson" value=""/>');
+					form.append('<input type="hidden" name="moduleName" value="' + moduleName + '"/>');
+					form.append('<input type="hidden" name="methodName" value="' + formattedMethodName + '"/>');
+					form.appendTo('body');
+					//$("#flowJsonId").val(formatted_json);
+					$("#flowJsonId").val(unformatted_json_str);
+					$("#dwnldJsonFormId").submit();
+					//console.log("Form submitted.");
+				});
+                           },
+                           Close: function () 	{
+				/*
+				console.log("clearing the variables.");
+				htmlCode ="";
+				formatted_json ="";
+				formatted_xml ="";
+				xmlLines =[];
+				unformatted_xml_str="";
+				unformatted_json_str="";
+				*/
+			       $('.ui-dialog:has(#xmldialog)').empty().remove();
+				RED.view.redraw();
+
+				//console.log($("#xmldialog").attr('id'));
+			        //$('.ui-dialog:has(# + $("#xmldialog").attr('id') + ')').empty().remove();
+                                //$("#xmldialog").hide();
+                                //$("#xmldialog").dialog("destroy").remove();
+			}
+                       },
+			open:function (){
+				$(function(){
+				$("#xmldialog").dialog("widget").find(".ui-dialog-buttonpane").append(xmlInfoStr);
+					console.log("opened.");
+				});
+			}	
+		}).html(displayHtmlStr).dialog("open");
+		
+		//}).html(displayHtmlStr).dialog("widget").find(".ui-dialog-buttonpane").append(xmlInfoStr);
+
+		//display size and number of lines in XML
+		//$("#xmldialog").dialog("widget").find(".ui-dialog-buttonpane").append(xmlInfoStr);
+
+		//$("#processingStatusId").html("");
+		 //This logic is commented as formatting and displaying orion is taking time
+		//START
+		/*
+		var msecs1= Date.now();
+            	var that = this;
+            	require(["orion/editor/edit"], function(edit) {
+                that.editor = edit({
+                    parent:document.getElementById('xmldialog'),
+                    lang:"html",
+		    readonly:true,
+		    //showLinesRuler: false,
+                    contents: formatted_xml
+                });
+                RED.library.create({
+                    url:"functions", // where to get the data from
+                    type:"function", // the type of object the library is for
+                    editor:that.editor, // the field name the main text body goes to
+                    fields:['name','outputs']
+                });
+                });
+		var msecs2= Date.now();
+		//console.log("Time taken for displaying XML:" + (msecs2 - msecs1));
+		*/
+                //END
+		//var success = customValidation(currentNodeSet);
+		var success = customValidation(nodeSetWithUpdatedDgNumbers);
+		if(!success){
+			showFlowDesignErrorBox();
+		}
+		$('#processingStatusId').html("");
+    		}, 0);
+            }
+        }
+
+    });
+</script>

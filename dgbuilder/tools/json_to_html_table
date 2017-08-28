@@ -1,0 +1,144 @@
+try{ 
+var jsonStr='{}'; 
+jsonObj=JSON.parse(jsonStr);
+var htmlObj ={};
+var objectId =0;
+var level=0;
+var htmlStr=""
+htmlStr += "<html>";
+htmlStr += "<head>";
+htmlStr += "<script>";
+htmlStr += "function show(idVal){";
+htmlStr += "	var val = \"<table border='1'>\" + document.getElementById(idVal).value + \"</table>\";";
+htmlStr += "	document.getElementById('displayId').innerHTML = val;";
+htmlStr += "document.getElementById('displayId').style.display = \"block\";";
+//htmlStr += "alert(idVal);";
+//htmlStr += "alert(val);";
+htmlStr += "}";
+htmlStr += "</script>";
+htmlStr += "</head>";
+htmlStr += "<div id='displayId' style='display:none'></div>";
+htmlStr += "<div>\n<table border='1'>\n";
+console.log("<html><table border='1'>");
+printObjectValues(jsonObj,null,level);
+console.log("</table></html>");
+htmlStr += "\n</table>\n</div>";
+//var pattern = new RegExp("\\n","g");
+//htmlstr =htmlStr.replace(pattern,'');
+htmlStr += "</html>";
+//console.log(htmlStr);
+
+//console.dir(htmlObj);
+var keyObj={};
+for (var key in htmlObj) {
+	var idx = key.lastIndexOf(".");
+	if(idx != -1){
+ 		var str = key.substr(0,idx);
+		keyObj[str] ='';
+	}else{
+		keyObj[key] ='';
+	}	
+	//console.log(str);
+}
+
+console.dir(keyObj);
+console.log("<ul>");
+for (var key in keyObj) {
+	console.log("<li>" + key + "</li>");
+}
+console.log("</ul>");
+
+function tabs(level){
+return '';	
+}
+function tabsOrig(level){
+	var tabs="";
+	for(var i=0;i<level;i++){
+		tabs += "\t";
+	}
+	return tabs;
+}
+
+function printObjectValues(jsonObj,pkey,level){
+var output="";
+var objectHtmlStr="";
+try{
+for (var key in jsonObj) {
+  if (jsonObj.hasOwnProperty(key)) {
+	var v = jsonObj[key];
+	if(typeof v === 'object' && Array.isArray(v) === false){
+		var nkey="";
+		if(pkey != null){
+			nkey = pkey + "." + key;	
+		}else{
+			nkey = key;
+		}
+		var str=printObjectValues(v,nkey,level+2);
+	}else if(typeof v === 'object' && Array.isArray(v) === true){
+		var nkey="";
+		if(pkey != null){
+			nkey = pkey + "." + key;	
+		}else{
+			nkey = key;
+		}
+		var str = printArrayValues(v,nkey,level+2);
+	}else{
+		if(pkey != null){
+			//console.log(pkey + "." + key + ":" +printValue(v) );
+			console.log("<tr><td>" + pkey + "." + key + "</td><td>" +printValue(v) + "</td></tr>" );
+			htmlObj[pkey +  "." + key ] = printValue(v);
+		}else{
+			//console.log( key + ":" +printValue(v) );
+			console.log("<tr><td>" + key + "</td><td>" +printValue(v) + "</td></tr>" );
+			htmlObj[key ] = printValue(v);
+		}
+	        //printValue(v); 
+	}
+  }
+}
+}catch(err){
+	console.log(err);
+}
+return output;
+}
+
+}catch(err){ 
+console.log( err );
+}
+
+function printArrayValues(arrObj,pkey,level){
+var output ="";
+var arrayHtmlStr ="";
+try{
+	for(var i=0;arrObj != null && i<arrObj.length;i++){
+		var o=arrObj[i];
+		if(typeof o === 'object' && Array.isArray(o) === false){
+			var nkey = pkey +"[" + i + "]"  ;
+			var str = printObjectValues(o,nkey,level+2);
+		}else if(typeof o === 'object' && Array.isArray(v) === true){
+			var nkey = pkey +"[" + i + "]"  ;
+			var str = printArrayValues(o,nkey,level);
+		}else{
+			console.log("<tr><td>" + pkey + "." + key + "</td><td>" +printValue(o) + "</td></tr>" );
+			htmlObj[pkey +  "." + key ] = printValue(o);
+			//console.log(pkey + ":" +printValue(o) );
+			//output += tabs(level) + "<tr><td>" + printValue(o) + "</td></tr>\n";
+		}
+	}
+}catch(err){
+	console.log(err);
+}
+return output;
+}
+
+function printValue(obj){
+	if(obj != undefined){
+		if(typeof obj == 'string'){
+			return "'" +  obj + "'";
+		}else{
+			return obj;
+		}
+	}else{
+		return "";
+	}
+}

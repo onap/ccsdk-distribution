@@ -1,0 +1,139 @@
+try{ 
+var jsonStr='{}';
+jsonObj=JSON.parse(jsonStr);
+var objectId =0;
+var level=0;
+var htmlStr=""
+htmlStr += "<html>";
+htmlStr += "<head>";
+htmlStr += "<script>";
+htmlStr += "function show(idVal){";
+htmlStr += "	var val = \"<table border='1'>\" + document.getElementById(idVal).value + \"</table>\";";
+htmlStr += "	document.getElementById('displayId').innerHTML = val;";
+htmlStr += "document.getElementById('displayId').style.display = \"block\";";
+//htmlStr += "alert(idVal);";
+//htmlStr += "alert(val);";
+htmlStr += "}";
+htmlStr += "</script>";
+htmlStr += "</head>";
+htmlStr += "<div id='displayId' style='display:none'></div>";
+htmlStr += "<div>\n<table border='1'>\n";
+printObjectValues(jsonObj,level);
+htmlStr += "\n</table>\n</div>";
+//var pattern = new RegExp("\\n","g");
+//htmlstr =htmlStr.replace(pattern,'');
+htmlStr += "</html>";
+console.log(htmlStr);
+
+function tabs(level){
+return '';	
+}
+function tabsOrig(level){
+	var tabs="";
+	for(var i=0;i<level;i++){
+		tabs += "\t";
+	}
+	return tabs;
+}
+
+function printObjectValues(jsonObj,level){
+var output="";
+var objectHtmlStr="";
+try{
+for (var key in jsonObj) {
+//console.log(key +":" + jsonObj.hasOwnProperty(key));
+  if (jsonObj.hasOwnProperty(key)) {
+	var v = jsonObj[key];
+	if(typeof v === 'object' && Array.isArray(v) === false){
+		var idVal = objectId++;
+		level++;
+		objectHtmlStr += tabs(level) + "<div>\n" ;
+		objectHtmlStr += tabs(level+1 ) +"<table border='1'>\n" ;
+
+		var str=printObjectValues(v,level+2);
+		if(str != null && str != ''){
+			htmlStr += tabs(level+2) + objectHtmlStr + "<tr><td style='background-color:green'><a href=\"javascript:show('obj_" + idVal + "')\">" + key + "</a>\n";
+			htmlStr +="<input id='obj_" + idVal + "' type='hidden' value='" + str.trim() + "'>\n";
+		}
+
+		htmlStr += tabs(level+1) + "</table>\n" ;
+		htmlStr += tabs(level) + "</div>\n";
+	}else if(typeof v === 'object' && Array.isArray(v) === true){
+		var idVal = objectId++;
+		level++;
+		objectHtmlStr += tabs(level) + "<div>\n";
+		objectHtmlStr += tabs(level+1) + "<table border='1'>\n";
+
+		var str = printArrayValues(v,key,level+2);
+		if(str != null && str != ''){
+			htmlStr += tabs(level+2) + objectHtmlStr + "<tr><td style='background-color:blue'><a href=\"javascript:show('obj_" + idVal + "')\">" + key + "</a>\n";
+		htmlStr+="<input id='obj_" + objectId + "' type='hidden' value='" +  str.trim() + "'>\n";
+		}
+
+		htmlStr += tabs(level+1) + "</table>\n" ;
+		htmlStr += tabs(level) + "</div>\n";
+	}else{
+		output += tabs(level) +"<tr><td>" + key + "</td><td>" + printValue(v) + "</td></tr>\n";
+	}
+  }
+}
+}catch(err){
+	console.log(err);
+}
+return output;
+}
+
+}catch(err){ 
+console.log( err );
+}
+
+function printArrayValues(arrObj,key,level){
+var output ="";
+var arrayHtmlStr ="";
+try{
+	for(var i=0;arrObj != null && i<arrObj.length;i++){
+		var o=arrObj[i];
+		if(typeof o === 'object' && Array.isArray(o) === false){
+			var idVal = objectId++;
+			level++;
+			arrayHtmlStr += tabs(level) + "<div>\n" ;
+			arrayHtmlStr += tabs(level+1 ) +"<table border='1'>\n" ;
+
+			var str = printObjectValues(o,level+2);
+			if(str != null && str != ''){
+				htmlStr += tabs(level+2 ) + arrayHtmlStr + "<tr><td><a href=\"javascript:show('obj_" + idVal + "')\">" +key + "[" + i + "]"  + "</a>\n";
+				htmlStr+="<input id='obj_" + idVal + "' type='hidden' value='" +str.trim() + "'>\n";
+			}
+			htmlStr += tabs(level+1) + "</table>\n";
+			htmlStr += tabs(level) + "</div>\n";
+		}else if(typeof o === 'object' && Array.isArray(v) === true){
+			var idVal = objectId++;
+			level++;
+			arrayHtmlStr += tabs(level) + "<div>\n" ;
+			arrayHtmlStr += tabs(level+1 ) +"<table border='1'>\n" ;
+
+			var str = printArrayValues(o,key,level);
+			if(str != null && str != ''){
+				htmlStr += tabs(level+2 ) + arrayHtmlStr + "<tr><td><a href=\"javascript:show('obj_" + idVal + "')\">Array</a>\n";
+				htmlStr+="<input id='obj_" + idVal + "' type='hidden' value='" +str.trim() + "'>\n";
+			}
+
+			htmlStr += tabs(level+1) + "</table>\n";
+			htmlStr += tabs(level) + "</div>\n";
+		}else{
+			output += tabs(level) + "<tr><td>" + printValue(o) + "</td></tr>\n";
+		}
+	}
+}catch(err){
+	console.log(err);
+}
+return output;
+}
+
+function printValue(obj){
+	if(obj != undefined){
+		return obj;
+	}else{
+		return "";
+	}
+}
