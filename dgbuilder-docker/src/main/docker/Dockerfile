@@ -1,6 +1,6 @@
 # Base ubuntu with added packages needed for open ecomp
-FROM onap/ubuntu-sdnc-image:${project.version}
-MAINTAINER SDN-C Team (sdnc@lists.onap.org)
+FROM onap/ccsdk-ubuntu-image:${project.version}
+MAINTAINER CCSDK  Team (onap-ccsdk@lists.onap.org)
 
 # copy onap
 COPY opt /opt
