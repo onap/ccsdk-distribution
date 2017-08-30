@@ -39,7 +39,7 @@ GRANT ALL PRIVILEGES ON ${SDNC_DB_DATABASE}.* TO '${SDNC_DB_USER}'@'%' WITH GRAN
 commit;
 END
 
-if [ -f ${SDNC_HOME}/data/sdnctl.dump ]
+if [ -f ${SDNC_HOME}/data/odlsli.dump ]
 then
 mysql -h dbhost -u root -p${MYSQL_PASSWD} sdnctl < ${SDNC_HOME}/data/odlsli.dump
 fi
