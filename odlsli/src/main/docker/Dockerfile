@@ -11,5 +11,7 @@ COPY idmlight.db.mv.db /opt/opendaylight/current
 # copy deliverables to opt
 COPY opt /opt
 
+COPY org.ops4j.pax.logging.cfg /opt/opendaylight/current/etc/org.ops4j.pax.logging.cfg
+
 # ENTRYPOINT exec /opt/opendaylight/current/bin/karaf
 EXPOSE 8181
