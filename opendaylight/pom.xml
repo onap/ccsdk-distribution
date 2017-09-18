@@ -20,7 +20,7 @@
         <image.name>onap/ccsdk-odl-image</image.name>
         <ccsdk.project.version>${project.version}</ccsdk.project.version>
         <ccsdk.opendaylight.version>0.6.1-Carbon</ccsdk.opendaylight.version>
-        <ccsdk.mysql-connector-java.version>5.1.39</ccsdk.mysql-connector-java.version>
+        <ccsdk.mariadb-connector-java.version>2.1.1</ccsdk.mariadb-connector-java.version>
         <docker.buildArg.https_proxy>${https_proxy}</docker.buildArg.https_proxy>
     </properties>
 
@@ -33,9 +33,9 @@
                 <type>tar.gz</type>
             </dependency>
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${ccsdk.mysql-connector-java.version}</version>
+                <groupId>org.mariadb.jdbc</groupId>
+                <artifactId>mariadb-java-client</artifactId>
+                <version>${ccsdk.mariadb-connector-java.version}</version>
                 <type>jar</type>
             </dependency>
         </dependencies>
@@ -59,14 +59,14 @@
                                 println project.properties['ccsdk.project.version'];
                                 def versionArray;
                                 if (project.properties['ccsdk.project.version'] != null ) {
-                                    versionArray = project.properties['ccsdk.project.version'].split('\\.');
+                                versionArray = project.properties['ccsdk.project.version'].split('\\.');
                                 }
 
                                 if (project.properties['ccsdk.project.version'].endsWith("-SNAPSHOT"))
                                 {
-                                    project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
+                                project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
                                 } else {
-                                    project.properties['project.docker.latesttag.version']=versionArray[0]+ '.' + versionArray[1] +"-STAGING-latest";
+                                project.properties['project.docker.latesttag.version']=versionArray[0]+'.' + versionArray[1]+"-STAGING-latest";
                                 }
 
                                 println 'New Tag for docker:' + project.properties['project.docker.latesttag.version'];
@@ -115,7 +115,7 @@
                 <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <id>get-mysql-connector-jar</id>
+                        <id>get-mariadb-connector-jar</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>copy</goal>
@@ -123,11 +123,10 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>mysql</groupId>
-                                    <artifactId>mysql-connector-java</artifactId>
-                                    <version>${ccsdk.mysql-connector-java.version}</version>
+                                    <groupId>org.mariadb.jdbc</groupId>
+                                    <artifactId>mariadb-java-client</artifactId>
+                                    <version>${ccsdk.mariadb-connector-java.version}</version>
                                     <type>jar</type>
-
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
                                 </artifactItem>
