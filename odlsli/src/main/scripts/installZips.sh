@@ -34,6 +34,7 @@ targetDir=${1:-${SDNC_HOME}}
 featureDir=${targetDir}/features
 
 SDNC_CORE_FEATURES=" \
+ utils \
  dblib \
  filters \
  sli \

@@ -22,10 +22,6 @@ services:
     entrypoint: ["/opt/opendaylight/current/bin/karaf"]
     ports:
       - "18181:8181"
-    links:
-      - db:dbhost
-      - db:sdnctldb01
-      - db:sdnctldb02
     environment:
       - MYSQL_ROOT_PASSWORD=openECOMP1.0
       - SDNC_CONFIG_DIR=/opt/onap/sdnc/data/properties
@@ -42,7 +38,7 @@ services:
     container_name: ccsdk_odlsli_container
     entrypoint: ["/opt/onap/sdnc/bin/startODL.sh"]
     ports:
-      - "8282:8181"
+      - "8383:8181"
     links:
       - db:dbhost
       - db:sdnctldb01
