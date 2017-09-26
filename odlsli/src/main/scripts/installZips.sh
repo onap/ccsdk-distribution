@@ -33,8 +33,10 @@ SDNC_HOME=${SDNC_HOME:-/opt/onap/sdnc}
 targetDir=${1:-${SDNC_HOME}}
 featureDir=${targetDir}/features
 
+SDNC_CORE_UTILS_FEATURES=" \
+ slicore-utils"
+
 SDNC_CORE_FEATURES=" \
- utils \
  dblib \
  filters \
  sli \
@@ -55,12 +57,12 @@ SDNC_PLUGINS_FEATURES=" \
   properties-node \
   restapi-call-node"
 
-
-SDNC_CORE_VERSION=${SDNC_CORE_VERSION:-0.1.1}
-SDNC_ADAPTORS_VERSION=${SDNC_ADAPTORS_VERSION:-0.1.1}
-SDNC_NORTHBOUND_VERSION=${SDNC_NORTHBOUND_VERSION:-0.1.1}
-SDNC_PLUGINS_VERSION=${SDNC_PLUGINS_VERSION:-0.1.1}
-SDNC_OAM_VERSION=${SDNC_OAM_VERSION:-0.1.1}
+SDNC_CORE_UTILS_VERSION=${SDNC_CORE_UTILS_VERSION:-1.0.0-SNAPSHOT}
+SDNC_CORE_VERSION=${SDNC_CORE_VERSION:-0.1.2}
+SDNC_ADAPTORS_VERSION=${SDNC_ADAPTORS_VERSION:-0.1.2}
+SDNC_NORTHBOUND_VERSION=${SDNC_NORTHBOUND_VERSION:-0.1.2}
+SDNC_PLUGINS_VERSION=${SDNC_PLUGINS_VERSION:-0.1.2}
+SDNC_OAM_VERSION=${SDNC_OAM_VERSION:-0.1.2}
 
 if [ ! -d ${targetDir} ]
 then
@@ -76,6 +78,14 @@ cwd=$(pwd)
 
 mavenOpts=${2:-"-s ${SETTINGS_FILE} -gs ${GLOBAL_SETTINGS_FILE}"}
 cd /tmp
+
+echo "Installing SDN-C core Utils version ${SDNC_CORE_UTILS_VERSION}"
+for feature in ${SDNC_CORE_UTILS_FEATURES}
+do
+ rm -f /tmp/${feature}-installer*.zip
+mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.sli.core:${feature}-installer:${SDNC_CORE_UTILS.VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
+ unzip -d ${featureDir} /tmp/${feature}-installer*zip
+done
 
 echo "Installing SDN-C core version ${SDNC_CORE_VERSION}"
 for feature in ${SDNC_CORE_FEATURES}
