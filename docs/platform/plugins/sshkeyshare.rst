@@ -38,7 +38,7 @@ runs.
 Note: Cloudify Manager, itself, requires Pythong 2.7.x (and CentOS 7).
 
 Types
-=====
++++++
 
 ccsdk.nodes.ssh.keypair
 -----------------------
@@ -56,6 +56,6 @@ encoded representation of the content of the private key file for the
 newly created keypair.
 
 Relationships
-=============
++++++++++++++
 
 This plugin does not define or use any relationships

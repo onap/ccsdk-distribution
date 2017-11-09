@@ -1,3 +1,7 @@
+.. This work is licensed under a Creative Commons Attribution 4.0 International License.
+.. http://creativecommons.org/licenses/by/4.0
+
+
 PGaaS Plugin
 ============
 
@@ -16,7 +20,7 @@ python-psycopg2" on the Cloudify Manager VM.
 Note: Cloudify Manager, itself, requires Python 2.7.x (and Centos 7).
 
 Types
-=====
++++++
 
 dcae.nodes.pgaas.cluster
 ------------------------
@@ -106,7 +110,7 @@ The keys in the access information dicts are as follows:
 -  ``password`` the password corresponding to the user role.
 
 Relationships
-=============
++++++++++++++
 
 dcae.relationships.pgaas\_cluster\_uses\_sshkeypair
 ---------------------------------------------------

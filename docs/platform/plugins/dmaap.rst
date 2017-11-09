@@ -1,5 +1,9 @@
+.. This work is licensed under a Creative Commons Attribution 4.0 International License.
+.. http://creativecommons.org/licenses/by/4.0
+
+
 Cloudify DMaaP Plugin
----------------------
+=====================
 
 Cloudify plugin for creating and managing DMaaP Data Router feeds and
 subscriptions and DMaaP Message Router topics. The plugin uses the DMaaP

@@ -35,7 +35,7 @@ runs.
 Note: Cloudify Manager, itself, requires Python 2.7.x (and CentOS 7).
 
 Types
-=====
++++++
 
 ccsdk.nodes.dns.arecord
 -----------------------
@@ -98,6 +98,6 @@ ccsdk.nodes.dns.cnamerecord
 **Attributes:** This type has no runtime attributes
 
 Relationships
-=============
++++++++++++++
 
 This plugin does not define or use any relationships
