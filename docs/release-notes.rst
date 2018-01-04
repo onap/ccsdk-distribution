@@ -3,6 +3,18 @@
 Release Notes
 =============
 
+Version: 0.1.1
+--------------
+
+
+:Release Date: 2018-01-18
+
+
+**Bug Fixes**
+   - `CCSDK-153 <https://jira.onap.org/browse/CCSDK-153>`_ dmaap listener container exitting
+   - `CCSDK-148 <https://jira.onap.org/browse/CCSDK-148>`_ Daily release builds no longer working
+
+
 Version: 0.1.0
 --------------
 
