@@ -45,7 +45,27 @@ The Common Controller SDK provides the following functionality :
    - `CCSDK-137 <https://jira.onap.org/browse/CCSDK-137>`_ isolate deprecated methods
 
 **Security Issues**
-   You may want to include a reference to CVE (Common Vulnerabilities and Exposures) `CVE <https://cve.mitre.org>`_
+   - `CVE-2011-4969 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-4969>`
+   - `CVE-2013-1624 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-1624>`
+   - `CVE-2014-0114 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-0114>`
+   - `CVE-2015-0254 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-0254>`
+   - `CVE-2015-5211 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-5211>`
+   - `CVE-2015-5262 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-5262>`
+   - `CVE-2015-7940 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-7940>`
+   - `CVE-2016-3674 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-3674>`
+   - `CVE-2016-9878 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9878>`
+   - `CVE-2016-1000338 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000338>`
+   - `CVE-2016-1000339 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000339>`
+   - `CVE-2016-1000341 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000341>`
+   - `CVE-2016-1000342 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000342>`
+   - `CVE-2016-1000343 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000343>`
+   - `CVE-2016-1000344 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000344>`
+   - `CVE-2016-1000345 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000345>`
+   - `CVE-2016-1000352 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000352>`
+   - `CVE-2017-5929 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-5929>`
+   - `CVE-2017-7525 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-7525>`
+   - `CVE-2017-7536 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-7536>`
+   - `CVE-2017-7957 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-7957>`
 
 
 **Upgrade Notes**
