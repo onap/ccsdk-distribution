@@ -7,9 +7,9 @@ ENV ODL_HOME /opt/opendaylight/current
 # copy the opendaylight tar and expand
 COPY karaf-${ccsdk.opendaylight.version}.tar.gz /tmp/
 RUN mkdir /opt/opendaylight \
-    && tar zxvf /tmp/distribution-karaf-${ccsdk.opendaylight.version}.tar.gz --directory /opt/opendaylight \
-    && rm -rf /tmp/distribution-karaf-${ccsdk.opendaylight.version}.tar.gz \
-    && ln -s /opt/opendaylight/distribution-karaf-${ccsdk.opendaylight.version} /opt/opendaylight/current
+    && tar zxvf /tmp/karaf-${ccsdk.opendaylight.version}.tar.gz --directory /opt/opendaylight \
+    && rm -rf /tmp/karaf-${ccsdk.opendaylight.version}.tar.gz \
+    && ln -s /opt/opendaylight/karaf-${ccsdk.opendaylight.version} /opt/opendaylight/current
 
 
 # workaround till we get proxy working
