@@ -21,7 +21,7 @@
 # ============LICENSE_END=========================================================
 ###
 
-SDNC_HOME=${SDNC_HOME:-/opt/onap/sdnc}
+CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 MYSQL_PASSWD=${MYSQL_PASSWD:-openECOMP1.0}
 
 SDNC_DB_USER=${SDNC_DB_USER:-sdnctl}
@@ -39,7 +39,7 @@ GRANT ALL PRIVILEGES ON ${SDNC_DB_DATABASE}.* TO '${SDNC_DB_USER}'@'%' WITH GRAN
 commit;
 END
 
-if [ -f ${SDNC_HOME}/data/odlsli.dump ]
+if [ -f ${CCSDK_HOME}/data/odlsli.dump ]
 then
-mysql -h dbhost -u root -p${MYSQL_PASSWD} sdnctl < ${SDNC_HOME}/data/odlsli.dump
+mysql -h dbhost -u root -p${MYSQL_PASSWD} sdnctl < ${CCSDK_HOME}/data/odlsli.dump
 fi
