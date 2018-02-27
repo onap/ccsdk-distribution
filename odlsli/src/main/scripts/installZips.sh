@@ -28,12 +28,12 @@ then
   GLOBAL_SETTINGS_FILE=${GLOBAL_SETTINGS_FILE:-${DEFAULT_MAVEN_SETTINGS}}
 fi
 
-SDNC_HOME=${SDNC_HOME:-/opt/onap/sdnc}
+CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 
-targetDir=${1:-${SDNC_HOME}}
+targetDir=${1:-${CCSDK_HOME}}
 featureDir=${targetDir}/features
 
-SDNC_CORE_FEATURES=" \
+CCSDK_CORE_FEATURES=" \
  utils \
  dblib \
  filters \
@@ -41,24 +41,24 @@ SDNC_CORE_FEATURES=" \
  sliPluginUtils \
  sliapi"
 
-SDNC_ADAPTORS_FEATURES=" \
+CCSDK_ADAPTORS_FEATURES=" \
   aai-service \
   mdsal-resource \
   resource-assignment \
   sql-resource"
 
-SDNC_NORTHBOUND_FEATURES=" \
+CCSDK_NORTHBOUND_FEATURES=" \
   asdcApi \
   dataChange "
 
-SDNC_PLUGINS_FEATURES=" \
+CCSDK_PLUGINS_FEATURES=" \
   properties-node \
   restapi-call-node"
 
-SDNC_CORE_VERSION=${SDNC_CORE_VERSION:-0.1.2}
-SDNC_ADAPTORS_VERSION=${SDNC_ADAPTORS_VERSION:-0.1.1}
-SDNC_NORTHBOUND_VERSION=${SDNC_NORTHBOUND_VERSION:-0.1.1}
-SDNC_PLUGINS_VERSION=${SDNC_PLUGINS_VERSION:-0.1.1}
+CCSDK_CORE_VERSION=${CCSDK_CORE_VERSION:-0.2.1-SNAPSHOT}
+CCSDK_ADAPTORS_VERSION=${CCSDK_ADAPTORS_VERSION:-0.2.1-SNAPSHOT}
+CCSDK_NORTHBOUND_VERSION=${CCSDK_NORTHBOUND_VERSION:-0.2.1-SNAPSHOT}
+CCSDK_PLUGINS_VERSION=${CCSDK_PLUGINS_VERSION:-0.2.1-SNAPSHOT}
 
 if [ ! -d ${targetDir} ]
 then
@@ -75,43 +75,44 @@ cwd=$(pwd)
 mavenOpts=${2:-"-s ${SETTINGS_FILE} -gs ${GLOBAL_SETTINGS_FILE}"}
 cd /tmp
 
-echo "Installing SDN-C core version ${SDNC_CORE_VERSION}"
-for feature in ${SDNC_CORE_FEATURES}
+echo "Installing CCSDK sli/core version ${CCSDK_CORE_VERSION}"
+for feature in ${CCSDK_CORE_FEATURES}
 do
  rm -f /tmp/${feature}-installer*.zip
-mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.sli.core:${feature}-installer:${SDNC_CORE_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
+mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.sli.core:${feature}-installer:${CCSDK_CORE_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
  unzip -d ${featureDir} /tmp/${feature}-installer*zip
 done
 
-echo "Installing SDN-C adaptors version ${SDNC_ADAPTORS_VERSION}"
-for feature in ${SDNC_ADAPTORS_FEATURES}
+echo "Installing CCSDK sli/adaptors version ${CCSDK_ADAPTORS_VERSION}"
+for feature in ${CCSDK_ADAPTORS_FEATURES}
 do
  rm -f /tmp/${feature}-installer*.zip
-mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.sli.adaptors:${feature}-installer:${SDNC_ADAPTORS_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
+mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.sli.adaptors:${feature}-installer:${CCSDK_ADAPTORS_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
  unzip -d ${featureDir} /tmp/${feature}-installer*zip
 done
 
-echo "Installing SDN-C northbound version ${SDNC_NORTHBOUND_VERSION}"
-for feature in ${SDNC_NORTHBOUND_FEATURES}
+echo "Installing CCSDK sli/northbound version ${CCSDK_NORTHBOUND_VERSION}"
+for feature in ${CCSDK_NORTHBOUND_FEATURES}
 do
  rm -f /tmp/${feature}-installer*.zip
-mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.sli.northbound:${feature}-installer:${SDNC_NORTHBOUND_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
- unzip -d ${featureDir} /tmp/${feature}-installer*zip
-done
-
-echo "Installing SDN-C plugins version ${SDNC_PLUGINS_VERSION}"
-for feature in ${SDNC_PLUGINS_FEATURES}
-do
- rm -f /tmp/${feature}-installer*.zip
-mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.sli.plugins:${feature}-installer:${SDNC_PLUGINS_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
+mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.sli.northbound:${feature}-installer:${CCSDK_NORTHBOUND_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
  unzip -d ${featureDir} /tmp/${feature}-installer*zip
 done
 
 
+#echo "Installing CCSDK sli/plugins version ${CCSDK_PLUGINS_VERSION}"
+#for feature in ${CCSDK_PLUGINS_FEATURES}
+#do
+# rm -f /tmp/${feature}-installer*.zip
+#mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.sli.plugins:${feature}-installer:${CCSDK_PLUGINS_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
+# unzip -d ${featureDir} /tmp/${feature}-installer*zip
+#done
 
-echo "Installing platform-logic"
+
+
+echo "Installing CCSDK platform-logic"
 rm -f /tmp/platform-logic-installer*.zip
-mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.distribution:platform-logic-installer:${SDNC_OAM_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
+mvn -U ${mavenOpts} org.apache.maven.plugins:maven-dependency-plugin:2.9:copy -Dartifact=org.onap.ccsdk.distribution:platform-logic-installer:${CCSDK_OAM_VERSION}:zip -DoutputDirectory=/tmp -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.ssl.insecure=true
 unzip -d ${targetDir} /tmp/platform-logic-installer*.zip
 
 find ${targetDir} -name '*.sh' -exec chmod +x '{}' \;

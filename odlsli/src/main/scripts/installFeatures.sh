@@ -23,10 +23,10 @@
 
 ODL_HOME=${ODL_HOME:-/opt/opendaylight/current}
 ODL_ADMIN_PASSWORD=${ODL_ADMIN_PASSWORD:-Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U}
-SDNC_HOME=${SDNC_HOME:-/opt/onap/sdnc}
-SDNC_FEATURE_DIR=${SDNC_FEATURE_DIR:-${SDNC_HOME}/features}
+CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
+CCSDK_FEATURE_DIR=${CCSDK_FEATURE_DIR:-${CCSDK_HOME}/features}
 
-SDNC_CORE_FEATURES=" \
+CCSDK_CORE_FEATURES=" \
  slicore-utils \
  dblib \
  filters \
@@ -34,74 +34,75 @@ SDNC_CORE_FEATURES=" \
  sliPluginUtils \
  sliapi"
 
-SDNC_ADAPTORS_FEATURES=" \
+CCSDK_ADAPTORS_FEATURES=" \
   aai-service \
   mdsal-resource \
   resource-assignment \
   sql-resource"
 
-SDNC_NORTHBOUND_FEATURES=" \
+CCSDK_NORTHBOUND_FEATURES=" \
   asdcApi \
  dataChange"
 
-SDNC_PLUGINS_FEATURES=" \
+CCSDK_PLUGINS_FEATURES=" \
   properties-node \
   restapi-call-node"
 
 
-SDNC_CORE_VERSION=${SDNC_CORE_VERSION:-0.0.1-SNAPSHOT}
-SDNC_ADAPTORS_VERSION=${SDNC_ADAPTORS_VERSION:-0.0.1-SNAPSHOT}
-SDNC_NORTHBOUND_VERSION=${SDNC_NORTHBOUND_VERSION:-0.0.1-SNAPSHOT}
-SDNC_PLUGINS_VERSION=${SDNC_PLUGINS_VERSION:-0.0.1-SNAPSHOT}
+CCSDK_CORE_VERSION=${CCSDK_CORE_VERSION:-0.0.1-SNAPSHOT}
+CCSDK_ADAPTORS_VERSION=${CCSDK_ADAPTORS_VERSION:-0.0.1-SNAPSHOT}
+CCSDK_NORTHBOUND_VERSION=${CCSDK_NORTHBOUND_VERSION:-0.0.1-SNAPSHOT}
+CCSDK_PLUGINS_VERSION=${CCSDK_PLUGINS_VERSION:-0.0.1-SNAPSHOT}
 
 echo "Enabling core features"
-${ODL_HOME}/bin/client -u karaf feature:install odl-mdsal-all
-${ODL_HOME}/bin/client -u karaf feature:install odl-mdsal-apidocs
-${ODL_HOME}/bin/client -u karaf feature:install odl-restconf-all
+${ODL_HOME}/bin/client feature:install odl-mdsal-all
+${ODL_HOME}/bin/client feature:install odl-mdsal-apidocs
+${ODL_HOME}/bin/client feature:install odl-restconf-all
 
 
 
 
-echo "Installing SDN-C core"
-for feature in ${SDNC_CORE_FEATURES}
+echo "Installing CCSDK sli/core"
+for feature in ${CCSDK_CORE_FEATURES}
 do
-  if [ -f ${SDNC_FEATURE_DIR}/sdnc-${feature}/install-feature.sh ]
+  if [ -f ${CCSDK_FEATURE_DIR}/ccsdk-${feature}/install-feature.sh ]
   then
-    ${SDNC_FEATURE_DIR}/sdnc-${feature}/install-feature.sh
+    ${CCSDK_FEATURE_DIR}/ccsdk-${feature}/install-feature.sh
   else
     echo "No installer found for feature sdnc-${feature}"
   fi
 done
 
-echo "Installing SDN-C adaptors"
-for feature in ${SDNC_ADAPTORS_FEATURES}
+echo "Installing CCSDK sli/adaptors"
+for feature in ${CCSDK_ADAPTORS_FEATURES}
 do
-  if [ -f ${SDNC_FEATURE_DIR}/sdnc-${feature}/install-feature.sh ]
+  if [ -f ${CCSDK_FEATURE_DIR}/ccsdk-${feature}/install-feature.sh ]
   then
-    ${SDNC_FEATURE_DIR}/sdnc-${feature}/install-feature.sh
+    ${CCSDK_FEATURE_DIR}/ccsdk-${feature}/install-feature.sh
+  else
+    echo "No installer found for feature ccsdk-${feature}"
+  fi
+done
+
+echo "Installing CCSDK sli/northbound"
+for feature in ${CCSDK_NORTHBOUND_FEATURES}
+do
+  if [ -f ${CCSDK_FEATURE_DIR}/sdnc-${feature}/install-feature.sh ]
+  then
+    ${CCSDK_FEATURE_DIR}/sdnc-${feature}/install-feature.sh
   else
     echo "No installer found for feature sdnc-${feature}"
   fi
 done
 
-echo "Installing SDN-C northbound"
-for feature in ${SDNC_NORTHBOUND_FEATURES}
-do
-  if [ -f ${SDNC_FEATURE_DIR}/sdnc-${feature}/install-feature.sh ]
-  then
-    ${SDNC_FEATURE_DIR}/sdnc-${feature}/install-feature.sh
-  else
-    echo "No installer found for feature sdnc-${feature}"
-  fi
-done
-
-echo "Installing SDN-C plugins"
-for feature in ${SDNC_PLUGINS_FEATURES}
-do
-  if [ -f ${SDNC_FEATURE_DIR}/sdnc-${feature}/install-feature.sh ]
-  then
-    ${SDNC_FEATURE_DIR}/sdnc-${feature}/install-feature.sh
-  else
-    echo "No installer found for feature sdnc-${feature}"
-  fi
-done
+# Commented out while debugging issue with S
+#echo "Installing CCSDK sli/plugins"
+#for feature in ${CCSDK_PLUGINS_FEATURES}
+#do
+#  if [ -f ${CCSDK_FEATURE_DIR}/sdnc-${feature}/install-feature.sh ]
+#  then
+#    ${CCSDK_FEATURE_DIR}/sdnc-${feature}/install-feature.sh
+#  else
+#    echo "No installer found for feature sdnc-${feature}"
+#  fi
+#done
