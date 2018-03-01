@@ -23,32 +23,15 @@
 
 BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
+echo "Loading and activate started at $(date)"
+start=$(date +%s.%N) 
 
-# Load directed graphs
+$BASEDIR/bin/svclogic.sh install $BASEDIR $BASEDIR/config/svclogic.properties
 
-
-for graphlist in $(find $BASEDIR/graphs -name graph.versions -print)
-do
-  curdir=$(dirname $graphlist)
-
-  # Load files from directory containing graph.versions file
-  echo "Loading graphs from $curdir"
-  for file in $(ls $curdir/*.xml)
-  do
-    echo "Loading $file ..."
-    $BASEDIR/bin/svclogic.sh load $file $BASEDIR/config/svclogic.properties
-  done
-
-  # Activate directed graphs
-  while read module rpc version mode
-  do
-     echo "Activating $module $rpc $version $mode"
-     $BASEDIR/bin/svclogic.sh activate $module $rpc $version $mode $BASEDIR/config/svclogic.properties
-  done < $graphlist
-done
-
-
-
+end=$(date +%s.%N)
+echo "Loading and activate from $curdir finished at $(date)"
+runtime=$(python -c "print(${end} - ${start})")
+echo "Load and active took $runtime seconds"
 
 
 
