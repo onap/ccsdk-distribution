@@ -11,4 +11,4 @@ do
     CLASSPATH=$CLASSPATH:${jar}
 done
 #echo "CLASSPATH is ${CLASSPATH}"
-java  -cp ${CLASSPATH}:${MYSQL_JDBC_DRIVER}:${SLI_COMMON_JAR} org.onap.ccsdk.sli.core.sli.SvcLogicParser $*
+java  -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat="yyyy-MM-dd HH:mm:ss" -cp ${CLASSPATH}:${MYSQL_JDBC_DRIVER}:${SLI_COMMON_JAR} org.onap.ccsdk.sli.core.sli.SvcLogicParser $*
