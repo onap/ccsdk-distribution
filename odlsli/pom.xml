@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.onap.ccsdk.distribution</groupId>
-        <artifactId>distribution-root</artifactId>
-        <version>0.2.1-SNAPSHOT</version>
+        <groupId>org.onap.ccsdk.parent</groupId>
+        <artifactId>odlparent-lite</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+        <relativePath />
     </parent>
 
     <artifactId>distribution-odlsli</artifactId>
@@ -24,6 +26,94 @@
         <docker.buildArg.https_proxy>${https_proxy}</docker.buildArg.https_proxy>
     </properties>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.core</groupId>
+            <artifactId>dblib-installer</artifactId>
+            <version>${ccsdk.sli.core.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.core</groupId>
+            <artifactId>filters-installer</artifactId>
+            <version>${ccsdk.sli.core.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.core</groupId>
+            <artifactId>sli-installer</artifactId>
+            <version>${ccsdk.sli.core.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.core</groupId>
+            <artifactId>sliapi-installer</artifactId>
+            <version>${ccsdk.sli.core.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.core</groupId>
+            <artifactId>sliPluginUtils-installer</artifactId>
+            <version>${ccsdk.sli.core.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.core</groupId>
+            <artifactId>utils-installer</artifactId>
+            <version>${ccsdk.sli.core.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.adaptors</groupId>
+            <artifactId>aai-service-installer</artifactId>
+            <version>${ccsdk.sli.adaptors.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.adaptors</groupId>
+            <artifactId>mdsal-resource-installer</artifactId>
+            <version>${ccsdk.sli.adaptors.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.adaptors</groupId>
+            <artifactId>resource-assignment-installer</artifactId>
+            <version>${ccsdk.sli.adaptors.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.adaptors</groupId>
+            <artifactId>sql-resource-installer</artifactId>
+            <version>${ccsdk.sli.adaptors.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.northbound</groupId>
+            <artifactId>asdcApi-installer</artifactId>
+            <version>${ccsdk.sli.northbound.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.northbound</groupId>
+            <artifactId>dataChange-installer</artifactId>
+            <version>${ccsdk.sli.northbound.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.plugins</groupId>
+            <artifactId>properties-node-installer</artifactId>
+            <version>${ccsdk.sli.plugins.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.plugins</groupId>
+            <artifactId>restapi-call-node-installer</artifactId>
+            <version>${ccsdk.sli.plugins.version}</version>
+            <type>zip</type>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
 
@@ -41,19 +131,17 @@
                             <source>
                                 println project.properties['ccsdk.project.version'];
                                 def versionArray;
-                                if ( project.properties['ccsdk.project.version'] != null ) {
+                                if (project.properties['ccsdk.project.version'] != null ) {
                                     versionArray = project.properties['ccsdk.project.version'].split('\\.');
                                 }
 
-                                if (project.properties['ccsdk.project.version'].endsWith("-SNAPSHOT"))
-                                {
-                                    project.properties['project.docker.latesttag.version']=versionArray[0]  + '.' + versionArray[1] + "-STAGING-latest";
+                                if (project.properties['ccsdk.project.version'].endsWith("-SNAPSHOT")) {
+                                    project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
                                 } else {
                                     project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
                                 }
 
-                                println 'New Tag for docker:' +
-                                project.properties['project.docker.latesttag.version'];
+                                println 'New Tag for docker:' + project.properties['project.docker.latesttag.version'];
                             </source>
                         </configuration>
                     </execution>
@@ -93,7 +181,7 @@
                         </goals><!-- here the phase you need -->
                         <phase>validate</phase>
                         <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/sdnc/bin</outputDirectory>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/bin</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/scripts</directory>
@@ -151,7 +239,7 @@
                         </goals><!-- here the phase you need -->
                         <phase>validate</phase>
                         <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/sdnc/data</outputDirectory>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/data</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
@@ -170,7 +258,7 @@
                         </goals><!-- here the phase you need -->
                         <phase>validate</phase>
                         <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/sdnc/data/properties</outputDirectory>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/data/properties</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/properties</directory>
@@ -189,7 +277,7 @@
                         </goals><!-- here the phase you need -->
                         <phase>validate</phase>
                         <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/sdnc/data/stores</outputDirectory>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/data/stores</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/stores</directory>
@@ -204,12 +292,30 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>unpack features</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                        <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/features</outputDirectory>
+                            <excludeTransitive>true</excludeTransitive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.5.0</version>
                 <executions>
 
-                    <execution>
+<!--                     <execution>
                         <id>Get features</id>
                         <phase>generate-sources</phase>
                         <goals>
@@ -226,10 +332,10 @@
                             </environmentVariables>
                             <arguments>
                                 <argument>${basedir}/src/main/scripts/installZips.sh</argument>
-                                <argument>${basedir}/target/docker-stage/opt/onap/sdnc</argument>
+                                <argument>${basedir}/target/docker-stage/opt/onap/ccsdk</argument>
                             </arguments>
                         </configuration>
-                    </execution>
+                    </execution> -->
 
                     <execution>
                         <id>change shell permissions</id>
@@ -240,7 +346,7 @@
                         <configuration>
                             <executable>/usr/bin/find</executable>
                             <arguments>
-                                <argument>${basedir}/target/docker-stage/opt/onap/sdnc</argument>
+                                <argument>${basedir}/target/docker-stage/opt/onap/ccsdk</argument>
                                 <argument>-name</argument>
                                 <argument>*.sh</argument>
                                 <argument>-exec</argument>
