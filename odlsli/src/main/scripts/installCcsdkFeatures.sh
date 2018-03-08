@@ -69,7 +69,7 @@ do
   then
     ${CCSDK_FEATURE_DIR}/ccsdk-${feature}/install-feature.sh
   else
-    echo "No installer found for feature sdnc-${feature}"
+    echo "No installer found for feature ccsdk-${feature}"
   fi
 done
 
@@ -87,11 +87,11 @@ done
 echo "Installing CCSDK sli/northbound"
 for feature in ${CCSDK_NORTHBOUND_FEATURES}
 do
-  if [ -f ${CCSDK_FEATURE_DIR}/sdnc-${feature}/install-feature.sh ]
+  if [ -f ${CCSDK_FEATURE_DIR}/ccsdk-${feature}/install-feature.sh ]
   then
-    ${CCSDK_FEATURE_DIR}/sdnc-${feature}/install-feature.sh
+    ${CCSDK_FEATURE_DIR}/ccsdk-${feature}/install-feature.sh
   else
-    echo "No installer found for feature sdnc-${feature}"
+    echo "No installer found for feature ccsdk-${feature}"
   fi
 done
 
@@ -99,10 +99,10 @@ done
 echo "Installing CCSDK sli/plugins"
 for feature in ${CCSDK_PLUGINS_FEATURES}
 do
-  if [ -f ${CCSDK_FEATURE_DIR}/sdnc-${feature}/install-feature.sh ]
+  if [ -f ${CCSDK_FEATURE_DIR}/ccsdk-${feature}/install-feature.sh ]
   then
-    ${CCSDK_FEATURE_DIR}/sdnc-${feature}/install-feature.sh
+    ${CCSDK_FEATURE_DIR}/ccsdk-${feature}/install-feature.sh
   else
-    echo "No installer found for feature sdnc-${feature}"
+    echo "No installer found for feature ccsdk-${feature}"
   fi
 done
