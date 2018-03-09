@@ -29,4 +29,4 @@ do
     CLASSPATH=$CLASSPATH:${jar}
 done
 
-java -cp ${CLASSPATH}:${MYSQL_JDBC_DRIVER} org.onap.ccsdk.sli.core.sli.SvcLogicParser $*
+java -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat="yyyy-MM-dd HH:mm:ss" -cp ${CLASSPATH}:${MYSQL_JDBC_DRIVER} org.onap.ccsdk.sli.core.sli.SvcLogicParser $*
