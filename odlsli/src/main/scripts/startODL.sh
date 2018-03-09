@@ -60,7 +60,9 @@ then
 
 	echo "Restarting OpenDaylight"
 	${ODL_HOME}/bin/stop
+	echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to stop"
+	sleep ${SLEEP_TIME}
 	echo "Installed at `date`" > ${CCSDK_HOME}/.installed
 fi
 
-exec ${ODL_HOME}/bin/karaf
+exec ${ODL_HOME}/bin/karaf server
