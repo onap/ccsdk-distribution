@@ -5,7 +5,7 @@
 # openECOMP : SDN-C
 # ================================================================================
 # Copyright (C) 2017 AT&T Intellectual Property. All rights
-# 							reserved.
+#                             reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,12 @@ CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 SLEEP_TIME=${SLEEP_TIME:-120}
 MYSQL_PASSWD=${MYSQL_PASSWD:-openECOMP1.0}
 
+# Start karaf
+echo "Starting OpenDaylight"
+${ODL_HOME}/bin/start
+echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to initialize"
+sleep ${SLEEP_TIME}
+
 #
 # Wait for database
 #
@@ -43,26 +49,19 @@ echo -e "\nmysql ready"
 
 if [ ! -f ${CCSDK_HOME}/.installed ]
 then
-	echo "Installing SDN-C database"
-	${CCSDK_HOME}/bin/installSdncDb.sh
-	echo "Starting OpenDaylight"
-	${ODL_HOME}/bin/start
-	echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to initialize"
-	sleep ${SLEEP_TIME}
-	echo "Installing SDN-C platform features"
-	${CCSDK_HOME}/bin/installFeatures.sh
-	if [ -x ${CCSDK_HOME}/svclogic/bin/install.sh ]
-	then
-		echo "Installing directed graphs"
-		${CCSDK_HOME}/svclogic/bin/install.sh
-	fi
+    echo "Installing SDN-C database"
+    ${CCSDK_HOME}/bin/installSdncDb.sh
 
+    echo "Installing SDN-C platform features"
+    ${CCSDK_HOME}/bin/installFeatures.sh
+    if [ -x ${CCSDK_HOME}/svclogic/bin/install.sh ]
+    then
+        echo "Installing directed graphs"
+        ${CCSDK_HOME}/svclogic/bin/install.sh
+    fi
 
-	echo "Restarting OpenDaylight"
-	${ODL_HOME}/bin/stop
-	echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to stop"
-	sleep ${SLEEP_TIME}
-	echo "Installed at `date`" > ${CCSDK_HOME}/.installed
+    echo "Installed at `date`" > ${CCSDK_HOME}/.installed
 fi
 
-exec ${ODL_HOME}/bin/karaf server
+# Start client to force a wait on state of karaf server
+${ODL_HOME}/bin/client
