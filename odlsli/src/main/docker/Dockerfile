@@ -3,7 +3,7 @@ FROM onap/ccsdk-odl-image:${project.version}
 MAINTAINER CCSDK Team (onap-ccsdk@lists.openecomp.org)
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV ODL_HOME /opt/opendaylight/current
-ENV SDNC_CONFIG_DIR /opt/onap/sdnc/data/properties
+ENV SDNC_CONFIG_DIR /opt/onap/ccsdk/data/properties
 
 # copy the opendaylight credentials
 COPY idmlight.db.mv.db /opt/opendaylight/current
