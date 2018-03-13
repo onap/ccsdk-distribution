@@ -64,4 +64,4 @@ then
 fi
 
 # Start client to force a wait on state of karaf server
-${ODL_HOME}/bin/client
+exec ${ODL_HOME}/bin/client
