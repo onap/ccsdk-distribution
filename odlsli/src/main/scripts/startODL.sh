@@ -63,5 +63,6 @@ then
     echo "Installed at `date`" > ${CCSDK_HOME}/.installed
 fi
 
-# Start client to force a wait on state of karaf server
-exec ${ODL_HOME}/bin/client
+# Wait on java
+pid=$(ps auxwww | grep java | grep -v grep | awk '{print $2}')
+exec tail --pid=$pid -f /dev/null
