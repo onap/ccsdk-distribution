@@ -30,11 +30,6 @@ CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 SLEEP_TIME=${SLEEP_TIME:-120}
 MYSQL_PASSWD=${MYSQL_PASSWD:-openECOMP1.0}
 
-# Start karaf
-echo "Starting OpenDaylight"
-${ODL_HOME}/bin/start
-echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to initialize"
-sleep ${SLEEP_TIME}
 
 #
 # Wait for database
@@ -51,7 +46,10 @@ if [ ! -f ${CCSDK_HOME}/.installed ]
 then
     echo "Installing SDN-C database"
     ${CCSDK_HOME}/bin/installSdncDb.sh
-
+    echo "Starting OpenDaylight"
+	${ODL_HOME}/bin/start
+	echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to initialize"
+	sleep ${SLEEP_TIME}
     echo "Installing SDN-C platform features"
     ${CCSDK_HOME}/bin/installFeatures.sh
     if [ -x ${CCSDK_HOME}/svclogic/bin/install.sh ]
@@ -60,9 +58,9 @@ then
         ${CCSDK_HOME}/svclogic/bin/install.sh
     fi
 
+    echo "Restarting OpenDaylight"
+	${ODL_HOME}/bin/stop
     echo "Installed at `date`" > ${CCSDK_HOME}/.installed
 fi
 
-# Wait on java
-pid=$(ps auxwww | grep java | grep -v grep | awk '{print $2}')
-exec tail --pid=$pid -f /dev/null
+exec ${ODL_HOME}/bin/karaf
