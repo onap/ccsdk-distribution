@@ -47,9 +47,9 @@ then
     echo "Installing SDN-C database"
     ${CCSDK_HOME}/bin/installSdncDb.sh
     echo "Starting OpenDaylight"
-	${ODL_HOME}/bin/start
-	echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to initialize"
-	sleep ${SLEEP_TIME}
+    ${ODL_HOME}/bin/start
+    echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to initialize"
+    sleep ${SLEEP_TIME}
     echo "Installing SDN-C platform features"
     ${CCSDK_HOME}/bin/installFeatures.sh
     if [ -x ${CCSDK_HOME}/svclogic/bin/install.sh ]
@@ -59,7 +59,9 @@ then
     fi
 
     echo "Restarting OpenDaylight"
-	${ODL_HOME}/bin/stop
+    ${ODL_HOME}/bin/stop
+    echo "Waiting 60 seconds for OpenDaylight stop to complete"
+    sleep 60
     echo "Installed at `date`" > ${CCSDK_HOME}/.installed
 fi
 
