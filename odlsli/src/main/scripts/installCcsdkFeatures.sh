@@ -29,8 +29,8 @@ CCSDK_FEATURE_DIR=${CCSDK_FEATURE_DIR:-${CCSDK_HOME}/features}
 CCSDK_CORE_FEATURES=" \
  slicore-utils \
  dblib \
- filters \
  sli \
+ filters \
  sliPluginUtils \
  sliapi"
 
