@@ -16,27 +16,12 @@ services:
         max-file: "5"
   
       
-  bareodl:
-    image: ${NEXUS_DOCKER_REPO}/onap/ccsdk-odl-image:0.2-STAGING-latest
-    container_name: ccsdk_bareodl_container
-    entrypoint: ["/opt/opendaylight/current/bin/karaf"]
-    ports:
-      - "18181:8181"
-    environment:
-      - MYSQL_ROOT_PASSWORD=openECOMP1.0
-      - SDNC_CONFIG_DIR=/opt/onap/sdnc/data/properties
-    logging:       
-      driver:   "json-file"
-      options:  
-        max-size: "30m"
-        max-file: "5"
-  
   odlsli:
-    image: ${NEXUS_DOCKER_REPO}/onap/ccsdk-odlsli-image:0.2-STAGING-latest
+    image: ${NEXUS_DOCKER_REPO}/onap/ccsdk-odlsli-image:${CCSDK_DOCKER_IMAGE_VERSION}
     depends_on :
       - db
     container_name: ccsdk_odlsli_container
-    entrypoint: ["/opt/onap/sdnc/bin/startODL.sh"]
+    entrypoint: ["/opt/onap/ccsdk/bin/startODL.sh"]
     ports:
       - "8383:8181"
     links:
@@ -45,7 +30,7 @@ services:
       - db:sdnctldb02
     environment:
       - MYSQL_ROOT_PASSWORD=openECOMP1.0
-      - SDNC_CONFIG_DIR=/opt/onap/sdnc/data/properties
+      - SDNC_CONFIG_DIR=/opt/onap/ccsdk/data/properties
     logging:       
       driver:   "json-file"
       options:  
@@ -53,14 +38,14 @@ services:
         max-file: "5"
   
   dgbuilder:
-    image: ${NEXUS_DOCKER_REPO}/onap/ccsdk-dgbuilder-image:0.2-STAGING-latest
+    image: ${NEXUS_DOCKER_REPO}/onap/ccsdk-dgbuilder-image:${CCSDK_DOCKER_IMAGE_VERSION}
     depends_on:
       - db
     container_name:  ccsdk_dgbuilder_container
     entrypoint:
        - "/bin/bash"
        - "-c"
-       - "cd /opt/onap/sdnc/dgbuilder/ && ./start.sh sdnc1.0 && wait"
+       - "cd /opt/onap/ccsdk/dgbuilder/ && ./start.sh sdnc1.0 && wait"
     ports:
       - "3000:3100"
     links:
@@ -70,7 +55,7 @@ services:
       - odlsli:sdnhost
     environment:
       - MYSQL_ROOT_PASSWORD=openECOMP1.0
-      - SDNC_CONFIG_DIR=/opt/onap/sdnc/data/properties
+      - SDNC_CONFIG_DIR=/opt/onap/ccsdk/data/properties
     logging:       
       driver:   "json-file"
       options:  
