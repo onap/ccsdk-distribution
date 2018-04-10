@@ -250,7 +250,7 @@ function uploadDG(filePath,moduleName,rpc,res){
                 	}
 			if(stderr && !stdout){
 				//console.log("stderr:" + stderr);
-				if(stderr.indexOf("Saving SvcLogicGraph to database") != -1){
+				if(stderr.indexOf("Saving SvcLogicGraph") != -1){
 					res.send(200,{'error':error,'stdout' :'','stderr':stderr,"url":dbHost,"module" : moduleName,"rpc" : rpc});
 				}else{
 					res.send(500,{'error':error,'stdout' :'','stderr':stderr});
