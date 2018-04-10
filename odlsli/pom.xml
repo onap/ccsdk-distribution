@@ -309,6 +309,24 @@
                             <excludeTransitive>true</excludeTransitive>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>unpack dgs</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                        <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>platform-logic-installer</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -316,28 +334,6 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.5.0</version>
                 <executions>
-
-<!--                     <execution>
-                        <id>Get features</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>/bin/bash</executable>
-                            <environmentVariables>
-                                <SDNC_CORE_VERSION>${ccsdk.sli.core.version}</SDNC_CORE_VERSION>
-                                <SDNC_ADAPTORS_VERSION>${ccsdk.sli.adaptors.version}</SDNC_ADAPTORS_VERSION>
-                                <SDNC_NORTHBOUND_VERSION>${ccsdk.sli.northbound.version}</SDNC_NORTHBOUND_VERSION>
-                                <SDNC_PLUGINS_VERSION>${ccsdk.sli.plugins.version}</SDNC_PLUGINS_VERSION>
-                                <SDNC_OAM_VERSION>${project.version}</SDNC_OAM_VERSION>
-                            </environmentVariables>
-                            <arguments>
-                                <argument>${basedir}/src/main/scripts/installZips.sh</argument>
-                                <argument>${basedir}/target/docker-stage/opt/onap/ccsdk</argument>
-                            </arguments>
-                        </configuration>
-                    </execution> -->
 
                     <execution>
                         <id>change shell permissions</id>
