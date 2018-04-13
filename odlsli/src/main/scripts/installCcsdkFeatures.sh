@@ -57,14 +57,6 @@ CCSDK_PLUGINS_VERSION=${CCSDK_PLUGINS_VERSION:-0.0.1-SNAPSHOT}
 echo "Enabling core features"
 ${ODL_HOME}/bin/client feature:install odl-restconf-all odl-mdsal-all odl-mdsal-apidocs
 
-# Remove etc/host.key if it exists to work around
-# issue with client authentication
-if [ -f ${ODL_HOME}/etc/host.key ]
-then
-  rm ${ODL_HOME}/etc/host.key
-fi
-
-
 echo "Installing CCSDK sli/core"
 for feature in ${CCSDK_CORE_FEATURES}
 do
