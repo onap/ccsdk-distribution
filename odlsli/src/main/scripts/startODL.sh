@@ -47,6 +47,7 @@ then
     echo "Installing SDN-C database"
     ${CCSDK_HOME}/bin/installSdncDb.sh
     echo "Starting OpenDaylight"
+    ${CCSDK_HOME}/bin/installOdlHostKey.sh
     ${ODL_HOME}/bin/start
     echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to initialize"
     sleep ${SLEEP_TIME}

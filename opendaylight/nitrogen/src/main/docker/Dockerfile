@@ -1,6 +1,6 @@
 # Base ubuntu with added packages needed for open ecomp
 FROM onap/ccsdk-ubuntu-image:${project.version}
-MAINTAINER CCSDK Team (onap-ccsdk@lists.openecomp.org)
+MAINTAINER CCSDK Team (onap-ccsdk@lists.onap.org)
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV ODL_HOME /opt/opendaylight/current
 
@@ -9,8 +9,8 @@ COPY karaf-${ccsdk.opendaylight.version}.tar.gz /tmp/
 RUN mkdir /opt/opendaylight \
     && tar zxvf /tmp/karaf-${ccsdk.opendaylight.version}.tar.gz --directory /opt/opendaylight \
     && rm -rf /tmp/karaf-${ccsdk.opendaylight.version}.tar.gz \
-    && ln -s /opt/opendaylight/karaf-${ccsdk.opendaylight.version} /opt/opendaylight/current
-
+    && mv /opt/opendaylight/karaf-${ccsdk.opendaylight.version} /opt/opendaylight/current \
+    && ln -s  /opt/opendaylight/current /opt/opendaylight/karaf-${ccsdk.opendaylight.version}
 
 # workaround till we get proxy working
 RUN mkdir -p /opt/opendaylight/current/system/org/mariadb/jdbc/mariadb-java-client/${ccsdk.mariadb-connector-java.version}
