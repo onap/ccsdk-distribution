@@ -55,7 +55,7 @@ CCSDK_NORTHBOUND_VERSION=${CCSDK_NORTHBOUND_VERSION:-0.0.1-SNAPSHOT}
 CCSDK_PLUGINS_VERSION=${CCSDK_PLUGINS_VERSION:-0.0.1-SNAPSHOT}
 
 echo "Enabling core features"
-${ODL_HOME}/bin/client feature:install odl-restconf-all odl-mdsal-all odl-mdsal-apidocs
+${ODL_HOME}/bin/client feature:install odl-restconf-all odl-mdsal-all odl-mdsal-apidocs odl-daexim-all
 
 echo "Installing CCSDK sli/core"
 for feature in ${CCSDK_CORE_FEATURES}
