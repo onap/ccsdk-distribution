@@ -7,7 +7,7 @@ Version: 0.2.2
 --------------
 
 
-:Release Date: 2018-05-24
+:Release Date: 2018-06-07
 
 
 
@@ -198,6 +198,59 @@ Version: 0.2.2
 +=============+=====================================================================================================+
 | [CCSDK-136] | pgaas is dependent on location\_prefix being all lowercase <https://jira.onap.org/browse/CCSDK-136> |
 +-------------+-----------------------------------------------------------------------------------------------------+
+
+**Security Notes**
+
+CCSDK code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The CCSDK open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28379011>`_.
+
+Quick Links:
+ 	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
+ 	
+ 	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
+ 	
+ 	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=28379011>`_
+
+**Upgrade Notes**
+
+N/A
+
+**Deprecation Notes**
+
+N/A
+
+**Other**
+
+N/A
+
+
+Version: 0.1.0
+--------------
+
+
+:Release Date: 2017-11-16
+
+
+
+**New Features**
+
+The Common Controller SDK provides the following functionality :
+   - Service Logic Interpreter
+   - Database access library (dblib)
+   - Service Logic test api (sliapi)
+   - MD-SAL data query adaptor
+   - SQL query adaptor
+   - Resource allocator
+   - SDC interface
+   - DMAAP interface
+   - REST API adaptor
+
+
+**Bug Fixes**
+
+**Known Issues**
+   - `CCSDK-110 <https://jira.onap.org/browse/CCSDK-110>`_ Resolve license issues in dashboard project
+   - `CCSDK-136 <https://jira.onap.org/browse/CCSDK-136>`_ pgaas is dependent on location_prefix being all lowercase
+   - `CCSDK-137 <https://jira.onap.org/browse/CCSDK-137>`_ isolate deprecated methods
 
 **Security Issues**
    You may want to include a reference to CVE (Common Vulnerabilities and Exposures) `CVE <https://cve.mitre.org>`_
