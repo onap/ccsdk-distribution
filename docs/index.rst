@@ -6,9 +6,6 @@ Common Controller Software Development Kit
    :maxdepth: 1
 
    platform/plugins/index.rst
-   sli/core/index.rst
-   sli/adaptors/index.rst
-   sli/northbound/index.rst
-   sli/plugins/index.rst
+   sli/index.rst
    release-notes.rst
 

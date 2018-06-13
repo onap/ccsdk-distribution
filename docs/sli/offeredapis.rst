@@ -10,4 +10,6 @@ Offered APIs
 
    apis/asdcApi.rst
    apis/dataChange.rst
+   apis/sliapi.rst
+   
 
