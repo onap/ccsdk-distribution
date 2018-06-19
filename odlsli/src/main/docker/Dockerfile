@@ -1,5 +1,5 @@
 # Base ubuntu with added packages needed for open ecomp
-FROM onap/ccsdk-odl-image:${project.version}
+FROM onap/ccsdk-odl-oxygen-image:${project.version}
 MAINTAINER CCSDK Team (onap-ccsdk@lists.openecomp.org)
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV ODL_HOME /opt/opendaylight/current

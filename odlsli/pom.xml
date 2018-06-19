@@ -26,6 +26,7 @@
         <ccsdk.project.version>${project.version}</ccsdk.project.version>
         <docker.buildArg.https_proxy>${https_proxy}</docker.buildArg.https_proxy>
         <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
+	<docker.push.phase>deploy</docker.push.phase>
     </properties>
 
     <dependencies>
@@ -400,7 +401,7 @@
 
                             <execution>
                                 <id>push-images</id>
-                                <phase>deploy</phase>
+                                <phase>${docker.push.phase}</phase>
                                 <goals>
                                     <goal>build</goal>
                                     <goal>push</goal>

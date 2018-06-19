@@ -24,6 +24,7 @@
         <ccsdk.opendaylight.version>0.8.1</ccsdk.opendaylight.version>
         <ccsdk.mariadb-connector-java.version>2.1.1</ccsdk.mariadb-connector-java.version>
         <docker.buildArg.https_proxy>${https_proxy}</docker.buildArg.https_proxy>
+	<docker.push.phase>deploy</docker.push.phase>
     </properties>
 
     <dependencyManagement>
@@ -203,7 +204,7 @@
 
                             <execution>
                                 <id>push-images</id>
-                                <phase>install</phase>
+                                <phase>${docker.push.phase}</phase>
                                 <goals>
                                     <goal>build</goal>
                                     <goal>push</goal>
