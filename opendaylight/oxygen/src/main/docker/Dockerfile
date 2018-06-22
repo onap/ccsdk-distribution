@@ -6,14 +6,17 @@ ENV ODL_HOME /opt/opendaylight/current
 
 # copy the opendaylight tar and expand
 COPY karaf-${ccsdk.opendaylight.version}.tar.gz /tmp/
-RUN mkdir /opt/opendaylight \
-    && tar zxvf /tmp/karaf-${ccsdk.opendaylight.version}.tar.gz --directory /opt/opendaylight \
+RUN mkdir /opt/odl \
+    && tar zxvf /tmp/karaf-${ccsdk.opendaylight.version}.tar.gz --directory /opt/odl \
     && rm -rf /tmp/karaf-${ccsdk.opendaylight.version}.tar.gz \
-    && mv /opt/opendaylight/karaf-${ccsdk.opendaylight.version} /opt/opendaylight/current \
-    && ln -s  /opt/opendaylight/current /opt/opendaylight/karaf-${ccsdk.opendaylight.version}
+    && mv /opt/odl/karaf-${ccsdk.opendaylight.version} /opt/opendaylight \
+    && ln -s  /opt/opendaylight /opt/opendaylight/karaf-${ccsdk.opendaylight.version} \
+    && ln -s /opt/opendaylight /opt/opendaylight/current
+ 
 
 # workaround till we get proxy working
-RUN mkdir -p /opt/opendaylight/current/system/org/mariadb/jdbc/mariadb-java-client/${ccsdk.mariadb-connector-java.version}
-COPY mariadb-java-client-${ccsdk.mariadb-connector-java.version}.jar /opt/opendaylight/current/system/org/mariadb/jdbc/mariadb-java-client/${ccsdk.mariadb-connector-java.version}
-# ENTRYPOINT exec /opt/opendaylight/current/bin/karaf
+RUN mkdir -p /opt/opendaylight/system/org/mariadb/jdbc/mariadb-java-client/${ccsdk.mariadb-connector-java.version}
+COPY mariadb-java-client-${ccsdk.mariadb-connector-java.version}.jar /opt/opendaylight/system/org/mariadb/jdbc/mariadb-java-client/${ccsdk.mariadb-connector-java.version}
+
+# ENTRYPOINT exec /opt/opendaylight/bin/karaf
 EXPOSE 8181

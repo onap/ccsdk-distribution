@@ -24,7 +24,7 @@
 
 # Install SDN-C platform components if not already installed and start container
 
-ODL_HOME=${ODL_HOME:-/opt/opendaylight/current}
+ODL_HOME=${ODL_HOME:-/opt/opendaylight}
 ODL_ADMIN_PASSWORD=${ODL_ADMIN_PASSWORD:-Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U}
 CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 SLEEP_TIME=${SLEEP_TIME:-120}
@@ -46,24 +46,14 @@ if [ ! -f ${CCSDK_HOME}/.installed ]
 then
     echo "Installing SDN-C database"
     ${CCSDK_HOME}/bin/installSdncDb.sh
-    echo "Starting OpenDaylight"
-    ${CCSDK_HOME}/bin/installOdlHostKey.sh
-    ${ODL_HOME}/bin/start
-    echo "Waiting ${SLEEP_TIME} seconds for OpenDaylight to initialize"
-    sleep ${SLEEP_TIME}
-    echo "Installing SDN-C platform features"
-    ${CCSDK_HOME}/bin/installFeatures.sh
+    # echo "Installing OpenDaylight host key"
+    # ${CCSDK_HOME}/bin/installOdlHostKey.sh
     if [ -x ${CCSDK_HOME}/svclogic/bin/install.sh ]
     then
         echo "Installing directed graphs"
         ${CCSDK_HOME}/svclogic/bin/install.sh
     fi
-
-    echo "Restarting OpenDaylight"
-    ${ODL_HOME}/bin/stop
-    echo "Waiting 60 seconds for OpenDaylight stop to complete"
-    sleep 60
     echo "Installed at `date`" > ${CCSDK_HOME}/.installed
 fi
 
-exec ${ODL_HOME}/bin/karaf
+exec ${ODL_HOME}/bin/karaf server
