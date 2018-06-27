@@ -1,3 +1,21 @@
+/*
+var sliValuesObj = {};
+var rpcValues = {};
+$(function(){
+ $.get("/loadJSFiles")
+	.done(function( data ) {
+		if(data != undefined && data != null){
+			console.dir(data.sliValuesObj[0]['AicHoming_PROPS']);
+			console.dir(data.sliValuesObj[0]['AicHoming_RPCS']);
+		}
+			
+	})
+	.fail(function(err) {
+	})
+	.always(function() {
+	});
+});
+*/
 var global_editor ; 
 function addParam(idVal){
 	//console.log(val);
@@ -99,6 +117,7 @@ function buildValuesHtml(valuesObj){
              }
 	return htmlVal;
 }
+
 
 function getModuleName(){
 	var activeWorkspace=RED.view.getWorkspace();
@@ -646,6 +665,11 @@ function importCCFlow(commitId,filePath){
 var urlPath="/importCodeCloudFlow";
 $.get(urlPath,{"commitId" : commitId,"filePath" : filePath })
 	.done(function( data ) {
+		var nodeSet = getCurrentFlowNodeSet();
+		//console.dir(nodeSet);
+		if(nodeSet != null && nodeSet.length == 0){
+			RED.view.setIsImportAction(true);
+		}
 		if(data != undefined && data != null){
 			//console.log(data.stdout);
 			var jsonObj = JSON.parse(data.stdout);
@@ -664,8 +688,13 @@ $.get(urlPath,{"commitId" : commitId,"filePath" : filePath })
 
 function importGitLocalFlow(filePath){
 var urlPath="/importGitLocalFlow";
-$.get(urlPath,{"filePath" : filePath })
+$.get(urlPath,{"filePath" : filePath})
 	.done(function( data ) {
+		var nodeSet = getCurrentFlowNodeSet();
+		//console.dir(nodeSet);
+		if(nodeSet != null && nodeSet.length == 0){
+			RED.view.setIsImportAction(true);
+		}
 		if(data != undefined && data != null){
 			//console.log(data.stdout);
 			var jsonObj;
@@ -761,3 +790,401 @@ function filterYangModules(filterVal){
 	html+="</div>";
     	$( "#yang-modules-data-container" ).html(html);
 }
+function filterCtxVariables(filterVal){
+	var matchedCnt =0;
+	var valuesObj = dgParsedParameters;
+	var newValuesObj ={};
+	var searchValues =[];
+	if(filterVal != null && filterVal != undefined){
+		filterVal=filterVal.trim();
+	}	
+	searchValues = filterVal.split(/ /);
+	//console.log("filterVal:" + filterVal);
+	//console.log("searchValues:" + searchValues);
+	if(searchValues != undefined && searchValues != null  && searchValues != ""){	
+        	for (var key in valuesObj) {
+             		if (valuesObj.hasOwnProperty(key)) {
+				key = key.replace(/\$/g,"");
+				var foundCount=0;
+				for(var k=0;k<searchValues.length;k++){
+					if(key.indexOf(searchValues[k]) != -1){
+						//console.log("key:" +key  + " searchValues:" + searchValues[k]);
+						foundCount++;
+					}
+				}
+				if(foundCount == searchValues.length){
+						matchedCnt++;
+						newValuesObj[key] =  "";
+				}
+			}
+		}
+		$("#ctxCountId").html(matchedCnt);
+	}else{
+		newValuesObj = dgParsedParameters;
+		$("#ctxCountId").html(Object.keys(newValuesObj).length);
+	}
+	//console.log("Object key length:" + Object.keys(g_currCtxVariables).length);
+	var valuesHtml=buildCtxValuesHtml(newValuesObj);	
+        valuesHtml+="</div>";
+	$("#ctx-values-div").html(valuesHtml);
+}
+
+function selectCtxText(objId,groupVal){
+	$(document).ready(function(){
+		if ($('#ctxValAddDiv' +  objId).is(":visible")) {
+			$("#aCtx" +  objId ).css({"background": "aliceblue",
+						"color": "rgb(32, 45, 87)"});
+						/*"color": "rgb(32, 45, 87)"});*/
+			$("#ctxValAddDiv" +  objId ).hide("slow");
+			$("#ctxValueBoxDiv" +objId).css({"border-color": "aliceblue",
+             						"border-width":"1px", 
+             						"background-color":"aliceblue",
+             						"border-style":"solid"});
+			//$("#valAddDiv" +  objId ).fadeOut("slow");
+    		} else{
+			$("#ctxValAddDiv" +  objId).show("slow");
+			$("#ctxValueBoxDiv" +objId).css({"border-color": "rgb(75, 111, 147)",
+             						"border-width":"3px", 
+             						"background-color": "aliceblue",
+             						"border-style":"solid",
+							"border-bottom": "3px solid rgb(75, 111, 147)"});
+			$("#aCtx" +  objId ).css({"background": "aliceblue",
+						"color": "rgb(75, 111, 147)"});
+    		}
+		$("#aCtx" +  objId).select();
+	});
+	//console.log("group-heading" + objId);
+//	var obj= document.getElementById("group-heading" +  objId);
+//	obj.innerText = groupVal;
+//	obj.style.color = "blue";
+//	console.dir(obj);
+}
+function buildCtxValuesHtml(valuesObj){
+	var idCounter=0;
+	var htmlVal = "";
+	
+	var cnt=1;
+	var idVal = 0;
+	var v="";
+	var newParameterRow = "New Parameter Name:<input style='width:500px' id='aCtx-new' type='text' value=''  placeholder='Enter new parameter name'>Value:<input style='width:100px' id='avalbox-new' type='text' value=''> <input name='typeBtns-new' type='radio'  value='string' checked>&nbsp;string" +
+					"&nbsp;<input name='typeBtns-new' type='radio'  value='int'>&nbsp;int" +
+					"&nbsp;<input name='typeBtns-new' type='radio'  value='boolean'>&nbsp;boolean &nbsp;&nbsp;" +  "<input id='abtn-new' type='button' style='background-color:#D6EBFF;' value='Add'" + "onclick='addNewParameter(\"" + "-new" + "\")'>";
+	htmlVal = "<div  style='font-weight:bold;font-size:1.0em;'>" + newParameterRow + "</div>";
+        for (var key in valuesObj) {
+             	if (valuesObj.hasOwnProperty(key)) {
+			key = key.replace(/\$/g,"");
+			var inputStr = $("#test-dg-request").val();
+                	var inputObj = JSON.parse(inputStr);
+                	var paramsArrObj = inputObj["input"]["sli-parameter"];
+			var alreadyAdded = false; 
+			var intChecked = false;
+			var booleanChecked = false;
+			var prevValue="";
+                	for(var i=0;paramsArrObj != null && i<paramsArrObj.length ;i++){
+                        	if(paramsArrObj[i]["parameter-name"] == key){
+					if (paramsArrObj[i].hasOwnProperty("string-value")) {
+						prevValue=paramsArrObj[i]["string-value"];
+					}else if(paramsArrObj[i].hasOwnProperty("int-value")) {
+						intChecked = true;
+						prevValue=paramsArrObj[i]["int-value"];
+					}else if(paramsArrObj[i].hasOwnProperty("boolean-value")) {
+						booleanChecked = true;
+						prevValue=paramsArrObj[i]["boolean-value"];
+					}
+					alreadyAdded = true;
+                        	}
+			}
+                }
+
+			var idVal = idCounter++;
+			v="<div  style='font-weight:bold;font-size:1.0em;'>";
+			var addBtn ="";
+			if(alreadyAdded){
+			 	addBtn = "<input id='ubtn" + idVal + "' type='button' style='background-color:#D6EBFF;' value='Update'" + "onclick='updateParamVal(\"" + idVal + "\")'>&nbsp;&nbsp;<input id='abtn" + idVal + "' type='button' style='background-color:#D6EBFF;' value='Delete'" + "onclick='updateParam(\"" + idVal + "\")'>";
+			}else{
+			 	addBtn = "<input id='abtn" + idVal + "' type='button' style='background-color:#D6EBFF;' value='Add'" + "onclick='updateParam(\"" + idVal + "\")'>";
+			}
+
+			var typeBtns = "<input name='typeBtns" + idVal + "' type='radio'  value='string' checked>&nbsp;string" +
+					"&nbsp;<input name='typeBtns" + idVal + "' type='radio'  value='int'>&nbsp;int" +
+					"&nbsp;<input name='typeBtns" + idVal + "' type='radio'  value='boolean'>&nbsp;boolean"; 
+				if(intChecked){
+					typeBtns = "<input name='typeBtns" + idVal + "' type='radio'  value='string'>&nbsp;string" +
+					"&nbsp;<input name='typeBtns" + idVal + "' type='radio'  value='int' checked>&nbsp;int" +
+					"&nbsp;<input name='typeBtns" + idVal + "' type='radio'  value='boolean'>&nbsp;boolean"; 
+				}else if(booleanChecked){
+					typeBtns = "<input name='typeBtns" + idVal + "' type='radio'  value='string'>&nbsp;string" +
+					"&nbsp;<input name='typeBtns" + idVal + "' type='radio'  value='int'>&nbsp;int" +
+					"&nbsp;<input name='typeBtns" + idVal + "' type='radio'  value='boolean' checked>&nbsp;boolean"; 
+				}
+			var valBox =typeBtns + "<br><br>" +  "<input id='avalbox" + idVal + "' type='text' style='width:500px;height:30px;' value='" + prevValue + "'>";
+			
+			if(key.length <150){
+                         	v += "<div style='width:1150px;background:aliceblue;border-color:aliceblue' class='ctxValueBoxDiv' id='ctxValueBoxDiv" + idVal +  "'>"  + "<input style='width:1125px;background:aliceblue;color:rgb(32, 45, 87);' type='text' readonly='1'  id='aCtx" + idVal + "' onclick='selectCtxText(\"" + idVal+"\",\"" + key + "\")' value='" + key + "' title='" + key + "' >" ;
+			}else{
+                         	v+= "<div style='width:1150px;background:aliceblue;border-color:aliceblue' class='ctxValueBoxDiv' id='ctxValueBoxDiv" + idVal +  "'>"  + "<textarea style='width:1125px;background:aliceblue;color:rgb(32, 45, 87);' readonly='1'  id='actx" + idVal + "' onclick='selectCtxText(\"" + idVal+"\",\"" + key + "\")' title='" + key + "' >"  + key + "</textarea></div>";
+			}
+			 v += "<div id='ctxValAddDiv" +  idVal + "' style='display:none;'>" +  valBox + "&nbsp;&nbsp;<div  id='btnsDivId" + idVal + "' style='display:inline'> " + addBtn + "</div></div></div>"; 
+			cnt++;
+        		htmlVal+= v + "</div>";
+           }
+	return htmlVal;
+}
+
+function updateParam(idVal){
+	var action = $("#abtn" + idVal).val();
+	if(action == "Delete"){
+		var nameVal = document.getElementById("aCtx" + idVal).value;
+		var valueBoxVal = document.getElementById("avalbox" + idVal).value;
+		//$("#addCnt" + idVal).text("added");
+		var addBtn = "<input id='abtn" + idVal + "' type='button' style='background-color:#D6EBFF;' value='Add'" + "onclick='updateParam(\"" + idVal + "\")'>";
+		$("#btnsDivId" + idVal).html(addBtn);
+		var inputStr = $("#test-dg-request").val();
+		var inputObj = JSON.parse(inputStr);
+		var paramsArrObj = inputObj["input"]["sli-parameter"];
+		var index = -1;
+		for(var i=0;paramsArrObj != null && i<paramsArrObj.length ;i++){
+			if(paramsArrObj[i]["parameter-name"] == nameVal){
+				index = i;
+				break;
+			} 
+		}
+
+		if(index != -1){
+			inputObj["input"]["sli-parameter"].splice(index,1);
+		}
+		var newInputStr = JSON.stringify(inputObj,null,4);
+		$("#test-dg-request").val(newInputStr);
+	}else{
+		var nameVal = document.getElementById("aCtx" + idVal).value;
+		var valueBoxVal = document.getElementById("avalbox" + idVal).value;
+		//$("#addCnt" + idVal).text("added");
+		var addBtn = "<input id='ubtn" + idVal + "' type='button' style='background-color:#D6EBFF;' value='Update'" + "onclick='updateParamVal(\"" + idVal + "\")'>&nbsp;&nbsp;<input id='abtn" + idVal + "' type='button' style='background-color:#D6EBFF;' value='Delete'" + "onclick='updateParam(\"" + idVal + "\")'>";
+		$("#btnsDivId" + idVal).html(addBtn);
+		var inputStr = $("#test-dg-request").val();
+		var inputObj = {};
+		try{
+		 	inputObj = JSON.parse(inputStr);
+		}catch(e){
+			$("#test-dg-response").val("Json parsing error" + e);
+			return false;
+		}
+		var typeVal = "input[name=typeBtns" + idVal + "]:checked";
+		var valType =$(typeVal).val();
+		//console.log(valType);
+		var parameterObj ={};
+		if(valType == "string"){
+		 	parameterObj = { "parameter-name" : nameVal, "string-value": valueBoxVal};	
+		}else if(valType == "int"){
+			var intValue = 0;
+			try{
+			 	intValue = parseInt(valueBoxVal);
+			}catch(e){
+			}
+		 	parameterObj = { "parameter-name" : nameVal, "int-value": intValue};	
+		}else if(valType == "boolean"){
+			var booleanValue = false;
+			try{
+				booleanValue = JSON.parse(valueBoxVal);
+			}catch(e){
+			}
+		 	parameterObj = { "parameter-name" : nameVal, "boolean-value": booleanValue};	
+		}
+		inputObj["input"]["sli-parameter"].push(parameterObj);
+		var newInputStr ="";
+		try{
+		 newInputStr = JSON.stringify(inputObj,null,4);
+		}catch(e){
+		}
+		$("#test-dg-request").val(newInputStr);
+		//console.log("newInputStr:" + newInputStr);
+	}
+}	
+
+function addNewParameter(idVal){
+		var nameVal = document.getElementById("aCtx" + idVal).value;
+		var valueBoxVal = document.getElementById("avalbox" + idVal).value;
+		var inputStr = $("#test-dg-request").val();
+		var inputObj = {};
+		try{
+		 	inputObj = JSON.parse(inputStr);
+		}catch(e){
+			$("#test-dg-response").val("Json parsing error" + e);
+			return false;
+		}
+		var typeVal = "input[name=typeBtns" + idVal + "]:checked";
+		var valType =$(typeVal).val();
+		//console.log(valType);
+		var parameterObj ={};
+		if(valType == "string"){
+		 	parameterObj = { "parameter-name" : nameVal, "string-value": valueBoxVal};	
+		}else if(valType == "int"){
+			var intValue = 0;
+			try{
+			 	intValue = parseInt(valueBoxVal);
+			}catch(e){
+			}
+		 	parameterObj = { "parameter-name" : nameVal, "int-value": intValue};	
+		}else if(valType == "boolean"){
+			var booleanValue = false;
+			try{
+				booleanValue = JSON.parse(valueBoxVal);
+			}catch(e){
+			}
+		 	parameterObj = { "parameter-name" : nameVal, "boolean-value": booleanValue};	
+		}
+		inputObj["input"]["sli-parameter"].push(parameterObj);
+		var newInputStr ="";
+		try{
+		 newInputStr = JSON.stringify(inputObj,null,4);
+		}catch(e){
+		}
+		$("#test-dg-request").val(newInputStr);
+		$( "#ctx-values-dialog" ).dialog("close");
+		$('.ui-button:contains("$Variables")').click();
+		//console.log("newInputStr:" + newInputStr);
+}
+
+function updateParamVal(idVal){
+		var nameVal = document.getElementById("aCtx" + idVal).value;
+		//var valueBoxVal = document.getElementById("avalbox" + idVal).value;
+		var valueBoxVal = $("#avalbox" + idVal).val();
+		var inputStr = $("#test-dg-request").val();
+		var inputObj = {};
+		try{
+		 	inputObj = JSON.parse(inputStr);
+		}catch(e){
+			$("#test-dg-response").val("Json parsing error" + e);
+			return false;
+		}
+		var paramsArrObj = inputObj["input"]["sli-parameter"];
+		var index = -1;
+		for(var i=0;paramsArrObj != null && i<paramsArrObj.length ;i++){
+			if(paramsArrObj[i]["parameter-name"] == nameVal){
+				var typeVal = "input[name=typeBtns" + idVal + "]:checked";
+				var valType =$(typeVal).val();
+				var parameterObj ={};
+				if(valType == "string"){
+					try{
+						delete paramsArrObj[i]["int-value"]; 
+						delete paramsArrObj[i]["boolean-value"]; 
+					}catch(e){
+					}
+					paramsArrObj[i]["string-value"] = valueBoxVal;
+				}else if(valType == "int"){
+					var intValue = 0;
+					try{
+			 			intValue = parseInt(valueBoxVal);
+					}catch(e){
+					}
+					try{
+						delete paramsArrObj[i]["string-value"]; 
+						delete paramsArrObj[i]["boolean-value"]; 
+					}catch(e){
+					}
+					paramsArrObj[i]["int-value"] = intValue;
+				}else if(valType == "boolean"){
+					var booleanValue = false;
+					try{
+						booleanValue = JSON.parse(valueBoxVal);
+					}catch(e){
+					}
+					try{
+						delete paramsArrObj[i]["int-value"]; 
+						delete paramsArrObj[i]["string-value"]; 
+					}catch(e){
+					}
+					paramsArrObj[i]["boolean-value"] = booleanValue;
+				}
+				break;
+			} 
+		}
+		var newInputStr ="";
+		try{
+		 newInputStr = JSON.stringify(inputObj,null,4);
+		}catch(e){
+		}
+		$("#test-dg-request").val(newInputStr);
+}	
+
+function showCtxVariables(moduleName,rpcName){
+	var valuesHtml="<style>.color-dialog {background:aliceblue;border-color:lightgrey;border-width:3px;border-style:solid; }</style><div style='float:left;width:1200px;background:aliceblue'><input style='width:1125px' id='ctx-filter-id' type='text' value='' placeholder='To filter the values type words seperated by space in this box' onkeyup='filterCtxVariables(this.value)'></div><div style='float:left;color:green;font-size:0.8em' id='ctxCountId'></div><div style='clear:both'></div><div id='ctx-values-div' style='width:1200px;'>" ;
+
+	var currInput = $("#test-dg-request").val();
+	var currInputObj =null;
+	try{
+		currInputObj = JSON.parse(currInput);
+	}catch(e){
+		$("#test-dg-response").val("Json parsing error" + e);
+		return false;
+	}
+	var cParams = null;
+	if(currInputObj != null){
+		try{
+			cParams = currInputObj["input"]["sli-parameter"];
+		}catch(e){
+		}
+	}
+
+	for(var i=0;cParams != null && i<cParams.length;i++){
+		var pName = cParams[i]["parameter-name"];
+		if(pName != undefined && pName != null && !dgParsedParameters.hasOwnProperty("$" + pName)){
+			dgParsedParameters[pName] = "";
+		}
+	}
+	valuesHtml+=buildCtxValuesHtml(dgParsedParameters);	
+	valuesHtml+="</div>";
+
+	
+ 	var title = "Context Variables used in this DG for Module: " + moduleName + " RPC: " + rpcName;	
+	$('#ctx-values-dialog').dialog({
+                       modal: false,
+                       title: title,
+                       width: 1200,
+		       height: 500,
+		       dialogClass: 'color-dialog',
+                       open: function () {
+				$("#ctx-values-dialog").dialog("widget").find(".ui-dialog-buttonpane").css({'background': 'aliceblue'});
+                                $(this).html(valuesHtml);
+                       },
+                       buttons: {
+                           Close: function () {
+                              $(this).dialog("destroy");
+                           }
+                       },
+			close: function(ev,ui){
+				$(this).dialog("destroy");
+			}
+        }); // end dialog div
+      }
+	function loadInputFile(fileName){
+		var reqData = {'fileName' :fileName};
+		$.post("/loadInputFile",reqData)
+                      .done(function( data ) { 
+			if(data != undefined && data != null){
+				//console.log("data" );
+				//console.dir(data);
+				$("#test-dg-request").val(data.input);
+			}
+			})
+			.fail(function(err) {
+				$("#test-dg-response").val("could not load input file" + fileName);
+				console.log( "failed to load input. " + err );
+			})
+			.always(function() {
+				$( "#list-input-browser-dialog" ).dialog("close");
+			})
+	}
+
+	function deleteInputFile(fileName){
+		var reqData = {'fileName' :fileName};
+		$.post("/deleteInputFile",reqData)
+                      .done(function( data ) { 
+			})
+			.fail(function(err) {
+			})
+			.always(function() {
+				$( "#list-input-browser-dialog" ).dialog("close");
+				$('.ui-button:contains("Load")').click();
+			})
+	}

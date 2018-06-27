@@ -74,7 +74,19 @@ RED.library = (function() {
         var libraryData = {};
         var selectedLibraryItem = null;
         var libraryEditor = null;
-        
+       // Orion editor has set/getText
+        // ACE editor has set/getValue
+        // normalise to set/getValue
+        if (options.editor.setText) {
+            // Orion doesn't like having pos passed in, so proxy the call to drop it
+            options.editor.setValue = function(text,pos) {
+                options.editor.setText.call(options.editor,text);
+            }
+        }
+        if (options.editor.getText) {
+            options.editor.getValue = options.editor.getText;
+        }
+ 
         function buildFileListItem(item) {
             var li = document.createElement("li");
             li.onmouseover = function(e) { $(this).addClass("list-hover"); };

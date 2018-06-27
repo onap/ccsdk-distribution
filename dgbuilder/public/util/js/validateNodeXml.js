@@ -190,7 +190,7 @@ function validateXML(xmlStr){
 	resp=true;
 	errList=[];
 	elementCount=0;
-	//console.log("In validateXML xmlStr:" + xmlStr);
+	console.log("In validateXML xmlStr:" + xmlStr);
         //var xmlStr = $("#node-input-xml-editor").text();
 	if(xmlStr == null || xmlStr == undefined){
         	xmlStr = $("#node-input-xml-editor").text();
@@ -322,4 +322,177 @@ function showErrors() {
                                 }
                               }
                             }); // end dialog div
+}
+
+var dgParsedParameters ;
+var dgProcessNode ;
+var callNodes ;
+function extractSliParameters(xmlNode){
+	if(xmlNode == null) return;
+	if(xmlNode.nodeName != "parsererror" && xmlNode.nodeName != "#text"){
+			dgProcessNode = xmlNode.nodeName;
+	}
+	//console.log("processedNode:" + processedNode);
+	switch(xmlNode.nodeType){
+		case 1:
+			elementCount++;
+	       		//ELEMENT_NODE
+			console.log(xmlNode.nodeName);
+			if(xmlNode.nodeName == "parsererror"){
+				return;
+			}	
+			dgProcessNode = xmlNode.nodeName;
+			if(dgProcessNode == "call"){
+				var attrs1 = xmlNode.attributes;
+				var moduleName = "";
+				var rpcName = "";
+				for(var i=0;i<attrs1.length;i++){
+					if(attrs1[i].nodeName == "module"){
+						moduleName = attrs1[i].value;
+					}else if(attrs1[i].nodeName == "rpc"){
+						rpcName = attrs1[i].value;
+					}
+				}	
+				console.log(moduleName + "_" + rpcName);
+				callNodes[moduleName + "_" + rpcName] = "";	
+			}else if(dgProcessNode == "set"){
+				//console.log("found set node");
+				var childNodes = xmlNode.childNodes;
+				//console.dir(childNodes);	
+				for(var k=0;k<childNodes.length;k++){
+					if(childNodes[k].nodeName == "parameter"){
+						var parameterName="";
+						var parameterValue="";
+						var attrs2 = childNodes[k].attributes;
+						for(var i=0;i<attrs2.length;i++){
+							if(attrs2[i].nodeName == "name"){
+								parameterName = attrs2[i].value;
+							}else if(attrs2[i].nodeName == "value"){
+								parameterValue = attrs2[i].value;
+							}
+						}
+						//console.log("PARAMETER:" + parameterName + ":" + parameterValue );
+					}
+				}
+			}else{
+				var attrs = xmlNode.attributes;
+				for(var i=0;i<attrs.length;i++){
+					//console.log("Attribute:" + attrs[i].nodeName);
+					//console.log("Value:" + attrs[i].value);
+					if(attrs[i].value != "" && attrs[i].value.indexOf("$")){
+						var attributeValue = attrs[i].value.trim().replace(/`/g, "");
+						var splitVariables = attributeValue.split(" ");
+						for(var k=0;k<splitVariables.length;k++){
+							var v = splitVariables[k].trim();
+							//check if 
+							if(v.indexOf("$") == 0){
+								dgParsedParameters[v] = "";
+							}
+						}
+					
+					}
+				}
+
+				var childNodes = xmlNode.childNodes;
+				for(var k=0;k<childNodes.length;k++){
+					extractSliParameters(childNodes[k]);
+				}
+				break;
+			}
+		case 2:
+			//ATTRIBUTE_NODE
+			//console.log(xmlNode.nodeName);
+			break;
+		case 3:
+			//TEXT_NODE
+			//console.log(xmlNode.nodeValue);
+			break;
+		case 4:
+			//CDATA_SECTION_NODE
+			console.log("CDATA_SECTION_NODE");
+			break;
+		case 5:
+			//ENTITY_REFERENCE_NODE
+			console.log("ENTITY_REFERENCE_NODE");
+			break;
+		case 6:
+			//ENTITY_NODE
+			console.log("ENTITY_NODE");
+			break;
+		case 7:
+			//PROCESSING_INSTRUCTION_NODE
+			console.log("PROCESSING_INSTRUCTION_NODE");
+			break;
+		case 8:
+			//COMMENT_NODE
+			console.log("COMMENT_NODE");
+			break;
+		case 9:
+			//DOCUMENT_NODE
+			console.log("DOCUMENT_NODE");
+			break;
+		case 10:
+			//DOCUMENT_TYPE_NODE
+			console.log("DOCUMENT_TYPE_NODE");
+			break;
+		case 11:
+			//DOCUMENT_TYPE_NODE
+			console.log("DOCUMENT_FRAGMENT_NODE");
+			break;
+		case 12:
+			//NOTATION_NODE
+			console.log("DOCUMENT_FRAGMENT_NODE");
+			break;
+	}
+}
+
+function getSliParametersFromDG(xmlStr){
+	dgProcessNode="";
+	dgParsedParameters = {};
+	callNodes ={} ;
+	//var exportableNodeSet = getCurrentFlowNodeSet();
+	if(xmlStr == undefined || xmlStr == ""){	
+		xmlStr = getNodeToXml();
+		//console.log("xmlStr:" + xmlStr);
+	}
+	if(xmlStr == null || xmlStr == "") return true;
+	xmlStr = xmlStr.trim();
+	try{
+		var xmlDoc;
+         	if (window.DOMParser){
+			try{
+            			var parser=new DOMParser();
+            			xmlDoc=parser.parseFromString(xmlStr,'text/xml');
+				//console.log("Not IE");
+				var n = xmlDoc.documentElement.nodeName;
+				if(n == "html"){
+					resp=false;
+					console.log("Error parsing");
+					return resp;
+				}
+			}catch(e){
+				console.log("Error parsing" +e);
+				return false;
+			}
+         	}else{ 
+			try{
+				//console.log("IE");
+	    			// code for IE
+            			xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+            			xmlDoc.async=false;
+            			xmlDoc.loadXMLString(xmlStr); 
+			}catch(e){
+				console.log("Error parsing" +e);
+				return false;
+			}
+        	} 
+
+		//console.dir(xmlDoc);
+		extractSliParameters(xmlDoc.documentElement);
+		//console.dir(dgParsedParameters);
+	}catch(e){
+		console.log("error:" +e);
+		RED.notify("<strong>XML validation</strong>: FAILED","error");
+		return resp;
+	}
 }

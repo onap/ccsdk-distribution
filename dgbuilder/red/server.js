@@ -563,17 +563,26 @@ function createServer(_server,_settings) {
                         		//console.log("fileName:" + fileName);
                         		var renameFilePath = sharedDir + "/backups/" + renameOldfileTo;
                         		//console.log("localfile:" + localfile);
-                        		fs.rename(file,renameFilePath, function (err) {
-                                		if(err){
-                                        		console.log('Error :' + err);
-                                		}
+					if (fs.existsSync(file)) {
+ 						fs.rename(file,renameFilePath, function (err) {
+                                			if(err){
+                                        			console.log('Error :' + err);
+                                			}
+                                			//write the newer version
+                                			writeToFile(file,jsonStr);
+                                			res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
+                                			res.setHeader('Content-type', 'application/json');
+                                			//res.download(file);
+                                			res.end(jsonStr);
+						});
+					}else{
                                 		//write the newer version
                                 		writeToFile(file,jsonStr);
                                 		res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
                                 		res.setHeader('Content-type', 'application/json');
                                 		//res.download(file);
                                 		res.end(jsonStr);
-					});
+					}
 				}
 	   		});
 	});
@@ -930,12 +939,19 @@ function createServer(_server,_settings) {
                 	var dbPassword = post["dbPassword"];
                 	var gitLocalRepository = post["gitLocalRepository"];
                 	var performGitPull = post["performGitPull"];
+                	var restConfUrl = post["restConfUrl"];
+                	var restConfUser = post["restConfUser"];
+                	var restConfPassword = post["restConfPassword"];
+                	var emailAddress = post["emailAddress"];
+                	var formatXML = post["formatXML"];
+                	var formatJSON = post["formatJSON"];
 			var appDir = path.dirname(require.main.filename);
 			var userDir = appDir + "/" + settings.userDir;
 			console.log("userDir:" + userDir);
 			try{
 				var settingsFile = userDir + "/customSettings.js"; 
 				var jsonObj = require(settingsFile);
+				jsonObj.emailAddress = emailAddress;
 				jsonObj.flowFile = jsonObj.flowFile.replace(appDir + "/",'');
 				jsonObj.dbHost = dbHost;
 				jsonObj.dbPort = dbPort;
@@ -944,6 +960,11 @@ function createServer(_server,_settings) {
 				jsonObj.dbPassword = dbPassword;
 				jsonObj.gitLocalRepository = gitLocalRepository;
 				jsonObj.performGitPull = performGitPull;
+				jsonObj.restConfUrl = restConfUrl;
+				jsonObj.restConfUser = restConfUser;
+				jsonObj.restConfPassword = restConfPassword;
+				jsonObj.formatXML = formatXML;
+				jsonObj.formatJSON = formatJSON;
 				var updatedSettings = jsonObj;
 
 				var settingsStr= "module.exports=" + JSON.stringify(updatedSettings,null,4);
@@ -1135,6 +1156,130 @@ function createServer(_server,_settings) {
         		});
 		});
         });
+
+	function getFormattedDate(){
+        	var d = new Date();
+        	var mm = d.getMonth() + 1;
+        	var dd =   d.getDate();
+        	var yyyy = d.getYear() + 1900;
+        	var hr = d.getHours();
+        	var min = d.getMinutes();
+        	var sec = d.getSeconds();
+        	if(mm<10) mm = "0" + mm;
+        	if(dd<10) dd = "0" + dd;
+        	if(hr<10) hr = "0" + hr;
+        	if(min<10) min = "0" + min;
+        	if(sec<10) sec = "0" + sec;
+        	var formatedValue = yyyy + "-" + mm + "-" + dd +  "_" + hr + ":" + min + ":" + sec;
+        	return formatedValue;
+	}
+
+
+        app.post("/saveTestDGInput",
+            express.json({'limit':'16mb'}),
+            function(req,res) {
+        	var qs = require('querystring');
+        	var body = '';
+        	req.on('data', function (data) {
+            		body += data;
+        	});
+        	req.on('end', function () {
+			var appDir = path.dirname(require.main.filename);
+			var inputFilesDir = appDir + "/" + "inputFiles";
+			if (!fs.existsSync(inputFilesDir)){
+    				fs.mkdirSync(inputFilesDir);
+			}
+                	var post = qs.parse(body);
+                	var moduleName = post['moduleName'];
+                	var rpcName = post['rpcName'];
+			var fullFileName = inputFilesDir + "/" +moduleName + "_" + rpcName + "_" + getFormattedDate();
+                	var inputStr = post['inputStr'];
+                        writeToFile(fullFileName,inputStr);
+			res.end();
+        	});
+	});
+
+        app.post("/getInputFiles",function(req,res) {
+        		var qs = require('querystring');
+        		var body = '';
+        		req.on('data', function (data) {
+            			body += data;
+        		});
+        		req.on('end', function () {
+				var appDir = path.dirname(require.main.filename);
+				var inputFilesDir = appDir + "/" + "inputFiles";
+				if (!fs.existsSync(inputFilesDir)){
+    					fs.mkdirSync(inputFilesDir);
+				}
+                		var post = qs.parse(body);
+                		var moduleName = post['moduleName'];
+                		var rpcName = post['rpcName'];
+				var glob = require("glob");
+				var filePatt = "/**/" + moduleName + "_" + rpcName + "*";
+				glob(inputFilesDir + filePatt, null, function (er, files) {
+					var filesList =[];
+					for(var i=0;files!= null && i<files.length;i++){
+						var f = files[i].replace( new RegExp(inputFilesDir + "/", "g" ), "" );
+						filesList.push(f); 
+					}
+					res.json({"files" : filesList});
+				});
+        		});
+	});
+
+        app.post("/deleteInputFile",
+            express.json(),
+            function(req,res) {
+		var qs = require('querystring');
+		var body ="";
+		 req.on('data', function (data) {
+            		body += data;
+        	});
+		req.on('end',function(){
+			var post = qs.parse(body);
+                	var fileName = post["fileName"];
+			var appDir = path.dirname(require.main.filename);
+			var filePath = appDir + "/inputFiles/" + fileName;
+			try{
+				fs.unlinkSync(filePath);
+				res.send({"status" :"SUCCESS"});
+			}catch(err){
+				console.log("error" + err);
+				res.send({"status" :"ERROR"});
+			}
+			//console.log("prevPassword:" + settings.httpAuth.pass );
+		});
+            });
+
+        app.post("/loadInputFile",
+            express.json(),
+            function(req,res) {
+		var qs = require('querystring');
+		var body ="";
+		 req.on('data', function (data) {
+            		body += data;
+        	});
+		req.on('end',function(){
+			var post = qs.parse(body);
+                	var fileName = post["fileName"];
+			//console.log("fileName" + fileName);
+			var appDir = path.dirname(require.main.filename);
+			var filePath = appDir + "/inputFiles/" + fileName;
+			//console.log("filePath:" + filePath);
+			try{
+				fs.readFile(filePath, 'utf8', function (err,data) {
+  					if (err) {
+    						return console.log(err);
+  					}
+					res.json({'input':data});
+				});	
+			}catch(err){
+				console.log("error" + err);
+				res.json({"status" :"ERROR"});
+			}
+		});
+            });
+
         app.get("/getYangFiles",function(req,res) {
 		var appDir = path.dirname(require.main.filename);
 		var yangFilesDir=appDir + "/yangFiles";

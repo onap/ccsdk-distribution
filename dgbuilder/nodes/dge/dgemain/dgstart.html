@@ -764,7 +764,7 @@ function showDgStartGenerateXmlStatus(){
 		}
 		var xmlLines = formatted_xml.split("\n");
 		console.log("Number of lines " + xmlLines.length);
-		var numberOfLines = xmlLines.length;
+		//var numberOfLines = xmlLines.length;
 		//var display_formatted_xml = formatted_xml.replace("&lt;","<");
 		var currentNodeSet = getCurrentFlowNodeSet();
 		//get max x and y coordinates
@@ -810,8 +810,10 @@ function showDgStartGenerateXmlStatus(){
 		var unformatted_json_str=JSON.stringify(currentNodeSet);
 		var formatted_json = vkbeautify.json(unformatted_json_str);
 		//var displayHtmlStr="<div><textarea readonly='1' style='width:1100px;height:700px;border:none'>" + formatted_xml + "</textarea></div>";
-		var displayHtmlStr="<div style='font-size:20px;'><xmp>" + formatted_xml + "</xmp></div>";
-		var xmlInfoStr = "<div id='xml-info-div'><p>" + "XML size:" + sizeStr +  " <br>Number of Lines:" + numberOfLines +  "</p></div>";
+		//var displayHtmlStr="<div style='font-size:20px;'><xmp>" + formatted_xml + "</xmp></div>";
+		var displayHtmlStr=  "";
+              
+		//var xmlInfoStr = "<div id='xml-info-div'><p>" + "XML size:" + sizeStr +  " <br>Number of Lines:" + numberOfLines +  "</p></div>";
 		var htmlCode ="";
 		$( "#xmldialog" ).dialog({
 			title: "XML Generated",
@@ -866,6 +868,7 @@ function showDgStartGenerateXmlStatus(){
 				},
 			*/
                            "Validate XML" : function (event) {
+				$("#ace-editor-div").show();
 				if(!event) event = window.event;
 				var target = $(event.target);
 			        target.text("Validating XML");
@@ -928,7 +931,8 @@ function showDgStartGenerateXmlStatus(){
 					var reqData = {
 						"flowHtml" : htmlCode,
 						"flowXml" : formatted_xml,
-						"flowJson" : formatted_json
+						"flowJson" : formatted_json,
+						"emailAddress" : RED.settings.emailAddress
 					};
 
 					$.post( "/sendEmail",reqData )
@@ -988,8 +992,8 @@ function showDgStartGenerateXmlStatus(){
 					.done(function( data ) {
 					console.log("calling uploadxml. sending to server");
 						//var successHtmlStr = "<object width='600' height='450' type='text/html' data='"  + data.url + "' />";
-						
-						if( data != undefined  && data != null &&  (data.stdout.indexOf('Saving SvcLogicGraph') != -1 || data.stderr.indexOf('Saving SvcLogicGraph') != -1)){
+						//console.dir(data);	
+						if( data != undefined  && data != null &&  ((data.stdout != undefined && data.stdout != null && data.stdout.indexOf('Saving SvcLogicGraph') != -1) || (data.stderr != undefined && data.stderr != null &&  data.stderr.indexOf('Saving SvcLogicGraph') != -1))){
                          				//RED.notify("<strong>Uploaded Successfully</strong>");
 							//console.dir(data);
 							var _moduleName = data.module;
@@ -1204,8 +1208,12 @@ function showDgStartGenerateXmlStatus(){
 					form.append('<input type="hidden" name="moduleName" value="' + moduleName + '"/>');
 					form.append('<input type="hidden" name="methodName" value="' + formattedMethodName + '"/>');
 					form.appendTo('body');
-					//$("#flowXmlId").val(formatted_xml);
-					$("#flowXmlId").val(unformatted_xml_str);
+					console.log("format_xml:" + format_xml);
+					if(format_xml == "Y" || format_xml == undefined){
+						$("#flowXmlId").val(formatted_xml);
+					}else{
+						$("#flowXmlId").val(unformatted_xml_str);
+					}
 					$("#dwnldXmlFormId").submit();
 					//console.log("Form submitted.");
 				});
@@ -1245,8 +1253,12 @@ function showDgStartGenerateXmlStatus(){
 					form.append('<input type="hidden" name="moduleName" value="' + moduleName + '"/>');
 					form.append('<input type="hidden" name="methodName" value="' + formattedMethodName + '"/>');
 					form.appendTo('body');
-					//$("#flowJsonId").val(formatted_json);
-					$("#flowJsonId").val(unformatted_json_str);
+					console.log("format_json:" + format_json);
+					if(format_json == "Y" || format_json == undefined){
+						$("#flowJsonId").val(formatted_json);
+					}else{
+						$("#flowJsonId").val(unformatted_json_str);
+					}
 					$("#dwnldJsonFormId").submit();
 					//console.log("Form submitted.");
 				});
@@ -1261,6 +1273,7 @@ function showDgStartGenerateXmlStatus(){
 				unformatted_xml_str="";
 				unformatted_json_str="";
 				*/
+				ace.edit('xmldialog').destroy();
 			       $('.ui-dialog:has(#xmldialog)').empty().remove();
 				RED.view.redraw();
 
@@ -1272,6 +1285,17 @@ function showDgStartGenerateXmlStatus(){
                        },
 			open:function (){
 				$(function(){
+					try{
+						var aceEditor = ace.edit("xmldialog");
+    							aceEditor.setTheme("ace/theme/eclipse");
+    							aceEditor.session.setMode("ace/mode/xml");
+							aceEditor.setValue(formatted_xml);
+							document.getElementById('xmldialog').style.fontSize='18px';
+							aceEditor.setReadOnly(true);
+							var numberOfLines = aceEditor.session.getLength();
+							var xmlInfoStr = "<div id='xml-info-div'><p>" + "XML size:" + sizeStr +  " <br>Number of Lines:" + numberOfLines +  "</p></div>";
+					}catch(err){
+					}
 				$("#xmldialog").dialog("widget").find(".ui-dialog-buttonpane").append(xmlInfoStr);
 					console.log("opened.");
 				});

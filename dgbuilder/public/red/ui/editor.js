@@ -660,6 +660,33 @@ RED.editor = (function() {
         edit: showEditDialog,
         editConfig: showEditConfigNodeDialog,
         validateNode: validateNode,
-        updateNodeProperties: updateNodeProperties // TODO: only exposed for edit-undo
+        updateNodeProperties: updateNodeProperties, // TODO: only exposed for edit-undo
+        createEditor: function(options) {
+            var editor = ace.edit(options.id);
+            //editor.setTheme("ace/theme/tomorrow");
+            editor.setTheme("ace/theme/eclipse");
+            if (options.mode) {
+                editor.getSession().setMode(options.mode);
+            }
+            if (options.foldStyle) {
+                editor.getSession().setFoldStyle(options.foldStyle);
+            } else {
+                editor.getSession().setFoldStyle('markbeginend');
+            }
+
+	
+            if (options.options) {
+                editor.setOptions(options.options);
+            } else {
+                editor.setOptions({
+                    enableBasicAutocompletion:false ,
+                    enableSnippets:false ,
+  		    fontSize: "14pt" ,
+		    showGutter: false
+                });
+            }
+            editor.$blockScrolling = Infinity;
+		return editor;
+	}
     }
 })();

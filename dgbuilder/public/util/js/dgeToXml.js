@@ -695,7 +695,12 @@ function getNodeToXml(inputNodeSet){
 				}	
 				xmlStr+=node.xml;
 				startTag = getStartTag(node);
-				fullXmlStr +=xmlStr;
+				//special handling for break node
+				if(xmlStr != undefined && xmlStr != null && xmlStr.trim() == "<break>"){
+					fullXmlStr += "<break/>";
+				}else{	
+					fullXmlStr +=xmlStr;
+				}
 				/*
 				if(level > 0){
 					var spacing = Array(level).join("  ");	
@@ -737,7 +742,9 @@ function getNodeToXml(inputNodeSet){
 
 			//append end tag
 			if(startTag != ""){
-				fullXmlStr += "</" + startTag + ">";
+				if(startTag != "break"){
+                                        fullXmlStr += "</" + startTag + ">";
+                                }
 				/*
 				if(level >0){
 					var spacing = Array(level).join("  ");	
@@ -1280,6 +1287,8 @@ function migrateNodes(jsonStr){
 			}
 		}else if(node.xml != undefined && node.xml != null && node.xml.indexOf("<exists") != -1){
 			node.type="exists";
+		}else if(node.xml != undefined && node.xml != null && node.xml.indexOf("<break") != -1){
+			node.type="break";
 		}else if(node.xml != undefined && node.xml != null && node.xml.indexOf("<block") != -1){
 			node.type="block";
 			var atomic=getAttributeValue(node.xml,"atomic");
@@ -1293,6 +1302,8 @@ function migrateNodes(jsonStr){
 			}
 		}else if(node.xml != undefined && node.xml != null && node.xml.indexOf("<save") != -1){
 			node.type="save";
+		}else if(node.xml != undefined && node.xml != null && node.xml.indexOf("<while") != -1){
+			node.type="while";
 		}else if(node.xml != undefined && node.xml != null && node.xml.indexOf("<switch") != -1){
 			node.type="switchNode";
 		}else if(node.xml != undefined && node.xml != null && node.xml.indexOf("<record") != -1){

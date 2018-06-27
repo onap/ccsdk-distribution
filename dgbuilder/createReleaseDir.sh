@@ -21,6 +21,11 @@ dbName="sdnctl"
 dbUser="sdnctl"
 dbPassword="gamma"
 gitLocalRepository="$4"
+restConfUrl="http://localhost:8181/restconf/operations/SLI-API:execute-graph"
+restConfUser="admin"
+restConfPassword="admin"
+formatXML="Y"
+formatJSON="Y"
 
 lastPort=$(find "releases/" -name "customSettings.js" |xargs grep uiPort|cut -d: -f2|sed -e s/,//|sort|tail -1)
 echo $lastPort|grep uiPort >/dev/null 2>&1
@@ -54,6 +59,7 @@ if [ ! -e "./$customSettingsFile" ]
 then
 	echo "module.exports = {" >$customSettingsFile
 	echo "		'name' : '$name'," >>$customSettingsFile
+	echo "		'loginId' :'$loginId'," >>$customSettingsFile
 	echo "		'emailAddress' :'$emailid'," >>$customSettingsFile
 	echo "		'uiPort' :$nextPort," >>$customSettingsFile
 	echo "		'mqttReconnectTime': 15000," >>$customSettingsFile
@@ -70,7 +76,12 @@ then
 	echo "		'dbName': '$dbName'," >>$customSettingsFile
 	echo "		'dbUser': '$dbUser'," >>$customSettingsFile
 	echo "		'dbPassword': '$dbPassword'," >>$customSettingsFile
-	echo "		'gitLocalRepository': '$gitLocalRepository'" >>$customSettingsFile
+	echo "		'gitLocalRepository': '$gitLocalRepository'," >>$customSettingsFile
+	echo "		'restConfUrl': '$restConfUrl'," >>$customSettingsFile
+	echo "		'restConfUser': '$restConfUser'," >>$customSettingsFile
+	echo "		'restConfPassword': '$restConfPassword'," >>$customSettingsFile
+	echo "		'formatXML': '$formatXML'," >>$customSettingsFile
+	echo "		'formatJSON': '$formatJSON'" >>$customSettingsFile
 	echo "		}" >>$customSettingsFile
 fi
 	#echo "Created custom settings  file $customSettingsFile"

@@ -1,5 +1,6 @@
 module.exports={
     "name": "Release sdnc1.0",
+    "loginId": "dguser",
     "emailAddress": "dguser@onap.org",
     "uiPort": 3100,
     "mqttReconnectTime": 15000,
@@ -20,6 +21,11 @@ module.exports={
     "dbUser": "sdnctl",
     "dbPassword": "gamma",
     "gitLocalRepository": "",
+    "restConfUrl": "http://localhost:8181/restconf/operations/SLI-API:execute-graph",
+    "restConfUser": "admin",
+    "restConfPassword": "admin",
+    "formatXML": "Y",
+    "formatJSON": "Y",
     "httpRoot": "/",
     "disableEditor": false,
     "httpAdminRoot": "/",

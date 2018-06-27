@@ -59,11 +59,10 @@
             return this.name;
         },
         oneditprepare: function() {
+            var that = this;
             $( "#node-input-outputs" ).spinner({
                 min:1
             });
-
-
 	     var comments = $( "#node-input-comments").val();
 	     if(comments != null){
 		comments = comments.trim();
@@ -72,72 +71,77 @@
 		}
 	     }
 
-            function functionDialogResize(ev,ui) {
-                $("#node-input-xml-editor").css("height",(ui.size.height-275)+"px");
+            function functionDialogResize() {
+                var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+                var height = $("#dialog-form").height();
+                for (var i=0;i<rows.size();i++) {
+                    height -= $(rows[i]).outerHeight(true);
+                }
+                var editorRow = $("#dialog-form>div.node-text-editor-row");
+                height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+                $(".node-text-editor").css("height",height+"px");
+                that.editor.resize();
             };
-
-            $( "#dialog" ).dialog( "option", "width", 1200 );
-            $( "#dialog" ).dialog( "option", "height", 750 );
             $( "#dialog" ).on("dialogresize", functionDialogResize);
             $( "#dialog" ).one("dialogopen", function(ev) {
                 var size = $( "#dialog" ).dialog('option','sizeCache-function');
                 if (size) {
-                    functionDialogResize(null,{size:size});
+                    $("#dialog").dialog('option','width',size.width);
+                    $("#dialog").dialog('option','height',size.height);
+                    functionDialogResize();
                 }
             });
-
-	    /* close dialog when ESC is pressed and released */	
-            $( "#dialog" ).keyup(function(event){
-     		if(event.which == 27 ) {
-            		$("#node-dialog-cancel").click();
-		}
- 	    }); 
-
             $( "#dialog" ).one("dialogclose", function(ev,ui) {
                 var height = $( "#dialog" ).dialog('option','height');
                 $( "#dialog" ).off("dialogresize",functionDialogResize);
             });
-            var that = this;
-            require(["orion/editor/edit"], function(edit) {
-                that.editor = edit({
-                    parent:document.getElementById('node-input-xml-editor'),
-                    lang:"html",
-                    contents: $("#node-input-xml").val()
-                });
-                RED.library.create({
-                    url:"functions", // where to get the data from
-                    type:"function", // the type of object the library is for
-                    editor:that.editor, // the field name the main text body goes to
-                    fields:['name','outputs']
-                });
-                $("#node-input-name").focus();
+
+            this.editor = RED.editor.createEditor({
+                id: 'node-input-xml-editor',
+                mode: 'ace/mode/html'
+            });
+            this.editor.setValue($("#node-input-xml").val(),-1);
+	/*	
+            RED.library.create({
+                url:"functions", // where to get the data from
+                type:"function", // the type of object the library is for
+                editor:this.editor, // the field name the main text body goes to
+                mode:"ace/mode/html",
+                fields:['name','outputs']
+            });
+	*/
+            this.editor.focus();
+	    /* close dialog when ESC is pressed and released */	
+            $( "#node-input-xml-editor" ).keyup(function(event){
+     		if(event.which == 27 ) {
+            		$("#node-dialog-cancel").click();
+		}
+ 	    }); 
 		$("#node-input-validate").click(function(){
 				console.log("validate clicked.");
 				//console.dir(that.editor);
 				//console.log("getText:" + that.editor.getText());
-				var val = that.editor.getText();
+				var val = that.editor.getValue();
 				validateXML(val); 
 		});
 		$("#node-input-show-sli-values").click(function(){
-				console.log("SLIValues clicked.");
-				showValuesBox(that.editor,sliValuesObj);
+			//console.log("show Values clicked.");
+			showValuesBox(that.editor,sliValuesObj);
 		});
-
-            });
 	    //for click of add comments button
 	    $("#node-input-btnComments").click(function(e){
 			showCommentsBox();
 	    });	
-        },
+	},
         oneditsave: function() {
-            $("#node-input-xml").val(this.editor.getText());
-		var resp=validateXML(this.editor.getText());
+            $("#node-input-xml").val(this.editor.getValue());
+		var resp=validateXML(this.editor.getValue());
 		if(resp){
 			this.status = {fill:"green",shape:"dot",text:"OK"};
 		}else{
 			this.status = {fill:"red",shape:"dot",text:"ERROR"};
 		}	
            	delete this.editor;
-        }
+	}
     });
 </script>
