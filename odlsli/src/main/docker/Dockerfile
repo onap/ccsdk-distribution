@@ -8,6 +8,8 @@ ENV CCSDK_SLI_CORE_REPO mvn:org.onap.ccsdk.sli.core/ccsdk-sli-core-all/${ccsdk.s
 ENV CCSDK_SLI_ADAPTORS_REPO mvn:org.onap.ccsdk.sli.adaptors/ccsdk-sli-adaptors-all/${ccsdk.sli.adaptors.version}/xml/features
 ENV CCSDK_SLI_NORTHBOUND_REPO mvn:org.onap.ccsdk.sli.northbound/ccsdk-sli-northbound-all/${ccsdk.sli.northbound.version}/xml/features
 ENV CCSDK_SLI_PLUGINS_REPO mvn:org.onap.ccsdk.sli.plugins/ccsdk-sli-plugins-all/${ccsdk.sli.plugins.version}/xml/features
+ENV ANSIBLE_GPG_KEY ${ansible.gpg.key}
+
 # copy the opendaylight credentials
 COPY idmlight.db.mv.db $ODL_HOME/data
 
@@ -23,12 +25,15 @@ RUN cat $ODL_HOME/etc/org.apache.karaf.features.cfg.orig | sed -e "\|featuresRep
 # Create odl user
 RUN useradd odl
 
-# Install ansible-opendaylight
-RUN apt install -y software-properties-common && \
-    apt-add-repository -y ppa:ansible/ansible && \
-    apt update && \
-    apt install -y ansible && \
-    ansible-galaxy install git+https://git.opendaylight.org/gerrit/integration/packaging/ansible-opendaylight
+# Install ansible
+COPY ansible-sources.list /etc/apt/sources.list.d
+RUN gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv ${ANSIBLE_GPG_KEY} && \
+    gpg --export --armor ${ANSIBLE_GPG_KEY} | apt-key add - && \
+    apt-get update && \
+    apt-get install -y ansible
+    
+# Install ansible-opendaylight  
+RUN ansible-galaxy install git+https://git.opendaylight.org/gerrit/integration/packaging/ansible-opendaylight
 
 # Copy ccsdk install playbook
 COPY install_ccsdk.yml /tmp

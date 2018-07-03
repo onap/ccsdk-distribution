@@ -30,6 +30,7 @@
 		<opendaylight.root>opt/opendaylight</opendaylight.root>
 		<docker.push.phase>deploy</docker.push.phase>
 		<docker.verbose>true</docker.verbose>
+		<ansible.gpg.key>93C4A3FD7BB9C367</ansible.gpg.key>
 	</properties>
 
 	<dependencies>
@@ -177,6 +178,14 @@
 	</dependencies>
 
 	<build>
+	<extensions>
+		<extension>
+			<!-- this extension is required by wagon in order to pass the proxy -->
+			<groupId>org.apache.maven.wagon</groupId>
+			<artifactId>wagon-http-lightweight</artifactId>
+			<version>2.2</version>
+		</extension>
+	</extensions>
 		<plugins>
 
 
@@ -197,7 +206,8 @@
 								    versionArray = project.properties['ccsdk.project.version'].split('\\.');
 								}
 
-								if (project.properties['ccsdk.project.version'].endsWith("-SNAPSHOT")) {
+								if (project.properties['ccsdk.project.version'].endsWith("-SNAPSHOT"))
+								{
 								    project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
 								} else {
 								    project.properties['project.docker.latesttag.version']=versionArray[0] + '.' + versionArray[1] + "-STAGING-latest";
@@ -271,6 +281,7 @@
 										<include>idmlight.db.mv.db</include>
 										<include>org.ops4j.pax.logging.cfg</include>
 										<include>install_ccsdk.yml</include>
+										<include>ansible-sources.list</include>
 									</includes>
 									<filtering>false</filtering>
 								</resource>
