@@ -21,25 +21,26 @@ RUN rsync -a /tmp/system $ODL_HOME && rm -rf /tmp/system
 # Add CCSDK repositories to boot repositories
 RUN cp $ODL_HOME/etc/org.apache.karaf.features.cfg $ODL_HOME/etc/org.apache.karaf.features.cfg.orig
 RUN cat $ODL_HOME/etc/org.apache.karaf.features.cfg.orig | sed -e "\|featuresRepositories|s|$|, ${CCSDK_SLI_CORE_REPO}, ${CCSDK_SLI_ADAPTORS_REPO}, ${CCSDK_SLI_NORTHBOUND_REPO}, ${CCSDK_SLI_PLUGINS_REPO}|" > $ODL_HOME/etc/org.apache.karaf.features.cfg
+RUN echo featuresBoot=config,standard,region,package,kar,ssh,management,odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs,odl-daexim-all,ccsdk-sli-core-all,ccsdk-sli-adaptors-all,ccsdk-sli-northbound-all,ccsdk-sli-plugins-all >> $ODL_HOME/etc/org.apache.karaf.features.cfg
 
 # Create odl user
 RUN useradd odl
 
 # Install ansible
-COPY ansible-sources.list /etc/apt/sources.list.d
-RUN gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv ${ANSIBLE_GPG_KEY} && \
-    gpg --export --armor ${ANSIBLE_GPG_KEY} | apt-key add - && \
-    apt-get update && \
-    apt-get install -y ansible
+#COPY ansible-sources.list /etc/apt/sources.list.d
+#RUN gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv ${ANSIBLE_GPG_KEY} && \
+#    gpg --export --armor ${ANSIBLE_GPG_KEY} | apt-key add - && \
+#    apt-get update && \
+#    apt-get install -y ansible
     
 # Install ansible-opendaylight  
-RUN ansible-galaxy install git+https://git.opendaylight.org/gerrit/integration/packaging/ansible-opendaylight
+#RUN ansible-galaxy install git+https://git.opendaylight.org/gerrit/integration/packaging/ansible-opendaylight
 
 # Copy ccsdk install playbook
-COPY install_ccsdk.yml /tmp
+#COPY install_ccsdk.yml /tmp
 
 # Install features in ODL
-RUN ansible-playbook -i "localhost," -c local /tmp/install_ccsdk.yml
+#RUN ansible-playbook -i "localhost," -c local /tmp/install_ccsdk.yml
 
 
 # copy deliverables to opt
