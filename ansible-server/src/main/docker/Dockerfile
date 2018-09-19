@@ -21,7 +21,7 @@ RUN apt-get -y install python-pip
 # copy files needed
 COPY opt /opt/
 
-WORKDIR /opt/onap/sdnc
+WORKDIR /opt/onap/ccsdk
 
 #ENTRYPOINT exec startAnsibleServer.sh
 #CMD ["/bin/bash"]
