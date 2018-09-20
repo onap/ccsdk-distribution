@@ -10,7 +10,6 @@ ENV CCSDK_FEATURES_REPO mvn:org.onap.ccsdk.features/ccsdk-features-all/${ccsdk.f
 ENV CCSDK_SLI_NORTHBOUND_REPO mvn:org.onap.ccsdk.sli.northbound/ccsdk-sli-northbound-all/${ccsdk.sli.northbound.version}/xml/features
 ENV CCSDK_SLI_PLUGINS_REPO mvn:org.onap.ccsdk.sli.plugins/ccsdk-sli-plugins-all/${ccsdk.sli.plugins.version}/xml/features
 ENV ANSIBLE_GPG_KEY ${ansible.gpg.key}
-ENV CCSDK_SLI_PLUGINS_RESTCONF_REPO mvn:org.onap.ccsdk.sli.plugins/ccsdk-restconf-client/${ccsdk.sli.plugins.version}/xml/features
 
 # copy the opendaylight credentials
 COPY idmlight.db.mv.db $ODL_HOME/data
@@ -22,8 +21,8 @@ RUN rsync -a /tmp/system $ODL_HOME && rm -rf /tmp/system
 
 # Add CCSDK repositories to boot repositories
 RUN cp $ODL_HOME/etc/org.apache.karaf.features.cfg $ODL_HOME/etc/org.apache.karaf.features.cfg.orig
-RUN cat $ODL_HOME/etc/org.apache.karaf.features.cfg.orig | sed -e "\|featuresRepositories|s|$|, ${CCSDK_SLI_CORE_REPO}, ${CCSDK_SLI_ADAPTORS_REPO}, ${CCSDK_SLI_NORTHBOUND_REPO}, ${CCSDK_SLI_PLUGINS_REPO}, ${CCSDK_SLI_PLUGINS_RESTCONF_REPO}, ${CCSDK_FEATURES_REPO}|" > $ODL_HOME/etc/org.apache.karaf.features.cfg
-RUN echo featuresBoot=config,standard,region,package,kar,ssh,management,odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs,odl-daexim-all,ccsdk-sli-core-all,ccsdk-sli-adaptors-all,ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all,ccsdk-restconf-client >> $ODL_HOME/etc/org.apache.karaf.features.cfg
+RUN cat $ODL_HOME/etc/org.apache.karaf.features.cfg.orig | sed -e "\|featuresRepositories|s|$|, ${CCSDK_SLI_CORE_REPO}, ${CCSDK_SLI_ADAPTORS_REPO}, ${CCSDK_SLI_NORTHBOUND_REPO}, ${CCSDK_SLI_PLUGINS_REPO}, ${CCSDK_FEATURES_REPO}|" > $ODL_HOME/etc/org.apache.karaf.features.cfg
+RUN echo featuresBoot=config,standard,region,package,kar,ssh,management,odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs,odl-daexim-all,ccsdk-sli-core-all,ccsdk-sli-adaptors-all,ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all >> $ODL_HOME/etc/org.apache.karaf.features.cfg
 
 # Create odl user
 RUN useradd odl
