@@ -7,6 +7,7 @@ then
     pip install 'cherrypy<18.0.0'
     pip install requests
 
+    apt-get update -y
     apt-get -y install software-properties-common
     apt-add-repository -y ppa:ansible/ansible
     apt-get -y install ansible
