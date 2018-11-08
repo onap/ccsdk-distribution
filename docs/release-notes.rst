@@ -1,10 +1,43 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 
 Release Notes
-=============
+#############
+
+Version: 0.3.2
+**************
+
+:Release Date: 2018-11-30
+
+**New Features**
+
+The full list of Casablanca epics and user stories for CCSDK maybe be found at <https://jira.onap.org/browse/CCSDK-573?filter=11516>.
+The following list summarizes some of the most significant epics:
+
++-------------+------------------------------------------------+
+| Jira #      | Abstract                                       |
++=============+================================================+
+| [CCSDK-279] | Update to OpenDaylight Oxygen release          |
++-------------+------------------------------------------------+
+| [CCSDK-357] | Develop Controller Design Studio in Casablanca |
++-------------+------------------------------------------------+
+| [CCSDK-324] | Enhancements to support CCVPN use case         |
++-------------+------------------------------------------------+
+| [CCSDK-288] | Usability Enhancements                         |
++-------------+------------------------------------------------+
+
+**Bug Fixes**
+The full list of bug fixes in the CCSDK Casablanca release may be found at <https://jira.onap.org/browse/CCSDK-624?filter=11517>
+
+**Known Issues**
+The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
++-------------+-------------------------------------------------------+
+| Jira #      | Abstract                                              |
++-------------+-------------------------------------------------------+
+| [CCSDK-293] | COMPONENT_DONE not being sent after model is received |
++-------------+-------------------------------------------------------+
 
 Version: 0.2.4
---------------
+**************
 
 
 :Release Date: 2018-06-07
@@ -16,25 +49,25 @@ Version: 0.2.4
 The full list of Beijing Epics and user stories for CCSDK may be found at <https://jira.onap.org/issues/?filter=10792>.  The following
 list summarizes some of the more critical features:
 
-+-------------+---------------------------------------------------------------------------------------------------------------------+
-| Jira #      | Abstract                                                                                                            |
-+=============+=====================================================================================================================+
-| [CCSDK-222] | Ansible server support <https://jira.onap.org/browse/CCSDK-222>                                                     |
-+-------------+---------------------------------------------------------------------------------------------------------------------+
-| [CCSDK-191] | enable fast loading of graphs <https://jira.onap.org/browse/CCSDK-191>                                              |
-+-------------+---------------------------------------------------------------------------------------------------------------------+
-| [CCSDK-179] | Upgrade CCSDK ODL containers to Nitrogen <https://jira.onap.org/browse/CCSDK-179>                                   |
-+-------------+---------------------------------------------------------------------------------------------------------------------+
-| [CCSDK-177] | Upgrade sli/northbound to Nitrogen <https://jira.onap.org/browse/CCSDK-177>                                         |
-+-------------+---------------------------------------------------------------------------------------------------------------------+
-| [CCSDK-176] | Upgrade sli/adaptors to Nitrogen <https://jira.onap.org/browse/CCSDK-176>                                           |
-+-------------+---------------------------------------------------------------------------------------------------------------------+
-| [CCSDK-175] | Upgrade sli/core to Nitrogen <https://jira.onap.org/browse/CCSDK-175>                                               |
-+-------------+---------------------------------------------------------------------------------------------------------------------+
-| [CCSDK-174] | Update ccsdk parent to support Nitrogen parent poms <https://jira.onap.org/browse/CCSDK-174>                        |
-+-------------+---------------------------------------------------------------------------------------------------------------------+
-| [CCSDK-172] | Ability to call Ansible playbook from directed graph <https://jira.onap.org/browse/CCSDK-172>                       |
-+-------------+---------------------------------------------------------------------------------------------------------------------+
++--------------+-----------------------------------------------------------------------------------------------+
+| Jira #       | Abstract                                                                                      |
++==============+===============================================================================================+
+| [CCSDK-222]  | Ansible server support <https://jira.onap.org/browse/CCSDK-222>                               |
++--------------+-----------------------------------------------------------------------------------------------+
+| [CCSDK-191]  | enable fast loading of graphs <https://jira.onap.org/browse/CCSDK-191>                        |
++--------------+-----------------------------------------------------------------------------------------------+
+| [CCSDK-179]  | Upgrade CCSDK ODL containers to Nitrogen <https://jira.onap.org/browse/CCSDK-179>             |
++--------------+-----------------------------------------------------------------------------------------------+
+| [CCSDK-177]  | Upgrade sli/northbound to Nitrogen <https://jira.onap.org/browse/CCSDK-177>                   |
++--------------+-----------------------------------------------------------------------------------------------+
+| [CCSDK-176]  | Upgrade sli/adaptors to Nitrogen <https://jira.onap.org/browse/CCSDK-176>                     |
++--------------+-----------------------------------------------------------------------------------------------+
+| [CCSDK-175]  | Upgrade sli/core to Nitrogen <https://jira.onap.org/browse/CCSDK-175>                         |
++--------------+-----------------------------------------------------------------------------------------------+
+| [CCSDK-174]  | Update ccsdk parent to support Nitrogen parent poms <https://jira.onap.org/browse/CCSDK-174>  |
++--------------+-----------------------------------------------------------------------------------------------+
+| [CCSDK-172]  | Ability to call Ansible playbook from directed graph <https://jira.onap.org/browse/CCSDK-172> |
++--------------+-----------------------------------------------------------------------------------------------+
 
 **Bug Fixes**
 
@@ -42,11 +75,11 @@ The full list of bug fixes in the CCSDK Beijing release may be found at <https:/
 
 **Known Issues**
 
-+-------------+-----------------------------------------------------------------------------------------------------+
-| Jira #      | Abstract                                                                                            |
-+=============+=====================================================================================================+
-| [CCSDK-136] | pgaas is dependent on location\_prefix being all lowercase <https://jira.onap.org/browse/CCSDK-136> |
-+-------------+-----------------------------------------------------------------------------------------------------+
++--------------+-----------------------------------------------------------------------------------------------------+
+| Jira #       | Abstract                                                                                            |
++==============+=====================================================================================================+
+| [CCSDK-136]  | pgaas is dependent on location\_prefix being all lowercase <https://jira.onap.org/browse/CCSDK-136> |
++--------------+-----------------------------------------------------------------------------------------------------+
 
 **Security Notes**
 
@@ -73,7 +106,7 @@ N/A
 
 
 Version: 0.1.0
---------------
+**************
 
 
 :Release Date: 2017-11-16
