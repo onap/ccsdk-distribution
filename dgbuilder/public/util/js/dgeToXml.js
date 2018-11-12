@@ -773,6 +773,11 @@ var jqxhr = $.post( "/getSharedFlow",{"filePath":filePath})
   .done(function(data) {
 	$( "#dgflow-browser-dialog").dialog("close");
 	var migratedNodes = migrateNodes(data);
+	  var nodeSet = getCurrentFlowNodeSet();
+        //console.dir(nodeSet);
+        if(nodeSet != null && nodeSet.length == 0){
+                RED.view.setIsImportAction(true);
+        }
 	//RED.view.importNodes(data)
 	RED.view.importNodes(JSON.stringify(migratedNodes));
     //console.log( "import done");

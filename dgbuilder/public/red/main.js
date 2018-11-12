@@ -1868,11 +1868,11 @@ Added this logic because , when the configuration item is choosen in the menu th
                     {id:"btn-list-yang-files",icon:"fa fa-clipboard",label:"List Yang Files",onselect:listYangFiles},
                 ]},
                 null,
-               /* {id:"btn-dg-diff-menu",icon:"fa fa-sign-in",label:"DG diff",options:[
+                {id:"btn-dg-diff-menu",icon:"fa fa-sign-in",label:"DG diff",options:[
                     {id:"btn-diff-json",icon:"fa fa-clipboard",label:"Json diff since import",onselect:RED.view.diffJsonSinceImportDialog},
                     {id:"btn-diff-xml",icon:"fa fa-clipboard",label:"XML diff since import",onselect:RED.view.diffXmlSinceImportDialog},
                 ]},
-                null,*/
+                null,
                 {id:"btn-configure-upload",icon:"fa fa-book",label:"Configuration",toggle:false,onselect:updateConfiguration},
                 null,
                 {id:"btn-manage-tabs",icon:"fa fa-info",label:"Manage Tabs",toggle:false,onselect:showSelectedTabs},

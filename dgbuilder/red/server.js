@@ -226,6 +226,7 @@ function createServer(_server,_settings) {
             slaActions.deleteDG(jsonObj,req,res);
         });
 
+
         app.get("/getCurrentSettings",function(req,res) {
 		var appDir = path.dirname(require.main.filename);
 		var userDir = appDir + "/" + settings.userDir;
@@ -304,8 +305,16 @@ function createServer(_server,_settings) {
  		function(req,res) {
 		var appDir = path.dirname(require.main.filename);
 		var gitLocalRepository =  settings.gitLocalRepository;
+		/*
+		var userDir=settings.userDir;
+		var outputDir  = appDir + "/" +  userDir + "/orig_dgs";
+		if (!fs.existsSync(outputDir)){
+			fs.mkdirSync(outputDir);
+		}
+		*/
 		//console.dir(req);
                 var filePath = req.query.filePath;
+                //var currTabId = req.query.currTabId;
                 var fullFilePath = gitLocalRepository +"/" + filePath ;
 		//console.log("fullFilePath:" + fullFilePath);	
 		var exec = require('child_process').exec;
@@ -325,6 +334,15 @@ function createServer(_server,_settings) {
 				console.log("stderr:" + stderr);
 			}
 			if(stdout){
+				/*
+				var jsonStr= stdout;
+				var jsonStrFormatted=[];
+				try{
+					jsonStrFormatted= JSON.parse(jsonStr);
+				}catch(e){
+				}
+				fs.writeFileSync( outputDir + "/" +currTabId,JSON.stringify(jsonStrFormatted,null,4) );	
+				*/
 				//console.log("output:" + stdout);
 				res.send(200,{'stdout':stdout,'stderr':stderr});
                 	}
@@ -332,6 +350,51 @@ function createServer(_server,_settings) {
 		});
 	});
 
+        app.post("/saveImportedDG",
+            express.json(),
+            function(req,res) {
+		var qs = require('querystring');
+		var body = '';
+        	req.on('data', function (data) {
+            		body += data;
+        	});
+        	req.on('end', function () {
+			var appDir = path.dirname(require.main.filename);
+			var userDir=settings.userDir;
+			var outputDir  = appDir + "/" +  userDir + "/orig_dgs";
+			if (!fs.existsSync(outputDir)){
+				fs.mkdirSync(outputDir);
+			}
+			var post = qs.parse(body);
+                	var importedNodes = post.importedNodes;
+                	var currTabId = post.currTabId;
+			fs.writeFileSync( outputDir + "/" +currTabId,importedNodes );	
+			res.send(200,{"output":"SUCCESS"});
+        	});
+        });
+
+ 	app.post("/saveImportedDG",
+            express.json(),
+            function(req,res) {
+                var qs = require('querystring');
+                var body = '';
+                req.on('data', function (data) {
+                        body += data;
+                });
+                req.on('end', function () {
+                        var appDir = path.dirname(require.main.filename);
+                        var userDir=settings.userDir;
+                        var outputDir  = appDir + "/" +  userDir + "/orig_dgs";
+                        if (!fs.existsSync(outputDir)){
+                                fs.mkdirSync(outputDir);
+                        }
+                        var post = qs.parse(body);
+                        var importedNodes = post.importedNodes;
+                        var currTabId = post.currTabId;
+                        fs.writeFileSync( outputDir + "/" +currTabId,importedNodes );
+                        res.send(200,{"output":"SUCCESS"});
+                });
+        });
 
         app.get("/gitcheckout", function(req,res) {
 		var appDir = path.dirname(require.main.filename);
@@ -469,6 +532,7 @@ function createServer(_server,_settings) {
                 	console.log("Error:" + e);
         	}
     	}
+
 	function getCurrentDate(){
         	var d = new Date();
         	var mm = d.getMonth() + 1;
@@ -882,6 +946,12 @@ function createServer(_server,_settings) {
 		//var release = userDir.replace(/releases/g,"release");
             	res.json({"release" : userDir});
         });
+        app.get("/readFile",function(req,res) {
+		var userDir=settings.userDir;
+		var filePath = userDir + "/" +  req.query.filePath;
+		var buf = fs.readFileSync(filePath, "utf8");
+            	res.json({"output" :buf });
+        });
         app.post("/getFiles/:id",function(req,res) {
             var id = req.params.id;
 		//console.log("id:" + id);
@@ -1105,8 +1175,7 @@ function createServer(_server,_settings) {
 				var matchedArr = fileName.match(/.zip$/);
 				if(matchedArr != null && matchedArr.length >0){
 					console.log("uploaded zip file" + fileName);
-					//commandToExec = appDir + "/tools/generate_props_from_yangs_zip.sh " + yangFileFullPath ;
-					commandToExec = appDir + "/tools/generate_props_from_yang.sh " + yangFileFullPath ;
+					commandToExec = appDir + "/tools/generate_props_from_yangs_zip.sh " + yangFileFullPath ;
 				}else{
 					commandToExec = appDir + "/tools/generate_props_from_yang.sh " + yangFileFullPath ;
 					console.log("uploaded file" + fileName);
@@ -1280,6 +1349,7 @@ function createServer(_server,_settings) {
 		});
             });
 
+
         app.get("/getYangFiles",function(req,res) {
 		var appDir = path.dirname(require.main.filename);
 		var yangFilesDir=appDir + "/yangFiles";
@@ -1382,6 +1452,35 @@ function uninstallModule(module) {
 
 function start() {
     var defer = when.defer();
+	//split and save startup dgs if any from flows.json file
+		var appDir = path.dirname(require.main.filename);
+		var userDir = appDir + "/" + settings.userDir;
+		var flowFile = settings.flowFile;
+		var outputDir = userDir + "/orig_dgs";
+		console.log("appDir:" + appDir);
+		console.log("flowFile:" + flowFile);
+		var execFile = require('child_process').execFile;
+		var commandToExec = appDir + "/tools/splitFlows.sh" ;
+		console.log("commandToExec:" + commandToExec);
+		var args = [flowFile,outputDir];
+        	var child = execFile(commandToExec ,args,function (error,stdout,stderr){
+                if(error){
+			console.log("Error occured:" + error);
+			if(stderr){
+				console.log("stderr:" + stderr);
+			}else{
+				console.log("error:" + error);
+			}
+                }else{
+			if(stderr){
+				console.log("stderr:" + stderr);
+			}
+			if(stdout){
+				console.log("output:" + stdout);
+                	}
+		}
+		});
+		
     
     storage.init(settings).then(function() {
         settings.load(storage).then(function() {

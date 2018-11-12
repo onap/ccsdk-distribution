@@ -17,6 +17,7 @@
 
 RED.view = (function() {
 	/* increasing the width and height from 5000 to 7500*/
+var isImportAction  = false;	
     var space_width = 7500,
         space_height = 7500,
         lineCurveScale = 0.75,
@@ -323,6 +324,7 @@ RED.view = (function() {
     }
 
     function canvasMouseDown() {
+	console.log("The state in canvasMouseDown:" + RED.view.state());
         if (!mousedown_node && !mousedown_link) {
             selected_link = null;
             updateSelection();
@@ -480,10 +482,11 @@ RED.view = (function() {
                 }
             }
         }
-        redraw();
+	redraw();
     }
 
     function canvasMouseUp() {
+	console.log("The state in canvasMouseUp:" + RED.view.state());
         if (mousedown_node && mouse_mode == RED.state.JOINING) {
             drag_line.attr("class", "drag_line_hidden");
         }
@@ -534,10 +537,39 @@ RED.view = (function() {
             RED.keyboard.remove(/* ESCAPE */ 27);
             setDirty(true);
         }
-        redraw();
-        // clear mouse event vars
-        resetMouseVars();
+	console.log("isImportAction:" + RED.view.getIsImportAction());
+        if (RED.view.getIsImportAction() === true){
+		RED.view.setIsImportAction(false);
+		console.log("updated isImportAction:" + isImportAction);
+        	redraw();
+        	// clear mouse event vars
+        	resetMouseVars();
+		//save the imported DG
+		try{
+				var obj = getCurrentFlowNodeSet();
+				//console.dir(obj);
+				//console.log("workspace id:" + RED.view.getWorkspace());
+				var dgTabId = RED.view.getWorkspace();
+				console.log("dgTabId:" + dgTabId);
+				$.post("/saveImportedDG",{"importedNodes" :JSON.stringify(obj,null,4),"currTabId": dgTabId})
+				.done(function( data ) {
+					console.log("saved imported DG"); 
+				})
+				.fail(function(err) {
+					console.log("error saving imported DG"); 
+				})
+				.always(function() {
+				});
+		}catch(err){
+			console.log(err);
+		}
+	}else{
+		redraw();
+        	// clear mouse event vars
+        	resetMouseVars();
+	}
     }
+
 
     $('#btn-zoom-out').click(function() {zoomOut();});
     $('#btn-zoom-zero').click(function() {zoomZero();});
@@ -1621,6 +1653,8 @@ RED.view = (function() {
             RED.keyboard.enable();
         }
     });
+
+
     $( "#node-dialog-delete-workspace" ).dialog({
         modal: true,
         autoOpen: false,
@@ -1674,6 +1708,12 @@ RED.view = (function() {
         getWorkspace: function() {
             return activeWorkspace;
         },
+        setIsImportAction: function(iaction) {
+            isImportAction = iaction ;
+        },
+        getIsImportAction: function() {
+            return isImportAction ;
+        },
         showWorkspace: function(id) {
             workspace_tabs.activateTab(id);
         },
@@ -1700,7 +1740,7 @@ RED.view = (function() {
 		$(function() {
 			var htmlStr= "<div id='yang-upload-div' style='width:375;height:225'>" +
 			'<form id="uploadForm" name="uploadForm" enctype="multipart/form-data" action="/api/uploadyang" method="post" >' + 
-			"<input id='yang-file-id' name='yangFile' type='file' accept='.yang,.zip'><p style='font-size:0.7em'><i>For Module depending on multiple yang files, zip them and upload the zip file. The zip file name should match the exact name of the module with .zip extension</i</p><br><br><br><br><br><p id='yang-upload-status'></p>" +
+			"<input id='yang-file-id' name='yangFile' type='file' accept='.yang,.zip'><p style='font-size:0.7em'><i>For Module depending on multiple yang files, zip them and upload the zip file</i</p><br><br><br><br><br><p id='yang-upload-status'></p>" +
 			//'<input id="upload-yang-button-id"  style="font-size:1em;font-weight:bold" type="button" value="Upload Yang" name="upload-yang-button">' +
 			"</form></div>";
 
@@ -2034,6 +2074,192 @@ RED.view = (function() {
             RED.nodes.eachNode(function(n) { n.dirty = true;});
             redraw();
         },
+        diffJsonSinceImportDialog: function diffJsonSinceImportDialog(){
+	var currDGObj = getCurrentFlowNodeSet();
+	var currDGObjStr = JSON.stringify(currDGObj,null,4);
+	//console.log(currDGObjStr);
+	//$(function() {
+var htmlStr = "<div id=\"flex-container\">" +
+    "<div><div id=\"editor1\"></div></div>" +
+    "<div id=\"gutter\"></div>" +
+    "<div><div id=\"editor2\"></div></div>" +
+"</div>" + 
+
+"<script>" +
+"$(function () {" +
+    "var aceDiffer = new AceDiff({" +
+        "mode: \"ace/mode/json\"," +
+        "theme: \"ace/theme/eclipse\"," +
+        "left: {" +
+            "id: \"editor1\"," +
+            "content: $(\"#example-content-1\").html()," + 
+            "editable: false," +
+            "copyLinkEnabled: false" +
+        "}," +
+        "right: {" +
+            "id: \"editor2\"," +
+            "content: $(\"#example-content-2\").html()," +
+            "editable: false," +
+            "copyLinkEnabled: false" +
+        "}," +
+        "classes: {" +
+            "gutterID: \"gutter\"" +
+        "}" +
+    "});" +
+"});" +
+"</script>" ;
+var origDGFile ="[]"; 
+var diffStatus = "DG JSON UNCHANGED";
+	$.get("/readFile",{"filePath" : "orig_dgs/" + activeWorkspace })
+		.done(function( data ) {
+                	if(data != undefined && data != null && data.output != undefined ){
+				origDGFile= data.output;
+			}
+		})
+		.fail(function(err) {
+		})
+		.always(function() {
+			if(origDGFile != currDGObjStr){
+				diffStatus="DG JSON CHANGED";
+			}
+			htmlStr += "<div id=\"example-content-1\" style=\"display: none\">" +
+				origDGFile + 
+				"</div>" +
+				"<div id=\"example-content-2\" style=\"display: none\">" +
+				currDGObjStr +
+				"</div>" ;
+
+//var htmlStr='<object type="text/html" data="display-diff.html" ></object>';
+
+	$("#diff-browser-dialog").dialog({
+		modal:true,	
+		autoOpen :false,
+		title: "Json Diff :" + diffStatus,
+             	width: 1200,
+             	height: 600,
+                minWidth :1200 , 
+                minHeight :600, 
+		buttons :[
+                	{
+                    	text: "Close",
+                    	click: function() {
+                    		//$( this ).dialog( "close" );
+				$("#diff-browser-dialog").dialog("close");
+			}
+			}
+		],
+		open:function(){
+		  	$('#diff-browser-dialog').keypress(function(e) {
+                               if (e.keyCode == $.ui.keyCode.ENTER) {
+					$('#diff-browser-dialog').parent().find('.ui-dialog-buttonpane button:first').click();
+                				return false;
+                                        }
+                        });
+		}
+		}).dialog('open').html(htmlStr);
+		});
+	//});
+	},	
+        diffXmlSinceImportDialog: function diffXmlSinceImportDialog(){
+	var currDGObj = getCurrentFlowNodeSet();
+	//console.dir(currDGObj);
+	var currDGObjStr ="";
+	try{
+		 currDGObjStr = getNodeToXml(JSON.stringify(currDGObj));
+	}catch(err){
+	}
+	var curr_formatted_xml = vkbeautify.xml(currDGObjStr);
+	//console.log(curr_formatted_xml);	
+	//console.log(currDGObjStr);
+	//$(function() {
+var htmlStr = "<div id=\"flex-container\">" +
+    "<div><div id=\"editor1\"></div></div>" +
+    "<div id=\"gutter\"></div>" +
+    "<div><div id=\"editor2\"></div></div>" +
+"</div>" + 
+
+"<script>" +
+"$(function () {" +
+    "var aceDiffer = new AceDiff({" +
+        "mode: \"ace/mode/xml\"," +
+        "theme: \"ace/theme/eclipse\"," +
+        //"theme: \"ace/theme/twilight\"," +
+        "left: {" +
+            "id: \"editor1\"," +
+            "content: $(\"#example-content-1\").html()," + 
+            "editable: false," +
+            "copyLinkEnabled: false" +
+        "}," +
+        "right: {" +
+            "id: \"editor2\"," +
+            "content: $(\"#example-content-2\").html()," +
+            "editable: false," +
+            "copyLinkEnabled: false" +
+        "}," +
+        "classes: {" +
+            "gutterID: \"gutter\"" +
+        "}" +
+    "});" +
+"});" +
+"</script>" ;
+var origXmlFile =""; 
+var origDGFile =""; 
+var diffStatus = "DG XML UNCHANGED";
+	$.get("/readFile",{"filePath" : "orig_dgs/" + activeWorkspace })
+		.done(function( data ) {
+                	if(data != undefined && data != null && data.output != undefined ){
+				origDGFile= data.output;
+				try{
+					var origDGObjStr = getNodeToXml(origDGFile);
+					origXmlFile = vkbeautify.xml(origDGObjStr);
+				}catch(err){
+				}
+			}
+		})
+		.fail(function(err) {
+		})
+		.always(function() {
+			if(origXmlFile != curr_formatted_xml){
+				diffStatus = "DG XML CHANGED";
+			}
+			htmlStr += "<div id=\"example-content-1\" style=\"display: none\">" +
+				origXmlFile + 
+				"</div>" +
+				"<div id=\"example-content-2\" style=\"display: none\">" +
+				curr_formatted_xml +
+				"</div>" ;
+
+//var htmlStr='<object type="text/html" data="display-diff.html" ></object>';
+
+	$("#diff-browser-dialog").dialog({
+		modal:true,	
+		autoOpen :false,
+		title: "XML Diff",
+             	width: 1200,
+             	height: 600,
+                minWidth : 1200, 
+                minHeight :600, 
+		buttons :[
+                	{
+                    	text: "Close",
+                    	click: function() {
+                    		//$( this ).dialog( "close" );
+				$("#diff-browser-dialog").dialog("close");
+			}
+			}
+		],
+		open:function(){
+		  	$('#diff-browser-dialog').keypress(function(e) {
+                               if (e.keyCode == $.ui.keyCode.ENTER) {
+					$('#diff-browser-dialog').parent().find('.ui-dialog-buttonpane button:first').click();
+                				return false;
+                                        }
+                        });
+		}
+		}).dialog('open').html(htmlStr);
+		});
+	//});
+	},	
         showNodePalette: function(s) {
 		showNodePalette=s;
 		if(!s){
@@ -2044,10 +2270,10 @@ RED.view = (function() {
 		}
 		//console.log("showNodePalette:" + showNodePalette);
         },
-        
         //TODO: should these move to an import/export module?
         showImportNodesDialog: showImportNodesDialog,
         showExportNodesDialog: showExportNodesDialog,
         showExportNodesLibraryDialog: showExportNodesLibraryDialog
     };
+
 })();
