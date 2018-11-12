@@ -234,6 +234,11 @@ RED.editor = (function() {
                                 }
                             }
                         } else if (RED.view.state() == RED.state.IMPORT) {
+				var nodeSet = getCurrentFlowNodeSet();
+                                //console.dir(nodeSet);
+                                if(nodeSet != null && nodeSet.length == 0){
+                                        RED.view.setIsImportAction(true);
+                                }
                             RED.view.importNodes($("#node-input-import").val());
                         }
                         $( this ).dialog( "close" );
