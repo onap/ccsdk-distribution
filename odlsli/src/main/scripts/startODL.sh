@@ -29,6 +29,7 @@ ODL_ADMIN_PASSWORD=${ODL_ADMIN_PASSWORD:-Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJv
 CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 SLEEP_TIME=${SLEEP_TIME:-120}
 MYSQL_PASSWD=${MYSQL_PASSWD:-openECOMP1.0}
+INSTALLED_DIR=${INSTALLED_FILE:-/opt/opendaylight/current/daexim}
 
 
 #
@@ -42,7 +43,12 @@ do
 done
 echo -e "\nmysql ready"
 
-if [ ! -f ${CCSDK_HOME}/.installed ]
+if [ ! -d ${INSTALLED_DIR} ]
+then
+    mkdir -p ${INSTALLED_DIR}
+fi
+
+if [ ! -f ${INSTALLED_DIR}/.installed ]
 then
     echo "Installing SDN-C database"
     ${CCSDK_HOME}/bin/installSdncDb.sh
@@ -53,7 +59,7 @@ then
         echo "Installing directed graphs"
         ${CCSDK_HOME}/svclogic/bin/install.sh
     fi
-    echo "Installed at `date`" > ${CCSDK_HOME}/.installed
+    echo "Installed at `date`" > ${INSTALLED_DIR}/.installed
 fi
 
 exec ${ODL_HOME}/bin/karaf server
