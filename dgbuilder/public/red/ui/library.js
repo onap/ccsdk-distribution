@@ -51,6 +51,11 @@ RED.library = (function() {
                             a.flowName = root+(root!==""?"/":"")+data.f[i];
                             a.onclick = function() {
                                 $.get('library/flows/'+this.flowName, function(data) {
+					var nodeSet = getCurrentFlowNodeSet();
+                                        //console.dir(nodeSet);
+                                        if(nodeSet != null && nodeSet.length == 0){
+                                                RED.view.setIsImportAction(true);
+                                        }
                                         RED.view.importNodes(data);
                                 });
                             };
