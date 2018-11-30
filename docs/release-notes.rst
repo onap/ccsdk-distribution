@@ -6,11 +6,12 @@ Release Notes
 Version: 0.3.2
 **************
 
-:Release Date: 2018-11-15
+:Release Date: 2018-11-30
 
 **New Features**
 
-The full list of Casablanca epics and user stories for CCSDK maybe be found at <https://jira.onap.org/browse/CCSDK-573?filter=11516>.
+The full list of Casablanca epics and user stories for CCSDK maybe be found at <https://jira.onap.org/issues/?filter=11516>.
+
 The following list summarizes some of the most significant epics:
 
 +-------------+------------------------------------------------+
@@ -26,15 +27,17 @@ The following list summarizes some of the most significant epics:
 +-------------+------------------------------------------------+
 
 **Bug Fixes**
-The full list of bug fixes in the CCSDK Casablanca release may be found at <https://jira.onap.org/browse/CCSDK-624?filter=11517>
+The full list of bug fixes in the CCSDK Casablanca release may be found at <https://jira.onap.org/issues/?filter=11544>
 
 **Known Issues**
 The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
-+-------------+-------------------------------------------------------+
-| Jira #      | Abstract                                              |
-+-------------+-------------------------------------------------------+
-| [CCSDK-293] | COMPONENT_DONE not being sent after model is received |
-+-------------+-------------------------------------------------------+
+
+Quick Links:
+ 	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
+ 	
+ 	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
+ 	
+ 	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=45300857>`_
 
 Version: 0.2.4
 **************
