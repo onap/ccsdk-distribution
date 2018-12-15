@@ -1,54 +1,57 @@
 	<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.onap.ccsdk.parent</groupId>
-        <artifactId>odlparent-lite</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>org.onap.ccsdk.parent</groupId>
+		<artifactId>odlparent-lite</artifactId>
+		<version>1.2.0-SNAPSHOT</version>
+	</parent>
 
-    <groupId>org.onap.ccsdk.distribution</groupId>
-    <artifactId>distribution-root</artifactId>
-    <version>0.4.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+	<groupId>org.onap.ccsdk.distribution</groupId>
+	<artifactId>distribution-root</artifactId>
+	<version>0.4.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-    <name>ccsdk-distribution</name>
-    <description>Creates distributuon bundles for CCSDK</description>
+	<name>ccsdk-distribution</name>
+	<description>Creates distributuon bundles for CCSDK</description>
 
-    <modules>
-        <module>platform-logic</module>
-        <module>dependencies</module>
-        <module>ubuntu</module>
-        <module>opendaylight</module>
-        <module>odlsli</module>
-        <module>dgbuilder</module>
-        <module>dgbuilder-docker</module>
-	<module>ansible-server</module>
-    </modules>
+	<modules>
+		<module>platform-logic</module>
+		<module>dependencies</module>
+		<module>alpine</module>
+		<module>ubuntu</module>
+		<module>opendaylight</module>
+		<module>odlsli</module>
+		<module>dgbuilder</module>
+		<module>dgbuilder-docker</module>
+		<module>ansible-server</module>
+	</modules>
 
-    <properties>
-        <application.name>distribution</application.name>
+	<properties>
+		<application.name>distribution</application.name>
 
-        <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
-        <build.number>${maven.build.timestamp}</build.number>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
+		<maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
+		<build.number>${maven.build.timestamp}</build.number>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 
-    <build>
-        <plugins>
-	    <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <nexusUrl>https://${onap.nexus.host}</nexusUrl>
-                    <stagingProfileId>${onap.nexus.staging.profile-id}</stagingProfileId>
-                    <serverId>${onap.nexus.staging.server-id}</serverId>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<nexusUrl>https://${onap.nexus.host}</nexusUrl>
+					<stagingProfileId>${onap.nexus.staging.profile-id}</stagingProfileId>
+					<serverId>${onap.nexus.staging.server-id}</serverId>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
