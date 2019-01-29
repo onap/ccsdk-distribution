@@ -3,9 +3,9 @@
 * ============LICENSE_START=======================================================
 * ONAP : APPC
 * ================================================================================
-* Copyright (C) 2017-2019 AT&T Intellectual Property.  All rights reserved.
+* Copyright (C) 2019 AT&T Intellectual Property.  All rights reserved.
 * ================================================================================
-* Copyright (C) 2017 Amdocs
+* Copyright (C) 2019 Amdocs
 * =============================================================================
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -292,7 +292,7 @@ def RunAnsible_Playbook (callback, Id, Inventory, Playbook, NodeList, TestRecord
                        {"GroupName": 'na', "StatusCode": 400, "StatusMessage": "FAILURE"}
     
     cherrypy.log("TESTRECORD: " + str(TestRecord[Id]))
-    #cherrypy.log("Output: " + str(Output))
+    cherrypy.log("Output: " + str(Output))
     callback (Id, Result, Output, Log, returncode)
 
 class TestManager (object):
@@ -386,8 +386,7 @@ class TestManager (object):
                         
 
                         VnfType= PlaybookName.split("/")[0] 
-                        if auth:
-                           cherrypy.log( "Request USER  :                  " + cherrypy.request.login)
+                        cherrypy.log( "Request USER  :                  " + cherrypy.request.login)
                         cherrypy.log( "Request Decode: ID               " + Id)
                         cherrypy.log( "Request Decode: VnfType          " + VnfType)
                         cherrypy.log( "Request Decode: EnvParameters    " + json.dumps(EnvParameters))
@@ -445,6 +444,10 @@ class TestManager (object):
                         cherrypy.log( "PlaybookDir:    " + PlaybookDir)
                         cherrypy.log( "AnsibleInv:     " + AnsibleInv)
 
+			#location of host file
+                        #HostFile = PlaybookDir + "/inventory/" + VNF_instance + "hosts"
+                        #cherrypy.log("HostFile: " +  HostFile)
+
                         # Process inventory file for target
                     
                         hostgrouplist = []
@@ -459,26 +462,18 @@ class TestManager (object):
                         # if NodeList empty 
                         if NodeList == []:
                                 cherrypy.log( "*** NodeList - Empty ***")
+                                #AnsibleInvFail = False
 
                         else:
+                                #AnsibleInvFail = False # ???
                                 HaveNodeList = True
 
 			###############################################################################
 			##### Host file processing                          ###########################
 			##### 1. Use file delivered with playbook           ###########################
 			##### 2. If HostNames + NodeList generate and use   ###########################
+			##### 3. If HostNames = VM or NVF copy and use.     ###########################
 			###############################################################################
-
-                        #Verify inventory directory exists
-                        path = PlaybookDir + "/inventory/"
-                        if not os.path.isdir(path):
-                            cherrypy.log ("Inventory directory %s does not exist - create it" % path)
-                            try:
-                                os.mkdir(path)
-                            except OSError:
-                                cherrypy.log ("Creation of the directory %s failed" % path)
-                            else:
-                                cherrypy.log ("Successfully created the directory %s " % path)
 
 			#location of host file - Default
                         HostFile = PlaybookDir + "/inventory/" + VNF_instance + "hosts"
@@ -496,6 +491,36 @@ class TestManager (object):
                            # Having been built now copy new file to correct file
                            shutil.copy(PlaybookDir + "/host_file.txt", HostFile)
                            cherrypy.log("Copying Generated host file to: " + HostFile)
+                        elif HaveInventoryNames & (not HaveNodeList):
+                           ### Copy Instar based Hostfile
+                           if inventory_names == "VNFC":
+                              #test if file
+                              host_file_path = "/storage/inventory/VNFC/" + VNF_instance + "hosts"
+                              if os.path.exists(host_file_path):
+                                #Copy file
+                                cherrypy.log("Copying Instar hostfile: " + host_file_path + " -> " + HostFile)
+                                shutil.copy(host_file_path, HostFile)
+                              else:
+                                cherrypy.log("Inventory file not found: " + host_file_path)
+                           elif inventory_names == "None":
+                              #test if file
+                              host_file_path = "/storage/inventory/None/" + VNF_instance + "hosts"
+                              if os.path.exists(host_file_path):
+                                #Copy file
+                                cherrypy.log("Copying Instar hostfile: " + host_file_path + " -> " + HostFile)
+                                shutil.copy(host_file_path, HostFile)
+                              else:
+                                cherrypy.log("Inventory file not found: " + host_file_path)
+                           elif inventory_names == "VM":
+                              #test if file
+                              host_file_path = "/storage/inventory/VM/" + VNF_instance + "hosts"
+                              if os.path.exists(host_file_path):
+                                #Copy file
+                                cherrypy.log("Copying Instar hostfile: " + host_file_path + " -> " + HostFile)
+                                shutil.copy(host_file_path, HostFile)
+                              else:
+                                cherrypy.log("Inventory file not found: " + host_file_path)
+
 
                         timeout = timeout_seconds
                         if 'Timeout' in input_json:
@@ -632,10 +657,6 @@ class TestManager (object):
 
     
                             # write some info out to files before running
-                            if auth:
-                               f = open(playbook_path + "/User.txt", "a")
-                               f.write(cherrypy.request.login)
-                               f.close()
                             f = open(playbook_path + "/PlaybookName.txt", "a")
                             f.write(PlaybookName)
                             f.close()
@@ -644,7 +665,7 @@ class TestManager (object):
                             f.close()
                             f = open(playbook_path + "/JsonRequest.txt", "w")
                             #f.write(str(input_json))
-                            #print( json.dumps(input_json, indent=4, sort_keys=True))
+                            print( json.dumps(input_json, indent=4, sort_keys=True))
                             f.write( json.dumps(input_json, indent=4, sort_keys=True))
                             f.close()
 
@@ -689,8 +710,7 @@ class TestManager (object):
             if not ( 'Type' in input_data):
                 return {"StatusCode": 500, "StatusMessage": "RESULTS TYPE UNDEFINED"}
 
-            if auth:
-               cherrypy.log( "Request USER:             " + cherrypy.request.login)
+            cherrypy.log( "Request USER:             " + cherrypy.request.login)
             cherrypy.log("Payload: " + str(input_data) + " Type " + input_data['Type'])
 
             if 'LogRest' in input_data['Type']:
@@ -708,7 +728,7 @@ class TestManager (object):
                   cherrypy.log(" No Records to dump")
             
             if 'Id' in input_data and 'Type' in input_data:
-                if not ('GetResult' in input_data['Type'] or 'GetOutputLog' in input_data['Type'] or'GetTheOutput' in input_data['Type'] or 'GetLog' in input_data['Type']):
+                if not ('GetResult' in input_data['Type'] or 'GetOutputLog' in input_data['Type'] or'GetOutput' in input_data['Type'] or 'GetLog' in input_data['Type']):
                     return {"StatusCode": 500, "StatusMessage": "RESULTS TYPE UNDEFINED"}
                 if input_data['Id'] in TestRecord:
                     
@@ -770,7 +790,7 @@ class TestManager (object):
                            print " id: " + id
                            print "   Record:" + str(reecord)
 
-                    elif 'GetTheOutput' in input_data['Type']:
+                    elif 'GetOutput' in input_data['Type']:
 
                         if TestRecord[input_data['Id']]['Output'] == {} and \
                                getresults_block:
@@ -785,9 +805,8 @@ class TestManager (object):
                         
                         cherrypy.log( "Output: " + str(TestRecord[input_data['Id']]['Output']))
                         return {"Output": TestRecord[input_data['Id']]['Output']['Output']}
-
                     elif 'GetOutputLog' in input_data['Type']:
-                       cherrypy.log("GetOutputLog: processing.")
+#XXXXXXXXXXX
                        if glob.glob(  ansible_temp + '/*_' + input_data['Id']):
                           id = input_data['Id']
                           cherrypy.log("Old directory found for ID: " + id)
@@ -809,9 +828,9 @@ class TestManager (object):
                                f.close()
                                return output_log
                        else:
-                         cherrypy.log("Globglob failed:")
                          return
 
+#XXXXXXXXXXX
                     else:
                         # GetLog
 

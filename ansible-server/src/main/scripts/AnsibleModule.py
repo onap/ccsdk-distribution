@@ -3,9 +3,9 @@
 * ============LICENSE_START=======================================================
 * ONAP : APPC
 * ================================================================================
-* Copyright (C) 2017 AT&T Intellectual Property.  All rights reserved.
+* Copyright (C) 2019 AT&T Intellectual Property.  All rights reserved.
 * ================================================================================
-* Copyright (C) 2017 Amdocs
+* Copyright (C) 2019 Amdocs
 * =============================================================================
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,45 +30,43 @@ from collections import namedtuple
 import json
 
 import uuid
+import cherrypy
+from cherrypy.lib.httputil import parse_query_string
+from cherrypy.lib import auth_basic
 
 def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
-                    envparameters, localparameters, lcm, timeout):
+                    envparameters, localparameters, timeout, playbookdir):
 
-    print "***> in AnsibleModule.ansibleSysCall"
-    print "   EnvParameters:  ", envparameters
-    print "   LocalParameters:", localparameters
-    print "   Inventory:      ", inventory_path
-    print "   Playbook:       ", playbook_path
-    print "   NodeList:       ", nodelist
-    print "   Mandatory:      ", mandatory
-    print "   Timeout:        ", timeout
+    cherrypy.log( "***> in AnsibleModule.ansibleSysCall")
     log = []
 
     str_parameters = ''
                 
-    if not envparameters == {}:
+    if not envparameters == '':
         for key in envparameters:
             if str_parameters == '':
                 str_parameters = '"'  + str(key) + '=\'' + str(envparameters[key])  + '\''
             else:
-                str_parameters += ' '  + str(key) + '=\'' + str(envparameters[key])  + '\''
+                #str_parameters += ' '  + str(key) + '=\'' + str(envparameters[key])  + '\''
+                str_parameters += ', '  + str(key) + '=\'' + str(envparameters[key])  + '\''
         str_parameters += '"'
                         
     if len(str_parameters) > 0:
-        cmd = 'timeout --signal=KILL ' + str(timeout) + \
-              ' ansible-playbook -v --extra-vars ' + str_parameters + ' -i ' + \
-              inventory_path + ' ' + playbook_path
+        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout --signal=KILL ' + str(timeout) + \
+              ' ansible-playbook -v --timeout ' + str(timeout) + ' --extra-vars ' + str_parameters + ' -i ' + \
+              inventory_path + ' ' + playbook_path + ' | tee log.file'
     else:
-        cmd = 'timeout --signal=KILL ' + str(timeout) + \
-              ' ansible-playbook -v -i ' + inventory_path + ' ' + playbook_path
+        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout --signal=KILL ' + str(timeout) + \
+              ' ansible-playbook -v --timeout ' + str(timeout) + ' -i ' + inventory_path + ' ' + playbook_path +' | tee log.file'
 
-    print "   CMD:            ", cmd
+    cherrypy.log("CMD: " + cmd)
 
-    print "\n =================ANSIBLE STDOUT BEGIN============================================\n"
+    cherrypy.log("PlayBook Start: " + playbookdir )
     p = subprocess.Popen(cmd, shell=True,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.STDOUT) 
-    # p.wait()
+    #PAP
+    #p.wait()
     (stdout_value, err) = p.communicate()
     
     stdout_value_cleanup = ''
@@ -82,52 +80,12 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
 
     if returncode == 137:
         
-        print "   ansible-playbook system call timed out"
+        cherrypy.log("   ansible-playbook system call timed out")
         # ansible-playbook system call timed out
         for line in stdout_value: # p.stdout.readlines():
             log.append (line)
             
             
-    elif 'ping' in lcm:
-
-        targetnode = envparameters['TargetNode'].split(' ')
-        str_json = None
-        for line in stdout_value: # p.stdout.readlines():
-            print line # line,
-            if "PLAY RECAP" in line:
-                ParseFlag = False
-            if ParseFlag and len(line.strip())>0:
-                str_json += line.strip()
-            if "TASK [debug]" in line:
-                ParseFlag = True
-                str_json = ''
-            log.append (line)
-
-        if str_json:
-            if '=>' in str_json:
-                out_json =eval(str_json.split('=>')[1].replace('true','True').replace('false','False'))
-
-                if 'ping.stdout_lines' in out_json:
-                    for node in targetnode:
-                        ip_address = node
-                        ok_flag = '0'
-                        changed_flag = '0'
-                        unreachable_flag = '0'
-                        failed_flag = '1'
-                        for rec in out_json['ping.stdout_lines']:
-                            if node in rec and "is alive" in rec:
-                                ok_flag = '1'
-                                changed_flag = '1'
-                                unreachable_flag = '0'
-                                failed_flag = '0'
-                        for rec in out_json['ping.stdout_lines']:
-                            if node in rec and "address not found" in rec:
-                                ok_flag = '0'
-                                changed_flag = '0'
-                                unreachable_flag = '1'
-                                failed_flag = '0'
-                        retval[ip_address]=[ok_flag, changed_flag, unreachable_flag,
-                                            failed_flag]
     else:
             
         for line in stdout_value: # p.stdout.readlines():
@@ -142,10 +100,17 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
             if "PLAY RECAP" in line:
                 ParseFlag = True
             log.append (line)
+            if "Killed" in line: # check for timeout
+                cherrypy.log(" Playbook Killed(timeout)")
+                returncode = 137
         
     # retval['p'] = p.wait()
 
-    print " =================ANSIBLE STDOUT END==============================================\n"
+    #cherrypy.log("*** <" + playbookdir + "> [" + str(log) + "] ***")
+    cherrypy.log("PlayBook Complete: " + playbookdir )
+    f = open(playbookdir + "/output.log", "w")
+    f.write(str(log))
+    f.close()
 
     return retval, log, returncode
 
