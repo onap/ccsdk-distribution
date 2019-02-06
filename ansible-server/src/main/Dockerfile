@@ -22,6 +22,8 @@ COPY configuration/ansible.cfg /etc/ansible/ansible.cfg
 
 WORKDIR /opt/ansible-server
 
+RUN mkdir /opt/onap ; ln -s /opt/ansible-server /opt/onap/ccsdk
+
 EXPOSE 8000
 
 ENTRYPOINT ["python2", "RestServer.py"]
