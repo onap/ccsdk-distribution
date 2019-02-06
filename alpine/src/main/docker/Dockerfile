@@ -1,5 +1,5 @@
 # Base ubuntu with added packages needed for open ecomp
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER CCSDK  Team (onap-ccsdk@lists.onap.org)
 
 ARG HTTP_PROXY
