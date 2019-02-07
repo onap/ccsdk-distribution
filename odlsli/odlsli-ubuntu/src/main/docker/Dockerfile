@@ -10,6 +10,8 @@ ENV CCSDK_FEATURES_REPO mvn:org.onap.ccsdk.features/ccsdk-features-all/${ccsdk.f
 ENV CCSDK_SLI_NORTHBOUND_REPO mvn:org.onap.ccsdk.sli.northbound/ccsdk-sli-northbound-all/${ccsdk.sli.northbound.version}/xml/features
 ENV CCSDK_SLI_PLUGINS_REPO mvn:org.onap.ccsdk.sli.plugins/ccsdk-sli-plugins-all/${ccsdk.sli.plugins.version}/xml/features
 ENV ANSIBLE_GPG_KEY ${ansible.gpg.key}
+ENV ODL_BOOT_FEATURES_EXTRA ${odl.boot.features.extra}
+
 
 # copy the opendaylight credentials
 COPY idmlight.db.mv.db $ODL_HOME/data
