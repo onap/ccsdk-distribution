@@ -11,21 +11,23 @@ Version: 0.3.3
 ** Bug Fixes **
 The following bugs are fixed in the CCSDK Casablanca January 2019 maintenance release:
 
-+-------------+--------------------------------------------------------------------+
-| Jira #      | Abstract                                                           |
-+=============+====================================================================+
-| [CCSDK-727] | Do not prepend "sub" for subnet net id                             |
-+-------------+--------------------------------------------------------------------+
-| [CCSDK-728] | Self serve DG adjustement for unassign                             |
-+-------------+--------------------------------------------------------------------+
-| [CCSDK-740] | Restore inventory-response-item definition to the original version |
-+-------------+--------------------------------------------------------------------+
-| [CCSDK-765] | Upgrade jackson version to 2.8.9                                   |
-+-------------+--------------------------------------------------------------------+
-| [CCSDK-777] | Release version contains some snapshots                            |
-+-------------+--------------------------------------------------------------------+
-| [CCSDK-843] | Compile error due to old snapshot dependency                       |
-+-------------+--------------------------------------------------------------------+
++-------------+-------------------------------------------------------------------------------+
+| Jira #      | Abstract                                                                      |
++=============+===============================================================================+
+| [CCSDK-727] | Do not prepend "sub" for subnet net id                                        |
++-------------+-------------------------------------------------------------------------------+
+| [CCSDK-728] | Self serve DG adjustement for unassign                                        |
++-------------+-------------------------------------------------------------------------------+
+| [CCSDK-740] | Restore inventory-response-item definition to the original version            |
++-------------+-------------------------------------------------------------------------------+
+| [CCSDK-765] | Upgrade jackson version to 2.8.9                                              |
++-------------+-------------------------------------------------------------------------------+
+| [CCSDK-777] | Release version contains some snapshots                                       |
++-------------+-------------------------------------------------------------------------------+
+| [CCSDK-843] | Compile error due to old snapshot dependency                                  |
++-------------+-------------------------------------------------------------------------------+
+| [CCSDK-935] | restapicall JsonParser failed if response contains : as part of response body |
++-------------+-------------------------------------------------------------------------------+
 
 **Known Issues**
 The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
