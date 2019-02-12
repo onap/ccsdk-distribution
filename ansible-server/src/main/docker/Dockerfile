@@ -1,5 +1,5 @@
 # Base ubuntu with added packages needed for open ecomp
-FROM onap/ccsdk-ubuntu-image:${ccsdk.distribution.version}
+FROM onap/ccsdk-ubuntu-image:${project.docker.latestfulltag.version}
 
 LABEL maintainer="SDN-C Team (sdnc@lists.openecomp.org)"
 
