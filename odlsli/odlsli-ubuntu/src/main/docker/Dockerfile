@@ -1,5 +1,5 @@
 # Base ubuntu with added packages needed for open ecomp
-FROM ${base.image.name}:${project.version}
+FROM ${base.image.name}:${project.docker.latestfulltag.version}
 MAINTAINER CCSDK Team (onap-ccsdk@lists.onap.org)
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV ODL_HOME /opt/opendaylight

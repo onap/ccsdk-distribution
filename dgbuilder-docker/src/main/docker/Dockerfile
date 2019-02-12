@@ -1,5 +1,5 @@
 # Base ubuntu with added packages needed for open ecomp
-FROM onap/ccsdk-ubuntu-image:${project.version}
+FROM onap/ccsdk-ubuntu-image:${project.docker.latestfulltag.version}
 MAINTAINER CCSDK  Team (onap-discuss@lists.onap.org)
 
 # copy onap
