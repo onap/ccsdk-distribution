@@ -410,11 +410,11 @@ class TestManager (object):
 
                                         else:
                                             for key in data_inventory_orig:
-                                                if node in " ".join(data_inventory_orig[key]):
+                                                if node+" " in " ".join(data_inventory_orig[key]):
                                                     if not key in data_inventory_target:
                                                         data_inventory_target[key] = []
                                                     for cred in data_inventory_orig[key]:
-                                                        if node in cred:
+                                                        if node+" " in cred:
                                                             data_inventory_target[key].append(cred)
                                                             Fail = False
 
