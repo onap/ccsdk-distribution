@@ -7,7 +7,9 @@ WORKDIR /opt/
 
 COPY ansible-server/requirements.txt ansible-server/requirements.txt
 
-RUN apk add --no-cache py2-pip \
+RUN apk add --no-cache curl \
+                       bash \
+                       py2-pip \
                        python2 &&\
     apk add --no-cache --virtual .build-deps build-base \
                                              libffi-dev \
@@ -26,4 +28,4 @@ RUN mkdir /opt/onap ; ln -s /opt/ansible-server /opt/onap/ccsdk
 
 EXPOSE 8000
 
-ENTRYPOINT ["python2", "RestServer.py"]
+##ENTRYPOINT ["python2", "RestServer.py"]

@@ -97,6 +97,26 @@
 							</arguments>
 						</configuration>
 					</execution>
+                    	                <execution>
+						 <id>change shell permissions</id>
+						 <phase>process-sources</phase>
+						 <goals>
+							   <goal>exec</goal>
+						 </goals>
+						 <configuration>
+							  <executable>/usr/bin/find</executable>
+						  <arguments>
+							<argument>${basedir}/target/docker-stage/ansible-server</argument>
+							<argument>-name</argument>
+							<argument>*.sh</argument>
+							<argument>-exec</argument>
+							<argument>chmod</argument>
+							<argument>+x</argument>
+							<argument>{}</argument>
+							<argument>;</argument>
+						  </arguments>
+						</configuration>
+				        </execution>
 				</executions>
 			</plugin>
 		</plugins>
