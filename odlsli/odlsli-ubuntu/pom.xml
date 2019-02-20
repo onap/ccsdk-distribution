@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.onap.ccsdk.parent</groupId>
 		<artifactId>odlparent-lite</artifactId>
-		<version>1.2.1-SNAPSHOT</version>
+		<version>1.2.2-SNAPSHOT</version>
 		<relativePath/>
 	</parent>
 
 	<groupId>org.onap.ccsdk.distribution</groupId>
 	<artifactId>distribution-odlsli-ubuntu</artifactId>
-	<version>0.4.1-SNAPSHOT</version>
+	<version>0.4.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>ccsdk-distribution :: odlsli-ubuntu</name>
@@ -32,7 +32,7 @@
 		<docker.push.phase>deploy</docker.push.phase>
 		<docker.verbose>true</docker.verbose>
 		<ansible.gpg.key>93C4A3FD7BB9C367</ansible.gpg.key>
-		<odl.features.extra>odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs,odl-daexim-all</odl.features.extra>
+		<odl.features.extra>odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs, odl-daexim-all,odl-restconf-nb-rfc8040</odl.features.extra>
 		<ccsdk.odl.features>ccsdk-sli-core-all,ccsdk-sli-adaptors-all,ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all</ccsdk.odl.features>
 		<odl.boot.features.extra>${odl.features.extra},${ccsdk.odl.features}</odl.boot.features.extra>
 	</properties>
@@ -238,6 +238,20 @@
 		<dependency>
 			<groupId>org.onap.ccsdk.features</groupId>
 			<artifactId>blueprints-processor-installer</artifactId>
+			<version>${ccsdk.features.version}</version>
+			<classifier>repo</classifier>
+			<type>zip</type>
+		</dependency>
+	        <dependency>
+        		<groupId>org.onap.ccsdk.features.sdnr.wt</groupId>
+			<artifactId>sdnr-wt-feature-aggregator-installer</artifactId>
+	            	<version>${ccsdk.features.version}</version>
+	            	<classifier>repo</classifier>
+	            	<type>zip</type>
+	        </dependency>
+		<dependency>
+			<groupId>org.onap.ccsdk.features</groupId>
+			<artifactId>aafshiro-installer</artifactId>
 			<version>${ccsdk.features.version}</version>
 			<classifier>repo</classifier>
 			<type>zip</type>
