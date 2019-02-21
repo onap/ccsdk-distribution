@@ -26,7 +26,7 @@ RUN sed -i -e "\|featuresRepositories|s|$|, ${CCSDK_SLI_CORE_REPO}, ${CCSDK_SLI_
 RUN sed -i -e "\|featuresBoot[^a-zA-Z]|s|$|,${ODL_BOOT_FEATURES_EXTRA}|"  $ODL_HOME/etc/org.apache.karaf.features.cfg
 
 # Create odl user
-RUN adduser -S odl
+RUN addgroup -S odl && adduser -S odl -G odl
 
 # Install ansible
 #COPY ansible-sources.list /etc/apt/sources.list.d
@@ -46,9 +46,11 @@ RUN adduser -S odl
 
 
 # copy deliverables to opt
-COPY opt /opt
-COPY org.ops4j.pax.logging.cfg /opt/opendaylight/etc/org.ops4j.pax.logging.cfg
+COPY --chown=odl:odl opt /opt
+COPY --chown=odl:odl org.ops4j.pax.logging.cfg /opt/opendaylight/etc/org.ops4j.pax.logging.cfg
 
+RUN chown -R odl:odl /opt
 
+USER odl
 ENTRYPOINT /opt/onap/ccsdk/bin/startODL.sh
 EXPOSE 8181

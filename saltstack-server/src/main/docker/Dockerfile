@@ -10,4 +10,12 @@ RUN yum clean all && \
 
 EXPOSE 4505 4506
 
-CMD /usr/bin/salt-master -d; /bin/bash
+# Create non root user
+RUN groupadd --system saltstack && useradd --system -g saltstack saltstack
+RUN chown -R saltstack /etc/salt /var/cache/salt /var/log/salt
+RUN mkdir /var/run/salt && chown saltstack:saltstack /var/run/salt
+
+USER saltstack
+
+# Run salt-master in foreground (not as a daemon)
+CMD /usr/bin/salt-master
