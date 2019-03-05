@@ -10,6 +10,7 @@ COPY ansible-server/requirements.txt ansible-server/requirements.txt
 RUN apk add --no-cache curl \
                        bash \
                        py2-pip \
+                       openssh-client \
                        python2 &&\
     apk add --no-cache --virtual .build-deps build-base \
                                              libffi-dev \
@@ -29,6 +30,7 @@ WORKDIR /opt/ansible-server
 RUN mkdir /opt/onap ; ln -s /opt/ansible-server /opt/onap/ccsdk
 RUN echo > /var/log/ansible-server.log
 RUN chown ansible:ansible /var/log/ansible-server.log
+RUN chown ansible:ansible /opt/ansible-server
 
 USER ansible:ansible
 
