@@ -3,10 +3,12 @@ exec &> >(tee -a "/var/log/ansible-server.log")
 
 if [ ! -f /tmp/.ansible-server-installed ]
 then
+    pip install 'more-itertools==5.0.0'
     pip install PyMySQL
     pip install 'cherrypy<18.0.0'
     pip install requests
 
+    apt-get update
     apt-get -y install software-properties-common
     apt-add-repository -y ppa:ansible/ansible
     apt-get -y install ansible
