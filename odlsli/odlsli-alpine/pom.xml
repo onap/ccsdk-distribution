@@ -33,7 +33,11 @@
 		<docker.verbose>true</docker.verbose>
 		<ansible.gpg.key>93C4A3FD7BB9C367</ansible.gpg.key>
 		<odl.features.extra>odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs,odl-daexim-all</odl.features.extra>
+	    <!-- 
 		<ccsdk.odl.features>ccsdk-sli-core-all,ccsdk-sli-adaptors-all,ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all</ccsdk.odl.features>
+		-->
+		<ccsdk.adaptors.features>ccsdk-aai-service,ccsdk-ansible-adapter,ccsdk-grpc-client,ccsdk-netbox-client,csdk-mdsal-resource,ccsdk-resource-assignment,ccsdk-sql-resource</ccsdk.adaptors.features>
+		<ccsdk.odl.features>ccsdk-sli-core-all,${ccsdk.adaptors.features},ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all</ccsdk.odl.features>
 		<odl.boot.features.extra>${odl.features.extra},${ccsdk.odl.features}</odl.boot.features.extra>
 	</properties>
 	
@@ -151,13 +155,13 @@
 			<classifier>repo</classifier>
 			<type>zip</type>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.onap.ccsdk.sli.adaptors</groupId>
 			<artifactId>sliadaptors-features-installer</artifactId>
 			<version>${ccsdk.sli.adaptors.version}</version>
 			<classifier>repo</classifier>
 			<type>zip</type>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.onap.ccsdk.sli.northbound</groupId>
 			<artifactId>asdcApi-installer</artifactId>
