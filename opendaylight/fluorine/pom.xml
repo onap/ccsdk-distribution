@@ -5,15 +5,43 @@
     <parent>
         <groupId>org.onap.ccsdk.distribution</groupId>
         <artifactId>distribution-opendaylight</artifactId>
-        <version>0.4.1-SNAPSHOT</version>
+        <version>0.4.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>distribution-odl-fluorine</artifactId>
-    <version>0.4.1-SNAPSHOT</version>
+    <version>0.4.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>ccsdk-distribution :: opendaylight</name>
     <description>Creates OpenDaylight container</description>
+    
+    <properties>
+		<ccsdk.project.version>${project.version}</ccsdk.project.version>
+		<ccsdk.build.timestamp>${maven.build.timestamp}</ccsdk.build.timestamp>
+		<ccsdk.opendaylight.version>0.9.2</ccsdk.opendaylight.version>
+		<ccsdk.mariadb-connector-java.version>2.1.1</ccsdk.mariadb-connector-java.version>
+		<docker.buildArg.https_proxy>${https_proxy}</docker.buildArg.https_proxy>
+		<docker.push.phase>deploy</docker.push.phase>
+    </properties>
+    
+    	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.opendaylight.integration</groupId>
+				<artifactId>karaf</artifactId>
+				<version>${ccsdk.opendaylight.version}</version>
+				<type>tar.gz</type>
+			</dependency>
+			<dependency>
+				<groupId>org.mariadb.jdbc</groupId>
+				<artifactId>mariadb-java-client</artifactId>
+				<version>${ccsdk.mariadb-connector-java.version}</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
 
     <modules>
     	    <module>fluorine-ubuntu</module>
