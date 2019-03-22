@@ -23,7 +23,7 @@ RUN rsync -a /tmp/system $ODL_HOME && rm -rf /tmp/system
 # Add CCSDK repositories to boot repositories
 RUN cp $ODL_HOME/etc/org.apache.karaf.features.cfg $ODL_HOME/etc/org.apache.karaf.features.cfg.orig
 #RUN sed -i -e "\|featuresRepositories|s|$|, ${CCSDK_SLI_CORE_REPO}, ${CCSDK_SLI_ADAPTORS_REPO}, ${CCSDK_SLI_NORTHBOUND_REPO}, ${CCSDK_SLI_PLUGINS_REPO}, ${CCSDK_FEATURES_REPO}|"  $ODL_HOME/etc/org.apache.karaf.features.cfg
-RUN sed -i -e "\|featuresRepositories|s|$|, ${CCSDK_SLI_CORE_REPO},${CCSDK_SLI_NORTHBOUND_REPO}, ${CCSDK_SLI_PLUGINS_REPO}, ${CCSDK_FEATURES_REPO}|"  $ODL_HOME/etc/org.apache.karaf.features.cfg
+RUN sed -i -e "\|featuresRepositories|s|$|, ${CCSDK_SLI_CORE_REPO}, ${CCSDK_SLI_NORTHBOUND_REPO}, ${CCSDK_SLI_PLUGINS_REPO}, ${CCSDK_FEATURES_REPO}|"  $ODL_HOME/etc/org.apache.karaf.features.cfg
 RUN sed -i -e "\|featuresBoot[^a-zA-Z]|s|$|,${ODL_BOOT_FEATURES_EXTRA}|"  $ODL_HOME/etc/org.apache.karaf.features.cfg
 
 # Create odl user
