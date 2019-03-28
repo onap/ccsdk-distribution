@@ -1,5 +1,5 @@
 # Base ubuntu with added packages needed for open ecomp
-FROM ubuntu:16.04
+FROM docker.io/ubuntu:16.04
 MAINTAINER CCSDK  Team (onap-ccsdk@lists.onap.org)
 
 ARG HTTP_PROXY
