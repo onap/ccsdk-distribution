@@ -1,5 +1,5 @@
 # Base ubuntu with added packages needed for open ecomp
-FROM onap/ccsdk-ubuntu-image:${project.docker.latestfulltag.version}
+FROM onap/ccsdk-alpine-image:${project.docker.latestfulltag.version}
 MAINTAINER CCSDK  Team (onap-discuss@lists.onap.org)
 
 # Create non-root user
