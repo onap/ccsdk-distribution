@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.onap.ccsdk.sli.distribution</groupId>
+	<artifactId>ccsdk-lighty-module</artifactId>
+	<version>0.5.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<ccsdk.lighty.version>0.6.0-SNAPSHOT</ccsdk.lighty.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.onap.ccsdk.sli.core</groupId>
+				<artifactId>ccsdk-lighty-dependency-versions</artifactId>
+				<version>${ccsdk.lighty.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.onap.ccsdk.sli.core</groupId>
+			<artifactId>ccsdk-core-lighty</artifactId>
+			<version>${ccsdk.lighty.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>org.apache.karaf.jaas.modules</artifactId>
+					<groupId>org.apache.karaf.jaas</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.onap.ccsdk.sli.adaptors</groupId>
+			<artifactId>ccsdk-adaptors-lighty</artifactId>
+			<version>${ccsdk.lighty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.onap.ccsdk.sli.northbound</groupId>
+			<artifactId>ccsdk-northbound-lighty</artifactId>
+			<version>${ccsdk.lighty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.onap.ccsdk.sli.plugins</groupId>
+			<artifactId>ccsdk-plugins-lighty</artifactId>
+			<version>${ccsdk.lighty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.onap.ccsdk.sli.core</groupId>
+			<artifactId>sli-recording</artifactId>
+			<version>${ccsdk.lighty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.opendaylight.aaa</groupId>
+			<artifactId>aaa-encrypt-service</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+    </dependencies>
+</project>
