@@ -33,14 +33,14 @@
 		<docker.verbose>true</docker.verbose>
 		<ansible.gpg.key>93C4A3FD7BB9C367</ansible.gpg.key>
 		<odl.features.extra>odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs, odl-daexim-all, odl-restconf-nb-rfc8040</odl.features.extra>
-	    <!-- 
+	    <!--
 		<ccsdk.odl.features>ccsdk-sli-core-all,ccsdk-sli-adaptors-all,ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all</ccsdk.odl.features>
 		-->
 		<ccsdk.adaptors.features>ccsdk-aai-service,ccsdk-ansible-adapter,ccsdk-grpc-client,ccsdk-netbox-client,csdk-mdsal-resource,ccsdk-resource-assignment,ccsdk-sql-resource</ccsdk.adaptors.features>
-		<ccsdk.odl.features>ccsdk-sli-core-all,${ccsdk.adaptors.features},ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all</ccsdk.odl.features>
+		<ccsdk.odl.features>ccsdk-sli-core-all,${ccsdk.adaptors.features},ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all,sdnr-northbound-all</ccsdk.odl.features>
 		<odl.boot.features.extra>${odl.features.extra},${ccsdk.odl.features}</odl.boot.features.extra>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -267,6 +267,21 @@
 			<classifier>repo</classifier>
 			<type>zip</type>
 	        </dependency>
+			<dependency>
+	      <groupId>org.onap.ccsdk.features.sdnr.northbound</groupId>
+	      <artifactId>sdnr-northbound-features-installer</artifactId>
+	      <version>${ccsdk.features.version}</version>
+	      <classifier>repo</classifier>
+	      <type>zip</type>
+	    </dependency>
+			<dependency>
+				<groupId>org.onap.ccsdk.features.sdnr.northbound</groupId>
+				<artifactId>oofpcipoc-installer</artifactId>
+				<version>${ccsdk.features.version}</version>
+				<classifier>repo</classifier>
+				<type>zip</type>
+			</dependency>
+
 	</dependencies>
 
 	<build>

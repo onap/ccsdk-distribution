@@ -1,0 +1,530 @@
+[
+    {
+        "id": "f22345c.de9f5b8",
+        "type": "method",
+        "name": "method",
+        "xml": "<method rpc='add-neighbor' mode='sync'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 148.0103988647461,
+        "y": 257.98956298828125,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "d7c5d576.1a7868"
+            ]
+        ]
+    },
+    {
+        "id": "882b1b72.c01588",
+        "type": "dgstart",
+        "name": "DGSTART",
+        "outputs": 1,
+        "x": 168.010404586792,
+        "y": 59.989585876464844,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "96efced.3d6433"
+            ]
+        ]
+    },
+    {
+        "id": "96efced.3d6433",
+        "type": "service-logic",
+        "name": "oofpcipoc-api 0.4.2-SNAPSHOT",
+        "module": "oofpcipoc-api",
+        "version": "${project.version}",
+        "comments": "",
+        "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='oofpcipoc-api' version='0.4.2-SNAPSHOT'>",
+        "outputs": 1,
+        "x": 169.01039123535156,
+        "y": 141.98968315124512,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "f22345c.de9f5b8"
+            ]
+        ]
+    },
+    {
+        "id": "d7c5d576.1a7868",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 134.50000381469727,
+        "y": 452.9896240234375,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "ff63b265.d194a",
+                "add1f4bf.f5ec98",
+                "f85efba7.e52cf8",
+                "5b7bde21.76a44",
+                "dd389a0f.51a588",
+                "9b68a77d.4364d8"
+            ]
+        ]
+    },
+    {
+        "id": "ff63b265.d194a",
+        "type": "returnSuccess",
+        "name": "return success",
+        "xml": "<return status='success'>\n<parameter name=\"ack-final-indicator\" value=\"Y\" />\n<parameter name=\"error-code\" value=\"200\" />\n<parameter name=\"error-message\" value=\"SUCCESSFUL add-neighbor Execution\" />\n",
+        "comments": "",
+        "x": 405.01065826416016,
+        "y": 599.9897012710571,
+        "z": "cc83b660.90f568",
+        "wires": []
+    },
+    {
+        "id": "9832e91f.5dea28",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Input RPC Payload request for Alias:  \"/>\n<parameter name=\"field2\" value=\"`$add-neighbor-input.alias`\"/>\n<parameter name=\"field3\" value=\"Input RPC Payload request for add-neighbor. Neighbor Cell #:  \"/>\n<parameter name=\"field4\" value=\"`$idx`\"/>\n<parameter name=\"field5\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`\"/>\n<parameter name=\"field6\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`\"/>\n<parameter name=\"field7\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].phy-cell-id`\"/>\n<parameter name=\"field8\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].pnf-name`\"/>\n<parameter name=\"field9\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].blacklisted`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 717.0112991333008,
+        "y": 36.98963642120361,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e5a7e054.27e8c",
+        "type": "comment",
+        "name": "Add Neighbor",
+        "info": "",
+        "comments": "",
+        "x": 371.010404586792,
+        "y": 20,
+        "z": "cc83b660.90f568",
+        "wires": []
+    },
+    {
+        "id": "4725ca86.5a91c4",
+        "type": "failure",
+        "name": "failure",
+        "xml": "<outcome value='failure'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 911.0106582641602,
+        "y": 520.6666460037231,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "419e89e2.878848"
+            ]
+        ]
+    },
+    {
+        "id": "419e89e2.878848",
+        "type": "returnFailure",
+        "name": "return failure",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error getting details about new neighbor \" />",
+        "comments": "",
+        "x": 1114.0104713439941,
+        "y": 526.6666889190674,
+        "z": "cc83b660.90f568",
+        "wires": []
+    },
+    {
+        "id": "b77d4baf.430698",
+        "type": "success",
+        "name": "success",
+        "xml": "<outcome value='success'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 894.0104560852051,
+        "y": 604.6667747497559,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "3d864d85.162082"
+            ]
+        ]
+    },
+    {
+        "id": "3d864d85.162082",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1060.01025390625,
+        "y": 608.6667079925537,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "d764eca7.6c1dd"
+            ]
+        ]
+    },
+    {
+        "id": "d764eca7.6c1dd",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Details about newly added Neighbor\"/>\n<parameter name=\"field2\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`\"/>\n<parameter name=\"field3\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`\"/>\n<parameter name=\"field4\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`\"/>\n<parameter name=\"field5\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].pnf-name`\"/>\n<parameter name=\"field6\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].blacklisted`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1236.010196685791,
+        "y": 607.6669750213623,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e945229c.9e3f8",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Setting variables for Neighbor Add PUT operation\"/>\n<parameter name=\"field2\" value=\"`$tmp.add-neighbor-service-url`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.phy-cell-id`\"/>\n<parameter name=\"field6\" value=\"`$tmp.pnf-name`\"/>\n<parameter name=\"field7\" value=\"`$tmp.blacklisted`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 614.0113372802734,
+        "y": 442.0000858306885,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f85efba7.e52cf8",
+        "type": "for",
+        "name": "for",
+        "xml": "<for index='idx' start='0' end=\"`$add-neighbor-input.lte-cell-number-of-entries`\" >",
+        "comments": "",
+        "outputs": 1,
+        "x": 566.0961723327637,
+        "y": 44.95317363739014,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "9832e91f.5dea28"
+            ]
+        ]
+    },
+    {
+        "id": "add1f4bf.f5ec98",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"RPC to add neighbors. Number of neighbors to add: \"/>\n<parameter name=\"field2\" value=\"`$add-neighbor-input.lte-cell-number-of-entries`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 387.0107116699219,
+        "y": 85.01043033599854,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9b68a77d.4364d8",
+        "type": "for",
+        "name": "for",
+        "xml": "<for index='idx' start='0' end=\"`$add-neighbor-input.lte-cell-number-of-entries`\" >",
+        "comments": "",
+        "outputs": 1,
+        "x": 323.0105800628662,
+        "y": 453.99998664855957,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "d54b1c5c.89e1a"
+            ]
+        ]
+    },
+    {
+        "id": "2a7d5b86.2f1f74",
+        "type": "set",
+        "name": "set tmp variables for the requested neighbor to be added",
+        "xml": "<set>\n<parameter name=\"tmp.plmnid\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`\"/>\n<parameter name=\"tmp.cid\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`\"/>\n<parameter name=\"tmp.phy-cell-id\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].phy-cell-id`\"/>\n<parameter name=\"tmp.pnf-name\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].pnf-name`\"/>\n<parameter name=\"tmp.blacklisted\" value=\"`$add-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].blacklisted`\"/>\n<parameter name=\"tmp.alias\" value=\"`$add-neighbor-input.alias`\"/>",
+        "comments": "",
+        "x": 876.0115585327148,
+        "y": 125.88908386230469,
+        "z": "cc83b660.90f568",
+        "wires": []
+    },
+    {
+        "id": "2241af1e.1c926",
+        "type": "failure",
+        "name": "failure",
+        "xml": "<outcome value='failure'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 914.0107421875,
+        "y": 383.00007915496826,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "1cb43b66.fbd255"
+            ]
+        ]
+    },
+    {
+        "id": "90d94f4f.9d631",
+        "type": "success",
+        "name": "success",
+        "xml": "<outcome value='success'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 905.0107002258301,
+        "y": 464.00000190734863,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "70dd741.ff0be8c"
+            ]
+        ]
+    },
+    {
+        "id": "1cb43b66.fbd255",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1047.0106716156006,
+        "y": 342.0001106262207,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "469db094.1216"
+            ]
+        ]
+    },
+    {
+        "id": "469db094.1216",
+        "type": "returnFailure",
+        "name": "return failure",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error adding a new neighbor\" />",
+        "comments": "",
+        "x": 1226.010362625122,
+        "y": 339.00007820129395,
+        "z": "cc83b660.90f568",
+        "wires": []
+    },
+    {
+        "id": "70dd741.ff0be8c",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1070.0104293823242,
+        "y": 463.00006198883057,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "2f306524.135d7a"
+            ]
+        ]
+    },
+    {
+        "id": "2f306524.135d7a",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"PUT New Neighbor Executed Successfully \"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1243.0105438232422,
+        "y": 464.0000944137573,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d54b1c5c.89e1a",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 403.0103988647461,
+        "y": 392.0104808807373,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "2a7d5b86.2f1f74",
+                "e945229c.9e3f8",
+                "6df2494b.4e3978",
+                "89170580.861658",
+                "27948b9f.2a3644",
+                "4d365ed1.6f0aa",
+                "9041c096.4c873",
+                "a5298f6.4caf87",
+                "98094ef7.d5497",
+                "75189f8.6382e6"
+            ]
+        ]
+    },
+    {
+        "id": "5b7bde21.76a44",
+        "type": "execute",
+        "name": "execute Properties",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >\n    <parameter name='fileName' value='%SDNC_CONFIG_DIR%/sdnr-oofpcipoc-api-dg.properties' />\n    <parameter name='contextPrefix' value='prop' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 612.0106506347656,
+        "y": 91.01041412353516,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dd389a0f.51a588",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Properties read .. neighbor-add template\"/>\n<parameter name=\"field2\" value=\"`$prop.neighbor-add.templatefile`\"/>\n<parameter name=\"field3\" value=\"`$prop.controller.user`\"/>\n<parameter name=\"field4\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"field5\" value=\"`$prop.controller.url`\"/>\n<parameter name=\"field6\" value=\"`$prop.restapi.lte-ran-neighbor-in-use`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 572.010778427124,
+        "y": 141.01051807403564,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6df2494b.4e3978",
+        "type": "execute",
+        "name": "generate neighbor add URL",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.lte-ran-neighbor-in-use`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.add-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{alias}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 811.0109329223633,
+        "y": 217.01056575775146,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "89170580.861658",
+        "type": "execute",
+        "name": "add a neighbor using PUT",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-addNeighbor.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.add-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PUT\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-add-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />",
+        "comments": "",
+        "outputs": 1,
+        "x": 652.0107727050781,
+        "y": 489.01055335998535,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "2241af1e.1c926",
+                "90d94f4f.9d631"
+            ]
+        ]
+    },
+    {
+        "id": "27948b9f.2a3644",
+        "type": "execute",
+        "name": "Get newly added neighbor details",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.add-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 638.0105438232422,
+        "y": 547.0106000900269,
+        "z": "cc83b660.90f568",
+        "wires": [
+            [
+                "4725ca86.5a91c4",
+                "b77d4baf.430698"
+            ]
+        ]
+    },
+    {
+        "id": "1daa570b.6f6d19",
+        "type": "execute",
+        "name": "Recofigure PCI for a Cell",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-pci-patch.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-patch-response\"/>\n<parameter name='contentType' value='application/yang.patch+json' /> \n<parameter name='accept' value='application/yang.patch-status+json' />",
+        "comments": "",
+        "outputs": 1,
+        "x": 845.0104293823242,
+        "y": 795.0104370117188,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4d365ed1.6f0aa",
+        "type": "execute",
+        "name": "execute slipluginutils",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.add-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.add-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{plmnid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.plmnid`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 850.0106201171875,
+        "y": 304.01040267944336,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9041c096.4c873",
+        "type": "execute",
+        "name": "execute slipluginutils",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.add-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.add-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{cid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cid`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 678.0105667114258,
+        "y": 399.0104055404663,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a5298f6.4caf87",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Add Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.add-neighbor-service-url`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 764.010498046875,
+        "y": 257.0104036331177,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "98094ef7.d5497",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Add Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.add-neighbor-service-url`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 791.0104560852051,
+        "y": 347.01040410995483,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "75189f8.6382e6",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Temporary variable for Neighbor Cell #:  \"/>\n<parameter name=\"field2\" value=\"`$idx`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.phy-cell-id`\"/>\n<parameter name=\"field6\" value=\"`$tmp.pnf-name`\"/>\n<parameter name=\"field7\" value=\"`$tmp.blacklisted`\"/>\n<parameter name=\"field8\" value=\"`$tmp.alias`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 760.0104751586914,
+        "y": 173.01042461395264,
+        "z": "cc83b660.90f568",
+        "wires": [
+            []
+        ]
+    }
+]
