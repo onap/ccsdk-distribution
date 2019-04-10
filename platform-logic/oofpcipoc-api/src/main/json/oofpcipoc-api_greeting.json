@@ -1,0 +1,93 @@
+[
+    {
+        "id": "ddd53cba.3855c",
+        "type": "method",
+        "name": "method",
+        "xml": "<method rpc='greeting' mode='sync'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 395.0104064941406,
+        "y": 86,
+        "z": "83a68b58.736338",
+        "wires": [
+            [
+                "91ccee75.aa82f"
+            ]
+        ]
+    },
+    {
+        "id": "881a71a7.96383",
+        "type": "dgstart",
+        "name": "DGSTART",
+        "outputs": 1,
+        "x": 162.01040649414062,
+        "y": 52,
+        "z": "83a68b58.736338",
+        "wires": [
+            [
+                "72aee190.08cf4"
+            ]
+        ]
+    },
+    {
+        "id": "72aee190.08cf4",
+        "type": "service-logic",
+        "name": "oofpcipoc-api 0.4.2-SNAPSHOT",
+        "module": "oofpcipoc-api",
+        "version": "${project.version}",
+        "comments": "",
+        "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='oofpcipoc-api' version='0.4.2-SNAPSHOT'>",
+        "outputs": 1,
+        "x": 199.01040649414062,
+        "y": 175,
+        "z": "83a68b58.736338",
+        "wires": [
+            [
+                "ddd53cba.3855c"
+            ]
+        ]
+    },
+    {
+        "id": "91ccee75.aa82f",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 411.0104064941406,
+        "y": 259,
+        "z": "83a68b58.736338",
+        "wires": [
+            [
+                "ad2486d6.ce0638",
+                "d98f8695.73e2d8"
+            ]
+        ]
+    },
+    {
+        "id": "d98f8695.73e2d8",
+        "type": "returnSuccess",
+        "name": "return success",
+        "xml": "<return status='success'>\n<parameter name=\"ack-final-indicator\" value=\"Y\" />\n<parameter name=\"error-code\" value=\"200\" />\n<parameter name=\"error-message\" value=\"`$error-message`\" />\n",
+        "comments": "",
+        "x": 577.0104064941406,
+        "y": 427,
+        "z": "83a68b58.736338",
+        "wires": []
+    },
+    {
+        "id": "ad2486d6.ce0638",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/svclogic.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Hello World!\"/>\n<parameter name=\"field2\" value=\"`$greeting-input.salutation`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 623.0104064941406,
+        "y": 203.00001430511475,
+        "z": "83a68b58.736338",
+        "wires": [
+            []
+        ]
+    }
+]
