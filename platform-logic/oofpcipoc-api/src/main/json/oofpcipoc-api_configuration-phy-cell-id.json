@@ -1,0 +1,577 @@
+[
+    {
+        "id": "c92045e8.ea6de8",
+        "type": "method",
+        "name": "method",
+        "xml": "<method rpc='configuration-phy-cell-id' mode='sync'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 146.01040649414062,
+        "y": 255.98958015441895,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "9f1b4c27.d960a"
+            ]
+        ]
+    },
+    {
+        "id": "9539a9a2.85af98",
+        "type": "dgstart",
+        "name": "DGSTART",
+        "outputs": 1,
+        "x": 162.010404586792,
+        "y": 59.989585876464844,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "3e707ad2.360716"
+            ]
+        ]
+    },
+    {
+        "id": "3e707ad2.360716",
+        "type": "service-logic",
+        "name": "oofpcipoc-api 0.4.2-SNAPSHOT",
+        "module": "oofpcipoc-api",
+        "version": "${project.version}",
+        "comments": "",
+        "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='oofpcipoc-api' version='0.4.2-SNAPSHOT'>",
+        "outputs": 1,
+        "x": 163.01039123535156,
+        "y": 141.98968315124512,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "c92045e8.ea6de8"
+            ]
+        ]
+    },
+    {
+        "id": "9f1b4c27.d960a",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 128.50000381469727,
+        "y": 452.9896240234375,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "3b3e33d7.8ccbec",
+                "aea59ecf.32eac",
+                "64536be7.433404",
+                "1c97574b.348629",
+                "d18d833e.494d1",
+                "9cf5b7f.c337448"
+            ]
+        ]
+    },
+    {
+        "id": "3b3e33d7.8ccbec",
+        "type": "returnSuccess",
+        "name": "return success",
+        "xml": "<return status='success'>\n<parameter name=\"ack-final-indicator\" value=\"Y\" />\n<parameter name=\"error-code\" value=\"200\" />\n<parameter name=\"error-message\" value=\"SUCCESSFUL Execution\" />\n",
+        "comments": "",
+        "x": 574.010663986206,
+        "y": 766.9897136688232,
+        "z": "630a4d24.993484",
+        "wires": []
+    },
+    {
+        "id": "1659db0a.819375",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/configuration-phy-cell-id.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Input RPC Payload request. FAP #:  \"/>\n<parameter name=\"field2\" value=\"`$idx`\"/>\n<parameter name=\"field3\" value=\"`$configuration-phy-cell-id-input.fap-service[$idx].alias`\"/>\n<parameter name=\"field4\" value=\"`$configuration-phy-cell-id-input.fap-service[$idx].cid`\"/>\n<parameter name=\"field5\" value=\"`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`\"/>\n<parameter name=\"field6\" value=\"`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 714.0109386444092,
+        "y": 45.989633560180664,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "719be637.af1098",
+        "type": "comment",
+        "name": "configuration-phy-cell-id",
+        "info": "",
+        "comments": "",
+        "x": 365.010404586792,
+        "y": 20,
+        "z": "630a4d24.993484",
+        "wires": []
+    },
+    {
+        "id": "fdc1c4b9.c07738",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/configuration-phy-cell-id.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Initial FAP Service PCI PARMS\"/>\n<parameter name=\"field2\" value=\"`$oofpcigetfapservice.fap-service[0].alias`\"/>\n<parameter name=\"field3\" value=\"`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`\"/>\n<parameter name=\"field4\" value=\"`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1173.0104751586914,
+        "y": 248.99999809265137,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8e0153f0.5dad7",
+        "type": "failure",
+        "name": "failure",
+        "xml": "<outcome value='failure'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 873.0106048583984,
+        "y": 214.00000953674316,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "b5827573.4ab448"
+            ]
+        ]
+    },
+    {
+        "id": "b5827573.4ab448",
+        "type": "returnFailure",
+        "name": "return failure",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error executing Get odutopo node details rest api\" />",
+        "comments": "",
+        "x": 1189.0105895996094,
+        "y": 206.0000286102295,
+        "z": "630a4d24.993484",
+        "wires": []
+    },
+    {
+        "id": "7c752a60.4979e4",
+        "type": "success",
+        "name": "success",
+        "xml": "<outcome value='success'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 910.0107460021973,
+        "y": 311.99999237060547,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "e7ad2f93.1f739"
+            ]
+        ]
+    },
+    {
+        "id": "e7ad2f93.1f739",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1006.0104560852051,
+        "y": 254.00000095367432,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "fdc1c4b9.c07738"
+            ]
+        ]
+    },
+    {
+        "id": "cb2275bc.1f41e8",
+        "type": "failure",
+        "name": "failure",
+        "xml": "<outcome value='failure'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 905.0105609893799,
+        "y": 566.6666400432587,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "905dd9f3.40a588"
+            ]
+        ]
+    },
+    {
+        "id": "905dd9f3.40a588",
+        "type": "returnFailure",
+        "name": "return failure",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error executing patch rest api\" />",
+        "comments": "",
+        "x": 1115.0104541778564,
+        "y": 585.6666898727417,
+        "z": "630a4d24.993484",
+        "wires": []
+    },
+    {
+        "id": "5c97d0d3.3281d",
+        "type": "success",
+        "name": "success",
+        "xml": "<outcome value='success'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 896.010419845581,
+        "y": 705.6667537689209,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "8d8c927b.5b512"
+            ]
+        ]
+    },
+    {
+        "id": "8d8c927b.5b512",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1084.010290145874,
+        "y": 703.6666603088379,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "989894d0.463e08"
+            ]
+        ]
+    },
+    {
+        "id": "989894d0.463e08",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/configuration-phy-cell-id.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Post Reconfig FAP Service PCI PARMS\"/>\n<parameter name=\"field2\" value=\"`$oofpcigetfapservice.fap-service[0].alias`\"/>\n<parameter name=\"field3\" value=\"`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`\"/>\n<parameter name=\"field4\" value=\"`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1268.0102233886719,
+        "y": 677.6668834686279,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fcc41fc.bfb59e",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/configuration-phy-cell-id.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Setting variables for GET operation\"/>\n<parameter name=\"field2\" value=\"`$tmp.fap-service-url`\"/>\n<parameter name=\"field3\" value=\"`$tmp.alias`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.phy-cell-id-in-use`\"/>\n<parameter name=\"field6\" value=\"`$tmp.pnf-name`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 639.011058807373,
+        "y": 299.00009632110596,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "64536be7.433404",
+        "type": "for",
+        "name": "for",
+        "xml": "<for index='idx' start='0' end=\"`$configuration-phy-cell-id-input.fap-service-number-of-entries`\" >",
+        "comments": "",
+        "outputs": 1,
+        "x": 560.0960960388184,
+        "y": 43.95316982269287,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "1659db0a.819375"
+            ]
+        ]
+    },
+    {
+        "id": "aea59ecf.32eac",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/configuration-phy-cell-id.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"RPC to Configure PCI INVOKED. Number of Cells to configure: \"/>\n<parameter name=\"field2\" value=\"`$configuration-phy-cell-id-input.fap-service-number-of-entries`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 381.01070404052734,
+        "y": 85.01043033599854,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9cf5b7f.c337448",
+        "type": "for",
+        "name": "for",
+        "xml": "<for index='idx' start='0' end=\"`$configuration-phy-cell-id-input.fap-service-number-of-entries`\" >",
+        "comments": "",
+        "outputs": 1,
+        "x": 317.0105800628662,
+        "y": 453.99998664855957,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "6b550b6e.4ab944"
+            ]
+        ]
+    },
+    {
+        "id": "65d9020f.1c2dbc",
+        "type": "set",
+        "name": "set tmp variables for the requested fap service input parms",
+        "xml": "<set>\n<parameter name=\"tmp.alias\" value=\"`$configuration-phy-cell-id-input.fap-service[$idx].alias`\"/>\n<parameter name=\"tmp.cid\" value=\"`$configuration-phy-cell-id-input.fap-service[$idx].cid`\"/>\n<parameter name=\"tmp.phy-cell-id-in-use\" value=\"`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`\"/>\n<parameter name=\"tmp.pnf-name\" value=\"`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`\"/>\n",
+        "comments": "",
+        "x": 767.0114974975586,
+        "y": 176.88908100128174,
+        "z": "630a4d24.993484",
+        "wires": []
+    },
+    {
+        "id": "10092a64.445696",
+        "type": "failure",
+        "name": "failure",
+        "xml": "<outcome value='failure'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 908.0107421875,
+        "y": 383.00007915496826,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "83ffe0f1.145c2"
+            ]
+        ]
+    },
+    {
+        "id": "2f27ee2e.cd2152",
+        "type": "success",
+        "name": "success",
+        "xml": "<outcome value='success'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 905.0106735229492,
+        "y": 512.0000009536743,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "9a40bd5d.b03b7"
+            ]
+        ]
+    },
+    {
+        "id": "83ffe0f1.145c2",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1041.0106716156006,
+        "y": 342.0001106262207,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "ebac1d30.63c39"
+            ]
+        ]
+    },
+    {
+        "id": "ebac1d30.63c39",
+        "type": "returnFailure",
+        "name": "return failure",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error executing patch rest api\" />",
+        "comments": "",
+        "x": 1220.010362625122,
+        "y": 339.00007820129395,
+        "z": "630a4d24.993484",
+        "wires": []
+    },
+    {
+        "id": "9a40bd5d.b03b7",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1063.0104160308838,
+        "y": 478.00006103515625,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "6b0cf27b.81140c"
+            ]
+        ]
+    },
+    {
+        "id": "6b0cf27b.81140c",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/configuration-phy-cell-id.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"PUT PCI POC FAP SERVICE. Reconfigured \"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1242.0104846954346,
+        "y": 477.0000476837158,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6b550b6e.4ab944",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 397.0103988647461,
+        "y": 392.0104808807373,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "65d9020f.1c2dbc",
+                "fcc41fc.bfb59e",
+                "a04061b8.e630e",
+                "2fa514b0.d7bf8c",
+                "3efc9869.e2bda8",
+                "ec3507db.a35b28",
+                "31202ee3.c34b22",
+                "aab3655.f43a598"
+            ]
+        ]
+    },
+    {
+        "id": "ec3507db.a35b28",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/configuration-phy-cell-id.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"URL and Target for PCI patch URL\"/>\n<parameter name='field2' value=\"`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`\" />\n<parameter name='field3' value=\"`$prop.oofpcipoc.patch.pci.target`\" />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 640.0110626220703,
+        "y": 468.01043033599854,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1c97574b.348629",
+        "type": "execute",
+        "name": "execute Properties",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >\n    <parameter name='fileName' value='%SDNC_CONFIG_DIR%/sdnr-oofpcipoc-api-dg.properties' />\n    <parameter name='contextPrefix' value='prop' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 606.0105514526367,
+        "y": 92.0104169845581,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d18d833e.494d1",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/configuration-phy-cell-id.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Properties read .. pci patch target\"/>\n<parameter name=\"field2\" value=\"`$prop.oofpcipoc.patch.pci.target`\"/>\n<parameter name=\"field3\" value=\"`$prop.controller.user`\"/>\n<parameter name=\"field4\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"field5\" value=\"`$prop.controller.url`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 603.0106964111328,
+        "y": 139.0104742050171,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2fa514b0.d7bf8c",
+        "type": "execute",
+        "name": "Get FAP details for a Cell",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.fap-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"format\" value=\"json\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"oofpcigetfapservice\"/>\n<parameter name='contentType' value='application/json' />",
+        "comments": "",
+        "outputs": 1,
+        "x": 668.0109405517578,
+        "y": 370.01039123535156,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "8e0153f0.5dad7",
+                "7c752a60.4979e4"
+            ]
+        ]
+    },
+    {
+        "id": "a04061b8.e630e",
+        "type": "execute",
+        "name": "generate fap-service url",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.fap-service`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.fap-service-url\"/>\n    <parameter name=\"target\" value=\"{alias}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 680.0106430053711,
+        "y": 242.01049280166626,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3efc9869.e2bda8",
+        "type": "execute",
+        "name": "generate pci patch url for a cell",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.x-005b9-lte`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.oofpcipoc.patch.pci.url\"/>\n    <parameter name=\"target\" value=\"{alias}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 678.0105743408203,
+        "y": 413.01040744781494,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "31202ee3.c34b22",
+        "type": "execute",
+        "name": "Recofigure PCI for a Cell",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-pci-patch.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-patch-response\"/>\n<parameter name='contentType' value='application/yang.patch+json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/yang.patch-status+json' />",
+        "comments": "",
+        "outputs": 1,
+        "x": 661.0104751586914,
+        "y": 544.0105457305908,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "10092a64.445696",
+                "2f27ee2e.cd2152"
+            ]
+        ]
+    },
+    {
+        "id": "aab3655.f43a598",
+        "type": "execute",
+        "name": "Get FAP details for a Cell",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.fap-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"format\" value=\"json\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"oofpcigetfapservice\"/>\n<parameter name='contentType' value='application/json' />",
+        "comments": "",
+        "outputs": 1,
+        "x": 640.0104293823242,
+        "y": 631.0104370117188,
+        "z": "630a4d24.993484",
+        "wires": [
+            [
+                "cb2275bc.1f41e8",
+                "5c97d0d3.3281d"
+            ]
+        ]
+    },
+    {
+        "id": "dc5e9a0c.421988",
+        "type": "execute",
+        "name": "Recofigure PCI for a Cell",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-pci-patch.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-patch-response\"/>\n<parameter name='contentType' value='application/yang.patch+json' /> \n<parameter name='accept' value='application/yang.patch-status+json' />",
+        "comments": "",
+        "outputs": 1,
+        "x": 839.0104293823242,
+        "y": 795.0104370117188,
+        "z": "630a4d24.993484",
+        "wires": [
+            []
+        ]
+    }
+]
