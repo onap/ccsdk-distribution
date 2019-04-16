@@ -1,20 +1,28 @@
-FROM alpine:3.8.4
+# Base ubuntu with added packages needed for open ecomp
+FROM onap/ccsdk-ubuntu-image:${project.docker.latestfulltag.version}
+
 LABEL maintainer="SDN-C Team (sdnc@lists.openecomp.org)"
 
-#ENV http_proxy=http://anonymous:password@one.proxy.att.com:8080
-#ENV https_proxy=http://anonymous:password@one.proxy.att.com:8080
+ARG PIP_TAG=18.0
 
-## add more pkgs
-RUN apk update
-RUN apk add vim
-RUN apk add curl
-RUN apk add ansible
+##Vim
+RUN apt-get update
+RUN apt-get -y install apt-file
+RUN apt-file update
+RUN apt-get -y install vim
 
+##Python:
+RUN apt-get -y install python2.7
+RUN apt-get -y install python-pip
 
 # copy files needed
 COPY opt /opt/
 
 WORKDIR /opt/onap/ccsdk
+
+
+RUN pip install --no-cache-dir --upgrade pip==$PIP_TAG
+RUN pip install --no-cache-dir -r /opt/onap/ccsdk/requirements.txt
 
 #ENTRYPOINT exec startAnsibleServer.sh
 #CMD ["/bin/bash"]
