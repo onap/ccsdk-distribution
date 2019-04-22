@@ -19,7 +19,6 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 * 
-* ECOMP is a trademark and service mark of AT&T Intellectual Property.
 * ============LICENSE_END=========================================================
 */
 '''
@@ -29,7 +28,7 @@ from os import listdir
 from os.path import isfile, join
 
 class mySql():
-    
+
     def __init__(self, myhost, myuser, mypasswd, mydb):
         self.con = True
         self.error = ''
