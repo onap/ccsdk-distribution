@@ -18,8 +18,7 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*
-* ECOMP is a trademark and service mark of AT&T Intellectual Property.
+* 
 * ============LICENSE_END=========================================================
 */
 '''
@@ -41,7 +40,7 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
     log = []
 
     str_parameters = ''
-
+                
     if not envparameters == '':
         for key in envparameters:
             if str_parameters == '':
@@ -50,13 +49,13 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
                 #str_parameters += ' '  + str(key) + '=\'' + str(envparameters[key])  + '\''
                 str_parameters += ', '  + str(key) + '=\'' + str(envparameters[key])  + '\''
         str_parameters += '"'
-
+                        
     if len(str_parameters) > 0:
-        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout -s KILL -t ' + str(timeout) + \
+        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout --signal=KILL ' + str(timeout) + \
               ' ansible-playbook -v --timeout ' + str(timeout) + ' --extra-vars ' + str_parameters + ' -i ' + \
               inventory_path + ' ' + playbook_path + ' | tee log.file'
     else:
-        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout -s KILL -t ' + str(timeout) + \
+        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout --signal=KILL ' + str(timeout) + \
               ' ansible-playbook -v --timeout ' + str(timeout) + ' -i ' + inventory_path + ' ' + playbook_path +' | tee log.file'
 
     cherrypy.log("CMD: " + cmd)
@@ -64,30 +63,30 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
     cherrypy.log("PlayBook Start: " + playbookdir )
     p = subprocess.Popen(cmd, shell=True,
                          stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT)
+                         stderr=subprocess.STDOUT) 
     #PAP
     #p.wait()
     (stdout_value, err) = p.communicate()
-
+    
     stdout_value_cleanup = ''
     for line in stdout_value:
         stdout_value_cleanup += line.replace('  ', ' ')
-    stdout_value = stdout_value_cleanup.splitlines()
+    stdout_value = stdout_value_cleanup.splitlines() 
 
     ParseFlag = False
     retval = {}
     returncode = p.returncode
 
     if returncode == 137:
-
+        
         cherrypy.log("   ansible-playbook system call timed out")
         # ansible-playbook system call timed out
         for line in stdout_value: # p.stdout.readlines():
             log.append (line)
-
-
+            
+            
     else:
-
+            
         for line in stdout_value: # p.stdout.readlines():
             print line # line,
             if ParseFlag and len(line.strip())>0:
@@ -103,7 +102,7 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
             if "Killed" in line: # check for timeout
                 cherrypy.log(" Playbook Killed(timeout)")
                 returncode = 137
-
+        
     # retval['p'] = p.wait()
 
     #cherrypy.log("*** <" + playbookdir + "> [" + str(log) + "] ***")
@@ -125,7 +124,7 @@ if __name__ == '__main__':
 
 
     d = Manager().dict()
-
+    
     p = Process(nodelist=ansible_call, args=('ansible_module_config', playbook_file, nodelist,d, ))
     p.start()
 
