@@ -19,7 +19,6 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *
-* ECOMP is a trademark and service mark of AT&T Intellectual Property.
 * ============LICENSE_END=========================================================
 */
 '''
@@ -52,11 +51,11 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
         str_parameters += '"'
 
     if len(str_parameters) > 0:
-        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout -s KILL -t ' + str(timeout) + \
+        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout --signal=KILL ' + str(timeout) + \
               ' ansible-playbook -v --timeout ' + str(timeout) + ' --extra-vars ' + str_parameters + ' -i ' + \
               inventory_path + ' ' + playbook_path + ' | tee log.file'
     else:
-        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout -s KILL -t ' + str(timeout) + \
+        cmd = 'export HOME=/root; env; cd ' + playbookdir + ';' +'timeout --signal=KILL ' + str(timeout) + \
               ' ansible-playbook -v --timeout ' + str(timeout) + ' -i ' + inventory_path + ' ' + playbook_path +' | tee log.file'
 
     cherrypy.log("CMD: " + cmd)
