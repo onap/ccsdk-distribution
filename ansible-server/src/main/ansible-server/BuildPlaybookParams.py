@@ -1,3 +1,27 @@
+'''
+/*-
+* ============LICENSE_START=======================================================
+* ONAP : APPC
+* ================================================================================
+* Copyright (C) 2017-2019 AT&T Intellectual Property.  All rights reserved.
+* ================================================================================
+* Copyright (C) 2017 Amdocs
+* =============================================================================
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+* 
+* ============LICENSE_END=========================================================
+*/
+'''
 
 from os import listdir
 from os.path import isfile, join
@@ -10,11 +34,12 @@ import cherrypy
 
 def buildInventorySysCall(ansible_path, ansible_inv, node_list, playbook_dir, target_inv, hostgrouplist, hostnamelist):
     if not node_list:
-        LocalNodeList = "host"
-        LocalCredentials = "localhost    ansible_connection=local"
+        local_node_list = "host"
+        local_credentials = "localhost    ansible_connection=local"
+
         f = open(playbook_dir + "/" + target_inv, "w")
-        f.write("[" + LocalNodeList + "]\n")
-        f.write(LocalCredentials)
+        f.write("[" + local_node_list + "]\n")
+        f.write(local_credentials)
         f.close()
     else:
         # Get credentials from file
@@ -37,14 +62,14 @@ def buildInventorySysCall(ansible_path, ansible_inv, node_list, playbook_dir, ta
         f.close()
 
         for node in node_list:
-            Fail = True
+            fail_flag = True
             if "[" + node + "]" in data_inventory_orig:
-                if not "[" + node + "]" in data_inventory_target:
+                if "[" + node + "]" not in data_inventory_target:
                     cherrypy.log("RESET", "[" + node + "]")
                     data_inventory_target["[" + node + "]"] = []
                 else:
                     cherrypy.log("OK", "[" + node + "]")
-                Fail = False
+                fail_flag = False
                 for cred in data_inventory_orig["[" + node + "]"]:
                     data_inventory_target["[" + node + "]"].append(cred)
             else:
@@ -55,9 +80,9 @@ def buildInventorySysCall(ansible_path, ansible_inv, node_list, playbook_dir, ta
                         for cred in data_inventory_orig[key]:
                             if node + " " in cred:
                                 data_inventory_target[key].append(cred)
-                                Fail = False
+                                fail_flag = False
 
-            if Fail:
+            if fail_flag:
                 data_inventory_target["[" + node + "]"] = \
                     [node + " ansible_connection=ssh ansible_ssh_user=na ansible_ssh_private_key_file=na"]
 

@@ -1,4 +1,4 @@
-"""
+'''
 /*-
 * ============LICENSE_START=======================================================
 * ONAP : APPC
@@ -21,7 +21,7 @@
 * 
 * ============LICENSE_END=========================================================
 */
-"""
+'''
 
 import time, datetime, json, os, sys, subprocess
 import uuid
@@ -559,7 +559,7 @@ def process_vnf_playbook(input_json, Id, EnvParameters, time_now):
     cherrypy.log("HostFile: " + HostFile)
 
     # if NodeList and InventoryNames need to build host file
-    if HaveInventoryNames & HaveNodeList:
+    if HaveInventoryNames and HaveNodeList:
         cherrypy.log("Build host file from NodeList")
         ret = buildHostsSysCall(input_json, PlaybookDir, inventory_names)
         if ret < 0:
@@ -785,9 +785,10 @@ def handle_get_method(input_data):
                 if TestRecord[input_data['Id']]['Output'] == {} and getresults_block:
                     cherrypy.log("*** Request blocked " + input_data['Id'])
 
-                    while TestRecord[input_data['Id']]['Output'] == {} \
-                            or 'StatusMessage' in TestRecord[input_data['Id']]['Result']:
-                        time.sleep(5)
+                    # while TestRecord[input_data['Id']]['Output'] == {} \
+                    #         or 'StatusMessage' in TestRecord[input_data['Id']]['Result']:
+                    while ActiveProcess[input_data['Id']].is_alive():
+                        time.sleep(3)
 
                     cherrypy.log("*** Request released " + input_data['Id'])
 

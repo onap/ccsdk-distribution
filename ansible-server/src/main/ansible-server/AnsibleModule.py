@@ -33,15 +33,13 @@ import cherrypy
 from cherrypy.lib.httputil import parse_query_string
 from cherrypy.lib import auth_basic
 
-def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
-                    envparameters, localparameters, timeout, playbookdir):
-
+def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory, envparameters, localparameters, timeout, playbookdir):
     cherrypy.log( "***> in AnsibleModule.ansibleSysCall")
     log = []
 
     str_parameters = ''
 
-    if not envparameters == '':
+    if envparameters:
         for key in envparameters:
             if str_parameters == '':
                 str_parameters = '"'  + str(key) + '=\'' + str(envparameters[key])  + '\''
@@ -51,22 +49,20 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
         str_parameters += '"'
 
     if len(str_parameters) > 0:
-        cmd = 'export HOME=/home/ansible; env; cd ' + playbookdir + ';' +'timeout -s KILL -t ' + str(timeout) + \
+        cmd = 'cd ' + playbookdir + ';' + 'timeout -s KILL -t ' + str(timeout) + \
               ' ansible-playbook -v --timeout ' + str(timeout) + ' --extra-vars ' + str_parameters + ' -i ' + \
               inventory_path + ' ' + playbook_path + ' | tee log.file'
     else:
-        cmd = 'export HOME=/home/ansible; env; cd ' + playbookdir + ';' +'timeout -s KILL -t ' + str(timeout) + \
-              ' ansible-playbook -v --timeout ' + str(timeout) + ' -i ' + inventory_path + ' ' + playbook_path +' | tee log.file'
+        cmd = 'cd ' + playbookdir + ';' + 'timeout -s KILL -t ' + str(timeout) + \
+              ' ansible-playbook -v --timeout ' + str(timeout) + ' -i ' + inventory_path + ' ' + playbook_path + ' | tee log.file'
 
     cherrypy.log("CMD: " + cmd)
 
     cherrypy.log("PlayBook Start: " + playbookdir )
-    p = subprocess.Popen(cmd, shell=True,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT)
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     #PAP
     #p.wait()
-    (stdout_value, err) = p.communicate()
+    stdout_value, err = p.communicate()
 
     stdout_value_cleanup = ''
     for line in stdout_value:
@@ -78,15 +74,11 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory,
     returncode = p.returncode
 
     if returncode == 137:
-
         cherrypy.log("   ansible-playbook system call timed out")
         # ansible-playbook system call timed out
         for line in stdout_value: # p.stdout.readlines():
             log.append (line)
-
-
     else:
-
         for line in stdout_value: # p.stdout.readlines():
             print line # line,
             if ParseFlag and len(line.strip())>0:
