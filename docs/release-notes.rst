@@ -3,6 +3,44 @@
 Release Notes
 #############
 
+Version 0.4.3
+*************
+:Release Date: 2019-06-13
+
+**New Features**
+
+The full list of Dublin epics and user stories for CCSDK maybe be found at <https://jira.onap.org/issues/?filter=11802>.
+
+The following list summarizes some of the most significant epics:
+
++-------------+------------------------------------------------+
+| Jira #      | Abstract                                       |
++=============+================================================+
+| [CCSDK-575] | Improve E2E Process Automation                 |
++-------------+------------------------------------------------+
+| [CCSDK-840] | S3P - Footprint Optimization                   |
++-------------+------------------------------------------------+
+| [CCSDK-859] | Update to OpenDaylight Fluorine                |
++-------------+------------------------------------------------+
+| [CCSDK-929] | 5G Use Case                                    |
++-------------+------------------------------------------------+
+| [CCSDK-930] | CCVPN Use Case Extension                       |
++-------------+------------------------------------------------+
+
+
+**Bug Fixes**
+The full list of bug fixes in the CCSDK Dublin release may be found at <https://jira.onap.org/issues/?filter=11804>
+
+**Known Issues**
+The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
+
+Quick Links:
+ 	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
+
+ 	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
+
+ 	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=51282469>`_
+
 Version: 0.3.3
 **************
 
