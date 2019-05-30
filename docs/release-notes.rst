@@ -34,6 +34,14 @@ The full list of bug fixes in the CCSDK Dublin release may be found at <https://
 **Known Issues**
 The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
 
+**Security Notes**
+
+*Fixed Security Issues*
+
+*Known Security Issues*
+
+*Known Vulnerabilities in Used Modules*
+
 Quick Links:
  	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
 
@@ -72,9 +80,9 @@ The full list of known issues in CCSDK may be found in the ONAP Jira at <https:/
 
 Quick Links:
    - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
-   
+
    - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
-   
+
    - `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=45300857>`_
 
 Version: 0.3.2
@@ -108,9 +116,9 @@ The full list of known issues in CCSDK may be found in the ONAP Jira at <https:/
 
 Quick Links:
  	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
- 	
+
  	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
- 	
+
  	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=45300857>`_
 
 Version: 0.2.4
@@ -164,9 +172,9 @@ CCSDK code has been formally scanned during build time using NexusIQ and all Cri
 
 Quick Links:
  	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
- 	
+
  	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
- 	
+
  	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=28379011>`_
 
 **Upgrade Notes**
@@ -220,4 +228,3 @@ The Common Controller SDK provides the following functionality :
 **Deprecation Notes**
 
 **Other**
-
