@@ -41,6 +41,7 @@ The full list of known issues in CCSDK may be found in the ONAP Jira at <https:/
 *Known Security Issues*
 
         * In default deployment CCSDK (netbox-nginx) exposes HTTP port 30420 outside of cluster. [`OJSI-160 <https://jira.onap.org/browse/OJSI-160>`_]
+        * In default deployment CCSDK (cds-ui) exposes HTTP port 30497 outside of cluster. [`OJSI-196 <https://jira.onap.org/browse/OJSI-196>`_]
 
 *Known Vulnerabilities in Used Modules*
 
