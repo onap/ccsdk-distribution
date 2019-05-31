@@ -6,7 +6,9 @@
 * Copyright (C) 2017-2019 AT&T Intellectual Property.  All rights reserved.
 * ================================================================================
 * Copyright (C) 2017 Amdocs
-* =============================================================================
+* ================================================================================
+* Copyright (C) 2019 Orange
+* ================================================================================
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
@@ -18,7 +20,7 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-* 
+*
 * ============LICENSE_END=========================================================
 */
 '''
@@ -554,9 +556,13 @@ def process_vnf_playbook(input_json, Id, EnvParameters, time_now):
         else:
             cherrypy.log("Successfully created the directory %s " % path)
 
+
     # location of host file - Default
-    HostFile = PlaybookDir + "/inventory/" + VNF_instance + "hosts"
-    cherrypy.log("HostFile: " + HostFile)
+    HostFile = "inventory/" + VNF_instance + "hosts"
+    HostFilePath = PlaybookDir + "/" + HostFile
+    cherrypy.log("HostFile: " + HostFilePath)
+
+    # buildInventorySysCall(ANSIBLE_PATH, ANSIBLE_INV, NodeList, PlaybookDir, HostFile, hostgrouplist, hostnamelist)
 
     # if NodeList and InventoryNames need to build host file
     if HaveInventoryNames and HaveNodeList:
@@ -568,8 +574,8 @@ def process_vnf_playbook(input_json, Id, EnvParameters, time_now):
                     "StatusMessage": "NodeList: Missing vnfc-type field"}
 
         # Having been built now copy new file to correct file
-        shutil.copy(PlaybookDir + "/host_file.txt", HostFile)
-        cherrypy.log("Copying Generated host file to: " + HostFile)
+        shutil.copy(PlaybookDir + "/host_file.txt", HostFilePath)
+        cherrypy.log("Copying Generated host file to: " + HostFilePath)
 
     if 'Timeout' in input_json:
         timeout = int(input_json['Timeout'])
@@ -657,14 +663,14 @@ def process_vnf_playbook(input_json, Id, EnvParameters, time_now):
         f.close()
 
         # Check that HostFile exists
-        if not os.path.isfile(HostFile):
-            cherrypy.log("Inventory file Not Found: " + HostFile)
+        if not os.path.isfile(HostFilePath):
+            cherrypy.log("Inventory file Not Found: " + HostFilePath)
             return {"StatusCode": 101, "StatusMessage": "PLAYBOOK INVENTORY FILE NOT FOUND"}
 
         # Cannot use thread because ansible module uses signals which are only supported in main thread.
         # So use multiprocess with shared object
         p = Process(target=RunAnsible_Playbook,
-                    args=(callback, Id, HostFile, PlaybookDir + '/' + PlayBookFile,
+                    args=(callback, Id, "../" + HostFile, "site.yml",
                           NodeList, TestRecord, PlaybookDir + "/" + PlayBookFunction, ArchiveFlag))
         p.start()
         ActiveProcess[Id] = p
