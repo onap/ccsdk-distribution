@@ -6,7 +6,9 @@
 * Copyright (C) 2019 AT&T Intellectual Property.  All rights reserved.
 * ================================================================================
 * Copyright (C) 2019 Amdocs
-* =============================================================================
+* ================================================================================
+* Copyright (C) 2019 Orange
+* ================================================================================
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
@@ -86,7 +88,7 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory, envparam
                 ok_flag = line.split(':')[1].strip().split('=')[1].split('changed')[0].strip()
                 changed_flag = line.split(':')[1].strip().split('=')[2].split('unreachable')[0].strip()
                 unreachable_flag = line.split(':')[1].strip().split('=')[3].split('failed')[0].strip()
-                failed_flag = line.split(':')[1].strip().split('=')[4].strip()
+                failed_flag = line.split(':')[1].strip().split('=')[4].split('skipped')[0].strip()
                 retval[ip_address]=[ok_flag, changed_flag, unreachable_flag, failed_flag]
             if "PLAY RECAP" in line:
                 ParseFlag = True

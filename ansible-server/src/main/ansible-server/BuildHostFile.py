@@ -6,7 +6,9 @@
 * Copyright (C) 2019 AT&T Intellectual Property.  All rights reserved.
 * ================================================================================
 * Copyright (C) 2019 Amdocs
-* =============================================================================
+* ================================================================================
+* Copyright (C) 2019 Orange
+* ================================================================================
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
@@ -77,10 +79,8 @@ def buildHostsSysCall(JsonInput, run_path, inventory_type):
         output_file.write ("\n[%svip]\n" % Type )
         if inventory_type == "None":
           output_file.write ("%s\n" % (FloatingIP) )
-        elif inventory_type == "VNFC": 
+        elif inventory_type == "VNFC" or inventory_type == "VM":
           output_file.write ("%s ansible_host=%s\n" % (NE_ID_VIP, FloatingIP) )
-        elif inventory_type == "VM": 
-          output_file.write ("%s ansible_host=%s\n" % (NE_ID_VIP[0:13], FloatingIP) )
   
       output_file.write ("\n[%s]\n" % Type )
       Site =  NodeList['site']
@@ -96,10 +96,8 @@ def buildHostsSysCall(JsonInput, run_path, inventory_type):
           #print ("vm: " + Name + ": " + IpAddr)
           if inventory_type == "None":
             output_file.write ("%s\n" % (IpAddr) )
-          elif inventory_type == "VNFC": 
+          elif inventory_type == "VNFC" or inventory_type == "VM":
             output_file.write ("%s ansible_host=%s\n" % (Name, IpAddr) )
-          elif inventory_type == "VM": 
-            output_file.write ("%s ansible_host=%s\n" % (Name[0:13], IpAddr) )
 
   # print  site list
   output_file.write ("\n[%s:children]\n" % Site )
