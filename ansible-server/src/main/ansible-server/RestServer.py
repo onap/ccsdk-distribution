@@ -562,7 +562,8 @@ def process_vnf_playbook(input_json, Id, EnvParameters, time_now):
     HostFilePath = PlaybookDir + "/" + HostFile
     cherrypy.log("HostFile: " + HostFilePath)
 
-    # buildInventorySysCall(ANSIBLE_PATH, ANSIBLE_INV, NodeList, PlaybookDir, HostFile, hostgrouplist, hostnamelist)
+    buildInventorySysCall(ANSIBLE_PATH, ANSIBLE_INV, NodeList, PlaybookDir, HostFile, hostgrouplist, hostnamelist,
+                          inventory_names)
 
     # if NodeList and InventoryNames need to build host file
     if HaveInventoryNames and HaveNodeList:

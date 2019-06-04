@@ -32,7 +32,8 @@ import subprocess
 import cherrypy
 
 
-def buildInventorySysCall(ansible_path, ansible_inv, node_list, playbook_dir, target_inv, hostgrouplist, hostnamelist):
+def buildInventorySysCall(ansible_path, ansible_inv, node_list, playbook_dir, target_inv, hostgrouplist, hostnamelist,
+                          inventory_names=None):
     if not node_list:
         local_node_list = "host"
         local_credentials = "localhost    ansible_connection=local"
@@ -61,30 +62,19 @@ def buildInventorySysCall(ansible_path, ansible_inv, node_list, playbook_dir, ta
                         data_inventory_orig[curr_group].append(line)
         f.close()
 
-        for node in node_list:
-            fail_flag = True
-            if "[" + node + "]" in data_inventory_orig:
-                if "[" + node + "]" not in data_inventory_target:
-                    cherrypy.log("RESET", "[" + node + "]")
-                    data_inventory_target["[" + node + "]"] = []
-                else:
-                    cherrypy.log("OK", "[" + node + "]")
-                fail_flag = False
-                for cred in data_inventory_orig["[" + node + "]"]:
-                    data_inventory_target["[" + node + "]"].append(cred)
-            else:
-                for key in data_inventory_orig:
-                    if node + " " in " ".join(data_inventory_orig[key]):
-                        if key not in data_inventory_target:
-                            data_inventory_target[key] = []
-                        for cred in data_inventory_orig[key]:
-                            if node + " " in cred:
-                                data_inventory_target[key].append(cred)
-                                fail_flag = False
-
-            if fail_flag:
-                data_inventory_target["[" + node + "]"] = \
-                    [node + " ansible_connection=ssh ansible_ssh_user=na ansible_ssh_private_key_file=na"]
+        if inventory_names is None:
+            for node in node_list:
+                processSingleNode(node, data_inventory_orig, data_inventory_target)
+        else:
+            for nodes_section in node_list:
+                if ('floating_ip_address-vip' in nodes_section) & ('ne_id_vip' in nodes_section):
+                    if inventory_names == "VNFC" or inventory_names == "VM":
+                        node = nodes_section['ne_id_vip']
+                        processSingleNode(node, data_inventory_orig, data_inventory_target)
+                for vm in nodes_section['vm-info']:
+                    node = vm['ne_id']
+                    if inventory_names == "VNFC" or inventory_names == "VM":
+                        processSingleNode(node, data_inventory_orig, data_inventory_target)
 
         f = open(playbook_dir + "/" + target_inv, "w")
         for key in data_inventory_target:
@@ -94,6 +84,32 @@ def buildInventorySysCall(ansible_path, ansible_inv, node_list, playbook_dir, ta
                 hostnamelist.append(rec.split(' ')[0])
                 f.write(rec + "\n")
         f.close()
+
+
+def processSingleNode(node, data_inventory_orig, data_inventory_target):
+    fail_flag = True
+    if "[" + node + "]" in data_inventory_orig:
+        if "[" + node + "]" not in data_inventory_target:
+            cherrypy.log("RESET", "[" + node + "]")
+            data_inventory_target["[" + node + "]"] = []
+        else:
+            cherrypy.log("OK", "[" + node + "]")
+        fail_flag = False
+        for cred in data_inventory_orig["[" + node + "]"]:
+            data_inventory_target["[" + node + "]"].append(cred)
+    else:
+        for key in data_inventory_orig:
+            if node + " " in " ".join(data_inventory_orig[key]):
+                if key not in data_inventory_target:
+                    data_inventory_target[key] = []
+                for cred in data_inventory_orig[key]:
+                    if node + " " in cred:
+                        data_inventory_target[key].append(cred)
+                        fail_flag = False
+
+    if fail_flag:
+        data_inventory_target["[" + node + "]"] = \
+            [node + " ansible_connection=ssh ansible_ssh_user=na ansible_ssh_private_key_file=na"]
 
 
 def getPlaybookFile(ansible_path, playbook_name, playbook_type, playbook_dir):
