@@ -3,9 +3,12 @@
 Release Notes
 #############
 
-Version 0.4.3
-*************
+Version 0.4.4/0.4.5
+*******************
 :Release Date: 2019-06-13
+
+Note: The Dublin version for most CCSDK repositories is 0.4.4, except for CDS which is version
+0.4.5
 
 **New Features**
 
