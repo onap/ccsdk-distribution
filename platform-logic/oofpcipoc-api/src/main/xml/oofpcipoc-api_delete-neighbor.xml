@@ -3,6 +3,12 @@
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='oofpcipoc-api' version='0.4.2-SNAPSHOT'>
     <method rpc='delete-neighbor' mode='sync'>
         <block atomic='true'>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="RPC to delete neighbors. Number of neighbors to delete: "/>
+                <parameter name="field2" value="`$delete-neighbor-input.lte-cell-number-of-entries`"/>
+            </record>
             <for index='idx' start='0' end="`$delete-neighbor-input.lte-cell-number-of-entries`" >
                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                     <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
@@ -13,118 +19,212 @@
                     <parameter name="field4" value="`$idx`"/>
                     <parameter name="field5" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`"/>
                     <parameter name="field6" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`"/>
+                    <parameter name="field7" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].pnf-name`"/>
                 </record>
             </for>
-            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
-                <parameter name="level" value="info" />
-                <parameter name="field1" value="RPC to delete neighbors. Number of neighbors to delete: "/>
-                <parameter name="field2" value="`$delete-neighbor-input.lte-cell-number-of-entries`"/>
-            </record>
             <execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >
                 <parameter name='fileName' value='%SDNC_CONFIG_DIR%/sdnr-oofpcipoc-api-dg.properties' />
                 <parameter name='contextPrefix' value='prop' />
             </execute>
             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                <parameter name="file" value="/opt/opendaylight/current/data/log/add-neighbor.log" />
+                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
                 <parameter name="level" value="info" />
-                <parameter name="field1" value="Properties read .. neighbor-add template"/>
-                <parameter name="field2" value="`$prop.neighbor-add.templatefile`"/>
+                <parameter name="field1" value="Properties read .. neighbor-delete template"/>
+                <parameter name="field2" value="`$prop.restapi.neighbor-delete.templatefile`"/>
                 <parameter name="field3" value="`$prop.controller.user`"/>
                 <parameter name="field4" value="`$prop.controller.pwd`"/>
                 <parameter name="field5" value="`$prop.controller.url`"/>
                 <parameter name="field6" value="`$prop.restapi.lte-ran-neighbor-in-use`"/>
+                <parameter name="field7" value="`$prop.restapi.lte-ran-neighbor-in-use.ransim-mounted`"/>
             </record>
-            <for index='idx' start='0' end="`$delete-neighbor-input.lte-cell-number-of-entries`" >
-                <block atomic='true'>
-                    <set>
-                        <parameter name="tmp.plmnid" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`"/>
-                        <parameter name="tmp.cid" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`"/>
-                        <parameter name="tmp.alias" value="`$delete-neighbor-input.alias`"/>
-                    </set>
-                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                        <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
-                        <parameter name="level" value="info" />
-                        <parameter name="field1" value="Temporary variable for Neighbor Cell #:  "/>
-                        <parameter name="field2" value="`$idx`"/>
-                        <parameter name="field3" value="`$tmp.plmnid`"/>
-                        <parameter name="field4" value="`$tmp.cid`"/>
-                        <parameter name="field5" value="`$tmp.alias`"/>
-                    </record>
-                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                        <parameter name="source" value="`$prop.restapi.lte-ran-neighbor-in-use`"/>
-                        <parameter name="outputPath" value="tmp.add-neighbor-service-url"/>
-                        <parameter name="target" value="{alias}"/>
-                        <parameter name="replacement" value="`$tmp.alias`"/>
-                    </execute>
-                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                        <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
-                        <parameter name="level" value="info" />
-                        <parameter name="field1" value="Add Neighbor List URL"/>
-                        <parameter name="field2" value="`$tmp.add-neighbor-service-url`"/>
-                    </record>
-                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                        <parameter name="source" value="`$tmp.add-neighbor-service-url`"/>
-                        <parameter name="outputPath" value="tmp.add-neighbor-service-url"/>
-                        <parameter name="target" value="{plmnid}"/>
-                        <parameter name="replacement" value="`$tmp.plmnid`"/>
-                    </execute>
-                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                        <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
-                        <parameter name="level" value="info" />
-                        <parameter name="field1" value="Add Neighbor List URL"/>
-                        <parameter name="field2" value="`$tmp.add-neighbor-service-url`"/>
-                    </record>
-                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                        <parameter name="source" value="`$tmp.add-neighbor-service-url`"/>
-                        <parameter name="outputPath" value="tmp.add-neighbor-service-url"/>
-                        <parameter name="target" value="{cid}"/>
-                        <parameter name="replacement" value="`$tmp.cid`"/>
-                    </execute>
-                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                        <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
-                        <parameter name="level" value="info" />
-                        <parameter name="field1" value="Setting variables for Neighbor Add PUT operation"/>
-                        <parameter name="field2" value="`$tmp.add-neighbor-service-url`"/>
-                        <parameter name="field3" value="`$tmp.plmnid`"/>
-                        <parameter name="field4" value="`$tmp.cid`"/>
-                        <parameter name="field5" value="`$tmp.phy-cell-id`"/>
-                        <parameter name="field6" value="`$tmp.pnf-name`"/>
-                        <parameter name="field7" value="`$tmp.blacklisted`"/>
-                    </record>
-                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                        <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.add-neighbor-service-url`"/>
-                        <parameter name="restapiUser" value="`$prop.controller.user`" />
-                        <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
-                        <parameter name="httpMethod" value="DELETE"/>
-                        <parameter name="responsePrefix" value="oofpci-delete-neighbor-response"/>
-                        <parameter name='contentType' value='application/json' />
-                        <parameter name='format' value='json' />
-                        <outcome value='failure'>
-                            <block>
-                                <return status='failure'>
-                                    <parameter name='ack-final' value='Y'/>
-                                    <parameter name="error-code" value="500" />
-                                    <parameter name="error-message" value="Error adding a new neighbor" />
-                                </return>
-                            </block>
-                        </outcome>
-                        <outcome value='success'>
-                            <block>
-                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                    <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
-                                    <parameter name="level" value="info" />
-                                    <parameter name="field1" value="DELETE Neighbor Executed Successfully "/>
-                                </record>
-                            </block>
-                        </outcome>
-                    </execute>
-                </block>
-            </for>
+            <switch test='`$prop.ransim-mounted`'>
+                <outcome value='false'>
+                    <for index='idx' start='0' end="`$delete-neighbor-input.lte-cell-number-of-entries`" >
+                        <block atomic='true'>
+                            <set>
+                                <parameter name="tmp.plmnid" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`"/>
+                                <parameter name="tmp.cid" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`"/>
+                                <parameter name="tmp.alias" value="`$delete-neighbor-input.alias`"/>
+                                <parameter name="tmp.pnf-name" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].pnf-name`"/>
+                            </set>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Temporary variable for Neighbor Cell #:  "/>
+                                <parameter name="field2" value="`$idx`"/>
+                                <parameter name="field3" value="`$tmp.plmnid`"/>
+                                <parameter name="field4" value="`$tmp.cid`"/>
+                                <parameter name="field5" value="`$tmp.alias`"/>
+                                <parameter name="field6" value="`$tmp.pnf-name`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$prop.restapi.lte-ran-neighbor-in-use`"/>
+                                <parameter name="outputPath" value="tmp.delete-neighbor-service-url"/>
+                                <parameter name="target" value="{alias}"/>
+                                <parameter name="replacement" value="`$tmp.alias`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Delete Neighbor List URL"/>
+                                <parameter name="field2" value="`$tmp.delete-neighbor-service-url`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.delete-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.delete-neighbor-service-url"/>
+                                <parameter name="target" value="{plmnid}"/>
+                                <parameter name="replacement" value="`$tmp.plmnid`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Deletedd Neighbor List URL"/>
+                                <parameter name="field2" value="`$tmp.delete-neighbor-service-url`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.delete-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.delete-neighbor-service-url"/>
+                                <parameter name="target" value="{cid}"/>
+                                <parameter name="replacement" value="`$tmp.cid`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Setting variables for Neighbor Delete operation"/>
+                                <parameter name="field2" value="`$tmp.delete-neighbor-service-url`"/>
+                                <parameter name="field3" value="`$tmp.plmnid`"/>
+                                <parameter name="field4" value="`$tmp.cid`"/>
+                                <parameter name="field5" value="`$tmp.pnf-name`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.delete-neighbor-service-url`"/>
+                                <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                <parameter name="httpMethod" value="DELETE"/>
+                                <parameter name="responsePrefix" value="oofpci-delete-neighbor-response"/>
+                                <parameter name='contentType' value='application/json' />
+                                <parameter name='format' value='json' />
+                                <outcome value='failure'>
+                                    <block>
+                                        <return status='failure'>
+                                            <parameter name='ack-final' value='Y'/>
+                                            <parameter name="error-code" value="500" />
+                                            <parameter name="error-message" value="Error deleting a new neighbor" />
+                                        </return>
+                                    </block>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="DELETE Neighbor Executed Successfully "/>
+                                        </record>
+                                    </block>
+                                </outcome>
+                            </execute>
+                        </block>
+                    </for>
+                </outcome>
+                <outcome value='true'>
+                    <for index='idx' start='0' end="`$delete-neighbor-input.lte-cell-number-of-entries`" >
+                        <block atomic='true'>
+                            <set>
+                                <parameter name="tmp.plmnid" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`"/>
+                                <parameter name="tmp.cid" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`"/>
+                                <parameter name="tmp.alias" value="`$delete-neighbor-input.alias`"/>
+                                <parameter name="tmp.pnf-name" value="`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].pnf-name`"/>
+                            </set>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Temporary variable for Neighbor Cell #:  "/>
+                                <parameter name="field2" value="`$idx`"/>
+                                <parameter name="field3" value="`$tmp.plmnid`"/>
+                                <parameter name="field4" value="`$tmp.cid`"/>
+                                <parameter name="field5" value="`$tmp.alias`"/>
+                                <parameter name="field6" value="`$tmp.pnf-name`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$prop.restapi.lte-ran-neighbor-in-use.ransim-mounted`"/>
+                                <parameter name="outputPath" value="tmp.delete-neighbor-service-url"/>
+                                <parameter name="target" value="{alias}"/>
+                                <parameter name="replacement" value="`$tmp.alias`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Delete Neighbor List URL"/>
+                                <parameter name="field2" value="`$tmp.delete-neighbor-service-url`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.delete-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.delete-neighbor-service-url"/>
+                                <parameter name="target" value="{plmnid}"/>
+                                <parameter name="replacement" value="`$tmp.plmnid`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Delete Neighbor List URL"/>
+                                <parameter name="field2" value="`$tmp.delete-neighbor-service-url`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.delete-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.delete-neighbor-service-url"/>
+                                <parameter name="target" value="{pnf-name}"/>
+                                <parameter name="replacement" value="`$tmp.pnf-name`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.delete-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.delete-neighbor-service-url"/>
+                                <parameter name="target" value="{cid}"/>
+                                <parameter name="replacement" value="`$tmp.cid`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Setting variables for Neighbor Delete operation"/>
+                                <parameter name="field2" value="`$tmp.delete-neighbor-service-url`"/>
+                                <parameter name="field3" value="`$tmp.plmnid`"/>
+                                <parameter name="field4" value="`$tmp.cid`"/>
+                                <parameter name="field5" value="`$tmp.pnf-name`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.delete-neighbor-service-url`"/>
+                                <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                <parameter name="httpMethod" value="DELETE"/>
+                                <parameter name="responsePrefix" value="oofpci-delete-neighbor-response"/>
+                                <parameter name='contentType' value='application/json' />
+                                <parameter name='format' value='json' />
+                                <outcome value='failure'>
+                                    <block>
+                                        <return status='failure'>
+                                            <parameter name='ack-final' value='Y'/>
+                                            <parameter name="error-code" value="500" />
+                                            <parameter name="error-message" value="Error deleting a new neighbor" />
+                                        </return>
+                                    </block>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/delete-neighbor.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="DELETE Neighbor Executed Successfully "/>
+                                        </record>
+                                    </block>
+                                </outcome>
+                            </execute>
+                        </block>
+                    </for>
+                </outcome>
+            </switch>
             <return status='success'>
                 <parameter name="ack-final-indicator" value="Y" />
                 <parameter name="error-code" value="200" />
-                <parameter name="error-message" value="SUCCESSFUL add-neighbor Execution" />
+                <parameter name="error-message" value="SUCCESSFUL delete-neighbor Execution" />
             </return>
         </block>
     </method>

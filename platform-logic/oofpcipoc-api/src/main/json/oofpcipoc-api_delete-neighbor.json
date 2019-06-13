@@ -1,36 +1,36 @@
 [
     {
-        "id": "8f6bbd32.2e1fc",
+        "id": "207a4f7d.8734f",
         "type": "method",
         "name": "method",
         "xml": "<method rpc='delete-neighbor' mode='sync'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 152.01040649414062,
-        "y": 280.0104064941406,
-        "z": "d658c648.5b71e8",
+        "x": 90,
+        "y": 195.98956298828125,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "9d8eae2c.c98b4"
+                "b25411ae.c24d5"
             ]
         ]
     },
     {
-        "id": "7cc1ba3.0ded644",
+        "id": "aa735cd2.ae183",
         "type": "dgstart",
         "name": "DGSTART",
         "outputs": 1,
-        "x": 172.01041221618652,
-        "y": 82.01042938232422,
-        "z": "d658c648.5b71e8",
+        "x": 106,
+        "y": 31.989585876464844,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "3f1f6894.c773d8"
+                "aa08a843.d3fdc8"
             ]
         ]
     },
     {
-        "id": "3f1f6894.c773d8",
+        "id": "aa08a843.d3fdc8",
         "type": "service-logic",
         "name": "oofpcipoc-api 0.4.2-SNAPSHOT",
         "module": "oofpcipoc-api",
@@ -38,413 +38,707 @@
         "comments": "",
         "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='oofpcipoc-api' version='0.4.2-SNAPSHOT'>",
         "outputs": 1,
-        "x": 173.0103988647461,
-        "y": 164.0105266571045,
-        "z": "d658c648.5b71e8",
+        "x": 160.99999237060547,
+        "y": 89.98968505859375,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "8f6bbd32.2e1fc"
+                "207a4f7d.8734f"
             ]
         ]
     },
     {
-        "id": "9d8eae2c.c98b4",
+        "id": "b25411ae.c24d5",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 138.5000114440918,
-        "y": 475.0104675292969,
-        "z": "d658c648.5b71e8",
+        "x": 120.48960876464844,
+        "y": 290.9896240234375,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "f3ffc042.30165",
-                "9549fa66.052c98",
-                "1377597c.adf1a7",
-                "d8359a96.3b95b8",
-                "153414fd.ef7b4b",
-                "ce502c9f.ad136"
+                "56e286a0.287f88",
+                "ec6ef330.d3bb6",
+                "94e32e29.2123c",
+                "db5b7b51.736548",
+                "615374e5.a9162c",
+                "70140359.d5b9ec"
             ]
         ]
     },
     {
-        "id": "f3ffc042.30165",
+        "id": "56e286a0.287f88",
         "type": "returnSuccess",
         "name": "return success",
-        "xml": "<return status='success'>\n<parameter name=\"ack-final-indicator\" value=\"Y\" />\n<parameter name=\"error-code\" value=\"200\" />\n<parameter name=\"error-message\" value=\"SUCCESSFUL add-neighbor Execution\" />\n",
+        "xml": "<return status='success'>\n<parameter name=\"ack-final-indicator\" value=\"Y\" />\n<parameter name=\"error-code\" value=\"200\" />\n<parameter name=\"error-message\" value=\"SUCCESSFUL delete-neighbor Execution\" />\n",
         "comments": "",
-        "x": 409.0106658935547,
-        "y": 622.0105447769165,
-        "z": "d658c648.5b71e8",
+        "x": 133.000244140625,
+        "y": 620.9896850585938,
+        "z": "b345f1b.2f85e1",
         "wires": []
     },
     {
-        "id": "444ce01a.b540b",
+        "id": "a73d6bf8.dcb238",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Input RPC Payload request for Alias:  \"/>\n<parameter name=\"field2\" value=\"`$delete-neighbor-input.alias`\"/>\n<parameter name=\"field3\" value=\"Input RPC Payload request for delete-neighbor. Neighbor Cell #:  \"/>\n<parameter name=\"field4\" value=\"`$idx`\"/>\n<parameter name=\"field5\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`\"/>\n<parameter name=\"field6\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`\"/>",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Input RPC Payload request for Alias:  \"/>\n<parameter name=\"field2\" value=\"`$delete-neighbor-input.alias`\"/>\n<parameter name=\"field3\" value=\"Input RPC Payload request for delete-neighbor. Neighbor Cell #:  \"/>\n<parameter name=\"field4\" value=\"`$idx`\"/>\n<parameter name=\"field5\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`\"/>\n<parameter name=\"field6\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`\"/>\n<parameter name=\"field7\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].pnf-name`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 721.0113067626953,
-        "y": 59.01047992706299,
-        "z": "d658c648.5b71e8",
+        "x": 545.0009155273438,
+        "y": 139.98963928222656,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "a47d97a9.fdacf8",
+        "id": "be689cdc.25859",
         "type": "comment",
         "name": "Delete neighbor",
         "info": "",
         "comments": "",
-        "x": 375.0104122161865,
-        "y": 42.020843505859375,
-        "z": "d658c648.5b71e8",
+        "x": 411.0000057220459,
+        "y": 39,
+        "z": "b345f1b.2f85e1",
         "wires": []
     },
     {
-        "id": "ae098383.f8ea2",
+        "id": "4af01e8d.7dd54",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Setting variables for Neighbor Add PUT operation\"/>\n<parameter name=\"field2\" value=\"`$tmp.add-neighbor-service-url`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.phy-cell-id`\"/>\n<parameter name=\"field6\" value=\"`$tmp.pnf-name`\"/>\n<parameter name=\"field7\" value=\"`$tmp.blacklisted`\"/>",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Setting variables for Neighbor Delete operation\"/>\n<parameter name=\"field2\" value=\"`$tmp.delete-neighbor-service-url`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.pnf-name`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 620.0113906860352,
-        "y": 481.02094173431396,
-        "z": "d658c648.5b71e8",
+        "x": 811.0009765625,
+        "y": 393.0000915527344,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "1377597c.adf1a7",
+        "id": "94e32e29.2123c",
         "type": "for",
         "name": "for",
         "xml": "<for index='idx' start='0' end=\"`$delete-neighbor-input.lte-cell-number-of-entries`\" >",
         "comments": "",
         "outputs": 1,
-        "x": 570.0961799621582,
-        "y": 66.97401714324951,
-        "z": "d658c648.5b71e8",
+        "x": 394.08575439453125,
+        "y": 154.95317840576172,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "444ce01a.b540b"
+                "a73d6bf8.dcb238"
             ]
         ]
     },
     {
-        "id": "9549fa66.052c98",
+        "id": "ec6ef330.d3bb6",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"RPC to delete neighbors. Number of neighbors to delete: \"/>\n<parameter name=\"field2\" value=\"`$delete-neighbor-input.lte-cell-number-of-entries`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 391.0107192993164,
-        "y": 107.03127384185791,
-        "z": "d658c648.5b71e8",
+        "x": 419.00030517578125,
+        "y": 88.01042938232422,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "ce502c9f.ad136",
+        "id": "515d69fb.0b4178",
         "type": "for",
         "name": "for",
         "xml": "<for index='idx' start='0' end=\"`$delete-neighbor-input.lte-cell-number-of-entries`\" >",
         "comments": "",
         "outputs": 1,
-        "x": 327.01058769226074,
-        "y": 476.02083015441895,
-        "z": "d658c648.5b71e8",
+        "x": 475.00018310546875,
+        "y": 360,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "4661d468.e207dc"
+                "cc2e5c47.c44e5"
             ]
         ]
     },
     {
-        "id": "a874a6b4.cbe028",
+        "id": "b7d43aa5.f0cac8",
         "type": "set",
-        "name": "set tmp variables for the requested neighbor to be added",
-        "xml": "<set>\n<parameter name=\"tmp.plmnid\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`\"/>\n<parameter name=\"tmp.cid\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`\"/>\n<parameter name=\"tmp.alias\" value=\"`$delete-neighbor-input.alias`\"/>",
+        "name": "set tmp variables for the requested neighbor to be deleted",
+        "xml": "<set>\n<parameter name=\"tmp.plmnid\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`\"/>\n<parameter name=\"tmp.cid\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`\"/>\n<parameter name=\"tmp.alias\" value=\"`$delete-neighbor-input.alias`\"/>\n<parameter name=\"tmp.pnf-name\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].pnf-name`\"/>\n",
         "comments": "",
-        "x": 880.0115661621094,
-        "y": 147.90992736816406,
-        "z": "d658c648.5b71e8",
+        "x": 929.0011596679688,
+        "y": 28.889083862304688,
+        "z": "b345f1b.2f85e1",
         "wires": []
     },
     {
-        "id": "17cdca86.1a45e5",
+        "id": "535555d4.11573c",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 882.0107955932617,
-        "y": 465.0209321975708,
-        "z": "d658c648.5b71e8",
+        "x": 1103.000389099121,
+        "y": 375.0000886917114,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "b18e1fe5.42e1a"
+                "238ee5e9.27ec7a"
             ]
         ]
     },
     {
-        "id": "be22f91c.ecdaf8",
+        "id": "61cac774.8ddd18",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 896.0107116699219,
-        "y": 583.0208921432495,
-        "z": "d658c648.5b71e8",
+        "x": 1117.0003051757812,
+        "y": 493.00004863739014,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "ba4bdf26.a25c6"
+                "df9d1e15.90f2d"
             ]
         ]
     },
     {
-        "id": "b18e1fe5.42e1a",
+        "id": "238ee5e9.27ec7a",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1036.0107460021973,
-        "y": 435.0209712982178,
-        "z": "d658c648.5b71e8",
+        "x": 1257.0003395080566,
+        "y": 345.0001277923584,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "d552d127.0b1b9"
+                "fc657a9b.bf7e68"
             ]
         ]
     },
     {
-        "id": "d552d127.0b1b9",
+        "id": "fc657a9b.bf7e68",
         "type": "returnFailure",
         "name": "return failure",
-        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error adding a new neighbor\" />",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error deleting a new neighbor\" />",
         "comments": "",
-        "x": 1223.0103797912598,
-        "y": 417.02092361450195,
-        "z": "d658c648.5b71e8",
+        "x": 1443.9999732971191,
+        "y": 327.0000801086426,
+        "z": "b345f1b.2f85e1",
         "wires": []
     },
     {
-        "id": "ba4bdf26.a25c6",
+        "id": "df9d1e15.90f2d",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1066.010498046875,
-        "y": 568.020932674408,
-        "z": "d658c648.5b71e8",
+        "x": 1287.0000915527344,
+        "y": 478.0000891685486,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "b46d635a.d09bb"
+                "a52ab576.2492f8"
             ]
         ]
     },
     {
-        "id": "b46d635a.d09bb",
+        "id": "a52ab576.2492f8",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"DELETE Neighbor Executed Successfully \"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1250.0105171203613,
-        "y": 553.020959854126,
-        "z": "d658c648.5b71e8",
+        "x": 1471.0001106262207,
+        "y": 463.0001163482666,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "4661d468.e207dc",
+        "id": "cc2e5c47.c44e5",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 407.0104064941406,
-        "y": 414.0313243865967,
-        "z": "d658c648.5b71e8",
+        "x": 611,
+        "y": 300.0104675292969,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "a874a6b4.cbe028",
-                "ae098383.f8ea2",
-                "5e9335be.02848c",
-                "c257d0f0.4516e",
-                "895e37be.280c78",
-                "fcb1c157.9d704",
-                "e65af91d.2ad1c8",
-                "2683298a.19da16",
-                "1766bd3c.fe21d3"
+                "b7d43aa5.f0cac8",
+                "4af01e8d.7dd54",
+                "51f44fdf.cf79b",
+                "d4bc7fa6.cc60c",
+                "d9198d9a.74287",
+                "8ea593b0.0d5fd",
+                "a02f97f3.371b08",
+                "8c7628fe.367c08",
+                "448c530d.2a7d3c"
             ]
         ]
     },
     {
-        "id": "d8359a96.3b95b8",
+        "id": "db5b7b51.736548",
         "type": "execute",
         "name": "execute Properties",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >\n    <parameter name='fileName' value='%SDNC_CONFIG_DIR%/sdnr-oofpcipoc-api-dg.properties' />\n    <parameter name='contextPrefix' value='prop' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 616.0106582641602,
-        "y": 113.03125762939453,
-        "z": "d658c648.5b71e8",
+        "x": 410.000244140625,
+        "y": 214.01040649414062,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "153414fd.ef7b4b",
+        "id": "615374e5.a9162c",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/add-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Properties read .. neighbor-add template\"/>\n<parameter name=\"field2\" value=\"`$prop.neighbor-add.templatefile`\"/>\n<parameter name=\"field3\" value=\"`$prop.controller.user`\"/>\n<parameter name=\"field4\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"field5\" value=\"`$prop.controller.url`\"/>\n<parameter name=\"field6\" value=\"`$prop.restapi.lte-ran-neighbor-in-use`\"/>",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Properties read .. neighbor-delete template\"/>\n<parameter name=\"field2\" value=\"`$prop.restapi.neighbor-delete.templatefile`\"/>\n<parameter name=\"field3\" value=\"`$prop.controller.user`\"/>\n<parameter name=\"field4\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"field5\" value=\"`$prop.controller.url`\"/>\n<parameter name=\"field6\" value=\"`$prop.restapi.lte-ran-neighbor-in-use`\"/>\n<parameter name=\"field7\" value=\"`$prop.restapi.lte-ran-neighbor-in-use.ransim-mounted`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 576.0107860565186,
-        "y": 163.03136157989502,
-        "z": "d658c648.5b71e8",
+        "x": 379.0003662109375,
+        "y": 282.010498046875,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "5e9335be.02848c",
+        "id": "51f44fdf.cf79b",
         "type": "execute",
-        "name": "generate neighbor add URL",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.lte-ran-neighbor-in-use`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.add-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{alias}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
+        "name": "generate neighbor delete URL",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.lte-ran-neighbor-in-use`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.delete-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{alias}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 815.0109405517578,
-        "y": 239.03140926361084,
-        "z": "d658c648.5b71e8",
+        "x": 914.0005493164062,
+        "y": 130.01055908203125,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "c257d0f0.4516e",
+        "id": "d4bc7fa6.cc60c",
         "type": "execute",
         "name": "delete a neighbor using DELETE",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.add-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"DELETE\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-delete-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.delete-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"DELETE\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-delete-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />",
         "comments": "",
         "outputs": 1,
-        "x": 642.0108261108398,
-        "y": 545.0314388275146,
-        "z": "d658c648.5b71e8",
+        "x": 840.0004272460938,
+        "y": 450.0105895996094,
+        "z": "b345f1b.2f85e1",
         "wires": [
             [
-                "17cdca86.1a45e5",
-                "be22f91c.ecdaf8"
+                "535555d4.11573c",
+                "61cac774.8ddd18"
             ]
         ]
     },
     {
-        "id": "da297c37.82f9f",
+        "id": "d9198d9a.74287",
         "type": "execute",
-        "name": "Recofigure PCI for a Cell",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-pci-patch.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-patch-response\"/>\n<parameter name='contentType' value='application/yang.patch+json' /> \n<parameter name='accept' value='application/yang.patch-status+json' />",
+        "name": "populate plmnid",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.delete-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.delete-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{plmnid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.plmnid`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 849.0104370117188,
-        "y": 817.0312805175781,
-        "z": "d658c648.5b71e8",
+        "x": 931.000244140625,
+        "y": 235.01040649414062,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "895e37be.280c78",
+        "id": "8ea593b0.0d5fd",
         "type": "execute",
-        "name": "execute slipluginutils",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.add-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.add-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{plmnid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.plmnid`\"/>",
+        "name": "Populate cid",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.delete-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.delete-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{cid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cid`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 854.010627746582,
-        "y": 326.03124618530273,
-        "z": "d658c648.5b71e8",
+        "x": 874.0001831054688,
+        "y": 337.0104064941406,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "fcb1c157.9d704",
-        "type": "execute",
-        "name": "execute slipluginutils",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.add-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.add-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{cid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cid`\"/>",
-        "comments": "",
-        "outputs": 1,
-        "x": 682.0105743408203,
-        "y": 421.0312490463257,
-        "z": "d658c648.5b71e8",
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "e65af91d.2ad1c8",
+        "id": "a02f97f3.371b08",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Add Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.add-neighbor-service-url`\"/>",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Delete Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.delete-neighbor-service-url`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 768.0105056762695,
-        "y": 279.03124713897705,
-        "z": "d658c648.5b71e8",
+        "x": 886.0001220703125,
+        "y": 187.01040649414062,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "2683298a.19da16",
+        "id": "8c7628fe.367c08",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Add Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.add-neighbor-service-url`\"/>\n",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Deletedd Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.delete-neighbor-service-url`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 795.0104637145996,
-        "y": 369.0312476158142,
-        "z": "d658c648.5b71e8",
+        "x": 905.0000610351562,
+        "y": 280.0104064941406,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "1766bd3c.fe21d3",
+        "id": "448c530d.2a7d3c",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Temporary variable for Neighbor Cell #:  \"/>\n<parameter name=\"field2\" value=\"`$idx`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.alias`\"/>\n",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Temporary variable for Neighbor Cell #:  \"/>\n<parameter name=\"field2\" value=\"`$idx`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.alias`\"/>\n<parameter name=\"field6\" value=\"`$tmp.pnf-name`\"/>\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 764.0104827880859,
-        "y": 195.031268119812,
-        "z": "d658c648.5b71e8",
+        "x": 812.0000610351562,
+        "y": 83.01042175292969,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]
     },
     {
-        "id": "4452b556.b1699c",
+        "id": "70140359.d5b9ec",
+        "type": "switchNode",
+        "name": "switch mounted",
+        "xml": "<switch test='`$prop.ransim-mounted`'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 254,
+        "y": 536,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "8fc02b5a.e6fa78",
+                "981162d5.45c12"
+            ]
+        ]
+    },
+    {
+        "id": "8fc02b5a.e6fa78",
+        "type": "outcome",
+        "name": "Not Mounted",
+        "xml": "<outcome value='false'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 410,
+        "y": 449,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "515d69fb.0b4178"
+            ]
+        ]
+    },
+    {
+        "id": "981162d5.45c12",
+        "type": "outcome",
+        "name": "Mounted",
+        "xml": "<outcome value='true'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 416,
+        "y": 606,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "e4d06a14.c62268"
+            ]
+        ]
+    },
+    {
+        "id": "9fcb1729.58ff08",
+        "type": "set",
+        "name": "set tmp variables for the requested neighbor to be deleted",
+        "xml": "<set>\n<parameter name=\"tmp.plmnid\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].plmnid`\"/>\n<parameter name=\"tmp.cid\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].cid`\"/>\n<parameter name=\"tmp.alias\" value=\"`$delete-neighbor-input.alias`\"/>\n<parameter name=\"tmp.pnf-name\" value=\"`$delete-neighbor-input.lte-ran-neighbor-list-in-use-lte-cell[$idx].pnf-name`\"/>\n",
+        "comments": "",
+        "x": 978,
+        "y": 537,
+        "z": "b345f1b.2f85e1",
+        "wires": []
+    },
+    {
+        "id": "c9662b69.1edb18",
+        "type": "failure",
+        "name": "failure",
+        "xml": "<outcome value='failure'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1139.9992294311523,
+        "y": 856.1110048294067,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "cc8d9b1b.4902f8"
+            ]
+        ]
+    },
+    {
+        "id": "1330ec36.9051c4",
+        "type": "success",
+        "name": "success",
+        "xml": "<outcome value='success'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1153.9991455078125,
+        "y": 974.1109647750854,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "3a574512.87fb6a"
+            ]
+        ]
+    },
+    {
+        "id": "cc8d9b1b.4902f8",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1293.999179840088,
+        "y": 826.1110439300537,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "82d98dad.fb6bd"
+            ]
+        ]
+    },
+    {
+        "id": "82d98dad.fb6bd",
+        "type": "returnFailure",
+        "name": "return failure",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error deleting a new neighbor\" />",
+        "comments": "",
+        "x": 1480.9988136291504,
+        "y": 808.1109962463379,
+        "z": "b345f1b.2f85e1",
+        "wires": []
+    },
+    {
+        "id": "3a574512.87fb6a",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1323.9989318847656,
+        "y": 959.1110053062439,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "3383c6fe.f233ba"
+            ]
+        ]
+    },
+    {
+        "id": "3383c6fe.f233ba",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"DELETE Neighbor Executed Successfully \"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1507.998950958252,
+        "y": 944.1110324859619,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7fdfb31b.03c91c",
+        "type": "execute",
+        "name": "generate neighbor add URL",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.lte-ran-neighbor-in-use.ransim-mounted`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.delete-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{alias}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1039.9993896484375,
+        "y": 601.1214599609375,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "92a47f6f.b8354",
         "type": "execute",
         "name": "delete a neighbor using DELETE",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-deleteNeighbor.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.add-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"DELETE\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-delete-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.delete-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"DELETE\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-delete-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />",
         "comments": "",
         "outputs": 1,
-        "x": 665.0104370117188,
-        "y": 656.0104370117188,
-        "z": "d658c648.5b71e8",
+        "x": 899.9992599487305,
+        "y": 936.1215114593506,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "c9662b69.1edb18",
+                "1330ec36.9051c4"
+            ]
+        ]
+    },
+    {
+        "id": "4daa6d79.f48ee4",
+        "type": "execute",
+        "name": "Populate plmnid",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.delete-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.delete-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{plmnid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.plmnid`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1072.9990844726562,
+        "y": 684.121337890625,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "24c60b6.36e9ff4",
+        "type": "execute",
+        "name": "populate cid",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.delete-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.delete-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{cid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cid`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 897.9990234375,
+        "y": 814.121337890625,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "76beb28c.2d0d2c",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Delete Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.delete-neighbor-service-url`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 932.9989624023438,
+        "y": 643.121337890625,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "581aec1c.dee734",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Delete Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.delete-neighbor-service-url`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 970.9989013671875,
+        "y": 724.121337890625,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "71e574e3.fbf1ec",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Temporary variable for Neighbor Cell #:  \"/>\n<parameter name=\"field2\" value=\"`$idx`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.alias`\"/>\n<parameter name=\"field6\" value=\"`$tmp.pnf-name`\"/>\n\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 839.9989013671875,
+        "y": 581.121337890625,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2993a017.81813",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 640.9988403320312,
+        "y": 626.1213989257812,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "9fcb1729.58ff08",
+                "53106aea.1ed354",
+                "7fdfb31b.03c91c",
+                "92a47f6f.b8354",
+                "4daa6d79.f48ee4",
+                "24c60b6.36e9ff4",
+                "76beb28c.2d0d2c",
+                "581aec1c.dee734",
+                "71e574e3.fbf1ec",
+                "bcd9754e.de9678"
+            ]
+        ]
+    },
+    {
+        "id": "e4d06a14.c62268",
+        "type": "for",
+        "name": "for",
+        "xml": "<for index='idx' start='0' end=\"`$delete-neighbor-input.lte-cell-number-of-entries`\" >",
+        "comments": "",
+        "outputs": 1,
+        "x": 500.9990234375,
+        "y": 717.1109008789062,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            [
+                "2993a017.81813"
+            ]
+        ]
+    },
+    {
+        "id": "53106aea.1ed354",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/delete-neighbor.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Setting variables for Neighbor Delete operation\"/>\n<parameter name=\"field2\" value=\"`$tmp.delete-neighbor-service-url`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.pnf-name`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 844.9998245239258,
+        "y": 875.1110143661499,
+        "z": "b345f1b.2f85e1",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bcd9754e.de9678",
+        "type": "execute",
+        "name": "populate netconf mount",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.delete-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.delete-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{pnf-name}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.pnf-name`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 978,
+        "y": 768,
+        "z": "b345f1b.2f85e1",
         "wires": [
             []
         ]

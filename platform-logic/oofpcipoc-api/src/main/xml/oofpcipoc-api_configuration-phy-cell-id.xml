@@ -1,6 +1,6 @@
 <service-logic
     xmlns='http://www.onap.org/sdnc/svclogic'
-    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='oofpcipoc-api' version='0.4.2-SNAPSHOT'>
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='oofpcipoc-api' version='${project.version}'>
     <method rpc='configuration-phy-cell-id' mode='sync'>
         <block atomic='true'>
             <for index='idx' start='0' end="`$configuration-phy-cell-id-input.fap-service-number-of-entries`" >
@@ -15,12 +15,6 @@
                     <parameter name="field6" value="`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`"/>
                 </record>
             </for>
-            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                <parameter name="level" value="info" />
-                <parameter name="field1" value="RPC to Configure PCI INVOKED. Number of Cells to configure: "/>
-                <parameter name="field2" value="`$configuration-phy-cell-id-input.fap-service-number-of-entries`"/>
-            </record>
             <execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >
                 <parameter name='fileName' value='%SDNC_CONFIG_DIR%/sdnr-oofpcipoc-api-dg.properties' />
                 <parameter name='contextPrefix' value='prop' />
@@ -33,131 +27,281 @@
                 <parameter name="field3" value="`$prop.controller.user`"/>
                 <parameter name="field4" value="`$prop.controller.pwd`"/>
                 <parameter name="field5" value="`$prop.controller.url`"/>
+                <parameter name="field6" value="ransim-mounted (true/false): "/>
+                <parameter name="field7" value="`$prop.ransim-mounted`"/>
             </record>
-            <for index='idx' start='0' end="`$configuration-phy-cell-id-input.fap-service-number-of-entries`" >
-                <block atomic='true'>
-                    <set>
-                        <parameter name="tmp.alias" value="`$configuration-phy-cell-id-input.fap-service[$idx].alias`"/>
-                        <parameter name="tmp.cid" value="`$configuration-phy-cell-id-input.fap-service[$idx].cid`"/>
-                        <parameter name="tmp.phy-cell-id-in-use" value="`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`"/>
-                        <parameter name="tmp.pnf-name" value="`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`"/>
-                    </set>
-                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                        <parameter name="source" value="`$prop.restapi.fap-service`"/>
-                        <parameter name="outputPath" value="tmp.fap-service-url"/>
-                        <parameter name="target" value="{alias}"/>
-                        <parameter name="replacement" value="`$tmp.alias`"/>
-                    </execute>
-                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                        <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                        <parameter name="level" value="info" />
-                        <parameter name="field1" value="Setting variables for GET operation"/>
-                        <parameter name="field2" value="`$tmp.fap-service-url`"/>
-                        <parameter name="field3" value="`$tmp.alias`"/>
-                        <parameter name="field4" value="`$tmp.cid`"/>
-                        <parameter name="field5" value="`$tmp.phy-cell-id-in-use`"/>
-                        <parameter name="field6" value="`$tmp.pnf-name`"/>
-                    </record>
-                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                        <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
-                        <parameter name="restapiUser" value="`$prop.controller.user`" />
-                        <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
-                        <parameter name="format" value="json"/>
-                        <parameter name="httpMethod" value="GET"/>
-                        <parameter name="responsePrefix" value="oofpcigetfapservice"/>
-                        <parameter name='contentType' value='application/json' />
-                        <outcome value='failure'>
-                            <return status='failure'>
-                                <parameter name='ack-final' value='Y'/>
-                                <parameter name="error-code" value="500" />
-                                <parameter name="error-message" value="Error executing Get odutopo node details rest api" />
-                            </return>
-                        </outcome>
-                        <outcome value='success'>
-                            <block>
-                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                    <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                                    <parameter name="level" value="info" />
-                                    <parameter name="field1" value="Initial FAP Service PCI PARMS"/>
-                                    <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
-                                    <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
-                                    <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
-                                </record>
-                            </block>
-                        </outcome>
-                    </execute>
-                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                        <parameter name="source" value="`$prop.restapi.x-005b9-lte`"/>
-                        <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
-                        <parameter name="target" value="{alias}"/>
-                        <parameter name="replacement" value="`$tmp.alias`"/>
-                    </execute>
-                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                        <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                        <parameter name="level" value="info" />
-                        <parameter name="field1" value="URL and Target for PCI patch URL"/>
-                        <parameter name='field2' value="`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`" />
-                        <parameter name='field3' value="`$prop.oofpcipoc.patch.pci.target`" />
-                    </record>
-                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                        <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/oofpcipoc-pci-patch.json'`" />
-                        <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`"/>
-                        <parameter name="restapiUser" value="`$prop.controller.user`" />
-                        <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
-                        <parameter name="httpMethod" value="PATCH"/>
-                        <parameter name="responsePrefix" value="oofpci-patch-response"/>
-                        <parameter name='contentType' value='application/yang.patch+json' />
-                        <parameter name='format' value='json' />
-                        <parameter name='accept' value='application/yang.patch-status+json' />
-                        <outcome value='failure'>
-                            <block>
-                                <return status='failure'>
-                                    <parameter name='ack-final' value='Y'/>
-                                    <parameter name="error-code" value="500" />
-                                    <parameter name="error-message" value="Error executing patch rest api" />
-                                </return>
-                            </block>
-                        </outcome>
-                        <outcome value='success'>
-                            <block>
-                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                    <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                                    <parameter name="level" value="info" />
-                                    <parameter name="field1" value="PUT PCI POC FAP SERVICE. Reconfigured "/>
-                                </record>
-                            </block>
-                        </outcome>
-                    </execute>
-                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                        <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
-                        <parameter name="restapiUser" value="`$prop.controller.user`" />
-                        <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
-                        <parameter name="format" value="json"/>
-                        <parameter name="httpMethod" value="GET"/>
-                        <parameter name="responsePrefix" value="oofpcigetfapservice"/>
-                        <parameter name='contentType' value='application/json' />
-                        <outcome value='failure'>
-                            <return status='failure'>
-                                <parameter name='ack-final' value='Y'/>
-                                <parameter name="error-code" value="500" />
-                                <parameter name="error-message" value="Error executing patch rest api" />
-                            </return>
-                        </outcome>
-                        <outcome value='success'>
-                            <block>
-                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                    <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                                    <parameter name="level" value="info" />
-                                    <parameter name="field1" value="Post Reconfig FAP Service PCI PARMS"/>
-                                    <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
-                                    <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
-                                    <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
-                                </record>
-                            </block>
-                        </outcome>
-                    </execute>
-                </block>
-            </for>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="RPC to Configure PCI INVOKED. Number of Cells to configure: "/>
+                <parameter name="field2" value="`$configuration-phy-cell-id-input.fap-service-number-of-entries`"/>
+            </record>
+            <switch test='`$prop.ransim-mounted`'>
+                <outcome value='false'>
+                    <for index='idx' start='0' end="`$configuration-phy-cell-id-input.fap-service-number-of-entries`" >
+                        <block atomic='true'>
+                            <set>
+                                <parameter name="tmp.alias" value="`$configuration-phy-cell-id-input.fap-service[$idx].alias`"/>
+                                <parameter name="tmp.cid" value="`$configuration-phy-cell-id-input.fap-service[$idx].cid`"/>
+                                <parameter name="tmp.phy-cell-id-in-use" value="`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`"/>
+                                <parameter name="tmp.pnf-name" value="`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`"/>
+                            </set>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$prop.restapi.fap-service`"/>
+                                <parameter name="outputPath" value="tmp.fap-service-url"/>
+                                <parameter name="target" value="{alias}"/>
+                                <parameter name="replacement" value="`$tmp.alias`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Setting variables for GET operation"/>
+                                <parameter name="field2" value="`$tmp.fap-service-url`"/>
+                                <parameter name="field3" value="`$tmp.alias`"/>
+                                <parameter name="field4" value="`$tmp.cid`"/>
+                                <parameter name="field5" value="`$tmp.phy-cell-id-in-use`"/>
+                                <parameter name="field6" value="`$tmp.pnf-name`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
+                                <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                <parameter name="format" value="json"/>
+                                <parameter name="httpMethod" value="GET"/>
+                                <parameter name="responsePrefix" value="oofpcigetfapservice"/>
+                                <parameter name='contentType' value='application/json' />
+                                <outcome value='failure'>
+                                    <return status='failure'>
+                                        <parameter name='ack-final' value='Y'/>
+                                        <parameter name="error-code" value="500" />
+                                        <parameter name="error-message" value="Error executing Get odutopo node details rest api" />
+                                    </return>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="Initial FAP Service PCI PARMS"/>
+                                            <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
+                                            <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
+                                            <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
+                                        </record>
+                                    </block>
+                                </outcome>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$prop.restapi.x-005b9-lte`"/>
+                                <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
+                                <parameter name="target" value="{alias}"/>
+                                <parameter name="replacement" value="`$tmp.alias`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="URL and Target for PCI patch URL"/>
+                                <parameter name='field2' value="`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`" />
+                                <parameter name='field3' value="`$prop.oofpcipoc.patch.pci.target`" />
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/oofpcipoc-pci-patch.json'`" />
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`"/>
+                                <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                <parameter name="httpMethod" value="PATCH"/>
+                                <parameter name="responsePrefix" value="oofpci-patch-response"/>
+                                <parameter name='contentType' value='application/yang.patch+json' />
+                                <parameter name='format' value='json' />
+                                <parameter name='accept' value='application/yang.patch-status+json' />
+                                <outcome value='failure'>
+                                    <block>
+                                        <return status='failure'>
+                                            <parameter name='ack-final' value='Y'/>
+                                            <parameter name="error-code" value="500" />
+                                            <parameter name="error-message" value="Error executing patch rest api" />
+                                        </return>
+                                    </block>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="PUT PCI POC FAP SERVICE. Reconfigured "/>
+                                        </record>
+                                    </block>
+                                </outcome>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
+                                <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                <parameter name="format" value="json"/>
+                                <parameter name="httpMethod" value="GET"/>
+                                <parameter name="responsePrefix" value="oofpcigetfapservice"/>
+                                <parameter name='contentType' value='application/json' />
+                                <outcome value='failure'>
+                                    <return status='failure'>
+                                        <parameter name='ack-final' value='Y'/>
+                                        <parameter name="error-code" value="500" />
+                                        <parameter name="error-message" value="Error executing patch rest api" />
+                                    </return>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="Post Reconfig FAP Service PCI PARMS"/>
+                                            <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
+                                            <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
+                                            <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
+                                        </record>
+                                    </block>
+                                </outcome>
+                            </execute>
+                        </block>
+                    </for>
+                </outcome>
+                <outcome value='true'>
+                    <for index='idx' start='0' end="`$configuration-phy-cell-id-input.fap-service-number-of-entries`" >
+                        <block atomic='true'>
+                            <set>
+                                <parameter name="tmp.alias" value="`$configuration-phy-cell-id-input.fap-service[$idx].alias`"/>
+                                <parameter name="tmp.cid" value="`$configuration-phy-cell-id-input.fap-service[$idx].cid`"/>
+                                <parameter name="tmp.phy-cell-id-in-use" value="`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`"/>
+                                <parameter name="tmp.pnf-name" value="`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`"/>
+                            </set>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$prop.restapi.fap-service.ransim-mounted`"/>
+                                <parameter name="outputPath" value="tmp.fap-service-url"/>
+                                <parameter name="target" value="{alias}"/>
+                                <parameter name="replacement" value="`$tmp.alias`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.fap-service-url`"/>
+                                <parameter name="outputPath" value="tmp.fap-service-url"/>
+                                <parameter name="target" value="{pnf-name}"/>
+                                <parameter name="replacement" value="`$tmp.pnf-name`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Setting variables for GET operation"/>
+                                <parameter name="field2" value="`$tmp.fap-service-url`"/>
+                                <parameter name="field3" value="`$tmp.alias`"/>
+                                <parameter name="field4" value="`$tmp.cid`"/>
+                                <parameter name="field5" value="`$tmp.phy-cell-id-in-use`"/>
+                                <parameter name="field6" value="`$tmp.pnf-name`"/>
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
+                                <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                <parameter name="format" value="json"/>
+                                <parameter name="httpMethod" value="GET"/>
+                                <parameter name="responsePrefix" value="oofpcigetfapservice"/>
+                                <parameter name='contentType' value='application/json' />
+                                <outcome value='failure'>
+                                    <return status='failure'>
+                                        <parameter name='ack-final' value='Y'/>
+                                        <parameter name="error-code" value="500" />
+                                        <parameter name="error-message" value="Error executing Get odutopo node details rest api" />
+                                    </return>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="Initial FAP Service PCI PARMS"/>
+                                            <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
+                                            <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
+                                            <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
+                                        </record>
+                                    </block>
+                                </outcome>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$prop.restapi.x-005b9-lte.ransim-mounted`"/>
+                                <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
+                                <parameter name="target" value="{alias}"/>
+                                <parameter name="replacement" value="`$tmp.alias`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.oofpcipoc.patch.pci.url`"/>
+                                <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
+                                <parameter name="target" value="{pnf-name}"/>
+                                <parameter name="replacement" value="`$tmp.pnf-name`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="URL and Target for PCI patch URL"/>
+                                <parameter name='field2' value="`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`" />
+                                <parameter name='field3' value="`$prop.oofpcipoc.patch.pci.target`" />
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/oofpcipoc-pci-patch.json'`" />
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`"/>
+                                <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                <parameter name="httpMethod" value="PATCH"/>
+                                <parameter name="responsePrefix" value="oofpci-patch-response"/>
+                                <parameter name='contentType' value='application/yang.patch+json' />
+                                <parameter name='format' value='json' />
+                                <parameter name='accept' value='application/yang.patch-status+json' />
+                                <outcome value='failure'>
+                                    <block>
+                                        <return status='failure'>
+                                            <parameter name='ack-final' value='Y'/>
+                                            <parameter name="error-code" value="500" />
+                                            <parameter name="error-message" value="Error executing patch rest api" />
+                                        </return>
+                                    </block>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="PUT PCI POC FAP SERVICE. Reconfigured "/>
+                                        </record>
+                                    </block>
+                                </outcome>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
+                                <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                <parameter name="format" value="json"/>
+                                <parameter name="httpMethod" value="GET"/>
+                                <parameter name="responsePrefix" value="oofpcigetfapservice"/>
+                                <parameter name='contentType' value='application/json' />
+                                <outcome value='failure'>
+                                    <return status='failure'>
+                                        <parameter name='ack-final' value='Y'/>
+                                        <parameter name="error-code" value="500" />
+                                        <parameter name="error-message" value="Error executing patch rest api" />
+                                    </return>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="Post Reconfig FAP Service PCI PARMS"/>
+                                            <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
+                                            <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
+                                            <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
+                                        </record>
+                                    </block>
+                                </outcome>
+                            </execute>
+                        </block>
+                    </for>
+                </outcome>
+            </switch>
             <return status='success'>
                 <parameter name="ack-final-indicator" value="Y" />
                 <parameter name="error-code" value="200" />
