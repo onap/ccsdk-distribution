@@ -34,8 +34,6 @@ function isRunning {
 	echo $(curl -I "$1" 2>/dev/null|head -1|tail -1|awk '{print $2}')
 }
 
-npm install
-
 if [ -e "releases/${releaseDir}/customSettings.js" ]
 then
 	pid=$(cat releases/$releaseDir/logs/process_pid 2>/dev/null)
