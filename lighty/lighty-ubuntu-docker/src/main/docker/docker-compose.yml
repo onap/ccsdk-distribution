@@ -16,11 +16,11 @@ services:
         max-file: "5"
 
 
-  odlsli:
-    image: onap/ccsdk-lighty-ubuntu-image
+  sli:
+    image: ${NEXUS_DOCKER_REPO}/onap/ccsdk-lighty-ubuntu-image:${CCSDK_DOCKER_IMAGE_VERSION}
     depends_on :
       - db
-    container_name: ccsdk_lighty_container
+    container_name: ccsdk_sli_container
     entrypoint: ["/opt/onap/ccsdk/bin/startODL.sh"]
     ports:
       - "8383:8181"
@@ -38,21 +38,21 @@ services:
         max-file: "5"
 
   dgbuilder:
-    image: nexus3.onap.org:10001/onap/ccsdk-dgbuilder-image
+    image: ${NEXUS_DOCKER_REPO}/onap/ccsdk-dgbuilder-image:${CCSDK_DOCKER_IMAGE_VERSION}
     depends_on:
       - db
     container_name:  ccsdk_dgbuilder_container
     entrypoint:
-      - "/bin/bash"
-      - "-c"
-      - "cd /opt/onap/ccsdk/dgbuilder/ && ./start.sh sdnc1.0 && wait"
+       - "/bin/bash"
+       - "-c"
+       - "cd /opt/onap/ccsdk/dgbuilder/ && ./start.sh sdnc1.0 && wait"
     ports:
       - "3000:3100"
     links:
       - db:dbhost
       - db:sdnctldb01
       - db:sdnctldb02
-      - odlsli:sdnhost
+      - sli:sdnhost
     environment:
       - MYSQL_ROOT_PASSWORD=openECOMP1.0
       - SDNC_CONFIG_DIR=/opt/onap/ccsdk/data/properties
@@ -61,4 +61,3 @@ services:
       options:
         max-size: "30m"
         max-file: "5"
-
