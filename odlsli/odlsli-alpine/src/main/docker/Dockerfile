@@ -37,8 +37,13 @@ ENV ODL_BOOT_FEATURES_EXTRA ${odl.boot.features.extra}
 # Install sudo and IP utilities
 RUN apk update && apk --no-cache add sudo iputils openssl
 
+
 # Enable wheel group
 RUN sed -e 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' -i /etc/sudoers
+
+# Create odl user
+RUN addgroup -S odl && adduser -S odl -G odl
+RUN addgroup odl wheel
 
 COPY --from=stage0 --chown=odl:odl /opt /opt
 
