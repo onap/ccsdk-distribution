@@ -7,9 +7,9 @@
                 <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                 <parameter name="level" value="info" />
                 <parameter name="field1" value="RPC to Configure Neighbors INVOKED. Number of Neighbors to configure: "/>
-                <parameter name="field2" value="`$generic-neighbor-configuration-input.number-of-neighbor-cell-entries`"/>
+                <parameter name="field2" value="`$generic-neighbor-configuration-input.lte-cell-number-of-entries`"/>
             </record>
-            <for index='idx' start='0' end="`$generic-neighbor-configuration-input.number-of-neighbor-cell-entries`" >
+            <for index='idx' start='0' end="`$generic-neighbor-configuration-input.lte-cell-number-of-entries`" >
                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                     <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                     <parameter name="level" value="info" />
@@ -37,7 +37,7 @@
             </record>
             <switch test='`$prop.ransim-mounted`'>
                 <outcome value='false'>
-                    <for index='idx' start='0' end="`$generic-neighbor-configuration-input.number-of-neighbor-cell-entries`" >
+                    <for index='idx' start='0' end="`$generic-neighbor-configuration-input.lte-cell-number-of-entries`" >
                         <block atomic='true'>
                             <set>
                                 <parameter name="tmp.alias" value="`$generic-neighbor-configuration-input.alias`"/>
@@ -167,7 +167,7 @@
                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                             <parameter name="level" value="info" />
-                                            <parameter name="field1" value="Details about Neighbor Pre-configuration"/>
+                                            <parameter name="field1" value="Details about Neighbor Post-configuration"/>
                                             <parameter name="field2" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`"/>
                                             <parameter name="field3" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`"/>
                                             <parameter name="field4" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`"/>
@@ -181,7 +181,7 @@
                     </for>
                 </outcome>
                 <outcome value='true'>
-                    <for index='idx' start='0' end="`$generic-neighbor-configuration-input.number-of-neighbor-cell-entries`" >
+                    <for index='idx' start='0' end="`$generic-neighbor-configuration-input.lte-cell-number-of-entries`" >
                         <block atomic='true'>
                             <set>
                                 <parameter name="tmp.alias" value="`$generic-neighbor-configuration-input.alias`"/>
@@ -317,7 +317,7 @@
                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                             <parameter name="level" value="info" />
-                                            <parameter name="field1" value="Details about Neighbor Pre-configuration"/>
+                                            <parameter name="field1" value="Details about Neighbor Post-configuration"/>
                                             <parameter name="field2" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`"/>
                                             <parameter name="field3" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`"/>
                                             <parameter name="field4" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`"/>
