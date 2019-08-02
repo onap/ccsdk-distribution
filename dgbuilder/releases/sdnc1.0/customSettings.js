@@ -40,5 +40,6 @@ module.exports={
     },
     "uiHost": "0.0.0.0",
     "version": "0.9.1",
-    "performGitPull": "N"
+    "performGitPull": "N",
+    "enableHttps" : true
 }
