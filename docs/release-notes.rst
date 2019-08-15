@@ -3,6 +3,66 @@
 Release Notes
 #############
 
+Version 0.5.1
+*************
+:Release Date: 2019-08-19
+
+El Alto Early Drop release
+
+**New Features**
+
+There are no new features in the El Alto early drop release.  The focus of this release is on bug
+fixes, with a particular emphasis on security fixes.
+
+**Bug Fixes**
+The full list of bug fixes in the El Alto early drop may be found at <https://jira.onap.org/issues/?filter=12018>
+
+The following table summarizes some of the most significant issues addressed:
+
++--------------+----------------------------------------------------+
+| Jira #       | Abstract                                           |
++==============+====================================================+
+| [CCSDK-1445] | loading jdbc driver Exception in ccsdk             |
++--------------+----------------------------------------------------+
+| [CCSDK-1443] | cds blueprint processor does not start             |
++--------------+----------------------------------------------------+
+| [CCSDK-1240] | CVE-20190-3795 : spring-data-core vulnerability    |
++--------------+----------------------------------------------------+
+| [CCSDK-1239] | CVE-2019-3797 : spring-data vulnerability          |
++--------------+----------------------------------------------------+
+| [CCSDK-1238] | Multiple CVEs - commons-compress                   |
++--------------+----------------------------------------------------+
+| [CCSDK-1117] | Remove runtime internet dependency for dgbuilder   |
++--------------+----------------------------------------------------+
+| [CCSDK-991]  | Upgrade to spring-core 2.8.6 or higher             |
++--------------+----------------------------------------------------+
+| [CCSDK-988]  | Multiple CVEs - spring-expression < 4.3.17.RELEASE |
++--------------+----------------------------------------------------+
+| [CCSDK-441]  | Spring 3 vulnerability CVE-2018-1270               |
++--------------+----------------------------------------------------+
+**Known Issues**
+
+The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
+
+**Security Notes**
+
+*Fixed Security Issues*
+
+*Known Security Issues*
+
+        * In default deployment CCSDK (netbox-nginx) exposes HTTP port 30420 outside of cluster. [`OJSI-160 <https://jira.onap.org/browse/OJSI-160>`_]
+        * In default deployment CCSDK (cds-ui) exposes HTTP port 30497 outside of cluster. [`OJSI-196 <https://jira.onap.org/browse/OJSI-196>`_]
+        * In default deployment CCSDK (cds-blueprints-processor-http) exposes HTTP port 30499 outside of cluster. [`OJSI-197 <https://jira.onap.org/browse/OJSI-197>`_]
+
+*Known Vulnerabilities in Used Modules*
+
+Quick Links:
+ 	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
+
+ 	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
+
+ 	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=51282469>`_
+
 Version 0.4.4/0.4.5
 *******************
 :Release Date: 2019-06-13
@@ -12,7 +72,7 @@ Note: The Dublin version for most CCSDK repositories is 0.4.4, except for CDS wh
 
 **New Features**
 
-The full list of Dublin epics and user stories for CCSDK maybe be found at <https://jira.onap.org/issues/?filter=11802>.
+The full list of Dublin epics and user stories for CCSDK may be found at <https://jira.onap.org/issues/?filter=11802>.
 
 The following list summarizes some of the most significant epics:
 
