@@ -21,7 +21,7 @@ var crypto = require("crypto");
 var nopt = require("nopt");
 var path = require("path");
 var RED = require("./red/red.js");
-
+var fs = require('fs')
 var server;
 var app = express();
 
@@ -77,8 +77,12 @@ if (parsedArgs.v) {
     settings.verbose = true;
 }
 
-if (settings.https) {
-    server = https.createServer(settings.https,function(req,res){app(req,res);});
+if (settings.enableHttps) {
+    //server = https.createServer(settings.https,function(req,res){app(req,res);});
+    server = https.createServer({
+  key: fs.readFileSync('certs/node-key.pem'),
+  cert: fs.readFileSync('certs/node-cert.pem'),
+  requireHttps : true},function(req,res){app(req,res);});
 } else {
     server = http.createServer(function(req,res){app(req,res);});
 }
@@ -159,7 +163,7 @@ if (settings.httpStatic) {
 }
 
 function getListenPath() {
-    var listenPath = 'http'+(settings.https?'s':'')+'://'+
+    var listenPath = 'http'+(settings.enableHttps?'s':'')+'://'+
                     (settings.uiHost == '0.0.0.0'?'127.0.0.1':settings.uiHost)+
                     ':'+settings.uiPort;
     if (settings.httpAdminRoot !== false) {
