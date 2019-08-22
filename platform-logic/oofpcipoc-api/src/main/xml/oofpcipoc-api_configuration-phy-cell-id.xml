@@ -3,6 +3,12 @@
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='oofpcipoc-api' version='${project.version}'>
     <method rpc='configuration-phy-cell-id' mode='sync'>
         <block atomic='true'>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="RPC to Configure PCI INVOKED. Number of Cells to configure: "/>
+                <parameter name="field2" value="`$configuration-phy-cell-id-input.fap-service-number-of-entries`"/>
+            </record>
             <for index='idx' start='0' end="`$configuration-phy-cell-id-input.fap-service-number-of-entries`" >
                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                     <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
@@ -29,12 +35,6 @@
                 <parameter name="field5" value="`$prop.controller.url`"/>
                 <parameter name="field6" value="ransim-mounted (true/false): "/>
                 <parameter name="field7" value="`$prop.ransim-mounted`"/>
-            </record>
-            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                <parameter name="level" value="info" />
-                <parameter name="field1" value="RPC to Configure PCI INVOKED. Number of Cells to configure: "/>
-                <parameter name="field2" value="`$configuration-phy-cell-id-input.fap-service-number-of-entries`"/>
             </record>
             <switch test='`$prop.ransim-mounted`'>
                 <outcome value='false'>
@@ -160,6 +160,52 @@
                                     </block>
                                 </outcome>
                             </execute>
+                            <switch test='`$prop.configdb-deployed`'>
+                                <outcome value='true'>
+                                    <block atomic='true'>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$prop.restapi.configdb.patch-pci-for-cell`"/>
+                                            <parameter name="outputPath" value="tmp.configdb.patch-pci-for-cell.url"/>
+                                            <parameter name="target" value="{cellId}"/>
+                                            <parameter name="replacement" value="`$tmp.cid`"/>
+                                        </execute>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="URL for configDB PCI Update"/>
+                                            <parameter name='field2' value="`$prop.configdb.url + $tmp.configdb.patch-pci-for-cell.url`" />
+                                            <parameter name='field3' value="`$tmp.cid`" />
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                            <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/oofpcipoc-patch-configdb-pci-for-cell.json'`" />
+                                            <parameter name="restapiUrl" value="`$prop.configdb.url + $tmp.configdb.patch-pci-for-cell.url`"/>
+                                            <parameter name="httpMethod" value="PATCH"/>
+                                            <parameter name="responsePrefix" value="oofpci-configdb-response"/>
+                                            <parameter name='contentType' value='application/json' />
+                                            <parameter name='format' value='json' />
+                                            <parameter name='accept' value='application/json' />
+                                            <outcome value='failure'>
+                                                <block>
+                                                    <return status='failure'>
+                                                        <parameter name='ack-final' value='Y'/>
+                                                        <parameter name="error-code" value="500" />
+                                                        <parameter name="error-message" value="Error adding neighbor to configdb. Aborting notification handler" />
+                                                    </return>
+                                                </block>
+                                            </outcome>
+                                            <outcome value='success'>
+                                                <block>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="PCI Value updated in ConfigDB"/>
+                                                    </record>
+                                                </block>
+                                            </outcome>
+                                        </execute>
+                                    </block>
+                                </outcome>
+                            </switch>
                         </block>
                     </for>
                 </outcome>
@@ -298,10 +344,190 @@
                                     </block>
                                 </outcome>
                             </execute>
+                            <switch test='`$prop.configdb-deployed`'>
+                                <outcome value='true'>
+                                    <block atomic='true'>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$prop.restapi.configdb.patch-pci-for-cell`"/>
+                                            <parameter name="outputPath" value="tmp.configdb.patch-pci-for-cell.url"/>
+                                            <parameter name="target" value="{cellId}"/>
+                                            <parameter name="replacement" value="`$tmp.cid`"/>
+                                        </execute>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="URL for configDB PCI Update"/>
+                                            <parameter name='field2' value="`$prop.configdb.url + $tmp.configdb.patch-pci-for-cell.url`" />
+                                            <parameter name='field3' value="`$tmp.cid`" />
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                            <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/oofpcipoc-patch-configdb-pci-for-cell.json'`" />
+                                            <parameter name="restapiUrl" value="`$prop.configdb.url + $tmp.configdb.patch-pci-for-cell.url`"/>
+                                            <parameter name="httpMethod" value="PATCH"/>
+                                            <parameter name="responsePrefix" value="oofpci-configdb-response"/>
+                                            <parameter name='contentType' value='application/json' />
+                                            <parameter name='format' value='json' />
+                                            <parameter name='accept' value='application/json' />
+                                            <outcome value='failure'>
+                                                <block>
+                                                    <return status='failure'>
+                                                        <parameter name='ack-final' value='Y'/>
+                                                        <parameter name="error-code" value="500" />
+                                                        <parameter name="error-message" value="Error updating configDB. Aborting PCI configuration" />
+                                                    </return>
+                                                </block>
+                                            </outcome>
+                                            <outcome value='success'>
+                                                <block>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="PCI Value updated in ConfigDB"/>
+                                                    </record>
+                                                </block>
+                                            </outcome>
+                                        </execute>
+                                    </block>
+                                </outcome>
+                            </switch>
                         </block>
                     </for>
                 </outcome>
             </switch>
+            <block atomic='true'>
+                <execute plugin="org.onap.ccsdk.sli.plugins.template.TemplateNode" method="evaluateTemplate" >
+                    <parameter name='templatePath' value='oofpcipoc-dmaap-publish-modifyconfig-resp-payload-template.vtl' />
+                    <parameter name='output' value='resp-payload' />
+                    <parameter name='prefix' value='sdnr' />
+                    <outcome value='success'>
+                        <block atomic='true'>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="__TIMESTAMP__"/>
+                                <parameter name="field2" value="Redndred sdnr payload template as a string"/>
+                                <parameter name='field3' value='`$sdnr.resp-payload`' />
+                            </record>
+                        </block>
+                    </outcome>
+                    <outcome value='failure'>
+                        <block>
+                            <return status='failure'>
+                                <parameter name='ack-final' value='Y'/>
+                                <parameter name="error-code" value="500" />
+                                <parameter name="error-message" value="Error creating SDNR response payload string. Aborting PCI configuration" />
+                            </return>
+                        </block>
+                    </outcome>
+                </execute>
+                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replaceAll' >
+                    <parameter name="source" value="`$sdnr.resp-payload`"/>
+                    <parameter name="outputPath" value="tmp.oofpcipoc-dmaap-config-resp.payload"/>
+                    <parameter name="target" value="\n"/>
+                    <parameter name="replacement" value=""/>
+                    <outcome value='success'>
+                        <block atomic='true'>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="__TIMESTAMP__"/>
+                                <parameter name="field2" value="Redndred template with lines removed \r"/>
+                                <parameter name='field3' value='`$tmp.oofpcipoc-dmaap-config-resp.payload`' />
+                            </record>
+                        </block>
+                    </outcome>
+                    <outcome value='failure'>
+                        <block>
+                            <return status='failure'>
+                                <parameter name='ack-final' value='Y'/>
+                                <parameter name="error-code" value="500" />
+                                <parameter name="error-message" value="Error removing lines from SDNR response payload string. Aborting PCI configuration" />
+                            </return>
+                        </block>
+                    </outcome>
+                </execute>
+                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replaceAll' >
+                    <parameter name="source" value="`$tmp.oofpcipoc-dmaap-config-resp.payload`"/>
+                    <parameter name="outputPath" value="tmp.oofpcipoc-dmaap-config-resp.payload"/>
+                    <parameter name="target" value="\t"/>
+                    <parameter name="replacement" value=""/>
+                    <outcome value='success'>
+                        <block atomic='true'>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="__TIMESTAMP__"/>
+                                <parameter name="field2" value="Redndred template with tabs removed \r"/>
+                                <parameter name='field3' value='`$tmp.oofpcipoc-dmaap-config-resp.payload`' />
+                            </record>
+                        </block>
+                    </outcome>
+                    <outcome value='failure'>
+                        <block>
+                            <return status='failure'>
+                                <parameter name='ack-final' value='Y'/>
+                                <parameter name="error-code" value="500" />
+                                <parameter name="error-message" value="Error removing tabs from SDNR response payload string. Aborting PCI configuration" />
+                            </return>
+                        </block>
+                    </outcome>
+                </execute>
+                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='escapeJsonString' >
+                    <parameter name="source" value='`$tmp.oofpcipoc-dmaap-config-resp.payload`'/>
+                    <parameter name="target" value='tmp.oofpcipoc-dmaap-config-resp.payload'/>
+                    <outcome value='success'>
+                        <block atomic='true'>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="__TIMESTAMP__"/>
+                                <parameter name="field2" value="Redndred template as an Escaped string"/>
+                                <parameter name='field3' value='`$tmp.oofpcipoc-dmaap-config-resp.payload`' />
+                            </record>
+                        </block>
+                    </outcome>
+                    <outcome value='failure'>
+                        <block>
+                            <return status='failure'>
+                                <parameter name='ack-final' value='Y'/>
+                                <parameter name="error-code" value="500" />
+                                <parameter name="error-message" value="Error inserting escape chars in SDNR response payload string. Aborting PCI configuration" />
+                            </return>
+                        </block>
+                    </outcome>
+                </execute>
+            </block>
+            <block atomic='true'>
+                <set>
+                    <parameter name='tmp.oofpcipoc-dmaap-config-resp.rpc-name' value='`$prop.oofpcipoc-dmaap-config-resp.rpc-name.modifyconfig`'/>
+                </set>
+                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                    <parameter name='templateFileName' value="`$prop.restapi.templateDir + '/' + $prop.restapi.dmaap-publish-config-response.template`" />
+                    <parameter name='restapiUrl' value="`$prop.dmaap-message-router.url + '/' + $prop.oofpcipoc-dmaap-configuration-response.topic`" />
+                    <parameter name='format' value='json' />
+                    <parameter name='httpMethod' value='POST' />
+                    <parameter name='contentType' value='application/json' />
+                    <parameter name='responsePrefix' value='dmaap' />
+                    <outcome value='failure'>
+                        <block>
+                            <return status='failure'>
+                                <parameter name='ack-final' value='Y'/>
+                                <parameter name="error-code" value="500" />
+                                <parameter name="error-message" value="Error publishing DMAAP Config Response message. ConfigDB Updated; TO be rolled back...will handle next release" />
+                            </return>
+                        </block>
+                    </outcome>
+                    <outcome value='success'>
+                        <block>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="DMAAP Config Response Message Successfully Published "/>
+                            </record>
+                        </block>
+                    </outcome>
+                </execute>
+            </block>
             <return status='success'>
                 <parameter name="ack-final-indicator" value="Y" />
                 <parameter name="error-code" value="200" />
