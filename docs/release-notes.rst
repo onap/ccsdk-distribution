@@ -3,19 +3,88 @@
 Release Notes
 #############
 
-Version 0.5.1
-*************
-:Release Date: 2019-08-19
+Version 0.5.3 / 0.6.2
+*********************
+:Release Date: 2019-09-30
 
-El Alto Early Drop release
+El Alto release
+
+**Artifact Versions**
+
+The CCSDK El Alto release includes artifacts for both OpenDaylight Fluorine SR2 (version 0.5.3) and
+OpenDaylight Neon SR1 (version 0.6.2).
+
+Note: CCSDK support for Ubuntu-based OpenDaylight containers is deprecated.  Ubuntu-based containers are provided
+for ODL Fluorine, but not for Neon.
+
+The following table lists the CCSDK docker containers and their versions.
+
++-----------------------------------+---------------------------------------------------+----------------------+
+| Image name                        |  Description                                      | Version(s)           |
++===================================+===================================================+======================+
+| onap/ccsdk-alpine-image           | Base Alpine Linux image for CCSDK                 | 0.5.3 (ODL Fluorine) |
+|                                   |                                                   | 0.6.2 (ODL Neon)     |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-ansible-server-image   | Ansible server image                              | 0.5.3 (ODL Fluorine) |
+|                                   |                                                   | 0.6.2 (ODL Neon)     |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-apps-ms-neng           | Naming microservice                               | 0.6.2                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-blueprints-processor   | CDS blueprint processor                           | 0.6.2                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/cds-ui                       | CDS web interface                                 | 0.6.2                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/cds-ui-server                | CDS user interface back end                       | 0.6.2                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/commandexecutor              | CDS command executor                              | 0.6.2                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/controllerblueprints         | CDS controller blueprints                         | 0.6.2                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/dgbuilder-image              | Directed graph builder                            | 0.5.3 (ODL Fluorine) |
+|                                   |                                                   | 0.6.2 (ODL Neon)     |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/odl-fluorine-alpine-image    | Alpine based OpenDaylight Fluorine SR2 image      | 0.5.3                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/odl-fluorine-ubuntu-image    | Ubuntu based OpenDaylight Fluorine SR2 image      | 0.5.3                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/odl-neon-alpine-image        | Alpine based OpenDaylight Neon SR1 image          | 0.6.2                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-odlsli-alpine-image    | Alpine based OpenDaylight image with CCSDK        | 0.5.3 (ODL Fluorine) |
+|                                   | libraries installed                               | 0.6.2 (ODL Neon)     |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-odlsli-image           | Ubuntu based OpenDaylight image with CCSDK        | 0.5.3 (ODL Flourine) |
+|                                   | libraries installed. DEPRECATED (see note above)  |                      |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-saltstack-server-image | Saltstack server                                  | 0.5.3 (ODL Fluorine) |
+|                                   |                                                   | 0.6.2 (ODL Neon)     |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-sdclistener            | CDS SDC listener                                  | 0.6.2                |
++-----------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-ubuntu-image           | Base Ubuntu image for CCSDK                       | 0.5.3                |
+|                                   |                                                   | 0.6.2                |
++-----------------------------------+---------------------------------------------------+----------------------+
 
 **New Features**
 
-There are no new features in the El Alto early drop release.  The focus of this release is on bug
-fixes, with a particular emphasis on security fixes.
+There are no new use cases or functional requirements in the El Alto release.  The focus of this release is on bug
+fixes, with a particular emphasis fon security fixes.  However, there are new non-functional user stories that were
+in El Alto.
+
+The full list of CCSDK user stories for El Alto may be found at <https://jira.onap.org/issues/?filter=12041>.
+
+The following table lists some of the most significant user stories:
+
++--------------+----------------------------------------------------+
+| Jira #       | Abstract                                           |
++==============+====================================================+
+| CCSDK-1387   | Upgrade to OpenDaylight Neon SR1                   |
++--------------+----------------------------------------------------+
+| CCSDK-1033   | Support for NETCONF Notifications in CCSDK/SDNC    |
++--------------+----------------------------------------------------+
+
 
 **Bug Fixes**
-The full list of bug fixes in the El Alto early drop may be found at <https://jira.onap.org/issues/?filter=12018>
+The full list of bug fixes in the El Alto release may be found at <https://jira.onap.org/issues/?filter=12018>
 
 The following table summarizes some of the most significant issues addressed:
 
@@ -62,6 +131,7 @@ Quick Links:
  	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
 
  	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=51282469>`_
+
 
 Version 0.4.4/0.4.5
 *******************
