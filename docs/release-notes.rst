@@ -3,7 +3,7 @@
 Release Notes
 #############
 
-Version 0.5.3 / 0.6.2
+Version 0.5.4 / 0.6.3
 *********************
 :Release Date: 2019-09-30
 
@@ -11,8 +11,8 @@ El Alto release
 
 **Artifact Versions**
 
-The CCSDK El Alto release includes artifacts for both OpenDaylight Fluorine SR2 (version 0.5.3) and
-OpenDaylight Neon SR1 (version 0.6.2).
+The CCSDK El Alto release includes artifacts for both OpenDaylight Fluorine SR2 (version 0.5.4) and
+OpenDaylight Neon SR1 (version 0.6.3).
 
 Note: CCSDK support for Ubuntu-based OpenDaylight containers is deprecated.  Ubuntu-based containers are provided
 for ODL Fluorine, but not for Neon.
