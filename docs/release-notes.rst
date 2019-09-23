@@ -22,46 +22,46 @@ The following table lists the CCSDK docker containers and their versions.
 +--------------------------------------+---------------------------------------------------+----------------------+
 | Image name                           |  Description                                      | Version(s)           |
 +======================================+===================================================+======================+
-| onap/ccsdk-alpine-image              | Base Alpine Linux image for CCSDK                 | 0.5.3 (ODL Fluorine) |
-|                                      |                                                   | 0.6.2 (ODL Neon)     |
+| onap/ccsdk-alpine-image              | Base Alpine Linux image for CCSDK                 | 0.5.4 (ODL Fluorine) |
+|                                      |                                                   | 0.6.3 (ODL Neon)     |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-ansible-server-image      | Ansible server image                              | 0.5.3 (ODL Fluorine) |
-|                                      |                                                   | 0.6.2 (ODL Neon)     |
+| onap/ccsdk-ansible-server-image      | Ansible server image                              | 0.5.4 (ODL Fluorine) |
+|                                      |                                                   | 0.6.3 (ODL Neon)     |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-apps-ms-neng              | Naming microservice                               | 0.6.2                |
+| onap/ccsdk-apps-ms-neng              | Naming microservice                               | 0.6.3                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-blueprints-processor      | CDS blueprint processor                           | 0.6.2                |
+| onap/ccsdk-blueprints-processor      | CDS blueprint processor                           | 0.6.3                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-cds-ui                    | CDS web interface                                 | 0.6.2                |
+| onap/ccsdk-cds-ui                    | CDS web interface                                 | 0.6.3                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-cds-ui-server             | CDS user interface back end                       | 0.6.2                |
+| onap/ccsdk-cds-ui-server             | CDS user interface back end                       | 0.6.3                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-commandexecutor           | CDS command executor                              | 0.6.2                |
+| onap/ccsdk-commandexecutor           | CDS command executor                              | 0.6.3                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-controllerblueprint       | CDS controller blueprints                         | 0.6.2                |
+| onap/ccsdk-controllerblueprint       | CDS controller blueprints                         | 0.6.3                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-dgbuilder-image           | Directed graph builder                            | 0.5.3 (ODL Fluorine) |
-|                                      |                                                   | 0.6.2 (ODL Neon)     |
+| onap/ccsdk-dgbuilder-image           | Directed graph builder                            | 0.5.4 (ODL Fluorine) |
+|                                      |                                                   | 0.6.3 (ODL Neon)     |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odl-fluorine-alpine-image | Alpine based OpenDaylight Fluorine SR2 image      | 0.5.3                |
+| onap/ccsdk-odl-fluorine-alpine-image | Alpine based OpenDaylight Fluorine SR2 image      | 0.5.4                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odl-fluorine-ubuntu-image | Ubuntu based OpenDaylight Fluorine SR2 image      | 0.5.3                |
+| onap/ccsdk-odl-fluorine-ubuntu-image | Ubuntu based OpenDaylight Fluorine SR2 image      | 0.5.4                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odl-neon-alpine-image     | Alpine based OpenDaylight Neon SR1 image          | 0.6.2                |
+| onap/ccsdk-odl-neon-alpine-image     | Alpine based OpenDaylight Neon SR1 image          | 0.6.3                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odlsli-alpine-image       | Alpine based OpenDaylight image with CCSDK        | 0.5.3 (ODL Fluorine) |
-|                                      | libraries installed                               | 0.6.2 (ODL Neon)     |
+| onap/ccsdk-odlsli-alpine-image       | Alpine based OpenDaylight image with CCSDK        | 0.5.4 (ODL Fluorine) |
+|                                      | libraries installed                               | 0.6.3 (ODL Neon)     |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odlsli-image              | Ubuntu based OpenDaylight image with CCSDK        | 0.5.3 (ODL Fluorine) |
+| onap/ccsdk-odlsli-image              | Ubuntu based OpenDaylight image with CCSDK        | 0.5.4 (ODL Fluorine) |
 |                                      | libraries installed. DEPRECATED (see note above)  |                      |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-saltstack-server-image    | Saltstack server                                  | 0.5.3 (ODL Fluorine) |
-|                                      |                                                   | 0.6.2 (ODL Neon)     |
+| onap/ccsdk-saltstack-server-image    | Saltstack server                                  | 0.5.4 (ODL Fluorine) |
+|                                      |                                                   | 0.6.3 (ODL Neon)     |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-sdclistener               | CDS SDC listener                                  | 0.6.2                |
+| onap/ccsdk-sdclistener               | CDS SDC listener                                  | 0.6.4                |
 +--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-ubuntu-image              | Base Ubuntu image for CCSDK                       | 0.5.3                |
-|                                      |                                                   | 0.6.2                |
+| onap/ccsdk-ubuntu-image              | Base Ubuntu image for CCSDK                       | 0.5.4                |
+|                                      |                                                   | 0.6.3                |
 +--------------------------------------+---------------------------------------------------+----------------------+
 
 **New Features**
