@@ -109,6 +109,7 @@ The following table summarizes some of the most significant issues addressed:
 +--------------+----------------------------------------------------+
 | [CCSDK-441]  | Spring 3 vulnerability CVE-2018-1270               |
 +--------------+----------------------------------------------------+
+
 **Known Issues**
 
 The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
@@ -126,11 +127,11 @@ The full list of known issues in CCSDK may be found in the ONAP Jira at <https:/
 *Known Vulnerabilities in Used Modules*
 
 Quick Links:
- 	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
+ - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
 
- 	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
+ - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
 
- 	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=51282469>`_
+ - `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=51282469>`_
 
 
 Version 0.4.4/0.4.5
@@ -180,11 +181,11 @@ The full list of known issues in CCSDK may be found in the ONAP Jira at <https:/
 *Known Vulnerabilities in Used Modules*
 
 Quick Links:
- 	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
+ - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
 
- 	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
+ - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
 
- 	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=51282469>`_
+ - `Project Vulnerability Review Table for CCSDK Dublin <https://wiki.onap.org/pages/viewpage.action?pageId=51282469>`_
 
 Version: 0.3.3
 **************
@@ -220,7 +221,7 @@ Quick Links:
 
    - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
 
-   - `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=45300857>`_
+   - `Project Vulnerability Review Table for CCSDK Casablanca Maintenance Release <https://wiki.onap.org/pages/viewpage.action?pageId=45300857>`_
 
 Version: 0.3.2
 **************
@@ -252,11 +253,11 @@ The full list of bug fixes in the CCSDK Casablanca release may be found at <http
 The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
 
 Quick Links:
- 	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
+ - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
 
- 	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
+ - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
 
- 	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=45300857>`_
+ - `Project Vulnerability Review Table for CCSDK Casablanca <https://wiki.onap.org/pages/viewpage.action?pageId=45300857>`_
 
 Version: 0.2.4
 **************
@@ -308,11 +309,11 @@ The full list of bug fixes in the CCSDK Beijing release may be found at <https:/
 CCSDK code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The CCSDK open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28379011>`_.
 
 Quick Links:
- 	- `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
+ - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
 
- 	- `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
+ - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
 
- 	- `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=28379011>`_
+ - `Project Vulnerability Review Table for CCSDK Beijing <https://wiki.onap.org/pages/viewpage.action?pageId=28379011>`_
 
 **Upgrade Notes**
 
