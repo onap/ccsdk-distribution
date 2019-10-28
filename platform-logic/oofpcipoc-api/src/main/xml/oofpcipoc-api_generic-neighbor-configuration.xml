@@ -529,30 +529,6 @@
                         </block>
                     </outcome>
                 </execute>
-                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='escapeJsonString' >
-                    <parameter name="source" value='`$tmp.oofpcipoc-dmaap-config-resp.payload`'/>
-                    <parameter name="target" value='tmp.oofpcipoc-dmaap-config-resp.payload'/>
-                    <outcome value='success'>
-                        <block atomic='true'>
-                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
-                                <parameter name="level" value="info" />
-                                <parameter name="field1" value="__TIMESTAMP__"/>
-                                <parameter name="field2" value="Redndred template as an Escaped string"/>
-                                <parameter name='field3' value='`$tmp.oofpcipoc-dmaap-config-resp.payload`' />
-                            </record>
-                        </block>
-                    </outcome>
-                    <outcome value='failure'>
-                        <block>
-                            <return status='failure'>
-                                <parameter name='ack-final' value='Y'/>
-                                <parameter name="error-code" value="500" />
-                                <parameter name="error-message" value="Error inserting escape chars in SDNR response payload string. Aborting PCI configuration" />
-                            </return>
-                        </block>
-                    </outcome>
-                </execute>
             </block>
             <block atomic='true'>
                 <set>
