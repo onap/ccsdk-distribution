@@ -26,8 +26,8 @@ className=$(jar -tvf ${jarFile}|grep "org/opendaylight/yang/gen/"|grep  -w "${rp
 inputProps=""
 if [ "$className" != "" ]
 then
-	#java -cp $CLASSPATH org.onap.ccsdk.sli.core.sli.PrintYangToProp $className 2>/dev/null|grep '*' |cut -d'*' -f2|sed -e "s/^[ \t]*//g"|sed -e "s/^/\t\t\"/g"|sed -e "s/$/\",/g"
-	inputProps=$(java -cp $CLASSPATH org.onap.ccsdk.sli.core.sli.PrintYangToProp $className 2>${toolsDir}/tmpws/logs/err.log)
+	#java -cp $CLASSPATH org.onap.ccsdk.sli.core.sli.provider.PrintYangToProp $className 2>/dev/null|grep '*' |cut -d'*' -f2|sed -e "s/^[ \t]*//g"|sed -e "s/^/\t\t\"/g"|sed -e "s/$/\",/g"
+	inputProps=$(java -cp $CLASSPATH org.onap.ccsdk.sli.core.sli.provider.PrintYangToProp $className 2>${toolsDir}/tmpws/logs/err.log)
 fi
 className=$(jar -tvf ${jarFile}|grep "org/opendaylight/yang/gen/"|grep -w "${rpcVal}Output"|grep -v grep|awk '{print $NF}'|sed -e 's/\//./g'|sed -e 's/.class$//g')
 #echo $inputProps
@@ -35,8 +35,8 @@ className=$(jar -tvf ${jarFile}|grep "org/opendaylight/yang/gen/"|grep -w "${rpc
 outputProps=""
 if [ "$className" != "" ]
 then
-	#java -cp $CLASSPATH org.onap.ccsdk.sli.core.sli.PrintYangToProp $className 2>/dev/null|grep '*' |cut -d'*' -f2|sed -e "s/^[ \t]*//g"|sed -e "s/^/\t\t\"/g"|sed -e "s/$/\",/g"
-	outputProps=$(java -cp $CLASSPATH org.onap.ccsdk.sli.core.sli.PrintYangToProp $className 2>${toolsDir}/tmpws/logs/err.log)
+	#java -cp $CLASSPATH org.onap.ccsdk.sli.core.sli.provider.PrintYangToProp $className 2>/dev/null|grep '*' |cut -d'*' -f2|sed -e "s/^[ \t]*//g"|sed -e "s/^/\t\t\"/g"|sed -e "s/$/\",/g"
+	outputProps=$(java -cp $CLASSPATH org.onap.ccsdk.sli.core.sli.provider.PrintYangToProp $className 2>${toolsDir}/tmpws/logs/err.log)
 fi
 if [ -z "$allProps" ]
 then
