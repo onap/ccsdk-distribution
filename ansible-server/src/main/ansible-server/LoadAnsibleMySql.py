@@ -47,7 +47,7 @@ class mySql():
                 self.cur.execute(myquery)
             self.db.commit()
             results = self.cur.fetchall()
-        except Exception, e:
+        except Exception as e:
             error = str (e)
         return results, error
 
@@ -100,7 +100,7 @@ def loadCredentials (hostgroup, hostname, cred):
     query = "SELECT hostname,hostgroup FROM inventory WHERE hostname='" + hostname +"'"
     results = sqlintf.Query (query)
 
-    print '==>', results
+    print('==>', results)
     
     if hostname in str(results):
 
@@ -155,24 +155,24 @@ if __name__ == '__main__':
     sqlintf = mySql (host, user, passwd, db)
 
     # Load playbooks
-    print "Loading playbooks"
+    print("Loading playbooks")
     for file in onlyfiles:
         if "yml" in file:
             name = file.split (".yml")[0]
-            print "  Loading:", name
+            print("  Loading:", name)
             version = name.split("@")[1]
             errorCode, diag = loadPlaybook (name, version)
             if errorCode:
-                print "  Results: Failed - ", diag
+                print("  Results: Failed - ", diag)
             else:
-                print "  Results: Success"
+                print("  Results: Success")
         if "tar.gz" in file:
             name = file.split (".tar.gz")[0]
-            print "  Loading:", name
+            print("  Loading:", name)
             version = name.split("@")[1]
             errorCode, diag = loadPlaybook (name, version, ".tar.gz")
 
-    print "\nLoading inventory"
+    print("\nLoading inventory")
     
     # Load inventory
     hostgroup = None
@@ -192,15 +192,15 @@ if __name__ == '__main__':
     file.close()
 
     for hostgroup in inv:
-        print "  Loading:", hostgroup
+        print("  Loading:", hostgroup)
         hostfqdn = ''
         cred = ''
         for hostname in inv[hostgroup]:
             cred = inv[hostgroup][hostname]
             errorCode, diag = loadCredentials (hostgroup, hostname, cred)
             if errorCode:
-                print "  Results: Failed - ", diag
+                print("  Results: Failed - ", diag)
             else:
-                print "  Results: Success"
+                print("  Results: Success")
                 
     sqlintf.Close()

@@ -80,7 +80,7 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory, envparam
             log.append (line)
     else:
         for line in stdout_value: # p.stdout.readlines():
-            print line # line,
+            print(line) # line,
             if ParseFlag and len(line.strip())>0:
                 ip_address = line.split(':')[0].strip()
                 ok_flag = line.split(':')[1].strip().split('=')[1].split('changed')[0].strip()
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     p = Process(nodelist=ansible_call, args=('ansible_module_config', playbook_file, nodelist,d, ))
     p.start()
 
-    print "Process running"
-    print d
+    print("Process running")
+    print(d)
     p.join()
-    print d
+    print(d)

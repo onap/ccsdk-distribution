@@ -64,7 +64,7 @@ def sys_call (cmd):
 
 def callback (Id, Result, Output, Log, returncode):
     
-    print "***> in RestServer.callback"
+    print("***> in RestServer.callback")
 
     if Id in TestRecord:
         time_now = datetime.datetime.utcnow()
@@ -116,17 +116,17 @@ def callback (Id, Result, Output, Log, returncode):
                     if key in TestRecord[Id]['Output']['Output']:
                         data["Results"][key]["Output"] = TestRecord[Id]['Output']['Output'][key]
 
-            print "     Posting to", TestRecord[Id]['CallBack']
+            print("     Posting to", TestRecord[Id]['CallBack'])
             
             s = requests.Session()
             r = s.post(TestRecord[Id]['CallBack'], data = json.dumps(data),
                        headers = {'content-type': 'application/json'})
-            print  "     Response", r.status_code, r.text
+            print("     Response", r.status_code, r.text)
 
 def RunAnsible_Playbook (callback, Id, Inventory, Playbook, NodeList, TestRecord,
                          Path, ArchiveFlag):
 
-    print "***> in RestServer.RunAnsible_Playbook"
+    print("***> in RestServer.RunAnsible_Playbook")
 
     # Run test in playbook for given target
     Result = ''
@@ -627,9 +627,9 @@ class TestManager (object):
                             # PAP
                             f = open(playbook_path + "/vars/defaults.yml","a")
                             #for id, record in TestRecord.items():
-                            print TestRecord[Id]['LocalParameters']
+                            print(TestRecord[Id]['LocalParameters'])
                             local_parms = TestRecord[Id]['LocalParameters']
-                            for key, value in local_parms.items():
+                            for key, value in list(local_parms.items()):
                                 f.write(key +"=" + value + "\n");
                             f.close()
                             ###################################################
@@ -664,7 +664,7 @@ class TestManager (object):
                             f.close()
                             f = open(playbook_path + "/JsonRequest.txt", "w")
                             #f.write(str(input_json))
-                            print( json.dumps(input_json, indent=4, sort_keys=True))
+                            print(( json.dumps(input_json, indent=4, sort_keys=True)))
                             f.write( json.dumps(input_json, indent=4, sort_keys=True))
                             f.close()
 
@@ -719,8 +719,8 @@ class TestManager (object):
             # Just a debug to dump any records
             if 'GetStatus' in input_data['Type']:
                 cherrypy.log( "******** Dump Records **********")
-                if TestRecord.items():
-                  for id, record in TestRecord.items():
+                if list(TestRecord.items()):
+                  for id, record in list(TestRecord.items()):
                     cherrypy.log( "    Id: " + id)
                     cherrypy.log( "Record: " + str(record))
                 else:
@@ -784,10 +784,10 @@ class TestManager (object):
                         return out_obj
 
                     elif 'GetStatus' in input_data['Type']:
-                        print " Dump Records"
+                        print(" Dump Records")
                         for id, record in TestRecord,items():
-                           print " id: " + id
-                           print "   Record:" + str(reecord)
+                           print(" id: " + id)
+                           print("   Record:" + str(reecord))
 
                     elif 'GetOutput' in input_data['Type']:
 
@@ -944,7 +944,7 @@ if __name__ == '__main__':
     config_file_path = "RestServer_config"
 
     if not os.path.exists(config_file_path):
-        print '[INFO] The config file does not exist'
+        print('[INFO] The config file does not exist')
         sys.exit(0)
 
     ip = 'na'
@@ -1018,15 +1018,15 @@ if __name__ == '__main__':
         # Point to certificate files
 
         if not os.path.exists(pub):
-            print '[INFO] The public certificate does not exist'
+            print('[INFO] The public certificate does not exist')
             sys.exit(0)
 
         if not os.path.exists(priv):
-            print '[INFO] The private key does not exist'
+            print('[INFO] The private key does not exist')
             sys.exit(0)            
 
         if not os.path.exists(intermediate):
-            print '[INFO] The intermediate certificate does not exist'
+            print('[INFO] The intermediate certificate does not exist')
             sys.exit(0)
 
         
@@ -1037,7 +1037,7 @@ if __name__ == '__main__':
     if auth:
         # Read in and build user dictionary
         if not os.path.exists(users):
-          print '[INFO] The users file does not exist: ' + users
+          print('[INFO] The users file does not exist: ' + users)
           sys.exit(0)
         userpassdict = {}
         user_file = open(users, 'r')
