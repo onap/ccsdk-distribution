@@ -295,7 +295,7 @@ def store_local_vars(playbook_path, Id):
     cherrypy.log("LocalParameters: " + str(local_parms))
 
     f = open(playbook_path + "/vars/defaults.yml", "a")
-    for key, value in local_parms.items():
+    for key, value in list(local_parms.items()):
         f.write(key + "=" + value + "\n")
     f.close()
     # ##################################################
@@ -718,8 +718,8 @@ def handle_get_method(input_data):
     # Just a debug to dump any records
     if 'GetStatus' in input_data['Type']:
         cherrypy.log("******** Dump Records **********")
-        if TestRecord.items():
-            for id, record in TestRecord.items():
+        if list(TestRecord.items()):
+            for id, record in list(TestRecord.items()):
                 cherrypy.log("    Id: " + id)
                 cherrypy.log("Record: " + str(record))
         else:
@@ -778,7 +778,7 @@ def handle_get_method(input_data):
                 return out_obj
             elif 'GetStatus' in input_data['Type']:
                 cherrypy.log(" Dump Records")
-                for id, record in TestRecord.items():
+                for id, record in list(TestRecord.items()):
                     cherrypy.log(" id: " + id)
                     cherrypy.log("   Record:" + str(record))
             elif 'GetTheOutput' in input_data['Type'] or 'GetOutput' in input_data['Type']:
@@ -1027,7 +1027,7 @@ if __name__ == '__main__':
             if 'ansible_inv' in config_line:
                 ANSIBLE_INV = config_line.split(':')[1].strip()
                 if not os.path.exists(ANSIBLE_PATH + "/" + ANSIBLE_INV):
-                    print '[INFO] The ansible_inv file does not exist'
+                    print('[INFO] The ansible_inv file does not exist')
                     sys.exit(0)
             if 'ansible_temp' in config_line:
                 ANSIBLE_TEMP = config_line.split(':')[1].strip()

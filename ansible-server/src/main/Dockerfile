@@ -8,22 +8,26 @@ WORKDIR /opt/
 COPY ansible-server/requirements.txt ansible-server/requirements.txt
 
 RUN apk add --no-cache curl \
+                       iputils \
+                       sudo \
                        bash \
-                       py2-pip \
+                       py3-pip \
                        openssh-client \
-                       python2 &&\
+                       python3 &&\
     apk add --no-cache --virtual .build-deps build-base \
                                              libffi-dev \
                                              openssl-dev \
-                                             python2-dev &&\
-    pip install --no-cache-dir --upgrade pip==$PIP_TAG && \
-    pip install --no-cache-dir -r ansible-server/requirements.txt &&\
+                                             python3-dev &&\
+    pip3 install --no-cache-dir --upgrade pip==$PIP_TAG && \
+    pip3 install --no-cache-dir -r ansible-server/requirements.txt &&\
     apk del .build-deps
 
 RUN addgroup -S ansible && adduser -S ansible -G ansible
+RUN echo "ansible ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/default; 
+RUN chmod 0440 /etc/sudoers.d/default
+
 COPY --chown=ansible:ansible ansible-server ansible-server
 COPY --chown=ansible:ansible configuration/ansible.cfg /etc/ansible/ansible.cfg
-
 
 WORKDIR /opt/ansible-server
 
