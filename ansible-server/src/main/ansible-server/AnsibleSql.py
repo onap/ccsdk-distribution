@@ -52,7 +52,7 @@ class mySql():
                 self.cur.execute(myquery)
             self.db.commit()
             results = self.cur.fetchall()
-        except Exception, e:
+        except Exception as e:
             results = repr(e)
         return results
     
@@ -139,24 +139,24 @@ def readPlaybook (sqlintf, value, version=None):
     errorCode = 0
     diag = ''
 
-    print "***> in AnsibleSql.readPlaybook"
+    print("***> in AnsibleSql.readPlaybook")
     
     if not version:
         query = "SELECT MAX(version) FROM playbook WHERE name like'" + value + "%'"
-        print "   Query:", query
+        print("   Query:", query)
         results = sqlintf.Query (query)
         version = results[0][0]
 
-    print "   Provided playbook name:", value 
-    print "   Used version:", version
+    print("   Provided playbook name:", value) 
+    print("   Used version:", version)
 
     results = []
     if version:
         query = "SELECT value,type FROM playbook WHERE name='" + value + "@" + version + "'"
         results = sqlintf.Query (query)
 
-        print "Query:", query
-        print "Results:", results
+        print("Query:", query)
+        print("Results:", results)
     
     if len(results) == 0:
         errorCode = 1
@@ -173,7 +173,7 @@ def readCredentials (sqlintf, tag):
     errorCode = []
     diag = []
 
-    print "***> in AnsibleSql.readCredential"
+    print("***> in AnsibleSql.readCredential")
     
     # Load credentials
 
@@ -198,8 +198,8 @@ def readCredentials (sqlintf, tag):
                     rec +"'"
             results = sqlintf.Query (query)
 
-        print "   Query:", query
-        print "   Results:", len(results), results
+        print("   Query:", query)
+        print("   Results:", len(results), results)
 
         if len(results) == 0:
             errorCode = 1
@@ -240,20 +240,20 @@ if __name__ == '__main__':
 
     # Load playbooks
 
-    print "Loading playbooks"
+    print("Loading playbooks")
     for file in onlyfiles:
         if "yml" in file:
 
             name = file.split (".yml")[0]
-            print "  Loading:", name
+            print("  Loading:", name)
             version = name.split("@")[1]
             errorCode, diag = loadPlaybook (sqlintf, name, version, '.yml')
             if errorCode:
-                print "  Results: Failed - ", diag
+                print("  Results: Failed - ", diag)
             else:
-                print "  Results: Success"
+                print("  Results: Success")
 
-    print "\nLoading inventory"
+    print("\nLoading inventory")
     
     # Load inventory
 
@@ -274,48 +274,48 @@ if __name__ == '__main__':
     file.close()
 
     for hostgroup in inv:
-        print "  Loading:", hostgroup
+        print("  Loading:", hostgroup)
         hostfqdn = ''
         cred = ''
         for hostname in inv[hostgroup]:
             cred = inv[hostgroup][hostname]
             errorCode, diag = loadCredentials (sqlintf, hostgroup, hostname, cred)
             if errorCode:
-                print "  Results: Failed - ", diag
+                print("  Results: Failed - ", diag)
             else:
-                print "  Results: Success"
+                print("  Results: Success")
                 
-    print "\nReading playbook"
+    print("\nReading playbook")
     
     # Read playbook
 
     if not sqlintf.con:
-        print "Cannot connect to MySql:", sqlintf.error
+        print("Cannot connect to MySql:", sqlintf.error)
         sys.exit()
         
     name = "ansible_sleep"
-    print "Reading playbook:", name
+    print("Reading playbook:", name)
     value, version, errorCode, diag = readPlaybook (sqlintf, name)
     if errorCode:
-        print "Results: Failed - ", diag
+        print("Results: Failed - ", diag)
     else:
-        print "Results: Success"
-        print value
-        print version
-        print diag
+        print("Results: Success")
+        print(value)
+        print(version)
+        print(diag)
 
-    print "\nReading inventory"
+    print("\nReading inventory")
 
     # Read inventory
 
     tag = ["your_inventory_test_group_name"]
-    print "Reading inventory tag:", tag
+    print("Reading inventory tag:", tag)
     errorCode, diag = readCredentials (sqlintf, tag)
     if errorCode:
-        print "Results: Failed - ", diag
+        print("Results: Failed - ", diag)
     else:
-        print "Results: Success"
-        print diag
+        print("Results: Success")
+        print(diag)
                 
     sqlintf.Close()
 
