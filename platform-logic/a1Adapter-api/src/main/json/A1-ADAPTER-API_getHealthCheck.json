@@ -1,0 +1,61 @@
+[
+    {
+        "id": "d160ae95.22121",
+        "type": "dgstart",
+        "name": "DGSTART",
+        "outputs": 1,
+        "x": 146,
+        "y": 57,
+        "z": "3d3f45b8.78bdda",
+        "wires": [
+            [
+                "7af2c12d.dfc56"
+            ]
+        ]
+    },
+    {
+        "id": "7af2c12d.dfc56",
+        "type": "service-logic",
+        "name": "A1-ADAPTER-API ${project.version}",
+        "module": "A1-ADAPTER-API",
+        "version": "${project.version}",
+        "comments": "",
+        "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='A1-ADAPTER-API' version='${project.version}'>",
+        "outputs": 1,
+        "x": 186,
+        "y": 123,
+        "z": "3d3f45b8.78bdda",
+        "wires": [
+            [
+                "f4915cbe.123c4"
+            ]
+        ]
+    },
+    {
+        "id": "f4915cbe.123c4",
+        "type": "method",
+        "name": "method getHealthCheck",
+        "xml": "<method rpc='getHealthCheck' mode='sync'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 228,
+        "y": 189,
+        "z": "3d3f45b8.78bdda",
+        "wires": [
+            [
+                "9a26ac28.f0c6b"
+            ]
+        ]
+    },
+    {
+        "id": "9a26ac28.f0c6b",
+        "type": "set",
+        "name": "set return message",
+        "xml": "<set>\n<parameter name='response-code' value='200' />\n<parameter name='response-message' value='A1 Adapter is healthy'/>\n<parameter name='health-status' value='200'/>\n<parameter name='ack-final' value='Y'/>",
+        "comments": "",
+        "x": 279,
+        "y": 269,
+        "z": "3d3f45b8.78bdda",
+        "wires": []
+    }
+]
