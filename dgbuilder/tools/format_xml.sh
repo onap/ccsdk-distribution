@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ "$#" != "1" ]
 then
         echo "Usage: $0 xmlFileFullPath"
@@ -10,7 +11,7 @@ then
 fi
 if [ -e "$1" ]
 then
-	python $PROJECT_HOME/tools/formatXml.py $1
+	python3 $PROJECT_HOME/tools/formatXml.py "$1"
 else
-	echo "File $1 does not exist" 
+	echo "File $1 does not exist"
 fi

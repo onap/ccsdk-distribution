@@ -30,7 +30,7 @@ $BASEDIR/bin/svclogic.sh install $BASEDIR $BASEDIR/config/svclogic.properties
 
 end=$(date +%s.%N)
 echo "Load and activate finished at $(date)"
-runtime=$(python -c "print(${end} - ${start})")
+runtime=$(python3 -c "print(${end} - ${start})")
 echo "Load and activate took $runtime seconds"
 
 
