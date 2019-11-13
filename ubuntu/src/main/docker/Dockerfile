@@ -12,4 +12,4 @@ RUN if [ ! -z ${HTTP_PROXY} ]; then echo "Acquire::http::proxy  \"${HTTP_PROXY}\
     if [ ! -z ${HTTPS_PROXY} ]; then echo "Acquire::https::proxy \"${HTTPS_PROXY}\";" >> /etc/apt/apt.conf; fi
 
 # Add tools needed for OpenDaylight
-RUN apt-get update && apt-get install -y git openjdk-8-jdk maven mysql-client nodejs nodejs-legacy python-pip graphviz npm unzip
+RUN apt-get update && apt-get install -y git openjdk-8-jdk maven mysql-client nodejs nodejs-legacy python3-pip graphviz npm unzip

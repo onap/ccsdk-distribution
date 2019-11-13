@@ -10,7 +10,6 @@ COPY ansible-server/requirements.txt ansible-server/requirements.txt
 RUN apk add --no-cache curl \
                        iputils \
                        bash \
-                       py3-pip \
                        openssh-client \
                        python3 &&\
     apk add --no-cache --virtual .build-deps build-base \
