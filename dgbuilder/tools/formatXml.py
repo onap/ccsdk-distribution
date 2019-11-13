@@ -8,4 +8,4 @@ xml_fname=sys.argv[1]
 #print pretty_xml_as_string
 
 x = etree.parse(xml_fname)
-print etree.tostring(x, pretty_print = True)
+print(etree.tostring(x, pretty_print = True))

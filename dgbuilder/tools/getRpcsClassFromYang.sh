@@ -59,7 +59,7 @@ done
 echo "module.exports = {"
 echo "\"moduleName\" : \"${module}\","
 echo "'${module}_VALUES' : "
-echo "[ $allProps ]"|python -m json.tool
+echo "[ $allProps ]"|python3 -m json.tool
 echo ","
 echo "'${module}_RPCS' : ["
 
