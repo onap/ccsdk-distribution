@@ -59,15 +59,16 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory, envparam
     cherrypy.log("CMD: " + cmd)
 
     cherrypy.log("PlayBook Start: " + playbookdir )
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
     #PAP
     #p.wait()
     stdout_value, err = p.communicate()
+    stdout_value = stdout_value.splitlines()
 
-    stdout_value_cleanup = ''
+    stdout_value_cleanup = []
     for line in stdout_value:
-        stdout_value_cleanup += line.replace('  ', ' ')
-    stdout_value = stdout_value_cleanup.splitlines()
+        stdout_value_cleanup.append(line.replace('  ', ' '))
+    stdout_value = stdout_value_cleanup
 
     ParseFlag = False
     retval = {}
@@ -80,13 +81,22 @@ def ansibleSysCall (inventory_path, playbook_path, nodelist, mandatory, envparam
             log.append (line)
     else:
         for line in stdout_value: # p.stdout.readlines():
-            print(line) # line,
+            if line:
+                cherrypy.log("OUTPUT: %s" % line)
+
             if ParseFlag and len(line.strip())>0:
                 ip_address = line.split(':')[0].strip()
-                ok_flag = line.split(':')[1].strip().split('=')[1].split('changed')[0].strip()
-                changed_flag = line.split(':')[1].strip().split('=')[2].split('unreachable')[0].strip()
-                unreachable_flag = line.split(':')[1].strip().split('=')[3].split('failed')[0].strip()
-                failed_flag = line.split(':')[1].strip().split('=')[4].strip()
+                exec_results = line.split(':')[1].strip()
+
+                result_items = [item for item in exec_results.split(' ') if item]
+                cherrypy.log("Execcution results of '%s': %s" % (ip_address, str(result_items)))
+                # ['ok=6', 'changed=5', 'unreachable=0', 'failed=0', 'skipped=3', 'rescued=0', 'ignored=0']
+
+                ok_flag = result_items[0].split('=')[1].strip()
+                changed_flag = result_items[1].split('=')[1].strip()
+                unreachable_flag = result_items[2].split('=')[1].strip()
+                failed_flag = result_items[3].split('=')[1].strip()
+
                 retval[ip_address]=[ok_flag, changed_flag, unreachable_flag, failed_flag]
             if "PLAY RECAP" in line:
                 ParseFlag = True
