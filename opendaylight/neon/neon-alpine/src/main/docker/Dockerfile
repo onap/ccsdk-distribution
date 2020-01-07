@@ -15,9 +15,6 @@ RUN mkdir -p /opt/odl \
     && ln -s  /opt/opendaylight /opt/opendaylight/${odl.karaf.artifactId}-${ccsdk.opendaylight.version} \
     && ln -s /opt/opendaylight /opt/opendaylight/current
 
-# workaround till we get proxy working
-RUN mkdir -p /opt/opendaylight/system/org/mariadb/jdbc/mariadb-java-client/${ccsdk.mariadb-connector-java.version}
-COPY mariadb-java-client-${ccsdk.mariadb-connector-java.version}.jar /opt/opendaylight/system/org/mariadb/jdbc/mariadb-java-client/${ccsdk.mariadb-connector-java.version}
 
 # ENTRYPOINT exec /opt/opendaylight/bin/karaf
 EXPOSE 8181
