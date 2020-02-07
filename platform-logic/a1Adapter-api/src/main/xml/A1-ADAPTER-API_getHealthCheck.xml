@@ -24,7 +24,7 @@
                             <block atomic='true'>
                                 <set>
                                     <parameter name="tmp.near-rt-ric-id" value="`$get-health-check-input.near-rt-ric-id`"/>
-                                    <parameter name="tmp.restapi.healthcheck-url" value="`$prop.restapi.healthcheck`"/>
+                                    <parameter name="tmp.restapi.healthcheck-url" value="`'http://' + $get-health-check-input.host-ip-address + ':' + $prop.nearric.port + '/' + $prop.restapi.healthcheck`"/>
                                 </set>
                                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                     <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
@@ -34,7 +34,7 @@
                                     <parameter name="field3" value="`$tmp.restapi.healthcheck-url`"/>
                                 </record>
                                 <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                    <parameter name="restapiUrl" value="`$prop.a1Mediator.url + '/' + $tmp.restapi.healthcheck-url`"/>
+                                    <parameter name="restapiUrl" value="`$tmp.restapi.healthcheck-url`"/>
                                     <parameter name="format" value="json"/>
                                     <parameter name="httpMethod" value="GET"/>
                                     <parameter name="responsePrefix" value="a1MediatorRsp"/>
