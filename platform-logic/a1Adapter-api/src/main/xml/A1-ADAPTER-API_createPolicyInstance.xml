@@ -314,7 +314,7 @@
                                 <parameter name="field8" value="`$tmp.a1-mediator-restapi.payload`"/>
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                <parameter name="restapiUrl" value="`$prop.a1Mediator.url + '/' + $tmp.restapi.policy-url`"/>
+                                <parameter name="restapiUrl" value="`'http://' + $get-health-check-input.host-ip-address + ':' + $prop.nearric.port + '/' + $tmp.restapi.policy-url`"/>
                                 <parameter name="format" value="json"/>
                                 <parameter name="httpMethod" value="PUT"/>
                                 <parameter name="responsePrefix" value="a1MediatorRsp"/>
