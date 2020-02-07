@@ -33,7 +33,7 @@
                                 <parameter name="field3" value="`$tmp.restapi.getPolicyTypes-url`"/>
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                <parameter name="restapiUrl" value="`$prop.a1Mediator.url + '/' + $tmp.restapi.getPolicyTypes-url`"/>
+                                <parameter name="restapiUrl" value="`'http://' + $get-health-check-input.host-ip-address + ':' + $prop.nearric.port + '/' + $tmp.restapi.getPolicyTypes-url`"/>
                                 <parameter name="format" value="json"/>
                                 <parameter name="httpMethod" value="GET"/>
                                 <parameter name="responsePrefix" value="a1MediatorRsp"/>
@@ -54,7 +54,7 @@
                                     <block>
                                         <set>
                                             <parameter name='response-code' value='500'/>
-                                            <parameter name='response-message' value='Seems A1 Mediator Not Healthy'/>
+                                            <parameter name='response-message' value='Failed to get the Policy types'/>
                                         </set>
                                         <return status='failure'>
                                             <parameter name='ack-final' value='Y'/>
