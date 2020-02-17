@@ -42,11 +42,39 @@
                                 <parameter name="convertResponse" value="true"/>
                                 <outcome value='success'>
                                     <block>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='jsonStringToCtx'>
+                                            <parameter name='source' value='a1MediatorRsp.httpResponse' />
+                                            <parameter name='outputPath' value='a1MediatorList' />
+                                            <parameter name='isEscaped' value='false' />
+                                        </execute>
+                                        <execute plugin="org.onap.ccsdk.sli.plugins.template.TemplateNode" method="evaluateTemplate" >
+                                            <parameter name='templatePath' value='a1Mediator-get-policies.vtl' />
+                                            <parameter name='output' value='policiesList' />
+                                            <parameter name='prefix' value='a1-mediator' />
+                                            <outcome value='success'>
+                                                <block atomic='true'>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="__TIMESTAMP__"/>
+                                                        <parameter name="field2" value="A1 Policies List"/>
+                                                        <parameter name='field3' value='`$a1-mediator.policiesList`' />
+                                                    </record>
+                                                </block>
+                                            </outcome>
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                                            <parameter name='filename' value='/opt/opendaylight/current/data/log/A1-Adapter-getPolicytype-context.log' />
+                                        </execute>
                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
                                             <parameter name="level" value="info" />
                                             <parameter name="field1" value="List of A1 Policy Types: "/>
-                                            <parameter name="field2" value="`$a1MediatorRsp`"/>
+                                            <parameter name="field2" value="`$a1MediatorRsp._length`"/>
+                                            <parameter name="field3" value="`$a1MediatorRsp.httpResponse`"/>
+                                            <parameter name="field4" value="`$a1MediatorRsp.response-code`"/>
+                                            <parameter name="field5" value='`$a1MediatorRsp._length`' />
+                                            <parameter name="field6" value='`$a1-mediator.policiesList`' />
                                         </record>
                                     </block>
                                 </outcome>
@@ -66,7 +94,7 @@
                                                 <parameter name='tmp.a1-adapter-api.rpc-name' value='getPolicyTypes'/>
                                                 <parameter name='tmp.a1Adapter-dmaap-resp.status-code' value='`$response-code`'/>
                                                 <parameter name='tmp.a1Adapter-dmaap-resp.status-value' value='`$response-message`'/>
-                                                <parameter name='tmp.a1Policy-dmaap-resp.payload' value="`$a1MediatorRsp`" />
+                                                <parameter name='tmp.a1Policy-dmaap-resp.payload' value='`$a1-mediator.policiesList`'  />
                                             </set>
                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
@@ -127,7 +155,7 @@
                                 <parameter name='tmp.a1-adapter-api.rpc-name' value='getPolicyTypes'/>
                                 <parameter name='tmp.a1Adapter-dmaap-resp.status-code' value='`$response-code`'/>
                                 <parameter name='tmp.a1Adapter-dmaap-resp.status-value' value='`$response-message`'/>
-                                <parameter name='tmp.a1Policy-dmaap-resp.payload' value="`$a1MediatorRsp`" />
+                                <parameter name='tmp.a1Policy-dmaap-resp.payload' value='`$a1-mediator.policiesList`'  />
                             </set>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
@@ -185,7 +213,7 @@
                         <parameter name='tmp.a1-adapter-api.rpc-name' value='getPolicyTypes'/>
                         <parameter name='tmp.a1Adapter-dmaap-resp.status-code' value='`$response-code`'/>
                         <parameter name='tmp.a1Adapter-dmaap-resp.status-value' value='`$response-message`'/>
-                        <parameter name='tmp.a1Policy-dmaap-resp.payload' value="`$a1MediatorRsp`" />
+                        <parameter name='tmp.a1Policy-dmaap-resp.payload' value='`$a1-mediator.policiesList`'  />
                     </set>
                     <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                         <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
