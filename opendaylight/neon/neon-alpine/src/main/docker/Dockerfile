@@ -15,6 +15,9 @@ RUN mkdir -p /opt/odl \
     && ln -s  /opt/opendaylight /opt/opendaylight/${odl.karaf.artifactId}-${ccsdk.opendaylight.version} \
     && ln -s /opt/opendaylight /opt/opendaylight/current
 
+# Add missing scripts see SDNC-1056
+COPY configure_cluster.sh configure-cluster-ipdetect.sh custom_shard_config.txt set_persistence.sh $ODL_HOME/bin/
+RUN chmod 755 $ODL_HOME/bin/configure_cluster.sh $ODL_HOME/bin/configure-cluster-ipdetect.sh $ODL_HOME/bin/set_persistence.sh $ODL_HOME/bin/custom_shard_config.txt
 
 # ENTRYPOINT exec /opt/opendaylight/bin/karaf
 EXPOSE 8181
