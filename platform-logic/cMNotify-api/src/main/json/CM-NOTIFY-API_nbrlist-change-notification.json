@@ -1,0 +1,590 @@
+[
+    {
+        "id": "d7426cda.853c3",
+        "type": "method",
+        "name": "method",
+        "xml": "<method rpc='nbrlist-change-notification' mode='sync'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 139,
+        "y": 192.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "e01172f2.eb605"
+            ]
+        ]
+    },
+    {
+        "id": "384d1619.9cd7ea",
+        "type": "dgstart",
+        "name": "DGSTART",
+        "outputs": 1,
+        "x": 142,
+        "y": 42,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "a139909c.cc021"
+            ]
+        ]
+    },
+    {
+        "id": "a139909c.cc021",
+        "type": "service-logic",
+        "name": "CM-NOTIFY-API ${project.version}",
+        "module": "CM-NOTIFY-API",
+        "version": "${project.version}",
+        "comments": "",
+        "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='CM-NOTIFY-API' version='${project.version}'>",
+        "outputs": 1,
+        "x": 199.99998474121094,
+        "y": 103.00009536743164,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "d7426cda.853c3"
+            ]
+        ]
+    },
+    {
+        "id": "e01172f2.eb605",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 161.48959732055664,
+        "y": 361.0000343322754,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "ce9ff91f.9fd7b8",
+                "8f754eb6.4c563",
+                "12096927.430627",
+                "1c34cf50.e940a1",
+                "681abe9f.71ebb",
+                "cacad6a.74e6028"
+            ]
+        ]
+    },
+    {
+        "id": "ce9ff91f.9fd7b8",
+        "type": "returnSuccess",
+        "name": "return success",
+        "xml": "<return status='success'>\n<parameter name=\"ack-final-indicator\" value=\"Y\" />\n<parameter name=\"error-code\" value=\"200\" />\n<parameter name=\"error-message\" value=\"SUCCESSFUL Execution\" />\n",
+        "comments": "",
+        "x": 258.0002670288086,
+        "y": 591.000186920166,
+        "z": "e365f261.0028d",
+        "wires": []
+    },
+    {
+        "id": "46b206d1.328288",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Input RPC Payload request. FAP #:  \"/>\n<parameter name=\"field2\" value=\"`$idx`\"/>\n<parameter name=\"field3\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].alias`\"/>\n<parameter name=\"field4\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].cid`\"/>\n<parameter name=\"field5\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].phy-cell-id-in-use`\"/>\n<parameter name=\"field6\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].pnf-name`\"/>\n<parameter name=\"field7\" value=\"Number of neigbors Changed/To Be Added #:  \"/>\n<parameter name=\"field8\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-cell-number-of-entries`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 826.0005493164062,
+        "y": 58.00004959106445,
+        "z": "e365f261.0028d",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c791a89f.b094f8",
+        "type": "comment",
+        "name": "CMNotify VES: nbrlist-change-notification",
+        "info": "",
+        "comments": "",
+        "x": 424,
+        "y": 35.010414123535156,
+        "z": "e365f261.0028d",
+        "wires": []
+    },
+    {
+        "id": "12096927.430627",
+        "type": "for",
+        "name": "for",
+        "xml": "<for index='idx' start='0' end=\"`$nbrlist-change-notification-input.fap-service-number-of-entries-changed`\" >",
+        "comments": "",
+        "outputs": 1,
+        "x": 495.085693359375,
+        "y": 130.9635887145996,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "c2a6556d.4d96f8"
+            ]
+        ]
+    },
+    {
+        "id": "8f754eb6.4c563",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"RPC to handle VES event: nbrlist change notification invoked. Number of FAP services for which neighbors have changed:  \"/>\n<parameter name=\"field2\" value=\"`$nbrlist-change-notification-input.fap-service-number-of-entries-changed`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 311.0002975463867,
+        "y": 170.02084732055664,
+        "z": "e365f261.0028d",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3b43614d.42cd1e",
+        "type": "set",
+        "name": "set tmp variables for notif input parms",
+        "xml": "<set>\n<parameter name=\"tmp.alias\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].alias`\"/>\n<parameter name=\"tmp.cid\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].cid`\"/>\n<parameter name=\"tmp.phy-cell-id-in-use\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].phy-cell-id-in-use`\"/>\n<parameter name=\"tmp.pnf-name\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].pnf-name`\"/>\n<parameter name=\"tmp.lte-cell-number-of-entries\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-cell-number-of-entries`\"/>",
+        "comments": "",
+        "x": 781.0010986328125,
+        "y": 225.89947891235352,
+        "z": "e365f261.0028d",
+        "wires": []
+    },
+    {
+        "id": "1c34cf50.e940a1",
+        "type": "execute",
+        "name": "execute Properties",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >\n    <parameter name='fileName' value='/opt/onap/ccsdk/data/properties/sdnr-CMNotify-api-dg.properties' />\n    <parameter name='contextPrefix' value='prop' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 506.00018310546875,
+        "y": 191.02083206176758,
+        "z": "e365f261.0028d",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "681abe9f.71ebb",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Properties read ..configDB URL\"/>\n<parameter name=\"field2\" value=\"`$prop.configdb.url`\"/>\n<parameter name=\"field3\" value=\"Properties read ..DMAAP Msg Router URL\"/>\n<parameter name=\"field4\" value=\"`$prop.configdb.url`\"/>\n<parameter name=\"field5\" value=\"`$prop.dmaap-message-router.url`\"/>\n<parameter name=\"field6\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"field7\" value=\"`$prop.controller.url`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 471.00030517578125,
+        "y": 245.0209083557129,
+        "z": "e365f261.0028d",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c2a6556d.4d96f8",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 647,
+        "y": 93.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "46b206d1.328288",
+                "dd208eef.5b405"
+            ]
+        ]
+    },
+    {
+        "id": "dd208eef.5b405",
+        "type": "for",
+        "name": "for",
+        "xml": "<for index='idy' start='0' end=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-cell-number-of-entries`\" >",
+        "comments": "",
+        "outputs": 1,
+        "x": 819,
+        "y": 123.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "654cb6f6.2f7848"
+            ]
+        ]
+    },
+    {
+        "id": "654cb6f6.2f7848",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Neighbor #:  \"/>\n<parameter name=\"field2\" value=\"`$idy`\"/>\n<parameter name=\"field3\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].plmnid`\"/>\n<parameter name=\"field4\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].cid`\"/>\n<parameter name=\"field5\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].phy-cell-id`\"/>\n<parameter name=\"field6\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].pnf-name`\"/>\n<parameter name=\"field7\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].blacklisted`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 970,
+        "y": 117.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cacad6a.74e6028",
+        "type": "for",
+        "name": "for",
+        "xml": "<for index='idx' start='0' end=\"`$nbrlist-change-notification-input.fap-service-number-of-entries-changed`\" >",
+        "comments": "",
+        "outputs": 1,
+        "x": 346,
+        "y": 371,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "23ccad8.b78ea52"
+            ]
+        ]
+    },
+    {
+        "id": "23ccad8.b78ea52",
+        "type": "block",
+        "name": "block : ConfigDB Update",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 525,
+        "y": 362.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "3b43614d.42cd1e",
+                "7a2468e9.edebc8"
+            ]
+        ]
+    },
+    {
+        "id": "7a2468e9.edebc8",
+        "type": "for",
+        "name": "for",
+        "xml": "<for index='idy' start='0' end=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-cell-number-of-entries`\" >",
+        "comments": "",
+        "outputs": 1,
+        "x": 742,
+        "y": 336.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "8e06e48c.36b168"
+            ]
+        ]
+    },
+    {
+        "id": "b1c0b593.fe96b8",
+        "type": "set",
+        "name": "set tmp variables for notif neigbor input parms",
+        "xml": "<set>\n<parameter name=\"tmp.nbr.plmnid\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].plmnid`\"/>\n<parameter name=\"tmp.nbr.cid\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].cid`\"/>\n<parameter name=\"tmp.nbr.phy-cell-id\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].phy-cell-id`\"/>\n<parameter name=\"tmp.nbr.pnf-name\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].pnf-name`\"/>\n<parameter name=\"tmp.nbr.blacklisted\" value=\"`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].blacklisted`\"/>",
+        "comments": "",
+        "x": 1140,
+        "y": 210.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": []
+    },
+    {
+        "id": "8e06e48c.36b168",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 875,
+        "y": 284.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "b1c0b593.fe96b8",
+                "c91fd3ed.ea1a9",
+                "8ff49992.4b25f8",
+                "30d460ed.4d3f2"
+            ]
+        ]
+    },
+    {
+        "id": "c91fd3ed.ea1a9",
+        "type": "execute",
+        "name": "generate configdb add URL for nbr",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.configdb.add-nbrlist-change-per-notif`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.configdb.add-nbrlist-change-per-notif.url\"/>\n    <parameter name=\"target\" value=\"{cellId}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cid`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1138,
+        "y": 256.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8ff49992.4b25f8",
+        "type": "record",
+        "name": "record configdb RestAPI parms",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/handle-nbrlist-change-notif.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"URL for configDB neighbor cell ADD\"/>\n<parameter name='field2' value=\"`$prop.configdb.url + $tmp.configdb.add-nbrlist-change-per-notif.url`\" />\n<parameter name='field3' value=\"`$tmp.nbr.cid`\" />\n<parameter name='field4' value=\"`$tmp.nbr.blacklisted`\" />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1133,
+        "y": 305.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "30d460ed.4d3f2",
+        "type": "execute",
+        "name": "Add neighbor to Cell",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/CMNotify-add-nbr-to-configdb-per-nbrlist-change-notif.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.configdb.url + $tmp.configdb.add-nbrlist-change-per-notif.url`\"/>\n<parameter name=\"httpMethod\" value=\"PUT\"/>\n<parameter name=\"responsePrefix\" value=\"CMNotify-configdb-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />",
+        "comments": "",
+        "outputs": 1,
+        "x": 1104,
+        "y": 383.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "bef59603.eb6c28",
+                "82674e19.0b984"
+            ]
+        ]
+    },
+    {
+        "id": "bef59603.eb6c28",
+        "type": "failure",
+        "name": "failure",
+        "xml": "<outcome value='failure'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1306,
+        "y": 350.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "2af0bc2d.9a03f4"
+            ]
+        ]
+    },
+    {
+        "id": "82674e19.0b984",
+        "type": "success",
+        "name": "success",
+        "xml": "<outcome value='success'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1298.999891281128,
+        "y": 428.9999132156372,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "9972d4be.cec088"
+            ]
+        ]
+    },
+    {
+        "id": "2af0bc2d.9a03f4",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1466.9998779296875,
+        "y": 307.0000343322754,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "9186101c.ebef7"
+            ]
+        ]
+    },
+    {
+        "id": "9186101c.ebef7",
+        "type": "returnFailure",
+        "name": "return failure",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error adding neighbor to configdb. Aborting notification update\" />",
+        "comments": "",
+        "x": 1645.999568939209,
+        "y": 304.00000190734863,
+        "z": "e365f261.0028d",
+        "wires": []
+    },
+    {
+        "id": "9972d4be.cec088",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1456.9996337890625,
+        "y": 394.99997329711914,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "400b8692.be8148"
+            ]
+        ]
+    },
+    {
+        "id": "400b8692.be8148",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Neighbor Added to ConfigDB \"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1635.9997024536133,
+        "y": 393.9999599456787,
+        "z": "e365f261.0028d",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9491fd51.6d973",
+        "type": "execute",
+        "name": "execute DmaapMsg",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n    <parameter name='templateFileName' value=\"`$prop.restapi.templateDir + '/' + $prop.restapi.dmaap-publish.templatefile`\" />\n    <parameter name='restapiUrl' value=\"`$prop.dmaap-message-router.url + '/' + $prop.CMNotify-dmaap.nbrlist-change.topic`\" />\n    <parameter name='format' value='json' />\n    <parameter name='httpMethod' value='POST' />\n    <parameter name='contentType' value='application/json' />\n    <parameter name='responsePrefix' value='dmaap' />",
+        "comments": "",
+        "outputs": 1,
+        "x": 676.5,
+        "y": 521.0833168029785,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "c2fb651f.83fdf8",
+                "f266f5d2.b65708"
+            ]
+        ]
+    },
+    {
+        "id": "d9c9c262.acaa7",
+        "type": "set",
+        "name": "set",
+        "xml": "<set>\n<parameter name='tmp.oofpcipoc-dmaap.requestID' value='`$prop.CMNotify-dmaap.requestID`'/>\n<parameter name='tmp.oofpcipoc-dmaap.aai' value=\"`$prop.CMNotify-dmaap.aai`\"/>\n<parameter name='tmp.oofpcipoc-dmaap.version' value='`$prop.CMNotify-dmaap.version`'/>\n<parameter name='tmp.oofpcipoc-dmaap.action' value='`$prop.CMNotify-dmaap.action`'/>\n<parameter name='tmp.oofpcipoc-dmaap.payload' value='`$nbrlist-change-notification-input.payload`'/>",
+        "comments": "",
+        "x": 671.166748046875,
+        "y": 427.0833168029785,
+        "z": "e365f261.0028d",
+        "wires": []
+    },
+    {
+        "id": "c2fb651f.83fdf8",
+        "type": "failure",
+        "name": "failure",
+        "xml": "<outcome value='failure'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 872,
+        "y": 461.00000381469727,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "1c059a5a.142026"
+            ]
+        ]
+    },
+    {
+        "id": "f266f5d2.b65708",
+        "type": "success",
+        "name": "success",
+        "xml": "<outcome value='success'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 857.9998779296875,
+        "y": 594.999942779541,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "f560935d.61fab"
+            ]
+        ]
+    },
+    {
+        "id": "1c059a5a.142026",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1062.9998779296875,
+        "y": 491.0000343322754,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "47ce8954.135548"
+            ]
+        ]
+    },
+    {
+        "id": "47ce8954.135548",
+        "type": "returnFailure",
+        "name": "return failure",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error publishing DMAAP message. ConfigDB Updated; TO be rolled back...will handle next release\" />",
+        "comments": "",
+        "x": 1241.999568939209,
+        "y": 488.00000190734863,
+        "z": "e365f261.0028d",
+        "wires": []
+    },
+    {
+        "id": "f560935d.61fab",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1052.9996337890625,
+        "y": 578.9999732971191,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "9d733460.1d7b38"
+            ]
+        ]
+    },
+    {
+        "id": "9d733460.1d7b38",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"DMAAP Message Successfully Published \"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1231.9997024536133,
+        "y": 577.9999599456787,
+        "z": "e365f261.0028d",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7c1b714b.48842",
+        "type": "block",
+        "name": "block : Publish DMAAP Message",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 427,
+        "y": 465,
+        "z": "e365f261.0028d",
+        "wires": [
+            [
+                "d9c9c262.acaa7",
+                "9491fd51.6d973"
+            ]
+        ]
+    },
+    {
+        "id": "78866421.b367ac",
+        "type": "comment",
+        "name": "DMAAP Publish Not Reqd. Just a placeholder",
+        "info": "",
+        "comments": "",
+        "x": 391,
+        "y": 519,
+        "z": "e365f261.0028d",
+        "wires": []
+    }
+]

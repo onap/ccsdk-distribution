@@ -1,0 +1,126 @@
+<service-logic
+    xmlns='http://www.onap.org/sdnc/svclogic'
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='CM-NOTIFY-API' version='${project.version}'>
+    <method rpc='nbrlist-change-notification' mode='sync'>
+        <block atomic='true'>
+            <for index='idx' start='0' end="`$nbrlist-change-notification-input.fap-service-number-of-entries-changed`" >
+                <block atomic='true'>
+                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                        <parameter name="file" value="/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log" />
+                        <parameter name="level" value="info" />
+                        <parameter name="field1" value="Input RPC Payload request. FAP #:  "/>
+                        <parameter name="field2" value="`$idx`"/>
+                        <parameter name="field3" value="`$nbrlist-change-notification-input.fap-service[$idx].alias`"/>
+                        <parameter name="field4" value="`$nbrlist-change-notification-input.fap-service[$idx].cid`"/>
+                        <parameter name="field5" value="`$nbrlist-change-notification-input.fap-service[$idx].phy-cell-id-in-use`"/>
+                        <parameter name="field6" value="`$nbrlist-change-notification-input.fap-service[$idx].pnf-name`"/>
+                        <parameter name="field7" value="Number of neigbors Changed/To Be Added #:  "/>
+                        <parameter name="field8" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-cell-number-of-entries`"/>
+                    </record>
+                    <for index='idy' start='0' end="`$nbrlist-change-notification-input.fap-service[$idx].lte-cell-number-of-entries`" >
+                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                            <parameter name="file" value="/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log" />
+                            <parameter name="level" value="info" />
+                            <parameter name="field1" value="Neighbor #:  "/>
+                            <parameter name="field2" value="`$idy`"/>
+                            <parameter name="field3" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].plmnid`"/>
+                            <parameter name="field4" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].cid`"/>
+                            <parameter name="field5" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].phy-cell-id`"/>
+                            <parameter name="field6" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].pnf-name`"/>
+                            <parameter name="field7" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].blacklisted`"/>
+                        </record>
+                    </for>
+                </block>
+            </for>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="RPC to handle VES event: nbrlist change notification invoked. Number of FAP services for which neighbors have changed:  "/>
+                <parameter name="field2" value="`$nbrlist-change-notification-input.fap-service-number-of-entries-changed`"/>
+            </record>
+            <execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >
+                <parameter name='fileName' value='/opt/onap/ccsdk/data/properties/sdnr-CMNotify-api-dg.properties' />
+                <parameter name='contextPrefix' value='prop' />
+            </execute>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="Properties read ..configDB URL"/>
+                <parameter name="field2" value="`$prop.configdb.url`"/>
+                <parameter name="field3" value="Properties read ..DMAAP Msg Router URL"/>
+                <parameter name="field4" value="`$prop.configdb.url`"/>
+                <parameter name="field5" value="`$prop.dmaap-message-router.url`"/>
+                <parameter name="field6" value="`$prop.controller.pwd`"/>
+                <parameter name="field7" value="`$prop.controller.url`"/>
+            </record>
+            <for index='idx' start='0' end="`$nbrlist-change-notification-input.fap-service-number-of-entries-changed`" >
+                <block atomic='true'>
+                    <set>
+                        <parameter name="tmp.alias" value="`$nbrlist-change-notification-input.fap-service[$idx].alias`"/>
+                        <parameter name="tmp.cid" value="`$nbrlist-change-notification-input.fap-service[$idx].cid`"/>
+                        <parameter name="tmp.phy-cell-id-in-use" value="`$nbrlist-change-notification-input.fap-service[$idx].phy-cell-id-in-use`"/>
+                        <parameter name="tmp.pnf-name" value="`$nbrlist-change-notification-input.fap-service[$idx].pnf-name`"/>
+                        <parameter name="tmp.lte-cell-number-of-entries" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-cell-number-of-entries`"/>
+                    </set>
+                    <for index='idy' start='0' end="`$nbrlist-change-notification-input.fap-service[$idx].lte-cell-number-of-entries`" >
+                        <block atomic='true'>
+                            <set>
+                                <parameter name="tmp.nbr.plmnid" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].plmnid`"/>
+                                <parameter name="tmp.nbr.cid" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].cid`"/>
+                                <parameter name="tmp.nbr.phy-cell-id" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].phy-cell-id`"/>
+                                <parameter name="tmp.nbr.pnf-name" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].pnf-name`"/>
+                                <parameter name="tmp.nbr.blacklisted" value="`$nbrlist-change-notification-input.fap-service[$idx].lte-ran-neighbor-list-in-use-lte-cell-changed[$idy].blacklisted`"/>
+                            </set>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$prop.restapi.configdb.add-nbrlist-change-per-notif`"/>
+                                <parameter name="outputPath" value="tmp.configdb.add-nbrlist-change-per-notif.url"/>
+                                <parameter name="target" value="{cellId}"/>
+                                <parameter name="replacement" value="`$tmp.cid`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/handle-nbrlist-change-notif.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="URL for configDB neighbor cell ADD"/>
+                                <parameter name='field2' value="`$prop.configdb.url + $tmp.configdb.add-nbrlist-change-per-notif.url`" />
+                                <parameter name='field3' value="`$tmp.nbr.cid`" />
+                                <parameter name='field4' value="`$tmp.nbr.blacklisted`" />
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/CMNotify-add-nbr-to-configdb-per-nbrlist-change-notif.json'`" />
+                                <parameter name="restapiUrl" value="`$prop.configdb.url + $tmp.configdb.add-nbrlist-change-per-notif.url`"/>
+                                <parameter name="httpMethod" value="PUT"/>
+                                <parameter name="responsePrefix" value="CMNotify-configdb-response"/>
+                                <parameter name='contentType' value='application/json' />
+                                <parameter name='format' value='json' />
+                                <parameter name='accept' value='application/json' />
+                                <outcome value='failure'>
+                                    <block>
+                                        <return status='failure'>
+                                            <parameter name='ack-final' value='Y'/>
+                                            <parameter name="error-code" value="500" />
+                                            <parameter name="error-message" value="Error adding neighbor to configdb. Aborting notification update" />
+                                        </return>
+                                    </block>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/ves-nbrlist-change-notif.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="Neighbor Added to ConfigDB "/>
+                                        </record>
+                                    </block>
+                                </outcome>
+                            </execute>
+                        </block>
+                    </for>
+                </block>
+            </for>
+            <return status='success'>
+                <parameter name="ack-final-indicator" value="Y" />
+                <parameter name="error-code" value="200" />
+                <parameter name="error-message" value="SUCCESSFUL Execution" />
+            </return>
+        </block>
+    </method>
+</service-logic>
