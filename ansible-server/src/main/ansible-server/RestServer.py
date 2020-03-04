@@ -329,6 +329,13 @@ def process_pnf_playbook(input_json, Id, EnvParameters, time_now):
     cherrypy.log("Request Decode: EnvParameters    " + json.dumps(EnvParameters))
     cherrypy.log("Request Decode: PlaybookName     " + PlaybookName)
 
+    for key in EnvParameters:
+        value = EnvParameters[key]
+        if isinstance(value, (list, dict)):
+            valueStr = json.dumps(value)
+            # Need to dump two times to keep the backslash and double quotes, add backslash and single quotes for spaces
+            EnvParameters[key] = "\\'" + json.dumps(valueStr)[1:-1] + "\\'"
+
     str_uuid = str(uuid.uuid4())
 
     HomeDir = os.path.dirname(os.path.realpath("~/"))
