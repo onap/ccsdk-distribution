@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.onap.ccsdk.distribution</groupId>
+        <artifactId>distribution-opendaylight</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>distribution-odl-sodium</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>ccsdk-distribution :: opendaylight</name>
+    <description>Creates OpenDaylight container</description>
+    
+    <properties>
+		<ccsdk.project.version>${project.version}</ccsdk.project.version>
+		<ccsdk.build.timestamp>${maven.build.timestamp}</ccsdk.build.timestamp>
+		<ccsdk.opendaylight.version>0.11.2</ccsdk.opendaylight.version>
+		<docker.push.phase>deploy</docker.push.phase>
+    </properties>
+    
+    	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.opendaylight.integration</groupId>
+				<artifactId>karaf</artifactId>
+				<version>${ccsdk.opendaylight.version}</version>
+				<type>tar.gz</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
+
+    <modules>
+    	    <module>sodium-alpine</module>
+    </modules>
+</project>
