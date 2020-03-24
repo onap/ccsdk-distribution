@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.onap.ccsdk.parent</groupId>
-        <artifactId>springboot/artifactId>
+        <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
@@ -30,11 +31,8 @@
         <docker.push.phase>deploy</docker.push.phase>
         <docker.verbose>true</docker.verbose>
 
-        <ccsdk.features.version>1.0.0-SNAPSHOT</ccsdk.features.version>
         <ccsdk.sli.core.version>1.0.0-SNAPSHOT</ccsdk.sli.core.version>
-        <ccsdk.sli.adaptors.version>1.0.0-SNAPSHOT</ccsdk.sli.adaptors.version>
-        <ccsdk.sli.northbound.version>1.0.0-SNAPSHOT</ccsdk.sli.northbound.version>
-        <ccsdk.sli.plugins.version>1.0.0-SNAPSHOT</ccsdk.sli.plugins.version>
+        <ccsdk.sliboot.jar>sliapi-springboot-${ccsdk.sli.core.version}.jar</ccsdk.sliboot.jar>
     </properties>
 
     <dependencies>
@@ -43,34 +41,11 @@
             <artifactId>sliapi-springboot</artifactId>
             <version>${ccsdk.sli.core.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.onap.ccsdk.sli.core</groupId>
-            <artifactId>filters-installer</artifactId>
-            <version>${ccsdk.sli.core.version}</version>
-            <classifier>repo</classifier>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>org.onap.ccsdk.sli.core</groupId>
-            <artifactId>sli-installer</artifactId>
-            <version>${ccsdk.sli.core.version}</version>
-            <classifier>repo</classifier>
-            <type>zip</type>
-        </dependency>
     </dependencies>
 
     <build>
-        <extensions>
-            <extension>
-                <!-- this extension is required by wagon in order to pass the proxy -->
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-http-lightweight</artifactId>
-                <version>2.2</version>
-            </extension>
-        </extensions>
+
         <plugins>
-
-
             <plugin>
                 <groupId>org.codehaus.groovy.maven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
@@ -81,7 +56,7 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source>${basedir}/../../src/main/scripts/TagVersion.groovy</source>
+                            <source>${basedir}/../src/main/scripts/TagVersion.groovy</source>
                         </configuration>
                     </execution>
                 </executions>
@@ -111,87 +86,6 @@
                             </resources>
                         </configuration>
                     </execution>
-
-                    <execution>
-                        <id>copy-scripts</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals><!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/bin</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>../src/main/scripts</directory>
-                                    <includes>
-                                        <include>*.sh</include>
-                                    </includes>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>copy-odl-resources</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals><!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>../src/main/resources</directory>
-                                    <includes>
-                                        <include>idmlight.db.mv.db</include>
-                                        <include>org.ops4j.pax.logging.cfg</include>
-                                        <include>install_ccsdk.yml</include>
-                                        <include>ansible-sources.list</include>
-                                    </includes>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-config</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals><!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>../src/main/resources</directory>
-                                    <includes>
-                                        <include>org.ops4j.pax.logging.cfg</include>
-                                    </includes>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-data</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals><!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/data</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>../src/main/resources</directory>
-                                    <includes>
-                                        <include>*.dump</include>
-                                    </includes>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>copy-properties</id>
                         <goals>
@@ -199,35 +93,14 @@
                         </goals><!-- here the phase you need -->
                         <phase>validate</phase>
                         <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/data/properties
-                            </outputDirectory>
+                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/data/properties</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>../src/main/properties</directory>
+                                    <directory>src/main/resources</directory>
                                     <includes>
                                         <include>*.properties</include>
-                                        <include>*.vt</include>
                                     </includes>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-keystores</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals><!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage/opt/onap/ccsdk/data/stores</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>../src/main/stores</directory>
-                                    <includes>
-                                        <include>*.jks</include>
-                                    </includes>
-                                    <filtering>false</filtering>
+                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
@@ -240,14 +113,20 @@
                 <version>3.0.2</version>
                 <executions>
                     <execution>
-                        <id>unpack features</id>
-                        <phase>generate-sources</phase>
+                        <id>copy-dependencies</id>
                         <goals>
-                            <goal>unpack-dependencies</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
+                        <phase>prepare-package</phase>
                         <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
                             <excludeTransitive>true</excludeTransitive>
+                            <outputDirectory>${project.build.directory}/docker-stage/opt/onap/ccsdk/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <useRepositoryLayout>false</useRepositoryLayout>
+                            <addParentPoms>false</addParentPoms>
+                            <copyPom>false</copyPom>
                         </configuration>
                     </execution>
                     <execution>
@@ -270,36 +149,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.5.0</version>
-                <executions>
-
-                    <execution>
-                        <id>change shell permissions</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>/usr/bin/find</executable>
-                            <arguments>
-                                <argument>${basedir}/target/docker-stage/opt/onap/ccsdk</argument>
-                                <argument>-name</argument>
-                                <argument>*.sh</argument>
-                                <argument>-exec</argument>
-                                <argument>chmod</argument>
-                                <argument>+x</argument>
-                                <argument>{}</argument>
-                                <argument>;</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-
         </plugins>
     </build>
 
