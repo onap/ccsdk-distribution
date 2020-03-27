@@ -24,6 +24,7 @@
 export CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 export SLIBOOT_JAR=${SLIBOOT_JAR:-${ccsdk.sliboot.jar}}
 export SVCLOGIC_DIR=${SVCLOGIC_DIR:-opt/onap/ccsdk/svclogic/graphs}
+export LOG_PATH=${LOG_PATH:-/var/log/onap/ccsdk}
 
 #
 # Wait for database
@@ -51,5 +52,5 @@ END
 mysql -h ${MYSQL_DB_HOST} -u ${MYSQL_DB_USER} -p${MYSQL_DB_PASSWD} ${MYSQL_DB_DATABASE} < ${CCSDK_HOME}/config/schema.sql
 
 cd $CCSDK_HOME
-java -DserviceLogicDirectory=${SVCLOGIC_DIR} -jar ${CCSDK_HOME}/lib/${SLIBOOT_JAR}
+java -DserviceLogicDirectory=${SVCLOGIC_DIR} -DLOG_PATH=${LOG_PATH} -jar ${CCSDK_HOME}/lib/${SLIBOOT_JAR}
 
