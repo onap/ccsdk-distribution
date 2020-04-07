@@ -1,4 +1,5 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
+.. _release_notes:
 
 Release Notes
 #############
@@ -276,21 +277,21 @@ list summarizes some of the more critical features:
 +--------------+-----------------------------------------------------------------------------------------------+
 | Jira #       | Abstract                                                                                      |
 +==============+===============================================================================================+
-| [CCSDK-222]  | Ansible server support <https://jira.onap.org/browse/CCSDK-222>                               |
+| [CCSDK-222]  | Ansible server support <https://jira.onap.org/browse/CCSDK-222>                               |
 +--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-191]  | enable fast loading of graphs <https://jira.onap.org/browse/CCSDK-191>                        |
+| [CCSDK-191]  | enable fast loading of graphs <https://jira.onap.org/browse/CCSDK-191>                        |
 +--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-179]  | Upgrade CCSDK ODL containers to Nitrogen <https://jira.onap.org/browse/CCSDK-179>             |
+| [CCSDK-179]  | Upgrade CCSDK ODL containers to Nitrogen <https://jira.onap.org/browse/CCSDK-179>             |
 +--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-177]  | Upgrade sli/northbound to Nitrogen <https://jira.onap.org/browse/CCSDK-177>                   |
+| [CCSDK-177]  | Upgrade sli/northbound to Nitrogen <https://jira.onap.org/browse/CCSDK-177>                   |
 +--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-176]  | Upgrade sli/adaptors to Nitrogen <https://jira.onap.org/browse/CCSDK-176>                     |
+| [CCSDK-176]  | Upgrade sli/adaptors to Nitrogen <https://jira.onap.org/browse/CCSDK-176>                     |
 +--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-175]  | Upgrade sli/core to Nitrogen <https://jira.onap.org/browse/CCSDK-175>                         |
+| [CCSDK-175]  | Upgrade sli/core to Nitrogen <https://jira.onap.org/browse/CCSDK-175>                         |
 +--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-174]  | Update ccsdk parent to support Nitrogen parent poms <https://jira.onap.org/browse/CCSDK-174>  |
+| [CCSDK-174]  | Update ccsdk parent to support Nitrogen parent poms <https://jira.onap.org/browse/CCSDK-174>  |
 +--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-172]  | Ability to call Ansible playbook from directed graph <https://jira.onap.org/browse/CCSDK-172> |
+| [CCSDK-172]  | Ability to call Ansible playbook from directed graph <https://jira.onap.org/browse/CCSDK-172> |
 +--------------+-----------------------------------------------------------------------------------------------+
 
 **Bug Fixes**
@@ -302,7 +303,7 @@ The full list of bug fixes in the CCSDK Beijing release may be found at <https:/
 +--------------+-----------------------------------------------------------------------------------------------------+
 | Jira #       | Abstract                                                                                            |
 +==============+=====================================================================================================+
-| [CCSDK-136]  | pgaas is dependent on location\_prefix being all lowercase <https://jira.onap.org/browse/CCSDK-136> |
+| [CCSDK-136]  | pgaas is dependent on location\_prefix being all lowercase <https://jira.onap.org/browse/CCSDK-136> |
 +--------------+-----------------------------------------------------------------------------------------------------+
 
 **Security Notes**
