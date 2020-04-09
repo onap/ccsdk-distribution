@@ -25,6 +25,8 @@ export CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 export SLIBOOT_JAR=${SLIBOOT_JAR:-${ccsdk.sliboot.jar}}
 export SVCLOGIC_DIR=${SVCLOGIC_DIR:-opt/onap/ccsdk/svclogic/graphs}
 export LOG_PATH=${LOG_PATH:-/var/log/onap/ccsdk}
+export CCSDK_CONFIG_DIR=${CCSDK_CONFIG_DIR:-/opt/onap/ccsdk/config}
+export JAVA_SECURITY_DIR=${JAVA_SECURITY_DIR:-/etc/ssl/certs/java}
 
 #
 # Wait for database
@@ -51,6 +53,12 @@ END
 # Initialize schema
 mysql -h ${MYSQL_DB_HOST} -u ${MYSQL_DB_USER} -p${MYSQL_DB_PASSWD} ${MYSQL_DB_DATABASE} < ${CCSDK_HOME}/config/schema.sql
 
+# Install ssl and java certificates
+COPY $CCSDK_CONFIG_DIR/truststoreONAPall.jks $JAVA_SECURITY_DIR
+RUN keytool -importkeystore -srckeystore $JAVA_SECURITY_DIR/truststoreONAPall.jks -srcstorepass changeit -destkeystore $JAVA_SECURITY_DIR/cacerts  -deststorepass changeit
+
+echo -e "\nCerts ready"
+
 cd $CCSDK_HOME
-java -DserviceLogicDirectory=${SVCLOGIC_DIR} -DLOG_PATH=${LOG_PATH} -jar ${CCSDK_HOME}/lib/${SLIBOOT_JAR}
+java -DserviceLogicDirectory=${SVCLOGIC_DIR} -Dcadi_prop_files=${CCSDK_CONFIG_DIR}/org.onap.sdnc.props -Dserver.ssl.key-store=${CCSDK_CONFIG_DIR}/org.onap.sdnc.p12 -DLOG_PATH=${LOG_PATH} -jar ${CCSDK_HOME}/lib/${SLIBOOT_JAR}
 

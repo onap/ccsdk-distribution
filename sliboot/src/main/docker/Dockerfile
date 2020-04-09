@@ -42,4 +42,4 @@ RUN chmod +x ${CCSDK_HOME}/bin/*.sh
 USER sli
 WORKDIR ${CCSDK_HOME}
 ENTRYPOINT /opt/onap/ccsdk/bin/startSliboot.sh
-EXPOSE 8080
+EXPOSE 8443
