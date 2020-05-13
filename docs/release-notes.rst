@@ -1,370 +1,327 @@
-.. This work is licensed under a Creative Commons Attribution 4.0 International License.
-.. _release_notes:
+.. This work is licensed under a Creative Commons Attribution 4.0
+   International License.
+.. http://creativecommons.org/licenses/by/4.0
+.. (c) ONAP Project and its contributors
 
-Release Notes
-#############
-
-Version 0.5.4 / 0.6.3
-*********************
-:Release Date: 2019-09-30
-
-El Alto release
-
-**Artifact Versions**
-
-The CCSDK El Alto release includes artifacts for both OpenDaylight Fluorine SR2 (version 0.5.4) and
-OpenDaylight Neon SR1 (version 0.6.3).
-
-Note: CCSDK support for Ubuntu-based OpenDaylight containers is deprecated.  Ubuntu-based containers are provided
-for ODL Fluorine, but not for Neon.
-
-The following table lists the CCSDK docker containers and their versions.
-
-+--------------------------------------+---------------------------------------------------+----------------------+
-| Image name                           |  Description                                      | Version(s)           |
-+======================================+===================================================+======================+
-| onap/ccsdk-alpine-image              | Base Alpine Linux image for CCSDK                 | 0.5.4 (ODL Fluorine) |
-|                                      |                                                   | 0.6.3 (ODL Neon)     |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-ansible-server-image      | Ansible server image                              | 0.5.4 (ODL Fluorine) |
-|                                      |                                                   | 0.6.3 (ODL Neon)     |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-apps-ms-neng              | Naming microservice                               | 0.6.3                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-blueprints-processor      | CDS blueprint processor                           | 0.6.3                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-cds-ui                    | CDS web interface                                 | 0.6.3                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-cds-ui-server             | CDS user interface back end                       | 0.6.3                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-commandexecutor           | CDS command executor                              | 0.6.3                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-controllerblueprint       | CDS controller blueprints                         | 0.6.3                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-dgbuilder-image           | Directed graph builder                            | 0.5.4 (ODL Fluorine) |
-|                                      |                                                   | 0.6.3 (ODL Neon)     |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odl-fluorine-alpine-image | Alpine based OpenDaylight Fluorine SR2 image      | 0.5.4                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odl-fluorine-ubuntu-image | Ubuntu based OpenDaylight Fluorine SR2 image      | 0.5.4                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odl-neon-alpine-image     | Alpine based OpenDaylight Neon SR1 image          | 0.6.3                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odlsli-alpine-image       | Alpine based OpenDaylight image with CCSDK        | 0.5.4 (ODL Fluorine) |
-|                                      | libraries installed                               | 0.6.3 (ODL Neon)     |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-odlsli-image              | Ubuntu based OpenDaylight image with CCSDK        | 0.5.4 (ODL Fluorine) |
-|                                      | libraries installed. DEPRECATED (see note above)  |                      |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-saltstack-server-image    | Saltstack server                                  | 0.5.4 (ODL Fluorine) |
-|                                      |                                                   | 0.6.3 (ODL Neon)     |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-sdclistener               | CDS SDC listener                                  | 0.6.4                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-| onap/ccsdk-ubuntu-image              | Base Ubuntu image for CCSDK                       | 0.5.4                |
-|                                      |                                                   | 0.6.3                |
-+--------------------------------------+---------------------------------------------------+----------------------+
-
-**New Features**
-
-There are no new use cases or functional requirements in the El Alto release.  The focus of this release is on bug
-fixes, with a particular emphasis fon security fixes.  However, there are new non-functional user stories that were
-in El Alto.
-
-The full list of CCSDK user stories for El Alto may be found at <https://jira.onap.org/issues/?filter=12041>.
-
-The following table lists some of the most significant user stories:
-
-+--------------+----------------------------------------------------+
-| Jira #       | Abstract                                           |
-+==============+====================================================+
-| CCSDK-1387   | Upgrade to OpenDaylight Neon SR1                   |
-+--------------+----------------------------------------------------+
-| CCSDK-1033   | Support for NETCONF Notifications in CCSDK/SDNC    |
-+--------------+----------------------------------------------------+
-
-
-**Bug Fixes**
-The full list of bug fixes in the El Alto release may be found at <https://jira.onap.org/issues/?filter=12018>
-
-The following table summarizes some of the most significant issues addressed:
-
-+--------------+----------------------------------------------------+
-| Jira #       | Abstract                                           |
-+==============+====================================================+
-| [CCSDK-1445] | loading jdbc driver Exception in ccsdk             |
-+--------------+----------------------------------------------------+
-| [CCSDK-1443] | cds blueprint processor does not start             |
-+--------------+----------------------------------------------------+
-| [CCSDK-1240] | CVE-20190-3795 : spring-data-core vulnerability    |
-+--------------+----------------------------------------------------+
-| [CCSDK-1239] | CVE-2019-3797 : spring-data vulnerability          |
-+--------------+----------------------------------------------------+
-| [CCSDK-1238] | Multiple CVEs - commons-compress                   |
-+--------------+----------------------------------------------------+
-| [CCSDK-1117] | Remove runtime internet dependency for dgbuilder   |
-+--------------+----------------------------------------------------+
-| [CCSDK-991]  | Upgrade to spring-core 2.8.6 or higher             |
-+--------------+----------------------------------------------------+
-| [CCSDK-988]  | Multiple CVEs - spring-expression < 4.3.17.RELEASE |
-+--------------+----------------------------------------------------+
-| [CCSDK-441]  | Spring 3 vulnerability CVE-2018-1270               |
-+--------------+----------------------------------------------------+
-
-**Known Issues**
-
-The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
-
-**Security Notes**
-
-*Fixed Security Issues*
-
-        * In default deployment CCSDK (cds-ui) exposes HTTP port 30497 outside of cluster. [`OJSI-196 <https://jira.onap.org/browse/OJSI-196>`_]
-
-*Known Security Issues*
-
-        * In default deployment CCSDK (netbox-nginx) exposes HTTP port 30420 outside of cluster. [`OJSI-160 <https://jira.onap.org/browse/OJSI-160>`_]
-        * In default deployment CCSDK (cds-blueprints-processor-http) exposes HTTP port 30499 outside of cluster. [`OJSI-197 <https://jira.onap.org/browse/OJSI-197>`_]
-
-*Known Vulnerabilities in Used Modules*
-
-Quick Links:
- - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
-
- - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
-
- - `Project Vulnerability Review Table for CCSDK <https://wiki.onap.org/pages/viewpage.action?pageId=51282469>`_
-
-
-Version 0.4.4/0.4.5
 *******************
-:Release Date: 2019-06-13
-
-Note: The Dublin version for most CCSDK repositories is 0.4.4, except for CDS which is version
-0.4.5
-
-**New Features**
-
-The full list of Dublin epics and user stories for CCSDK may be found at <https://jira.onap.org/issues/?filter=11802>.
-
-The following list summarizes some of the most significant epics:
-
-+-------------+------------------------------------------------+
-| Jira #      | Abstract                                       |
-+=============+================================================+
-| [CCSDK-575] | Improve E2E Process Automation                 |
-+-------------+------------------------------------------------+
-| [CCSDK-840] | S3P - Footprint Optimization                   |
-+-------------+------------------------------------------------+
-| [CCSDK-859] | Update to OpenDaylight Fluorine                |
-+-------------+------------------------------------------------+
-| [CCSDK-929] | 5G Use Case                                    |
-+-------------+------------------------------------------------+
-| [CCSDK-930] | CCVPN Use Case Extension                       |
-+-------------+------------------------------------------------+
+CCSDK Release Notes
+*******************
 
 
-**Bug Fixes**
-The full list of bug fixes in the CCSDK Dublin release may be found at <https://jira.onap.org/issues/?filter=11804>
+Abstract
+========
 
-**Known Issues**
-The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
+This document provides the release notes for the Frankfurt release of the Common Controller Software
+Development Kit (CCSDK).
 
-**Security Notes**
+Summary
+=======
 
-*Fixed Security Issues*
-
-*Known Security Issues*
-
-        * In default deployment CCSDK (netbox-nginx) exposes HTTP port 30420 outside of cluster. [`OJSI-160 <https://jira.onap.org/browse/OJSI-160>`_]
-        * In default deployment CCSDK (cds-ui) exposes HTTP port 30497 outside of cluster. [`OJSI-196 <https://jira.onap.org/browse/OJSI-196>`_]
-        * In default deployment CCSDK (cds-blueprints-processor-http) exposes HTTP port 30499 outside of cluster. [`OJSI-197 <https://jira.onap.org/browse/OJSI-197>`_]
-
-*Known Vulnerabilities in Used Modules*
-
-Quick Links:
- - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
-
- - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
-
- - `Project Vulnerability Review Table for CCSDK Dublin <https://wiki.onap.org/pages/viewpage.action?pageId=51282469>`_
-
-Version: 0.3.3
-**************
-
-:Release Date: 2019-01-30
-
-** Bug Fixes **
-The following bugs are fixed in the CCSDK Casablanca January 2019 maintenance release:
-
-+-------------+-------------------------------------------------------------------------------+
-| Jira #      | Abstract                                                                      |
-+=============+===============================================================================+
-| [CCSDK-727] | Do not prepend "sub" for subnet net id                                        |
-+-------------+-------------------------------------------------------------------------------+
-| [CCSDK-728] | Self serve DG adjustement for unassign                                        |
-+-------------+-------------------------------------------------------------------------------+
-| [CCSDK-740] | Restore inventory-response-item definition to the original version            |
-+-------------+-------------------------------------------------------------------------------+
-| [CCSDK-765] | Upgrade jackson version to 2.8.9                                              |
-+-------------+-------------------------------------------------------------------------------+
-| [CCSDK-777] | Release version contains some snapshots                                       |
-+-------------+-------------------------------------------------------------------------------+
-| [CCSDK-843] | Compile error due to old snapshot dependency                                  |
-+-------------+-------------------------------------------------------------------------------+
-| [CCSDK-935] | restapicall JsonParser failed if response contains : as part of response body |
-+-------------+-------------------------------------------------------------------------------+
-
-**Known Issues**
-The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
-
-Quick Links:
-   - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
-
-   - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
-
-   - `Project Vulnerability Review Table for CCSDK Casablanca Maintenance Release <https://wiki.onap.org/pages/viewpage.action?pageId=45300857>`_
-
-Version: 0.3.2
-**************
-
-:Release Date: 2018-11-30
-
-**New Features**
-
-The full list of Casablanca epics and user stories for CCSDK maybe be found at <https://jira.onap.org/issues/?filter=11516>.
-
-The following list summarizes some of the most significant epics:
-
-+-------------+------------------------------------------------+
-| Jira #      | Abstract                                       |
-+=============+================================================+
-| [CCSDK-279] | Update to OpenDaylight Oxygen release          |
-+-------------+------------------------------------------------+
-| [CCSDK-357] | Develop Controller Design Studio in Casablanca |
-+-------------+------------------------------------------------+
-| [CCSDK-324] | Enhancements to support CCVPN use case         |
-+-------------+------------------------------------------------+
-| [CCSDK-288] | Usability Enhancements                         |
-+-------------+------------------------------------------------+
-
-**Bug Fixes**
-The full list of bug fixes in the CCSDK Casablanca release may be found at <https://jira.onap.org/issues/?filter=11544>
-
-**Known Issues**
-The full list of known issues in CCSDK may be found in the ONAP Jira at <https://jira.onap.org/issues/?filter=11341>
-
-Quick Links:
- - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
-
- - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
-
- - `Project Vulnerability Review Table for CCSDK Casablanca <https://wiki.onap.org/pages/viewpage.action?pageId=45300857>`_
-
-Version: 0.2.4
-**************
+The Frankfurt release of CCSDK introduces new functionality to support PNFs (Physical Network Functions), extends support
+for Netconf/TLS to support CMPv2, and extends CDS to act as an agent in self-serve control loops.
 
 
-:Release Date: 2018-06-07
+Release Data
+============
+
++-------------------------+-------------------------------------------+
+| **Project**             | CCSDK                                     |
+|                         |                                           |
++-------------------------+-------------------------------------------+
+| **Docker images**       | See :ref:`dockercontainers` section below |
++-------------------------+-------------------------------------------+
+| **Release designation** | Frankfurt                                 |
+|                         |                                           |
++-------------------------+-------------------------------------------+
+| **Release date**        | 06/04/2020                                |
+|                         |                                           |
++-------------------------+-------------------------------------------+
 
 
+New features
+------------
 
-**New Features**
+For the full list of `CCSDK Frankfurt release epics <https://jira.onap.org/issues/?filter=12316>`_ and 
+`CCSDK Frankfurt release user stories <https://jira.onap.org/issues/?filter=12319>`_ , please see the `ONAP Jira`_.
 
-The full list of Beijing Epics and user stories for CCSDK may be found at <https://jira.onap.org/issues/?filter=10792>.  The following
-list summarizes some of the more critical features:
+**Bug fixes**
 
-+--------------+-----------------------------------------------------------------------------------------------+
-| Jira #       | Abstract                                                                                      |
-+==============+===============================================================================================+
-| [CCSDK-222]  | Ansible server support <https://jira.onap.org/browse/CCSDK-222>                               |
-+--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-191]  | enable fast loading of graphs <https://jira.onap.org/browse/CCSDK-191>                        |
-+--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-179]  | Upgrade CCSDK ODL containers to Nitrogen <https://jira.onap.org/browse/CCSDK-179>             |
-+--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-177]  | Upgrade sli/northbound to Nitrogen <https://jira.onap.org/browse/CCSDK-177>                   |
-+--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-176]  | Upgrade sli/adaptors to Nitrogen <https://jira.onap.org/browse/CCSDK-176>                     |
-+--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-175]  | Upgrade sli/core to Nitrogen <https://jira.onap.org/browse/CCSDK-175>                         |
-+--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-174]  | Update ccsdk parent to support Nitrogen parent poms <https://jira.onap.org/browse/CCSDK-174>  |
-+--------------+-----------------------------------------------------------------------------------------------+
-| [CCSDK-172]  | Ability to call Ansible playbook from directed graph <https://jira.onap.org/browse/CCSDK-172> |
-+--------------+-----------------------------------------------------------------------------------------------+
-
-**Bug Fixes**
-
-The full list of bug fixes in the CCSDK Beijing release may be found at <https://jira.onap.org/issues/?filter=11117>
+- `CIMAN-65 <https://jira.onap.org/browse/CIMAN-65>`_ and a sentence explaining
+  what this defect is addressing.
 
 **Known Issues**
 
-+--------------+-----------------------------------------------------------------------------------------------------+
-| Jira #       | Abstract                                                                                            |
-+==============+=====================================================================================================+
-| [CCSDK-136]  | pgaas is dependent on location\_prefix being all lowercase <https://jira.onap.org/browse/CCSDK-136> |
-+--------------+-----------------------------------------------------------------------------------------------------+
+- `CIMAN-65 <https://jira.onap.org/browse/CIMAN-65>`_ and two to three sentences
+  explaining what this issue is.
 
-**Security Notes**
+Deliverables
+------------
 
-CCSDK code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The CCSDK open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28379011>`_.
+Software Deliverables
+~~~~~~~~~~~~~~~~~~~~~
 
-Quick Links:
- - `CCSDK project page <https://wiki.onap.org/display/DW/Common+Controller+SDK+Project>`_
+.. _dockercontainers:
 
- - `Passing Badge information for CCSDK <https://bestpractices.coreinfrastructure.org/en/projects/1630>`_
+Docker Containers
+`````````````````
 
- - `Project Vulnerability Review Table for CCSDK Beijing <https://wiki.onap.org/pages/viewpage.action?pageId=28379011>`_
+The following table lists the docker containers comprising the CCSDK Frankfurt 
+release along with the current stable Frankfurt version/tag.  Each of these is
+available on the ONAP nexus3 site (https://nexus3.onap.org) and can be downloaded
+with the following command::
 
-**Upgrade Notes**
-
-N/A
-
-**Deprecation Notes**
-
-N/A
-
-**Other**
-
-N/A
+   docker pull nexus3.onap.org:10001/{image-name}:{version}
 
 
-Version: 0.1.0
-**************
+Note: users that want to use the latest in-development Frankfurt version may use the
+tag 0.7-STAGING-latest to pull the latest daily Frankfurt build
+
++-----------------------------------+--------------------------------------------+---------+
+| Image name                        | Description                                | Version |
++===================================+============================================+=========+
+| onap/ccsdk-alpine-image           | Base Alpine Linux image for CCSDK          | 0.7.3   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-ansible-server-image   | Ansible server image                       | 0.7.3   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-apps-ms-neng           | Naming microservice                        | 0.7.1   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-blueprints-processor   | CDS blueprint processor                    | 0.7.2   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-cds-ui                 | CDS web interface                          | 0.7.2   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-cds-ui-server          | CDS user interface back end                | 0.7.2   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-commandexecutor        | CDS command executor                       | 0.7.2   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-controllerblueprint    | CDS controller blueprints                  | 0.7.2   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-dgbuilder-image        | Directed graph builder                     | 0.7.2   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-odl-neon-alpine-image  | Alpine based OpenDaylight Neon SR1 image   | 0.7.3   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-odlsli-alpine-image    | Alpine based OpenDaylight image with CCSDK | 0.7.3   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-saltstack-server-image | Saltstack server                           | 0.7.3   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-sdclistener            | CDS SDC listener                           | 0.7.2   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-ubuntu-image           | Base Ubuntu image for CCSDK                | 0.7.3   |
++-----------------------------------+--------------------------------------------+---------+
+
+Maven Artifacts
+```````````````
+In addition to docker containers, CCSDK also provides libraries that are intended to be used by
+client applications (e.g. APPC, SDNC) as maven dependencies.
 
 
-:Release Date: 2017-11-16
+ccsdk/parent
+^^^^^^^^^^^^
+Many CCSDK clients need to be able to inherit settings from third party parent poms provided
+by OpenDaylight or springboot, and therefore are unable to use the standard ONAP parent pom.
+The CCSDK parent repository provides its own version of parent poms whose contents are consistent
+with ONAP standard settings (as defined in oparent), but whose parent is the OpenDaylight or 
+springboot parent, so that clients can effectively merge both sets of settings.
+
+The following table lists the parent poms provided by CCSDK and the current stable
+Frankfurt version of each.
+
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| groupId               | artifactId                   | version | Description                                                                                      |
++=======================+==============================+=========+==================================================================================================+
+| org.onap.ccsdk.parent | binding-parent               | 1.5.4   | Parent used in place of OpenDaylight binding-parent                                              |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | bundle-parent                | 1.5.4   | Parent used in place of OpenDaylight bundle-parent                                               |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | client-parent                | 1.5.4   | Parent used for projects that create client libraries for OpenDaylight APIs                      |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | dependencies-bom             | 1.5.4   | Bill of Materials POM that defines versions of third party libraries used outside ODL container. |
+|                       |                              |         | Intended to be imported in dependencyManagement section.                                         |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | dependencies-odl-bom         | 1.5.4   | Bill of Materials POM that defines versions of third party libraries used within ODL container.  |
+|                       |                              |         | Intended to be imported in dependencyManagement section.                                         |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | feature-repo-parent          | 1.5.4   | Parent used in place of OpenDaylight feature-repo-parent                                         |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | karaf4-parent                | 1.5.4   | Parent used in place of OpenDaylight karaf4-parent                                               |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | mdsal-it-parent              | 1.5.4   | Parent used in place of OpenDaylight mdsal-it-parent                                             |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | odlparent                    | 1.5.4   | Parent used in place of OpenDaylight odlparent                                                   |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | odlparent-lite               | 1.5.4   | Parent used in place of OpenDaylight odlparent-lite                                              |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | single-feature-parent        | 1.5.4   | Parent used in place of OpenDaylight single-feature-parent                                       |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | spring-boot-1-starter-parent | 1.5.4   | Parent used in place of spring-boot-starter-parent for Springboot 1.x.                           |
+|                       |                              |         | *NOTE* This is deprecated and will be removed in Guilin, since springboot 1.x should no          |
+|                       |                              |         | longer be used due to security issues                                                            |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | spring-boot-starter-parent   | 1.5.4   | Parent used in place of spring-boot-starter-parent for Springboot 2.x                            |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | standalone-parent            | 1.5.4   | Parent used for projects that have no need for other third party parent poms                     |
++-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
+
+ccsdk/sli/core
+^^^^^^^^^^^^^^
+The ccsdk/sli/core library provides base functionality needed by the Service Logic Interpreter (SLI), which is the engine that runs directed graphs.  It also
+provides a number of libraries that can be used by other CCSDK client projects.  
+
+The following table lists the maven artifacts provided for use by CCSDK client
+projects.
+
++-------------------------+-------------------------+---------+--------------------------------------------+
+| groupId                 | artifactId              | version | Description                                |
++=========================+=========================+=========+============================================+
+| org.onap.ccsdk.sli.core | dblib-provider          | 0.7.2   | Database access library                    |
++-------------------------+-------------------------+---------+--------------------------------------------+
+| org.onap.ccsdk.sli.core | sli-common              | 0.7.2   | Common SLI data objects                    |
++-------------------------+-------------------------+---------+--------------------------------------------+
+| org.onap.ccsdk.sli.core | sli-provider-base       | 0.7.2   | ODL-independent SLI implementation objects |
++-------------------------+-------------------------+---------+--------------------------------------------+
+| org.onap.ccsdk.sli.core | sli-provider            | 0.7.2   | ODL-dependent SLI implementation objects   |
++-------------------------+-------------------------+---------+--------------------------------------------+
+| org.onap.ccsdk.sli.core | sliPluginUtils-provider | 0.7.2   | Utilities for use in SLI adaptors/plugins  |
++-------------------------+-------------------------+---------+--------------------------------------------+
+| org.onap.ccsdk.sli.core | utils-provider          | 0.7.2   | Utilities                                  |
++-------------------------+-------------------------+---------+--------------------------------------------+
+
+ccsdk/sli/adaptors
+^^^^^^^^^^^^^^^^^^
+The ccsdk/sli/adaptors library provides interface adaptors meant to be used in resource nodes in directed graphs.
+
+The following table lists the maven artifacts provided for use by CCSDK client
+projects.
+
++-----------------------------+------------------------------+---------+--------------------------------+
+| groupId                     | artifactId                   | version | Description                    |
++=============================+==============================+=========+================================+
+| org.onap.ccsdk.sli.adaptors | aai-service-provider         | 0.7.2   | A&AI interface adaptor         |
++-----------------------------+------------------------------+---------+--------------------------------+
+| org.onap.ccsdk.sli.adaptors | ansible-adapter-bundle       | 0.7.2   | Ansible interface adaptor      |
++-----------------------------+------------------------------+---------+--------------------------------+
+| org.onap.ccsdk.sli.adaptors | mdsal-resource-provider      | 0.7.2   | MD-SAL interface adaptor       |
++-----------------------------+------------------------------+---------+--------------------------------+
+| org.onap.ccsdk.sli.adaptors | netbox-client-provider       | 0.7.2   | netbox interface adaptor       |
++-----------------------------+------------------------------+---------+--------------------------------+
+| org.onap.ccsdk.sli.adaptors | resource-assignment-provider | 0.7.2   | resource allocator             |
++-----------------------------+------------------------------+---------+--------------------------------+
+| org.onap.ccsdk.sli.adaptors | saltstack-adaptor-provider   | 0.7.2   | saltstack interface adaptor    |
++-----------------------------+------------------------------+---------+--------------------------------+
+| org.onap.ccsdk.sli.adaptors | sql-resource-provider        | 0.7.2   | SQL database interface adaptor |
++-----------------------------+------------------------------+---------+--------------------------------+
+
+ccsdk/sli/northbound
+^^^^^^^^^^^^^^^^^^^^
+The ccsdk/sli/northbound library contains the code for northbound interfaces which typically invoke
+the SLI.
+
+The following table lists the maven artifacts provided for use by CCSDK client projects.
+
++-------------------------------+---------------------+---------+-----------------------------------------+
+| groupId                       | artifactId          | version | Description                             |
++===============================+=====================+=========+=========================================+
+| org.onap.ccsdk.sli.northbound | asdcApi-provider    | 0.7.2   | ODL-based SDC interface                 |
++-------------------------------+---------------------+---------+-----------------------------------------+
+| org.onap.ccsdk.sli.northbound | dataChange-provider | 0.7.2   | A&AI data change notification interface |
++-------------------------------+---------------------+---------+-----------------------------------------+
+| org.onap.ccsdk.sli.northbound | dmaap-listener      | 0.7.2   | DMaaP listener interface                |
++-------------------------------+---------------------+---------+-----------------------------------------+
+| org.onap.ccsdk.sli.northbound | lcm-provider        | 0.7.2   | Life Cycle Management event interface   |
++-------------------------------+---------------------+---------+-----------------------------------------+
+| org.onap.ccsdk.sli.northbound | ueb-listener        | 0.7.2   | SDC event listener                      |
++-------------------------------+---------------------+---------+-----------------------------------------+
+
+ccsdk/sli/plugins
+^^^^^^^^^^^^^^^^^
+The ccsdk/sli/northbound library contains the code for plugins meant to be called from an 'execute' node
+in a directed graph.
+
+The following table lists the maven artifacts provided for use by CCSDK client projects.
+
++----------------------------+----------------------------+---------+-------------------------------------------------------+
+| groupId                    | artifactId                 | version | Description                                           |
++============================+============================+=========+=======================================================+
+| org.onap.ccsdk.sli.plugins | properties-node-provider   | 0.7.2   | Used to load a properties file for use in             |
+|                            |                            |         | a directed graph                                      |
++----------------------------+----------------------------+---------+-------------------------------------------------------+
+| org.onap.ccsdk.sli.plugins | restapi-call-node-provider | 0.7.2   | Used to call a generic REST API from a directed       |
+|                            |                            |         | graph                                                 |
++----------------------------+----------------------------+---------+-------------------------------------------------------+
+| org.onap.ccsdk.sli.plugins | restconf-client-provider   | 0.7.2   | Used to call a RESTCONF API from a directed graph     |
++----------------------------+----------------------------+---------+-------------------------------------------------------+
+| org.onap.ccsdk.sli.plugins | sshapi-call-node           | 0.7.2   | Used to invoke an SSH interface from a directed graph |
++----------------------------+----------------------------+---------+-------------------------------------------------------+
+| org.onap.ccsdk.sli.plugins | template-node-provider     | 0.7.2   | Provides velocity template support                    |
++----------------------------+----------------------------+---------+-------------------------------------------------------+
+
+Documentation Deliverables
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+* `CDS user guide`_
+* `SDN Controller for Radio user guide`_
+* `ccsdk/sli/core Javadoc`_
+* `ccsdk/sli/adaptors Javadoc`_
+* `ccsdk/sli/northbound Javadoc`_
+* `ccsdk/sli/plugins Javadoc`_
+
+Known Limitations, Issues and Workarounds
+=========================================
+
+System Limitations
+------------------
+
+No system limitations noted.
 
 
+Known Vulnerabilities
+---------------------
 
-**New Features**
-
-The Common Controller SDK provides the following functionality :
-   - Service Logic Interpreter
-   - Database access library (dblib)
-   - Service Logic test api (sliapi)
-   - MD-SAL data query adaptor
-   - SQL query adaptor
-   - Resource allocator
-   - SDC interface
-   - DMAAP interface
-   - REST API adaptor
+Currently there are no known, unaddressed vulnerabilities.
 
 
-**Bug Fixes**
+Workarounds
+-----------
 
-**Known Issues**
-   - `CCSDK-110 <https://jira.onap.org/browse/CCSDK-110>`_ Resolve license issues in dashboard project
-   - `CCSDK-136 <https://jira.onap.org/browse/CCSDK-136>`_ pgaas is dependent on location_prefix being all lowercase
-   - `CCSDK-137 <https://jira.onap.org/browse/CCSDK-137>`_ isolate deprecated methods
-
-**Security Issues**
-   You may want to include a reference to CVE (Common Vulnerabilities and Exposures) `CVE <https://cve.mitre.org>`_
+Not applicable.
 
 
-**Upgrade Notes**
+Security Notes
+--------------
 
-**Deprecation Notes**
+**Fixed Security Issues**
 
-**Other**
+List of security issues fixed in this release including CVEs and OJSI
+tickets.
+
+**Known Security Issues**
+
+List of new security issues that are left unfixed in this release including
+CVEs and OJSI tickets.
+
+
+Test Results
+============
+Not applicable
+
+
+References
+==========
+
+For more information on the ONAP Frankfurt release, please see:
+
+#. `ONAP Home Page`_
+#. `ONAP Documentation`_
+#. `ONAP Release Downloads`_
+#. `ONAP Wiki Page`_
+
+
+.. _`ONAP Home Page`: https://www.onap.org
+.. _`ONAP Wiki Page`: https://wiki.onap.org
+.. _`ONAP Documentation`: https://docs.onap.org
+.. _`ONAP Release Downloads`: https://git.onap.org
+.. _`ONAP Jira`: https://jira.onap.org
+.. _`CDS user guide`: https://docs.onap.org/en/frankfurt/submodules/ccsdk/cds.git/docs/index.html
+.. _`SDN Controller for Radio user guide`: https://docs.onap.org/en/frankfurt/submodules/ccsdk/features.git/docs/guides/onap-user/home.html
+.. _`ccsdk/sli/core Javadoc`: https://nexus.onap.org/service/local/repositories/javadoc/content/org.onap.ccsdk/sli/core/frankfurt/index.html
+.. _`ccsdk/sli/adaptors Javadoc`: https://nexus.onap.org/service/local/repositories/javadoc/content/org.onap.ccsdk/sli/adaptors/frankfurt/index.html
+.. _`ccsdk/sli/northbound Javadoc`: https://nexus.onap.org/service/local/repositories/javadoc/content/org.onap.ccsdk/sli/northbound/frankfurt/index.html
+.. _`ccsdk/sli/plugins Javadoc`: https://nexus.onap.org/service/local/repositories/javadoc/content/org.onap.ccsdk/sli/plugins/frankfurt/index.html
