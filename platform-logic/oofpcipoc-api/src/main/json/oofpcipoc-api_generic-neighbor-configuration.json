@@ -1,194 +1,195 @@
 [
     {
-        "id": "d0e2330e.dd019",
+        "id": "b0e84f67.bfca5",
         "type": "comment",
         "name": "Generic Neighbor Configuration",
         "info": "",
         "comments": "",
-        "x": 390.0104064941406,
-        "y": 36.010414123535156,
-        "z": "d6ec916.8139a7",
+        "x": 365,
+        "y": 42,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "5dfdcd01.84b604",
+        "id": "e224f980.9882f8",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 631.0104522705078,
-        "y": 256.0209159851074,
-        "z": "d6ec916.8139a7",
+        "x": 632.0000610351562,
+        "y": 262.010498046875,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "974d680f.76f648",
-                "ffd54ab.ffbd1b8",
-                "36063fad.1cea",
-                "6d746eb6.f750f",
-                "af6305e8.738f98",
-                "91adaea7.e39c",
-                "293691a3.763afe",
-                "9adcdf48.89f9a",
-                "c43ffb14.6b99d8",
-                "402887.5e785778",
-                "358802c3.47e34e"
+                "7f0907cf.082338",
+                "742660e3.0e5d4",
+                "402a9020.563bb",
+                "5b76bc17.f32ce4",
+                "7b4e78c0.a96468",
+                "2c50a619.a494ea",
+                "5ae0e50d.a4dc6c",
+                "d51d9d04.31b31",
+                "a46c5047.46087",
+                "10fb55a2.da074a",
+                "9b2edc01.f191f"
             ]
         ]
     },
     {
-        "id": "cd37cc80.83b05",
+        "id": "7a6e2451.cb09ac",
         "type": "for",
         "name": "for",
         "xml": "<for index='idx' start='0' end=\"`$generic-neighbor-configuration-input.lte-cell-number-of-entries`\" >",
         "comments": "",
         "outputs": 1,
-        "x": 578.0105895996094,
-        "y": 414.01041412353516,
-        "z": "d6ec916.8139a7",
+        "x": 553.0001831054688,
+        "y": 420,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "5dfdcd01.84b604"
+                "e224f980.9882f8"
             ]
         ]
     },
     {
-        "id": "974d680f.76f648",
+        "id": "7f0907cf.082338",
         "type": "set",
         "name": "set tmp variables for the requested fap service input parms",
         "xml": "<set>\n<parameter name=\"tmp.alias\" value=\"`$generic-neighbor-configuration-input.alias`\"/>\n<parameter name=\"tmp.plmnid\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].plmnid`\"/>\n<parameter name=\"tmp.cid\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].cid`\"/>\n<parameter name=\"tmp.phy-cell-id\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].phy-cell-id`\"/>\n<parameter name=\"tmp.pnf-name\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`\"/>\n<parameter name=\"tmp.blacklisted\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].blacklisted`\"/>\n",
         "comments": "",
-        "x": 962.0115661621094,
-        "y": 58.899513244628906,
-        "z": "d6ec916.8139a7",
+        "x": 937.0011596679688,
+        "y": 64.88909912109375,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "ffd54ab.ffbd1b8",
+        "id": "742660e3.0e5d4",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Temporary varaibles set. Neighbor #:  \"/>\n<parameter name=\"field2\" value=\"`$idx`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.phy-cell-id`\"/>\n<parameter name=\"field6\" value=\"`$tmp.pnf-name`\"/>\n<parameter name=\"field7\" value=\"`$tmp.blacklisted`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 826.5209140777588,
-        "y": 102.02084159851074,
-        "z": "d6ec916.8139a7",
+        "x": 801.5105075836182,
+        "y": 108.01042747497559,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "27b0597e.d8a2a6",
+        "id": "7b4990e1.529af",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 153.5,
-        "y": 293.00003814697266,
-        "z": "d6ec916.8139a7",
+        "x": 128.48959350585938,
+        "y": 298.9896240234375,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "6abe663a.7efa98",
-                "68b7eea8.7de3b",
-                "9cda453e.0abf28",
-                "a5fd7aa3.7b58d8",
-                "46dea300.ac250c",
-                "1a0d310b.f6a53f",
-                "a3fe027d.820d4",
-                "2f1179a.0005886"
+                "e68f35dd.146c08",
+                "a6f2b267.e5311",
+                "138176a8.e62099",
+                "3f9b6f16.92476",
+                "2dbe6e04.1b04f2",
+                "f2bdeb66.05c1e8",
+                "2ae7e255.e92e0e",
+                "f6ddb1c4.e2257",
+                "bd6a5dc6.53e57"
             ]
         ]
     },
     {
-        "id": "51fad8f4.1d8738",
+        "id": "73bbdcfa.349ac4",
         "type": "method",
         "name": "method",
         "xml": "<method rpc='generic-neighbor-configuration' mode='sync'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 139.01040649414062,
-        "y": 193.99999237060547,
-        "z": "d6ec916.8139a7",
+        "x": 114,
+        "y": 199.9895782470703,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "27b0597e.d8a2a6"
+                "7b4990e1.529af"
             ]
         ]
     },
     {
-        "id": "6abe663a.7efa98",
+        "id": "e68f35dd.146c08",
         "type": "returnSuccess",
         "name": "return success",
         "xml": "<return status='success'>\n<parameter name=\"ack-final-indicator\" value=\"Y\" />\n<parameter name=\"error-code\" value=\"200\" />\n<parameter name=\"error-message\" value=\"SUCCESSFUL Execution\" />\n",
         "comments": "",
-        "x": 144.01074600219727,
-        "y": 2854.000379562378,
-        "z": "d6ec916.8139a7",
+        "x": 119.00033950805664,
+        "y": 2859.989965438843,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "68b7eea8.7de3b",
+        "id": "a6f2b267.e5311",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"RPC to Configure Neighbors INVOKED. Number of Neighbors to configure: \"/>\n<parameter name=\"field2\" value=\"`$generic-neighbor-configuration-input.lte-cell-number-of-entries`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 440.0107116699219,
-        "y": 93.02084350585938,
-        "z": "d6ec916.8139a7",
+        "x": 415.00030517578125,
+        "y": 99.01042938232422,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "9cda453e.0abf28",
+        "id": "138176a8.e62099",
         "type": "for",
         "name": "for",
         "xml": "<for index='idx' start='0' end=\"`$generic-neighbor-configuration-input.lte-cell-number-of-entries`\" >",
         "comments": "",
         "outputs": 1,
-        "x": 451.0960998535156,
-        "y": 139.96358489990234,
-        "z": "d6ec916.8139a7",
+        "x": 426.085693359375,
+        "y": 145.9531707763672,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "a3004a52.319a18"
+                "9f14658a.014d08"
             ]
         ]
     },
     {
-        "id": "a5fd7aa3.7b58d8",
+        "id": "3f9b6f16.92476",
         "type": "execute",
         "name": "execute Properties",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >\n    <parameter name='fileName' value='/opt/onap/ccsdk/data/properties/sdnr-oofpcipoc-api-dg.properties' />\n    <parameter name='contextPrefix' value='prop' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 454.0105895996094,
-        "y": 198.02082061767578,
-        "z": "d6ec916.8139a7",
+        "x": 438.00018310546875,
+        "y": 194.01040649414062,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "46dea300.ac250c",
+        "id": "2dbe6e04.1b04f2",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Properties read .. generic neighbor config template\"/>\n<parameter name=\"field2\" value=\"`$prop.restapi.generic-neighbor-patch.template`\"/>\n<parameter name=\"field3\" value=\"`$prop.controller.user`\"/>\n<parameter name=\"field4\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"field5\" value=\"`$prop.controller.url`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 408.0107192993164,
-        "y": 268.0209140777588,
-        "z": "d6ec916.8139a7",
+        "x": 402.00030517578125,
+        "y": 236.010498046875,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "cd34e05c.615e2",
+        "id": "767a16c9.47c368",
         "type": "service-logic",
         "name": "oofpcipoc-api ${project.version}",
         "module": "oofpcipoc-api",
@@ -196,1839 +197,1850 @@
         "comments": "",
         "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='oofpcipoc-api' version='${project.version}'>",
         "outputs": 1,
-        "x": 195.01039123535156,
-        "y": 105.0000991821289,
-        "z": "d6ec916.8139a7",
+        "x": 169.99998474121094,
+        "y": 110.98968505859375,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "51fad8f4.1d8738"
+                "73bbdcfa.349ac4"
             ]
         ]
     },
     {
-        "id": "a3004a52.319a18",
+        "id": "9f14658a.014d08",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Input RPC Payload request. Neighbor #:  \"/>\n<parameter name=\"field2\" value=\"`$idx`\"/>\n<parameter name=\"field3\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].plmnid`\"/>\n<parameter name=\"field4\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].cid`\"/>\n<parameter name=\"field5\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].phy-cell-id`\"/>\n<parameter name=\"field6\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`\"/>\n<parameter name=\"field7\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].blacklisted`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 616.0109558105469,
-        "y": 124.00004577636719,
-        "z": "d6ec916.8139a7",
+        "x": 591.0005493164062,
+        "y": 129.98963165283203,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "e06f1f1c.d6952",
+        "id": "5f1ad16d.8a92a",
         "type": "dgstart",
         "name": "DGSTART",
         "outputs": 1,
-        "x": 130.01040649414062,
-        "y": 43,
-        "z": "d6ec916.8139a7",
+        "x": 105,
+        "y": 48.989585876464844,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "cd34e05c.615e2"
+                "767a16c9.47c368"
             ]
         ]
     },
     {
-        "id": "402887.5e785778",
+        "id": "10fb55a2.da074a",
         "type": "execute",
         "name": "generate neighbor config URL",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.lte-ran-neighbor-in-use`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.config-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{alias}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 897.5212707519531,
-        "y": 146.5765609741211,
-        "z": "d6ec916.8139a7",
+        "x": 872.5108642578125,
+        "y": 152.56614685058594,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "36063fad.1cea",
+        "id": "402a9020.563bb",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Config Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.config-neighbor-service-url`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 824.5209045410156,
-        "y": 199.79862213134766,
-        "z": "d6ec916.8139a7",
+        "x": 799.510498046875,
+        "y": 205.7882080078125,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "6d746eb6.f750f",
+        "id": "5b76bc17.f32ce4",
         "type": "execute",
         "name": "populate plmnid",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.config-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.config-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{plmnid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.plmnid`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1026.521032333374,
-        "y": 211.7986364364624,
-        "z": "d6ec916.8139a7",
+        "x": 1001.5106258392334,
+        "y": 217.78822231292725,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "af6305e8.738f98",
+        "id": "7b4e78c0.a96468",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Config Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.config-neighbor-service-url`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 894.5208854675293,
-        "y": 255.79861164093018,
-        "z": "d6ec916.8139a7",
+        "x": 869.5104789733887,
+        "y": 261.788197517395,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "91adaea7.e39c",
+        "id": "2c50a619.a494ea",
         "type": "execute",
         "name": "populate cid",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.config-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.config-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{cid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cid`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 917.5209140777588,
-        "y": 300.79863452911377,
-        "z": "d6ec916.8139a7",
+        "x": 892.5105075836182,
+        "y": 306.7882204055786,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "9adcdf48.89f9a",
+        "id": "d51d9d04.31b31",
         "type": "execute",
         "name": "Configure neighbor using PATCH",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-generic-neighbor-patch.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.config-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-neighbor-patch-response\"/>\n<parameter name='contentType' value='application/yang.patch+json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/yang.patch-status+json' />",
         "comments": "",
         "outputs": 1,
-        "x": 949.5209045410156,
-        "y": 440.79874420166016,
-        "z": "d6ec916.8139a7",
+        "x": 924.510498046875,
+        "y": 446.788330078125,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "22593c53.2e3704",
-                "61ad6fb2.eff45"
+                "42094d77.460ca4",
+                "ece3aaf8.017e88"
             ]
         ]
     },
     {
-        "id": "22593c53.2e3704",
+        "id": "42094d77.460ca4",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1210.5207920074463,
-        "y": 404.788197517395,
-        "z": "d6ec916.8139a7",
+        "x": 1185.5103855133057,
+        "y": 410.77778339385986,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "c761c957.dedf48"
+                "4d5fe442.9a545c"
             ]
         ]
     },
     {
-        "id": "61ad6fb2.eff45",
+        "id": "ece3aaf8.017e88",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1212.520736694336,
-        "y": 468.788028717041,
-        "z": "d6ec916.8139a7",
+        "x": 1187.5103302001953,
+        "y": 474.77761459350586,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "ff97581a.3ffb78"
+                "186e8503.876f0b"
             ]
         ]
     },
     {
-        "id": "932587a2.10c5b8",
+        "id": "75c28db6.dab864",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"PATCH Neighbor Executed Successfully \"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1543.5205307006836,
-        "y": 464.7881164550781,
-        "z": "d6ec916.8139a7",
+        "x": 1518.510124206543,
+        "y": 470.77770233154297,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "ff97581a.3ffb78",
+        "id": "186e8503.876f0b",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1379.520580291748,
-        "y": 467.7881107330322,
-        "z": "d6ec916.8139a7",
+        "x": 1354.5101737976074,
+        "y": 473.77769660949707,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "932587a2.10c5b8"
+                "75c28db6.dab864"
             ]
         ]
     },
     {
-        "id": "c761c957.dedf48",
+        "id": "4d5fe442.9a545c",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1369.5206546783447,
-        "y": 413.7881832122803,
-        "z": "d6ec916.8139a7",
+        "x": 1344.510248184204,
+        "y": 419.7777690887451,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "3f189c10.9d0974"
+                "91c0b18a.5233d"
             ]
         ]
     },
     {
-        "id": "3f189c10.9d0974",
+        "id": "91c0b18a.5233d",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error adding a new neighbor\" />",
         "comments": "",
-        "x": 1545.5204181671143,
-        "y": 398.7881565093994,
-        "z": "d6ec916.8139a7",
+        "x": 1520.5100116729736,
+        "y": 404.77774238586426,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "293691a3.763afe",
+        "id": "5ae0e50d.a4dc6c",
         "type": "execute",
         "name": "Get neighbor details pre-configuration",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.config-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 947.5208435058594,
-        "y": 352.79862213134766,
-        "z": "d6ec916.8139a7",
+        "x": 922.5104370117188,
+        "y": 358.7882080078125,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "b5029146.a42d5",
-                "a42c72d.e2d129"
+                "1a9049a4.4660f6",
+                "babfc7f5.e3d6f8"
             ]
         ]
     },
     {
-        "id": "b5029146.a42d5",
+        "id": "1a9049a4.4660f6",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1215.5209045410156,
-        "y": 289.45466327667236,
-        "z": "d6ec916.8139a7",
+        "x": 1190.510498046875,
+        "y": 295.4442491531372,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "700df0ce.ff7ea"
+                "61c1aef5.95942"
             ]
         ]
     },
     {
-        "id": "a42c72d.e2d129",
+        "id": "babfc7f5.e3d6f8",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1202.5207977294922,
-        "y": 353.4548110961914,
-        "z": "d6ec916.8139a7",
+        "x": 1177.5103912353516,
+        "y": 359.44439697265625,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "291ffd2d.96c9c2"
+                "fd628eba.9d3f1"
             ]
         ]
     },
     {
-        "id": "291ffd2d.96c9c2",
+        "id": "fd628eba.9d3f1",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1345.5205936431885,
-        "y": 350.4547266960144,
-        "z": "d6ec916.8139a7",
+        "x": 1320.5101871490479,
+        "y": 356.44431257247925,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "3e25c03b.b3b17"
+                "e6d88742.250328"
             ]
         ]
     },
     {
-        "id": "3e25c03b.b3b17",
+        "id": "e6d88742.250328",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Details about Neighbor Pre-configuration\"/>\n<parameter name=\"field2\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`\"/>\n<parameter name=\"field3\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`\"/>\n<parameter name=\"field4\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`\"/>\n<parameter name=\"field5\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].pnf-name`\"/>\n<parameter name=\"field6\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].blacklisted`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1506.5205097198486,
-        "y": 344.4549970626831,
-        "z": "d6ec916.8139a7",
+        "x": 1481.510103225708,
+        "y": 350.44458293914795,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "700df0ce.ff7ea",
+        "id": "61c1aef5.95942",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error getting details about new neighbor \" />",
         "comments": "",
-        "x": 1414.5207977294922,
-        "y": 279.45469093322754,
-        "z": "d6ec916.8139a7",
+        "x": 1389.5103912353516,
+        "y": 285.4442768096924,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "c43ffb14.6b99d8",
+        "id": "a46c5047.46087",
         "type": "execute",
         "name": "Get neighbor details post-configuration",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.config-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 905.5208435058594,
-        "y": 516.6874771118164,
-        "z": "d6ec916.8139a7",
+        "x": 880.5104370117188,
+        "y": 522.6770629882812,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "e1ac38ab.5b2678",
-                "28d404f.3a94bfc"
+                "182595bb.f7ee4a",
+                "26bfad36.c5ae22"
             ]
         ]
     },
     {
-        "id": "e1ac38ab.5b2678",
+        "id": "182595bb.f7ee4a",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1240.5208435058594,
-        "y": 516.3435192108154,
-        "z": "d6ec916.8139a7",
+        "x": 1215.5104370117188,
+        "y": 522.3331050872803,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "db457a19.686678"
+                "c2de4855.593ee8"
             ]
         ]
     },
     {
-        "id": "28d404f.3a94bfc",
+        "id": "26bfad36.c5ae22",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1233.520736694336,
-        "y": 568.3437156677246,
-        "z": "d6ec916.8139a7",
+        "x": 1208.5103302001953,
+        "y": 574.3333015441895,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "d569846c.bbb0a8"
+                "ceef9fe1.1c80b"
             ]
         ]
     },
     {
-        "id": "d569846c.bbb0a8",
+        "id": "ceef9fe1.1c80b",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1402.5204963684082,
-        "y": 575.3436546325684,
-        "z": "d6ec916.8139a7",
+        "x": 1377.5100898742676,
+        "y": 581.3332405090332,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "d8455bac.fb0098"
+                "aa26494c.850b58"
             ]
         ]
     },
     {
-        "id": "db457a19.686678",
+        "id": "c2de4855.593ee8",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error getting details about new neighbor \" />",
         "comments": "",
-        "x": 1413.5207977294922,
-        "y": 513.3435468673706,
-        "z": "d6ec916.8139a7",
+        "x": 1388.5103912353516,
+        "y": 519.3331327438354,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "d8455bac.fb0098",
+        "id": "aa26494c.850b58",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Details about Neighbor Post-configuration\"/>\n<parameter name=\"field2\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`\"/>\n<parameter name=\"field3\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`\"/>\n<parameter name=\"field4\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`\"/>\n<parameter name=\"field5\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].pnf-name`\"/>\n<parameter name=\"field6\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].blacklisted`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1549.5205307006836,
-        "y": 573.3438711166382,
-        "z": "d6ec916.8139a7",
+        "x": 1524.510124206543,
+        "y": 579.333456993103,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "4895fc97.e32324",
+        "id": "8aebb9c4.9c2d58",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 604.0103530883789,
-        "y": 1326.0104722976685,
-        "z": "d6ec916.8139a7",
+        "x": 578.9999465942383,
+        "y": 1332.0000581741333,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "19788b57.90a7e5",
-                "385fcdb8.05b3d2",
-                "5628b9b0.c40b68",
-                "c3097a46.f42c48",
-                "367fb347.85f46c",
-                "b9a8089a.03ce48",
-                "fed6b7a1.a8d0a8",
-                "c614fa93.bff818",
-                "81cbcc37.957ee",
-                "b67a292f.048478",
-                "ef79f154.b96da",
-                "d0e25241.e0e23"
+                "d17b4a49.0377f8",
+                "62b6cd99.0b8964",
+                "228ec87c.7b30b8",
+                "a271ebfa.714168",
+                "34a4ad69.82f8c2",
+                "900f320e.2470c",
+                "d3287262.5d0d6",
+                "31829f2b.2121d",
+                "dbd04c8.1f2e4b",
+                "7df6d59c.f8208c",
+                "53f1a4f2.cd94cc",
+                "91a1e388.084d9"
             ]
         ]
     },
     {
-        "id": "fab83ed4.d6eae",
+        "id": "7ffaf0be.ee25f",
         "type": "for",
         "name": "for",
         "xml": "<for index='idx' start='0' end=\"`$generic-neighbor-configuration-input.lte-cell-number-of-entries`\" >",
         "comments": "",
         "outputs": 1,
-        "x": 547.0105895996094,
-        "y": 506.99991607666016,
-        "z": "d6ec916.8139a7",
+        "x": 522.0001831054688,
+        "y": 512.989501953125,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "4895fc97.e32324"
+                "8aebb9c4.9c2d58"
             ]
         ]
     },
     {
-        "id": "19788b57.90a7e5",
+        "id": "d17b4a49.0377f8",
         "type": "set",
         "name": "set tmp variables for the requested fap service input parms",
         "xml": "<set>\n<parameter name=\"tmp.alias\" value=\"`$generic-neighbor-configuration-input.alias`\"/>\n<parameter name=\"tmp.plmnid\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].plmnid`\"/>\n<parameter name=\"tmp.cid\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].cid`\"/>\n<parameter name=\"tmp.phy-cell-id\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].phy-cell-id`\"/>\n<parameter name=\"tmp.pnf-name\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`\"/>\n<parameter name=\"tmp.blacklisted\" value=\"`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].blacklisted`\"/>\n",
         "comments": "",
-        "x": 937.0115871429443,
-        "y": 1009.889084815979,
-        "z": "d6ec916.8139a7",
+        "x": 912.0011806488037,
+        "y": 1015.8786706924438,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "385fcdb8.05b3d2",
+        "id": "62b6cd99.0b8964",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Temporary varaibles set. Neighbor #:  \"/>\n<parameter name=\"field2\" value=\"`$idx`\"/>\n<parameter name=\"field3\" value=\"`$tmp.plmnid`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cid`\"/>\n<parameter name=\"field5\" value=\"`$tmp.phy-cell-id`\"/>\n<parameter name=\"field6\" value=\"`$tmp.pnf-name`\"/>\n<parameter name=\"field7\" value=\"`$tmp.blacklisted`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 807.5209102630615,
-        "y": 1086.0104522705078,
-        "z": "d6ec916.8139a7",
+        "x": 782.5105037689209,
+        "y": 1092.0000381469727,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "b67a292f.048478",
+        "id": "7df6d59c.f8208c",
         "type": "execute",
         "name": "generate neighbor config URL",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.lte-ran-neighbor-in-use.ransim-mounted`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.config-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{alias}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 900.5212306976318,
-        "y": 1147.5661392211914,
-        "z": "d6ec916.8139a7",
+        "x": 875.5108242034912,
+        "y": 1153.5557250976562,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "5628b9b0.c40b68",
+        "id": "228ec87c.7b30b8",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Config Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.config-neighbor-service-url`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 841.5208644866943,
-        "y": 1196.788185119629,
-        "z": "d6ec916.8139a7",
+        "x": 816.5104579925537,
+        "y": 1202.7777709960938,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "c3097a46.f42c48",
+        "id": "a271ebfa.714168",
         "type": "execute",
         "name": "populate plmnid",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.config-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.config-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{plmnid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.plmnid`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 905.5209865570068,
-        "y": 1292.788185119629,
-        "z": "d6ec916.8139a7",
+        "x": 880.5105800628662,
+        "y": 1298.7777709960938,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "367fb347.85f46c",
+        "id": "34a4ad69.82f8c2",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Config Neighbor List URL\"/>\n<parameter name=\"field2\" value=\"`$tmp.config-neighbor-service-url`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 880.5208644866943,
-        "y": 1340.788185119629,
-        "z": "d6ec916.8139a7",
+        "x": 855.5104579925537,
+        "y": 1346.7777709960938,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "b9a8089a.03ce48",
+        "id": "900f320e.2470c",
         "type": "execute",
         "name": "populate cid",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.config-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.config-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{cid}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cid`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 889.5208644866943,
-        "y": 1377.788185119629,
-        "z": "d6ec916.8139a7",
+        "x": 864.5104579925537,
+        "y": 1383.7777709960938,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "c614fa93.bff818",
+        "id": "31829f2b.2121d",
         "type": "execute",
         "name": "Configure neighbor using PATCH",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-generic-neighbor-patch.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.config-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-neighbor-patch-response\"/>\n<parameter name='contentType' value='application/yang.patch+json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/yang.patch-status+json' />",
         "comments": "",
         "outputs": 1,
-        "x": 903.5208644866943,
-        "y": 1507.7883071899414,
-        "z": "d6ec916.8139a7",
+        "x": 878.5104579925537,
+        "y": 1513.7778930664062,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "4c4f9668.9a6768",
-                "d03774b5.088378"
+                "e9803890.320ab8",
+                "19d2bb84.870d44"
             ]
         ]
     },
     {
-        "id": "4c4f9668.9a6768",
+        "id": "e9803890.320ab8",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1198.520751953125,
-        "y": 1514.7777605056763,
-        "z": "d6ec916.8139a7",
+        "x": 1173.5103454589844,
+        "y": 1520.767346382141,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "a2cf7a8.1cb9388"
+                "d2c2fe00.15af4"
             ]
         ]
     },
     {
-        "id": "d03774b5.088378",
+        "id": "19d2bb84.870d44",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1216.520793914795,
-        "y": 1582.7775869369507,
-        "z": "d6ec916.8139a7",
+        "x": 1191.5103874206543,
+        "y": 1588.7671728134155,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "718f1a13.9fb2a4"
+                "d28bc469.f5aa28"
             ]
         ]
     },
     {
-        "id": "a830f268.e88c7",
+        "id": "ffbd161f.e01d28",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"PATCH Neighbor Executed Successfully \"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1554.5205459594727,
-        "y": 1569.7776951789856,
-        "z": "d6ec916.8139a7",
+        "x": 1529.510139465332,
+        "y": 1575.7672810554504,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "718f1a13.9fb2a4",
+        "id": "d28bc469.f5aa28",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1396.5204582214355,
-        "y": 1580.7776679992676,
-        "z": "d6ec916.8139a7",
+        "x": 1371.510051727295,
+        "y": 1586.7672538757324,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "a830f268.e88c7"
+                "ffbd161f.e01d28"
             ]
         ]
     },
     {
-        "id": "a2cf7a8.1cb9388",
+        "id": "d2c2fe00.15af4",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1357.5206146240234,
-        "y": 1523.7777462005615,
-        "z": "d6ec916.8139a7",
+        "x": 1332.5102081298828,
+        "y": 1529.7673320770264,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "242984bf.f0802c"
+                "30f2e462.46c8dc"
             ]
         ]
     },
     {
-        "id": "242984bf.f0802c",
+        "id": "30f2e462.46c8dc",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error adding a new neighbor\" />",
         "comments": "",
-        "x": 1533.520378112793,
-        "y": 1508.7777194976807,
-        "z": "d6ec916.8139a7",
+        "x": 1508.5099716186523,
+        "y": 1514.7673053741455,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "fed6b7a1.a8d0a8",
+        "id": "d3287262.5d0d6",
         "type": "execute",
         "name": "Get neighbor details pre-configuration",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.config-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 913.5208034515381,
-        "y": 1422.788185119629,
-        "z": "d6ec916.8139a7",
+        "x": 888.5103969573975,
+        "y": 1428.7777709960938,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "efb6986a.a3d5c8",
-                "ede271f9.16cb"
+                "f0a75827.0ad898",
+                "1be65a71.b6dd36"
             ]
         ]
     },
     {
-        "id": "efb6986a.a3d5c8",
+        "id": "f0a75827.0ad898",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1186.5209045410156,
-        "y": 1395.4442310333252,
-        "z": "d6ec916.8139a7",
+        "x": 1161.510498046875,
+        "y": 1401.43381690979,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "d1dfa9a6.c787b8"
+                "2355719e.d606ce"
             ]
         ]
     },
     {
-        "id": "ede271f9.16cb",
+        "id": "1be65a71.b6dd36",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1181.520736694336,
-        "y": 1451.4443845748901,
-        "z": "d6ec916.8139a7",
+        "x": 1156.5103302001953,
+        "y": 1457.433970451355,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "490c9697.67ef88"
+                "a0d79e97.8cfb2"
             ]
         ]
     },
     {
-        "id": "490c9697.67ef88",
+        "id": "a0d79e97.8cfb2",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1333.5205535888672,
-        "y": 1460.4442896842957,
-        "z": "d6ec916.8139a7",
+        "x": 1308.5101470947266,
+        "y": 1466.4338755607605,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "4b9f8ddf.96d214"
+                "4d7e37ed.51df38"
             ]
         ]
     },
     {
-        "id": "4b9f8ddf.96d214",
+        "id": "4d7e37ed.51df38",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Details about Neighbor Pre-configuration\"/>\n<parameter name=\"field2\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`\"/>\n<parameter name=\"field3\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`\"/>\n<parameter name=\"field4\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`\"/>\n<parameter name=\"field5\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].pnf-name`\"/>\n<parameter name=\"field6\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].blacklisted`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1494.5204696655273,
-        "y": 1454.4445600509644,
-        "z": "d6ec916.8139a7",
+        "x": 1469.5100631713867,
+        "y": 1460.4341459274292,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "d1dfa9a6.c787b8",
+        "id": "2355719e.d606ce",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error getting details about new neighbor \" />",
         "comments": "",
-        "x": 1387.520694732666,
-        "y": 1401.444239616394,
-        "z": "d6ec916.8139a7",
+        "x": 1362.5102882385254,
+        "y": 1407.433825492859,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "81cbcc37.957ee",
+        "id": "dbd04c8.1f2e4b",
         "type": "execute",
         "name": "Get neighbor details post-configuration",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.config-neighbor-service-url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-neighbor-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 869.5208034515381,
-        "y": 1621.677101135254,
-        "z": "d6ec916.8139a7",
+        "x": 844.5103969573975,
+        "y": 1627.6666870117188,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "8381427b.3a415",
-                "4a867416.bc28ac"
+                "4d125e.4a93cda4",
+                "bb46ef6d.b2b72"
             ]
         ]
     },
     {
-        "id": "8381427b.3a415",
+        "id": "4d125e.4a93cda4",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1226.5209045410156,
-        "y": 1633.333086013794,
-        "z": "d6ec916.8139a7",
+        "x": 1201.510498046875,
+        "y": 1639.3226718902588,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "71c70e29.c9f39"
+                "939a85c1.7d4528"
             ]
         ]
     },
     {
-        "id": "4a867416.bc28ac",
+        "id": "bb46ef6d.b2b72",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1221.520736694336,
-        "y": 1689.333239555359,
-        "z": "d6ec916.8139a7",
+        "x": 1196.5103302001953,
+        "y": 1695.3228254318237,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "2fdc95ce.87b1ca"
+                "90a83ca2.24d34"
             ]
         ]
     },
     {
-        "id": "2fdc95ce.87b1ca",
+        "id": "90a83ca2.24d34",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1373.5205535888672,
-        "y": 1698.3331446647644,
-        "z": "d6ec916.8139a7",
+        "x": 1348.5101470947266,
+        "y": 1704.3227305412292,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "50e2721e.a2ab5c"
+                "9c430d3f.4728b"
             ]
         ]
     },
     {
-        "id": "71c70e29.c9f39",
+        "id": "939a85c1.7d4528",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error getting details about new neighbor \" />",
         "comments": "",
-        "x": 1427.520694732666,
-        "y": 1639.3330945968628,
-        "z": "d6ec916.8139a7",
+        "x": 1402.5102882385254,
+        "y": 1645.3226804733276,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "50e2721e.a2ab5c",
+        "id": "9c430d3f.4728b",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Details about Neighbor Post-configuration\"/>\n<parameter name=\"field2\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`\"/>\n<parameter name=\"field3\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`\"/>\n<parameter name=\"field4\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`\"/>\n<parameter name=\"field5\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].pnf-name`\"/>\n<parameter name=\"field6\" value=\"`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].blacklisted`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1534.5204620361328,
-        "y": 1691.3333892822266,
-        "z": "d6ec916.8139a7",
+        "x": 1509.5100555419922,
+        "y": 1697.3229751586914,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "cf6755dc.b50b78",
+        "id": "dc02f9a7.daea28",
         "type": "outcome",
         "name": "Not Mounted",
         "xml": "<outcome value='false'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 454.0104064941406,
-        "y": 333.01041412353516,
-        "z": "d6ec916.8139a7",
+        "x": 429,
+        "y": 339,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "cd37cc80.83b05"
+                "7a6e2451.cb09ac"
             ]
         ]
     },
     {
-        "id": "1a0d310b.f6a53f",
+        "id": "f2bdeb66.05c1e8",
         "type": "switchNode",
         "name": "switch mounted",
         "xml": "<switch test='`$prop.ransim-mounted`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 352.0104064941406,
-        "y": 422.01041412353516,
-        "z": "d6ec916.8139a7",
+        "x": 327,
+        "y": 428,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "cf6755dc.b50b78",
-                "5f209115.361e5"
+                "dc02f9a7.daea28",
+                "d85c99ed.eedbf8"
             ]
         ]
     },
     {
-        "id": "5f209115.361e5",
+        "id": "d85c99ed.eedbf8",
         "type": "outcome",
         "name": "Mounted",
         "xml": "<outcome value='true'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 385.0104064941406,
-        "y": 500.01041412353516,
-        "z": "d6ec916.8139a7",
+        "x": 360,
+        "y": 506,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "fab83ed4.d6eae"
+                "7ffaf0be.ee25f"
             ]
         ]
     },
     {
-        "id": "ef79f154.b96da",
+        "id": "53f1a4f2.cd94cc",
         "type": "execute",
         "name": "populate netconf mount",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.config-neighbor-service-url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.config-neighbor-service-url\"/>\n    <parameter name=\"target\" value=\"{pnf-name}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.pnf-name`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 910.0103664398193,
-        "y": 1248.0104751586914,
-        "z": "d6ec916.8139a7",
+        "x": 884.9999599456787,
+        "y": 1254.0000610351562,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "3c0d7f19.6c811",
+        "id": "a684245a.ac34d8",
         "type": "execute",
         "name": "execute TemplateNode",
         "xml": "<execute plugin=\"org.onap.ccsdk.sli.plugins.template.TemplateNode\" method=\"evaluateTemplate\" >\n    <parameter name='templatePath' value='oofpcipoc-dmaap-publish-modifyconfiganr-resp-payload-template.vtl' />\n    <parameter name='output' value='resp-payload' />\n    <parameter name='prefix' value='sdnr' />",
         "comments": "",
         "outputs": 1,
-        "x": 899.020866394043,
-        "y": 2134.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 874.0104598999023,
+        "y": 2140.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "b2a6c2c3.f1a3b",
-                "294194dd.c5fd5c"
+                "15052fc1.cca6c",
+                "6ccf93e6.8f7a4c"
             ]
         ]
     },
     {
-        "id": "b2a6c2c3.f1a3b",
+        "id": "15052fc1.cca6c",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1173.020866394043,
-        "y": 2103.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1148.0104598999023,
+        "y": 2109.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "8238e819.a3ec88"
+                "3551690e.6b2536"
             ]
         ]
     },
     {
-        "id": "8238e819.a3ec88",
+        "id": "3551690e.6b2536",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1364.020866394043,
-        "y": 2106.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1339.0104598999023,
+        "y": 2112.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "89f27573.4e9d08"
+                "d6d5afed.2d1c5"
             ]
         ]
     },
     {
-        "id": "89f27573.4e9d08",
+        "id": "d6d5afed.2d1c5",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"__TIMESTAMP__\"/>\n<parameter name=\"field2\" value=\"Redndred sdnr payload template as a string\"/>\n<parameter name='field3' value='`$sdnr.resp-payload`' />",
         "comments": "",
         "outputs": 1,
-        "x": 1532.020866394043,
-        "y": 2107.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1507.0104598999023,
+        "y": 2113.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "2d15e84e.91cbd8",
+        "id": "55bd856d.1ca76c",
         "type": "execute",
         "name": "remove new lines",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replaceAll' >\n    <parameter name=\"source\" value=\"`$sdnr.resp-payload`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.oofpcipoc-dmaap-config-resp.payload\"/>\n    <parameter name=\"target\" value=\"\\n\"/>\n    <parameter name=\"replacement\" value=\"\"/>\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 871.520866394043,
-        "y": 2250.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 846.5104598999023,
+        "y": 2256.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "5debb003.5b86d",
-                "f677a278.2fa7"
+                "3480a140.d8695e",
+                "630b1a6e.1c5ca4"
             ]
         ]
     },
     {
-        "id": "e8161499.fba198",
+        "id": "fed718fb.801098",
         "type": "execute",
         "name": "remove tabs",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replaceAll' >\n    <parameter name=\"source\" value=\"`$tmp.oofpcipoc-dmaap-config-resp.payload`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.oofpcipoc-dmaap-config-resp.payload\"/>\n    <parameter name=\"target\" value=\"\\t\"/>\n    <parameter name=\"replacement\" value=\"\"/>\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 861.020866394043,
-        "y": 2332.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 836.0104598999023,
+        "y": 2338.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "17433612.64f8ea",
-                "2d401fc.38631e"
+                "41afadd6.491be4",
+                "2950c15f.a9573e"
             ]
         ]
     },
     {
-        "id": "17433612.64f8ea",
+        "id": "41afadd6.491be4",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1043.520866394043,
-        "y": 2340.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1018.5104598999023,
+        "y": 2346.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "8233dba4.2a6c08"
+                "7784e992.808138"
             ]
         ]
     },
     {
-        "id": "8233dba4.2a6c08",
+        "id": "7784e992.808138",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1228.520866394043,
-        "y": 2338.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1203.5104598999023,
+        "y": 2344.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "de84fc8b.e06b5"
+                "e30277aa.6f4f48"
             ]
         ]
     },
     {
-        "id": "de84fc8b.e06b5",
+        "id": "e30277aa.6f4f48",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"__TIMESTAMP__\"/>\n<parameter name=\"field2\" value=\"Redndred template with tabs removed \\r\"/>\n<parameter name='field3' value='`$tmp.oofpcipoc-dmaap-config-resp.payload`' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 1430.520866394043,
-        "y": 2333.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1405.5104598999023,
+        "y": 2339.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "5debb003.5b86d",
+        "id": "3480a140.d8695e",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1065.020866394043,
-        "y": 2218.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1040.0104598999023,
+        "y": 2224.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "9d89b03e.2ff07"
+                "67a37d60.dbdd04"
             ]
         ]
     },
     {
-        "id": "9d89b03e.2ff07",
+        "id": "67a37d60.dbdd04",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1240.020866394043,
-        "y": 2232.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1215.0104598999023,
+        "y": 2238.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "dabf9835.e13098"
+                "f9928555.694f68"
             ]
         ]
     },
     {
-        "id": "dabf9835.e13098",
+        "id": "f9928555.694f68",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"__TIMESTAMP__\"/>\n<parameter name=\"field2\" value=\"Redndred template with lines removed \\r\"/>\n<parameter name='field3' value='`$tmp.oofpcipoc-dmaap-config-resp.payload`' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 1428.020866394043,
-        "y": 2234.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1403.0104598999023,
+        "y": 2240.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "294194dd.c5fd5c",
+        "id": "6ccf93e6.8f7a4c",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1172.020866394043,
-        "y": 2160.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1147.0104598999023,
+        "y": 2166.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "53c27ee.7f69b8"
+                "c443b33.268a25"
             ]
         ]
     },
     {
-        "id": "53c27ee.7f69b8",
+        "id": "c443b33.268a25",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1341.0207443237305,
-        "y": 2166.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1316.0103378295898,
+        "y": 2172.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "cf58efc6.7b3ca"
+                "59f0b873.9c5108"
             ]
         ]
     },
     {
-        "id": "cf58efc6.7b3ca",
+        "id": "59f0b873.9c5108",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error creating SDNR response payload string. Aborting PCI configuration\" />",
         "comments": "",
-        "x": 1497.0205001831055,
-        "y": 2165.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1472.0100936889648,
+        "y": 2171.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "f677a278.2fa7",
+        "id": "630b1a6e.1c5ca4",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1086.020866394043,
-        "y": 2289.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1061.0104598999023,
+        "y": 2295.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "d2d6e5d8.209298"
+                "f2d69190.67874"
             ]
         ]
     },
     {
-        "id": "d2d6e5d8.209298",
+        "id": "f2d69190.67874",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1254.0207443237305,
-        "y": 2284.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1229.0103378295898,
+        "y": 2290.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "2d9f0013.4f0cb"
+                "74ef47ca.f01a78"
             ]
         ]
     },
     {
-        "id": "2d9f0013.4f0cb",
+        "id": "74ef47ca.f01a78",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error removing lines from SDNR response payload string. Aborting PCI configuration\" />",
         "comments": "",
-        "x": 1412.0204391479492,
-        "y": 2287.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1387.0100326538086,
+        "y": 2293.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "2d401fc.38631e",
+        "id": "2950c15f.a9573e",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1046.020866394043,
-        "y": 2388.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1021.0104598999023,
+        "y": 2394.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "bda74b26.1b1388"
+                "3e3b30c7.caf5d"
             ]
         ]
     },
     {
-        "id": "bda74b26.1b1388",
+        "id": "3e3b30c7.caf5d",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1222.0207443237305,
-        "y": 2389.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1197.0103378295898,
+        "y": 2395.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "d56e28d4.650d08"
+                "3e56d853.3bee08"
             ]
         ]
     },
     {
-        "id": "d56e28d4.650d08",
+        "id": "3e56d853.3bee08",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error removing tabs from SDNR response payload string. Aborting PCI configuration\" />",
         "comments": "",
-        "x": 1369.0204391479492,
-        "y": 2392.465440273285,
-        "z": "d6ec916.8139a7",
+        "x": 1344.0100326538086,
+        "y": 2398.4550261497498,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "a3fe027d.820d4",
+        "id": "2ae7e255.e92e0e",
         "type": "block",
         "name": "DMAAP Payload Generation",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 603.020881652832,
-        "y": 2252.4655385017395,
-        "z": "d6ec916.8139a7",
+        "x": 578.0104751586914,
+        "y": 2258.4551243782043,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "3c0d7f19.6c811",
-                "2d15e84e.91cbd8",
-                "e8161499.fba198"
+                "a684245a.ac34d8",
+                "55bd856d.1ca76c",
+                "fed718fb.801098"
             ]
         ]
     },
     {
-        "id": "2f1179a.0005886",
+        "id": "f6ddb1c4.e2257",
         "type": "block",
         "name": "DMAAP Reponse Publish",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 465.0208511352539,
-        "y": 2600.3542304039,
-        "z": "d6ec916.8139a7",
+        "x": 440.0104446411133,
+        "y": 2606.343816280365,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "b22d0788.83a868",
-                "74c6c1ac.1e42d"
+                "3f35cc94.a49f84",
+                "8019acb8.c7086"
             ]
         ]
     },
     {
-        "id": "74c6c1ac.1e42d",
+        "id": "8019acb8.c7086",
         "type": "execute",
         "name": "execute DmaapMsg",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n    <parameter name='templateFileName' value=\"`$prop.restapi.templateDir + '/' + $prop.restapi.dmaap-publish-config-response.template`\" />\n    <parameter name='restapiUrl' value=\"`$prop.dmaap-message-router.url + '/' + $prop.oofpcipoc-dmaap-configuration-response.topic`\" />\n    <parameter name='format' value='json' />\n    <parameter name='httpMethod' value='POST' />\n    <parameter name='contentType' value='application/json' />\n    <parameter name='responsePrefix' value='dmaap' />",
         "comments": "",
         "outputs": 1,
-        "x": 880.0209274291992,
-        "y": 2662.4654574394226,
-        "z": "d6ec916.8139a7",
+        "x": 855.0105209350586,
+        "y": 2668.4550433158875,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "66967541.9509fc",
-                "19014f9c.5bacd"
+                "33c7111a.a2963e",
+                "14e94231.224a4e"
             ]
         ]
     },
     {
-        "id": "b22d0788.83a868",
+        "id": "3f35cc94.a49f84",
         "type": "set",
         "name": "set",
         "xml": "<set>\n<parameter name='tmp.oofpcipoc-dmaap-config-resp.rpc-name' value='`$prop.oofpcipoc-dmaap-config-resp.rpc-name.modifyconfiganr`'/>",
         "comments": "",
-        "x": 866.6876258850098,
-        "y": 2558.4654479026794,
-        "z": "d6ec916.8139a7",
+        "x": 841.6772193908691,
+        "y": 2564.4550337791443,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "66967541.9509fc",
+        "id": "33c7111a.a2963e",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1054.5209045410156,
-        "y": 2596.3821749687195,
-        "z": "d6ec916.8139a7",
+        "x": 1029.510498046875,
+        "y": 2602.3717608451843,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "5277ae5c.6edee"
+                "94a3b167.874"
             ]
         ]
     },
     {
-        "id": "19014f9c.5bacd",
+        "id": "14e94231.224a4e",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1077.5207595825195,
-        "y": 2725.382281780243,
-        "z": "d6ec916.8139a7",
+        "x": 1052.510353088379,
+        "y": 2731.3718676567078,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "3817a66f.511b9a"
+                "b252cdf3.20703"
             ]
         ]
     },
     {
-        "id": "5277ae5c.6edee",
+        "id": "94a3b167.874",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1235.5206756591797,
-        "y": 2599.3823046684265,
-        "z": "d6ec916.8139a7",
+        "x": 1210.510269165039,
+        "y": 2605.3718905448914,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "5d24962d.477fe8"
+                "df9838bf.c57f98"
             ]
         ]
     },
     {
-        "id": "5d24962d.477fe8",
+        "id": "df9838bf.c57f98",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error publishing DMAAP Config Response message. ConfigDB Updated; TO be rolled back...will handle next release\" />",
         "comments": "",
-        "x": 1409.520393371582,
-        "y": 2606.3822298049927,
-        "z": "d6ec916.8139a7",
+        "x": 1384.5099868774414,
+        "y": 2612.3718156814575,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "3817a66f.511b9a",
+        "id": "b252cdf3.20703",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1237.5204048156738,
-        "y": 2717.3822541236877,
-        "z": "d6ec916.8139a7",
+        "x": 1212.5099983215332,
+        "y": 2723.3718400001526,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "2e47c897.bb4cb8"
+                "d4a05173.00859"
             ]
         ]
     },
     {
-        "id": "2e47c897.bb4cb8",
+        "id": "d4a05173.00859",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"DMAAP Config Response Message Successfully Published \"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1414.520523071289,
-        "y": 2722.38236284256,
-        "z": "d6ec916.8139a7",
+        "x": 1389.5101165771484,
+        "y": 2728.3719487190247,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "f89579dd.91a288",
+        "id": "a3e4a58a.882fd8",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 918.0208435058594,
-        "y": 852.3541641235352,
-        "z": "d6ec916.8139a7",
+        "x": 893.0104370117188,
+        "y": 858.34375,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "e2e4a468.8a1838",
-                "89dd4b27.cf59d8",
-                "67336a18.ae2e64",
-                "68bfb6e.dac1e48"
+                "82201feb.47811",
+                "a6151b0f.fd4e38",
+                "a9fa611b.f4f53",
+                "f8b28cfb.9ca18"
             ]
         ]
     },
     {
-        "id": "e2e4a468.8a1838",
+        "id": "82201feb.47811",
         "type": "execute",
         "name": "generate configdb nbr ho patch url",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.configdb.patch-ho-for-nbr`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.configdb.patch-ho-for-nbr.url\"/>\n    <parameter name=\"target\" value=\"{cellId}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1200.020767211914,
-        "y": 705.3542108535767,
-        "z": "d6ec916.8139a7",
+        "x": 1175.0103607177734,
+        "y": 711.3437967300415,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "89dd4b27.cf59d8",
+        "id": "a6151b0f.fd4e38",
         "type": "record",
         "name": "record configdb RestAPI parms",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"URL for configDB PCI Update\"/>\n<parameter name='field2' value=\"`$prop.configdb.url + $tmp.configdb.patch-ho-for-nbr.url`\" />\n<parameter name='field3' value=\"`$tmp.alias`\" />\n<parameter name='field4' value=\"`$tmp.cid`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 1209.0208587646484,
-        "y": 818.3542070388794,
-        "z": "d6ec916.8139a7",
+        "x": 1184.0104522705078,
+        "y": 824.3437929153442,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "67336a18.ae2e64",
+        "id": "a9fa611b.f4f53",
         "type": "execute",
         "name": "Configure PCI value in configdb",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-patch-configdb-ho-for-nbr.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.configdb.url + $tmp.configdb.patch-ho-for-nbr.url`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-configdb-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 1176.0208435058594,
-        "y": 923.3541641235352,
-        "z": "d6ec916.8139a7",
+        "x": 1151.0104370117188,
+        "y": 929.34375,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "ef644403.24c058",
-                "fdf802eb.60d9c"
+                "f52685f5.9ec9e8",
+                "1e33abb.7dfcc54"
             ]
         ]
     },
     {
-        "id": "ef644403.24c058",
+        "id": "f52685f5.9ec9e8",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1391.0208435058594,
-        "y": 866.3541641235352,
-        "z": "d6ec916.8139a7",
+        "x": 1366.0104370117188,
+        "y": 872.34375,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "8b811332.af384"
+                "7a88211d.21404"
             ]
         ]
     },
     {
-        "id": "fdf802eb.60d9c",
+        "id": "1e33abb.7dfcc54",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1391.0207214355469,
-        "y": 962.3540420532227,
-        "z": "d6ec916.8139a7",
+        "x": 1366.0103149414062,
+        "y": 968.3436279296875,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "e176cd2e.3e59"
+                "cdb5356d.ee7188"
             ]
         ]
     },
     {
-        "id": "8b811332.af384",
+        "id": "7a88211d.21404",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1560.0207214355469,
-        "y": 877.3541641235352,
-        "z": "d6ec916.8139a7",
+        "x": 1535.0103149414062,
+        "y": 883.34375,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "476e5e5b.ebfba"
+                "3afbe91c.525196"
             ]
         ]
     },
     {
-        "id": "e176cd2e.3e59",
+        "id": "cdb5356d.ee7188",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1553.0204772949219,
-        "y": 963.3541641235352,
-        "z": "d6ec916.8139a7",
+        "x": 1528.0100708007812,
+        "y": 969.34375,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "13d8c36c.6c2d3d"
+                "a11318ad.1a6bc8"
             ]
         ]
     },
     {
-        "id": "476e5e5b.ebfba",
+        "id": "3afbe91c.525196",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error updating configDB. Aborting Nbr HO configuration\" />",
         "comments": "",
-        "x": 1714.0204162597656,
-        "y": 870.3541641235352,
-        "z": "d6ec916.8139a7",
+        "x": 1689.010009765625,
+        "y": 876.34375,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "13d8c36c.6c2d3d",
+        "id": "a11318ad.1a6bc8",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"HO Value for nbr updated in ConfigDB\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1708.0206756591797,
-        "y": 960.354172706604,
-        "z": "d6ec916.8139a7",
+        "x": 1683.010269165039,
+        "y": 966.3437585830688,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "358802c3.47e34e",
+        "id": "9b2edc01.f191f",
         "type": "switchNode",
         "name": "switch configdb deployed",
         "xml": "<switch test='`$prop.configdb-deployed`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 801.0208587646484,
-        "y": 646.3541851043701,
-        "z": "d6ec916.8139a7",
+        "x": 776.0104522705078,
+        "y": 652.343770980835,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "85f30747.c1b888",
-                "2d20c343.20b36c"
+                "1e56b849.b86cf8",
+                "ae371307.929fb"
             ]
         ]
     },
     {
-        "id": "85f30747.c1b888",
+        "id": "1e56b849.b86cf8",
         "type": "outcome",
         "name": "Deployed",
         "xml": "<outcome value='true'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 843.0208435058594,
-        "y": 776.3541641235352,
-        "z": "d6ec916.8139a7",
+        "x": 818.0104370117188,
+        "y": 782.34375,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "f89579dd.91a288"
+                "a3e4a58a.882fd8"
             ]
         ]
     },
     {
-        "id": "68bfb6e.dac1e48",
+        "id": "f8b28cfb.9ca18",
         "type": "execute",
         "name": "Update target cellid for configdb nbr ho patch url",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.configdb.patch-ho-for-nbr.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.configdb.patch-ho-for-nbr.url\"/>\n    <parameter name=\"target\" value=\"{targetCellId}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cid`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1268.0207977294922,
-        "y": 757.46537733078,
-        "z": "d6ec916.8139a7",
+        "x": 1243.0103912353516,
+        "y": 763.4549632072449,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "8a8d9414.5fc568",
+        "id": "d525e267.ae255",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"ConfigDB Update Skipped\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1240.0207710266113,
-        "y": 632.5763521194458,
-        "z": "d6ec916.8139a7",
+        "x": 1215.0103645324707,
+        "y": 638.5659379959106,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "2d20c343.20b36c",
+        "id": "ae371307.929fb",
         "type": "outcome",
         "name": "Not Deployed",
         "xml": "<outcome value='false'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1066.020736694336,
-        "y": 628.687421798706,
-        "z": "d6ec916.8139a7",
+        "x": 1041.0103302001953,
+        "y": 634.6770076751709,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "8a8d9414.5fc568"
+                "d525e267.ae255"
             ]
         ]
     },
     {
-        "id": "94a1fc66.854fd",
+        "id": "11c3d0d6.90744f",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 907.0208435058594,
-        "y": 1930.5764541625977,
-        "z": "d6ec916.8139a7",
+        "x": 882.0104370117188,
+        "y": 1936.5660400390625,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "dd73feca.07c61",
-                "37207b6c.909104",
-                "b87cd468.06cb68",
-                "ab8ee4d1.6884d8"
+                "8655da73.bc36d8",
+                "382e3360.38b5ec",
+                "d9ac0eb4.66ffe",
+                "5df7b8fb.71a428"
             ]
         ]
     },
     {
-        "id": "dd73feca.07c61",
+        "id": "8655da73.bc36d8",
         "type": "execute",
         "name": "generate configdb nbr ho patch url",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.configdb.patch-ho-for-nbr`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.configdb.patch-ho-for-nbr.url\"/>\n    <parameter name=\"target\" value=\"{cellId}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.alias`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1234.0207824707031,
-        "y": 1791.5764608383179,
-        "z": "d6ec916.8139a7",
+        "x": 1209.0103759765625,
+        "y": 1797.5660467147827,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "37207b6c.909104",
+        "id": "382e3360.38b5ec",
         "type": "execute",
         "name": "Configure Nbr HO value in configdb",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/oofpcipoc-patch-configdb-ho-for-nbr.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.configdb.url + $tmp.configdb.patch-ho-for-nbr.url`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"oofpci-configdb-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 1165.0208435058594,
-        "y": 2001.5764541625977,
-        "z": "d6ec916.8139a7",
+        "x": 1140.0104370117188,
+        "y": 2007.5660400390625,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "1813ece8.963fa3",
-                "183b086e.f8d5e8"
+                "5e7d03c0.aeeeac",
+                "40e48c4e.2e3b44"
             ]
         ]
     },
     {
-        "id": "1813ece8.963fa3",
+        "id": "5e7d03c0.aeeeac",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1380.0208435058594,
-        "y": 1944.5764541625977,
-        "z": "d6ec916.8139a7",
+        "x": 1355.0104370117188,
+        "y": 1950.5660400390625,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "6a8582d5.f0470c"
+                "9814df0d.82aad"
             ]
         ]
     },
     {
-        "id": "183b086e.f8d5e8",
+        "id": "40e48c4e.2e3b44",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1380.0207214355469,
-        "y": 2040.5763320922852,
-        "z": "d6ec916.8139a7",
+        "x": 1355.0103149414062,
+        "y": 2046.56591796875,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "6f48523c.7e7b2c"
+                "72b3f355.14e49c"
             ]
         ]
     },
     {
-        "id": "6a8582d5.f0470c",
+        "id": "9814df0d.82aad",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1549.0207214355469,
-        "y": 1955.5764541625977,
-        "z": "d6ec916.8139a7",
+        "x": 1524.0103149414062,
+        "y": 1961.5660400390625,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "9bd49b3c.96bdb8"
+                "4c3f314d.e4918"
             ]
         ]
     },
     {
-        "id": "6f48523c.7e7b2c",
+        "id": "72b3f355.14e49c",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1542.0204772949219,
-        "y": 2041.5764541625977,
-        "z": "d6ec916.8139a7",
+        "x": 1517.0100708007812,
+        "y": 2047.5660400390625,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "6bee533f.79d24c"
+                "1e520c42.9f5004"
             ]
         ]
     },
     {
-        "id": "9bd49b3c.96bdb8",
+        "id": "4c3f314d.e4918",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error updating configDB. Aborting Nbr HO configuration\" />",
         "comments": "",
-        "x": 1703.0204162597656,
-        "y": 1948.5764541625977,
-        "z": "d6ec916.8139a7",
+        "x": 1678.010009765625,
+        "y": 1954.5660400390625,
+        "z": "252a4e44.929a62",
         "wires": []
     },
     {
-        "id": "6bee533f.79d24c",
+        "id": "1e520c42.9f5004",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"HO Value for nbr updated in ConfigDB\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1697.0206756591797,
-        "y": 2038.5764627456665,
-        "z": "d6ec916.8139a7",
+        "x": 1672.010269165039,
+        "y": 2044.5660486221313,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "d0e25241.e0e23",
+        "id": "91a1e388.084d9",
         "type": "switchNode",
         "name": "switch configdb deployed",
         "xml": "<switch test='`$prop.configdb-deployed`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 723.0211181640625,
-        "y": 1743.5765342712402,
-        "z": "d6ec916.8139a7",
+        "x": 698.0107116699219,
+        "y": 1749.566120147705,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "5b4167c1.3f34a8",
-                "dd0ef7.efed5108"
+                "92f1f43a.71c648",
+                "3956df3.7497e2"
             ]
         ]
     },
     {
-        "id": "5b4167c1.3f34a8",
+        "id": "92f1f43a.71c648",
         "type": "outcome",
         "name": "Deployed",
         "xml": "<outcome value='true'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 927.0208969116211,
-        "y": 1828.5764911174774,
-        "z": "d6ec916.8139a7",
+        "x": 902.0104904174805,
+        "y": 1834.5660769939423,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "94a1fc66.854fd"
+                "11c3d0d6.90744f"
             ]
         ]
     },
     {
-        "id": "b87cd468.06cb68",
+        "id": "d9ac0eb4.66ffe",
         "type": "execute",
         "name": "Update target cellid for configdb nbr ho patch url",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.configdb.patch-ho-for-nbr.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.configdb.patch-ho-for-nbr.url\"/>\n    <parameter name=\"target\" value=\"{targetCellId}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cid`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1285.0207824707031,
-        "y": 1844.6877369880676,
-        "z": "d6ec916.8139a7",
+        "x": 1260.0103759765625,
+        "y": 1850.6773228645325,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "c3d98242.04a72",
+        "id": "230508b3.4de498",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"ConfigDB Update Skipped\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1218.0208644866943,
-        "y": 1741.798599243164,
-        "z": "d6ec916.8139a7",
+        "x": 1193.0104579925537,
+        "y": 1747.788185119629,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
     },
     {
-        "id": "dd0ef7.efed5108",
+        "id": "3956df3.7497e2",
         "type": "outcome",
         "name": "Not Deployed",
         "xml": "<outcome value='false'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1039.0207901000977,
-        "y": 1728.9098176956177,
-        "z": "d6ec916.8139a7",
+        "x": 1014.010383605957,
+        "y": 1734.8994035720825,
+        "z": "252a4e44.929a62",
         "wires": [
             [
-                "c3d98242.04a72"
+                "230508b3.4de498"
             ]
         ]
     },
     {
-        "id": "ab8ee4d1.6884d8",
+        "id": "5df7b8fb.71a428",
         "type": "record",
         "name": "record configdb RestAPI parms",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/generic-neighbor-config.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"URL for configDB PCI Update\"/>\n<parameter name='field2' value=\"`$prop.configdb.url + $tmp.configdb.patch-ho-for-nbr.url`\" />\n<parameter name='field3' value=\"`$tmp.alias`\" />\n<parameter name='field4' value=\"`$tmp.cid`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 1230.5763397216797,
-        "y": 1901.354133605957,
-        "z": "d6ec916.8139a7",
+        "x": 1205.565933227539,
+        "y": 1907.3437194824219,
+        "z": "252a4e44.929a62",
         "wires": [
             []
         ]
+    },
+    {
+        "id": "bd6a5dc6.53e57",
+        "type": "set",
+        "name": "set properties for DMAAP header",
+        "xml": "<set>\n<parameter name=\"prop.oofpcipoc-dmaap-config-resp.timestamp\" value=\"`$generic-neighbor-configuration-input.timeStamp`\"/>\n<parameter name=\"prop.oofpcipoc-dmaap-config-resp.requestID\" value=\"`$generic-neighbor-configuration-input.requestID`\"/>\n<parameter name=\"prop.oofpcipoc-dmaap-config-resp.subrequestID\" value=\"`$generic-neighbor-configuration-input.subRequestID`\"/>",
+        "comments": "",
+        "x": 399,
+        "y": 300,
+        "z": "252a4e44.929a62",
+        "wires": []
     }
 ]
