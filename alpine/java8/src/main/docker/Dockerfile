@@ -10,5 +10,6 @@ ENV http_proxy  ${HTTP_PROXY}
 ENV HTTPS_PROXY ${HTTPS_PROXY}
 ENV https_proxy ${HTTPS_PROXY}
 
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 # Add tools needed for OpenDaylight
 RUN apk update && apk --no-cache add bash git openjdk8 maven mysql-client nodejs python3 graphviz unzip rsync nss

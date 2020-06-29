@@ -1,10 +1,7 @@
-FROM onap/ccsdk-alpine-image:${project.docker.latestfulltag.version}
+FROM onap/ccsdk-alpine-j11-image:${project.docker.latestfulltag.version}
 MAINTAINER CCSDK Team (onap-ccsdk@lists.onap.org)
-ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
-ENV ODL_HOME /opt/opendaylight/current
 
-# make python2 also available up until OpenDaylight migrates to python3
-RUN apk add --no-cache py2-pip
+ENV ODL_HOME /opt/opendaylight/current
 
 # copy the opendaylight tar and expand
 COPY ${odl.karaf.artifactId}-${ccsdk.opendaylight.version}.tar.gz /tmp/
