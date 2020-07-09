@@ -93,15 +93,15 @@ tag 0.7-STAGING-latest to pull the latest daily Frankfurt build
 +-----------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-apps-ms-neng           | Naming microservice                        | 0.7.1   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-blueprints-processor   | CDS blueprint processor                    | 0.7.3   |
+| onap/ccsdk-blueprints-processor   | CDS blueprint processor                    | 0.7.5   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-cds-ui                 | CDS web interface                          | 0.7.3   |
+| onap/ccsdk-cds-ui                 | CDS web interface                          | 0.7.5   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-cds-ui-server          | CDS user interface back end                | 0.7.3   |
+| onap/ccsdk-cds-ui-server          | CDS user interface back end                | 0.7.5   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-commandexecutor        | CDS command executor                       | 0.7.3   |
+| onap/ccsdk-commandexecutor        | CDS command executor                       | 0.7.5   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-controllerblueprint    | CDS controller blueprints                  | 0.7.3   |
+| onap/ccsdk-controllerblueprint    | CDS controller blueprints                  | 0.7.5   |
 +-----------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-dgbuilder-image        | Directed graph builder                     | 0.7.4   |
 +-----------------------------------+--------------------------------------------+---------+
