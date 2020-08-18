@@ -1,7 +1,90 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 
 Release Notes
-#############
+##############
+
+Version 0.6.4 (dgbuilder), 0.6.5 (cds)
+***************************************
+:Release Date: 2020-08-24
+
+El Alto Maintenance Release 1
+
+The primary goal of this maintenance release is to address expired certificates.  The only impact to CCSDK is in dgbuilder, which should use version
+0.6.4. 
+
+This maintenance release also includes a number of fixes to CDS for issues found by users of El Alto.
+
+**Artifact Versions**
+
+
+The following table lists the  CCSDK docker containers updated in El Alto Maintenance Release 1  and their versions.
+
++--------------------------------------+---------------------------------------------------+----------------------+
+| Image name                           |  Description                                      | Version(s)           |
++======================================+===================================================+======================+
+| onap/ccsdk-blueprints-processor      | CDS blueprint processor                           | 0.6.5                |
++--------------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-cds-ui                    | CDS web interface                                 | 0.6.5                |
++--------------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-cds-ui-server             | CDS user interface back end                       | 0.6.5                |
++--------------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-commandexecutor           | CDS command executor                              | 0.6.5                |
++--------------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-controllerblueprint       | CDS controller blueprints                         | 0.6.5                |
++--------------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-dgbuilder-image           | Directed graph builder                            | 0.6.4                |
++--------------------------------------+---------------------------------------------------+----------------------+
+| onap/ccsdk-sdclistener               | CDS SDC listener                                  | 0.6.5                |
++--------------------------------------+---------------------------------------------------+----------------------+
+
+
+** Bug Fixes **
+
+The following CDS fixes needed by El Alto users are included in this release:
+
++------------+----------------------------------------------------------------------------------+
+| Jira #     | Abstract                                                                         |
++============+==================================================================================+
+| CCSDK-1793 | CDS UI is pointing to the wrong endpoint for Save, Enrich, Download actions      |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1816 | update vLB_CDS CBA package                                                       |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1859 | Bump up number of command-executor workers from 10 to 15                         |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1692 | Kotlin ResourceResolution scripts dynamic compilation prevents redeploying CBA   |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1886 | Netconf client invoke_rpc always fails even if it looks as if it succeeds.       |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1855 | Improve Remote Python Executor error handling and allow for structured response  |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1693 | Various resource resolution fix/improvements                                     |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1908 | netconfclient try <close-session/> 3 times before going to <kill-session/>       |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1877 | CDS remove http(s)_proxy reference from build process/artifact                   |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1885 | CDS Rolling Upgrade Support                                                      |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1924 | CDS Forced to change version/blueprint name when uploading new blueprint         |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-2012 | BP Processor was not respecting timeouts... cmd-executors (with erroneous        |
+|            | scripts) would hang BP processor                                                 |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-2020 | Custom headers for AAI rest calls from CDS                                       |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1855 | Improve Remote Python Executor error handling and allow for structured response  |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-2039 | CMD executor didn't separate env. preparation and execution timeouts.            |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-2049 | CMD executor env.prep was not handling error when 'packages' section missing     |
+|            | from CBA.                                                                        |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-1860 | Pass CDS requestID/subReqID to Python execution in CMD proc.                     |
++------------+----------------------------------------------------------------------------------+
+| CCSDK-2151 | ComponentConfigSnapshotsExecutor logs the content of a config snapshot, possibly |
+|            | exposing sensitive data                                                          |
++------------+----------------------------------------------------------------------------------+
+
 
 Version 0.5.3 / 0.6.2
 *********************
