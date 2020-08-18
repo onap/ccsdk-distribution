@@ -34,6 +34,24 @@
       "revId": "0e5d6a0a731db5f22921e3576ee9cbac6146b235",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ec11146_efa0a848",
+        "filename": "odlsli/odlsli-alpine/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 87
+      },
+      "writtenOn": "2020-08-18T18:59:12Z",
+      "side": 1,
+      "message": "Latish - the  issue is you need to be careful what version of the sli core classes you compile your oran repo against.  You are using version 2.0.1-SNAPSHOT of the parent pom - which specifies a snapshot version - but this pom installs the released 1.0.0 version of the sli core classes.  This will break the container.\n\nThe best fix would be to update the oran pom to explicitly set ccsdk.sli.core.version to 1.0.0.  Then there will be no conflict.  Until then, merging this would break the container if the oran adapter is installed.",
+      "parentUuid": "4a65f580_9cf53e0b",
+      "revId": "0e5d6a0a731db5f22921e3576ee9cbac6146b235",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
