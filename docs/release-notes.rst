@@ -8,6 +8,71 @@
 CCSDK Release Notes
 *******************
 
+Frankfurt Maintenance Release 1
+********************************
+
+Release Data
+============
+
++-------------------------+---------------------------------------------------+
+| **Project**             | CCSDK                                             |
+|                         |                                                   |
++-------------------------+---------------------------------------------------+
+| **Docker images**       | See :ref:`dockercontainersmtcerel1` section below |
++-------------------------+---------------------------------------------------+
+| **Release designation** | Frankfurt Maintenance Release 1                   |
+|                         |                                                   |
++-------------------------+---------------------------------------------------+
+| **Release date**        | 08/17/2020                                        |
+|                         |                                                   |
++-------------------------+---------------------------------------------------+
+
+Bugs Fixed
+==========
+The following bug fix is included in Frankfurt Maintenance Release 1:
+
++------------+-----------------------------------------------+
+| Jira #     | Abstract                                      |
++============+===============================================+
+| CCSDK-2399 | restapicallnode should support commas in urls |
++------------+-----------------------------------------------+
+
+.. _dockercontainersmtcerel1:
+
+Docker Containers
+`````````````````
+
+The following table lists the docker containers included in the CCSDK Frankfurt 
+release along with the current stable Frankfurt version/tag.  Each of these is
+available on the ONAP nexus3 site (https://nexus3.onap.org) and can be downloaded
+with the following command::
+
+   docker pull nexus3.onap.org:10001/{image-name}:{version}
+
+
+Note: users that want to use the latest in-development Frankfurt version may use the
+tag 0.7-STAGING-latest to pull the latest daily Frankfurt build
+
++-----------------------------------+--------------------------------------------+---------+
+| Image name                        | Description                                | Version |
++===================================+============================================+=========+
+| onap/ccsdk-alpine-image           | Base Alpine Linux image for CCSDK          | 0.7.5   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-ansible-server-image   | Ansible server image                       | 0.7.5   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-dgbuilder-image        | Directed graph builder                     | 0.7.5   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-odl-neon-alpine-image  | Alpine based OpenDaylight Neon SR1 image   | 0.7.5   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-odlsli-alpine-image    | Alpine based OpenDaylight image with CCSDK | 0.7.5   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-saltstack-server-image | Saltstack server                           | 0.7.5   |
++-----------------------------------+--------------------------------------------+---------+
+| onap/ccsdk-ubuntu-image           | Base Ubuntu image for CCSDK                | 0.7.5   |
++-----------------------------------+--------------------------------------------+---------+
+
+Frankfurt Release
+*****************
 
 Abstract
 ========
