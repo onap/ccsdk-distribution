@@ -1,0 +1,273 @@
+[
+    {
+        "id": "270a5aa5.bc52d6",
+        "type": "service-logic",
+        "name": "A1-ADAPTER-API ${project.version}",
+        "module": "A1-ADAPTER-API",
+        "version": "${project.version}",
+        "comments": "",
+        "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='A1-ADAPTER-API' version='${project.version}'>",
+        "outputs": 1,
+        "x": 171,
+        "y": 150,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "187cb7f8.135d08"
+            ]
+        ]
+    },
+    {
+        "id": "187cb7f8.135d08",
+        "type": "method",
+        "name": "method putA1Policy",
+        "xml": "<method rpc='putA1Policy' mode='sync'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 158,
+        "y": 219,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "60165fbc.5b22d8"
+            ]
+        ]
+    },
+    {
+        "id": "ca1b73bb.bd73a",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/A1-Adapter.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Put A1 Policy :\"/>\n<parameter name=\"field2\" value=\"`$put-a1-policy-input.near-rt-ric-url`\"/>\n<parameter name=\"field3\" value=\"`$put-a1-policy-input.body`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 472,
+        "y": 187,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "60165fbc.5b22d8",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 222,
+        "y": 286,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "ca1b73bb.bd73a",
+                "3bda5968.b55f7e",
+                "a7fa8c3e.f91198",
+                "d671108f.2dd19"
+            ]
+        ]
+    },
+    {
+        "id": "86499c8c.9221c",
+        "type": "dgstart",
+        "name": "DGSTART",
+        "outputs": 1,
+        "x": 99,
+        "y": 88,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "270a5aa5.bc52d6"
+            ]
+        ]
+    },
+    {
+        "id": "3bda5968.b55f7e",
+        "type": "execute",
+        "name": "execute Properties",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >\n    <parameter name='fileName' value='/opt/onap/ccsdk/data/properties/a1-adapter-api-dg.properties' />\n    <parameter name='contextPrefix' value='prop' />\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 506,
+        "y": 285,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f71250c1.d2e79",
+        "type": "failure",
+        "name": "failure",
+        "xml": "<outcome value='failure'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 988.0001220703125,
+        "y": 363.00006103515625,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "424bcc5a.68059c"
+            ]
+        ]
+    },
+    {
+        "id": "678803c.a1c0efc",
+        "type": "success",
+        "name": "success",
+        "xml": "<outcome value='success'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 995.0003051757812,
+        "y": 453.0000457763672,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "d61f47fe.10e5e8"
+            ]
+        ]
+    },
+    {
+        "id": "d61f47fe.10e5e8",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1136.9999389648438,
+        "y": 449.00006103515625,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "44bf0d67.60023c"
+            ]
+        ]
+    },
+    {
+        "id": "b1b2cbaf.574838",
+        "type": "set",
+        "name": "set tmp variables for input RPC parms",
+        "xml": "<set>\n<parameter name=\"tmp.near-rt-ric-url\" value=\"`$put-a1-policy-input.near-rt-ric-url`\"/>\n<parameter name=\"tmp.body\" value=\"`$put-a1-policy-input.body`\"/>",
+        "comments": "",
+        "x": 884.0010375976562,
+        "y": 239.88909912109375,
+        "z": "33919dc9.0e17ba",
+        "wires": []
+    },
+    {
+        "id": "1fe61572.90f523",
+        "type": "execute",
+        "name": "Put A1 Policy",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$tmp.near-rt-ric-url`\"/>\n<parameter name=\"format\" value=\"json\"/>\n<parameter name=\"httpMethod\" value=\"PUT\"/>\n<parameter name=\"responsePrefix\" value=\"a1MediatorRsp\"/>\n<parameter name='contentType' value='application/json' />\n<parameter name='accept' value='application/json' />\n<parameter name=\"requestBody\" value=\"`$tmp.body`\"/>\n<parameter name=\"convertResponse\" value=\"false\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 811.00048828125,
+        "y": 411.0103759765625,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "f71250c1.d2e79",
+                "678803c.a1c0efc"
+            ]
+        ]
+    },
+    {
+        "id": "d671108f.2dd19",
+        "type": "block",
+        "name": "A1 Mediator RestAPI Invocation",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 542.0000305175781,
+        "y": 350.00006103515625,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "8d62fd00.aa56e",
+                "b1b2cbaf.574838",
+                "1fe61572.90f523"
+            ]
+        ]
+    },
+    {
+        "id": "8d62fd00.aa56e",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/A1-Adapter.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Setting variables for Put A1 Policy.\"/>\n<parameter name=\"field2\" value=\"`$tmp.near-rt-ric-url`\"/>\n<parameter name=\"field3\" value=\"`$tmp.body`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 807.0000610351562,
+        "y": 335,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "44bf0d67.60023c",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/A1-Adapter.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"A1 Policy Instance Created.\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1293,
+        "y": 448.00006103515625,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a0360147.468f3",
+        "type": "returnFailure",
+        "name": "return failure",
+        "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"response-code\" value=\"404\" />\n<parameter name=\"response-message\" value=\"Error creating A1 Policy. Aborting A1 Policy creation\" />",
+        "comments": "",
+        "x": 1286,
+        "y": 401,
+        "z": "33919dc9.0e17ba",
+        "wires": []
+    },
+    {
+        "id": "a7fa8c3e.f91198",
+        "type": "set",
+        "name": "set default status value",
+        "xml": "<set>\n<parameter name='response-code' value='200' />\n<parameter name='response-message' value='Put A1 Policy executed successfully' />",
+        "comments": "",
+        "x": 517,
+        "y": 240,
+        "z": "33919dc9.0e17ba",
+        "wires": []
+    },
+    {
+        "id": "424bcc5a.68059c",
+        "type": "block",
+        "name": "block",
+        "xml": "<block>\n",
+        "atomic": "false",
+        "comments": "",
+        "outputs": 1,
+        "x": 1124,
+        "y": 361,
+        "z": "33919dc9.0e17ba",
+        "wires": [
+            [
+                "b8ca1bb9.7870e",
+                "a0360147.468f3"
+            ]
+        ]
+    },
+    {
+        "id": "b8ca1bb9.7870e",
+        "type": "set",
+        "name": "set",
+        "xml": "<set>\n<parameter name='response-code' value='500'/>\n<parameter name='response-message' value='Seems A1 Mediator Not Healthy'/>\n",
+        "comments": "",
+        "x": 1268,
+        "y": 307,
+        "z": "33919dc9.0e17ba",
+        "wires": []
+    }
+]
