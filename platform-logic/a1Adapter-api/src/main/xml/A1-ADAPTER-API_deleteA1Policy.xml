@@ -1,17 +1,17 @@
 <service-logic
     xmlns='http://www.onap.org/sdnc/svclogic'
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='A1-ADAPTER-API' version='${project.version}'>
-    <method rpc='getA1PolicyType' mode='sync'>
+    <method rpc='deleteA1Policy' mode='sync'>
         <block atomic='true'>
             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                 <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
                 <parameter name="level" value="info" />
-                <parameter name="field1" value="Get Policy Type:"/>
-                <parameter name="field2" value="`$get-a1-policy-type-input.near-rt-ric-url`"/>
+                <parameter name="field1" value="Delete Policy:"/>
+                <parameter name="field2" value="`$delete-a1-policy-input.near-rt-ric-url`"/>
             </record>
             <set>
                 <parameter name='response-code' value='200' />
-                <parameter name='response-message' value='getA1PolicyType executed successfully' />
+                <parameter name='response-message' value='deletePolicy executed successfully' />
             </set>
             <execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >
                 <parameter name='fileName' value='/opt/onap/ccsdk/data/properties/a1-adapter-api-dg.properties' />
@@ -19,28 +19,28 @@
             </execute>
             <block atomic='true'>
                 <set>
-                    <parameter name="tmp.near-rt-ric-url" value="`$get-a1-policy-type-input.near-rt-ric-url`"/>
+                    <parameter name="tmp.near-rt-ric-url" value="`$delete-a1-policy-input.near-rt-ric-url`"/>
                 </set>
                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                     <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
                     <parameter name="level" value="info" />
-                    <parameter name="field1" value="Setting variables for A1 Adapter Get Policy Type."/>
+                    <parameter name="field1" value="Setting variables for A1 Adapter Delete Policy Instance."/>
                     <parameter name="field2" value="`$tmp.near-rt-ric-url`"/>
                 </record>
                 <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
                     <parameter name="restapiUrl" value="`$tmp.near-rt-ric-url`"/>
                     <parameter name="format" value="json"/>
-                    <parameter name="httpMethod" value="GET"/>
+                    <parameter name="httpMethod" value="DELETE"/>
                     <parameter name="responsePrefix" value="a1MediatorRsp"/>
                     <parameter name='contentType' value='application/json' />
                     <parameter name='accept' value='application/json' />
-                    <parameter name="convertResponse" value="true"/>
+                    <parameter name="convertResponse" value="false"/>
                     <outcome value='success'>
                         <block>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
                                 <parameter name="level" value="info" />
-                                <parameter name="field1" value="A1 Policy Type Information "/>
+                                <parameter name="field1" value="A1 Delete Policy Information "/>
                                 <parameter name="field2" value="`$a1MediatorRsp.httpResponse`"/>
                             </record>
                             <set>
@@ -56,8 +56,8 @@
                             </set>
                             <return status='failure'>
                                 <parameter name='ack-final' value='Y'/>
-                                <parameter name="response-code" value="404" />
-                                <parameter name="response-message" value="Error in Getting A1 Policy Type. Aborting" />
+                                <parameter name="response-code" value="500" />
+                                <parameter name="response-message" value="Error in Deleting A1 Policy Instance. Aborting" />
                             </return>
                         </block>
                     </outcome>
@@ -69,8 +69,7 @@
                     <parameter name="error-code" value="200" />
                     <parameter name="error-message" value="`$error-message`" />
                     <parameter name='response-code' value='200' />
-                    <parameter name='response-message' value='A1 Adapter is healthy'/>
-                    <parameter name='health-status' value='200'/>
+                    <parameter name='response-message' value='deletePolicyInstance executed successfully'/>
                     <parameter name='ack-final' value='Y'/>
                 </return>
             </block>
