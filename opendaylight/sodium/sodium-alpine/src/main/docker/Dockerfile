@@ -1,4 +1,4 @@
-FROM onap/ccsdk-alpine-image:${project.docker.latestfulltag.version}
+FROM onap/ccsdk-alpine-j11-image:${project.docker.latestfulltag.version}
 MAINTAINER CCSDK Team (onap-ccsdk@lists.onap.org)
 
 ENV ODL_HOME /opt/opendaylight/current
