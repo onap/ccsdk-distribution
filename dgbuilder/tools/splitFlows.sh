@@ -1,3 +1,4 @@
+#!/bin/sh
 if [ "$#" != "2" ]
 then
 	echo "Usage: $0 full_path_to_flows_json_file full_path_to_output_dir"
