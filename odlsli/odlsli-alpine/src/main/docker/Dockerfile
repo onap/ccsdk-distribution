@@ -2,9 +2,6 @@
 ## START OF STAGE0 ##
 FROM ${base.image.name}:${project.docker.latestfulltag.version} AS stage0
 
-ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
-ENV ODL_HOME /opt/opendaylight
-
 # copy the opendaylight credentials
 COPY idmlight.db.mv.db $ODL_HOME/data
 
@@ -17,13 +14,10 @@ COPY opt /opt
 COPY org.ops4j.pax.logging.cfg $ODL_HOME/etc/org.ops4j.pax.logging.cfg
 ## END OF STAGE0 ##
 
-
 FROM ${base.image.name}:${project.docker.latestfulltag.version}
 
-MAINTAINER CCSDK Team (onap-ccsdk@lists.onap.org)
+LABEL maintainer="CCSDK  Team (onap-ccsdk@lists.onap.org)"
 
-ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
-ENV ODL_HOME /opt/opendaylight
 ENV SDNC_CONFIG_DIR /opt/onap/ccsdk/data/properties
 ENV CCSDKFEATUREVERSION ${ccsdk.features.version}
 ENV CCSDK_SLI_CORE_REPO mvn:org.onap.ccsdk.sli.core/ccsdk-sli-core-all/${ccsdk.sli.core.version}/xml/features
@@ -56,4 +50,3 @@ RUN sed -i -e "\|featuresBoot[^a-zA-Z]|s|$|,${ODL_BOOT_FEATURES_EXTRA}|"  $ODL_H
 
 USER odl
 ENTRYPOINT /opt/onap/ccsdk/bin/startODL.sh
-EXPOSE 8181
