@@ -1,0 +1,18 @@
+<service-logic
+    xmlns='http://www.onap.org/sdnc/svclogic'
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='ran-slice-api' version='${project.version}'>
+    <method rpc='instantiateRANSlice' mode='sync'>
+        <block atomic='true'>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/configureNearRTRIC.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="RPC to handle configureNearRTRIC "/>
+            </record>
+            <return status='success'>
+                <parameter name="ack-final-indicator" value="Y" />
+                <parameter name="error-code" value="200" />
+                <parameter name="error-message" value="SUCCESSFUL Execution" />
+            </return>
+        </block>
+    </method>
+</service-logic>
