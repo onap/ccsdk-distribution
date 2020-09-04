@@ -3,7 +3,7 @@
 FROM ${base.image.name}:${project.docker.latestfulltag.version} AS stage0
 
 # copy the opendaylight credentials
-USER ROOT
+USER root
 COPY idmlight.db.mv.db $ODL_HOME/data
 
 # copy CCSDK mvn artifacts to ODL repository
@@ -18,6 +18,7 @@ COPY org.ops4j.pax.logging.cfg $ODL_HOME/etc/org.ops4j.pax.logging.cfg
 FROM ${base.image.name}:${project.docker.latestfulltag.version}
 
 LABEL maintainer="CCSDK  Team (onap-ccsdk@lists.onap.org)"
+USER root
 
 ENV SDNC_CONFIG_DIR /opt/onap/ccsdk/data/properties
 ENV CCSDKFEATUREVERSION ${ccsdk.features.version}
