@@ -7,7 +7,7 @@ USER root
 RUN addgroup -S dgbuilder && adduser -S dgbuilder -G dgbuilder
 
 RUN apk --no-cache add curl
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+#RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apk add gcc g++ make ncurses
 
 # copy onap
