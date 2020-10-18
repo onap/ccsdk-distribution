@@ -4,10 +4,965 @@
     <method rpc='instantiateRANSlice' mode='sync'>
         <block atomic='true'>
             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                <parameter name="file" value="/opt/opendaylight/current/data/log/configureNearRTRIC.log" />
+                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
                 <parameter name="level" value="info" />
-                <parameter name="field1" value="RPC to handle configureNearRTRIC "/>
+                <parameter name="field1" value="RPC to handle instantiateRANSlice.: "/>
+                <parameter name="field2" value="`$instantiateRANSlice-input.action`"/>
+                <parameter name="field3" value="`$instantiateRANSlice-input.common-header.timestamp`"/>
+                <parameter name="field4" value="`$instantiateRANSlice-input.common-header.request-id`"/>
+                <parameter name="field5" value="`$instantiateRANSlice-input.common-header.originator-id`"/>
+                <parameter name="field6" value="RPC Payload String "/>
+                <parameter name="field7" value="`$instantiateRANSlice-input.payload`"/>
             </record>
+            <set>
+                <parameter name='code' value='200' />
+                <parameter name='message' value='Successful execution of createPolicyInstance RPC' />
+            </set>
+            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='jsonStringToCtx'>
+                <parameter name='source' value='instantiateRANSlice-input.payload' />
+                <parameter name='outputPath' value='payloadJson' />
+                <parameter name='isEscaped' value='true' />
+                <outcome value='success'>
+                    <block atomic='true'>
+                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                            <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-instantiateRANSlice-context.log' />
+                        </execute>
+                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                            <parameter name="level" value="info" />
+                            <parameter name="field1" value="Payload for instantiateRANSlice.: "/>
+                            <parameter name="field2" value="`$payloadJson.input.sliceProfile.sliceProfileId`"/>
+                            <parameter name="field3" value="`$payloadJson.input.sliceProfile.NSSAI`"/>
+                            <parameter name="field4" value="`$payloadJson.input.sliceProfile.maxNumberofUEs`"/>
+                            <parameter name="field5" value="`$payloadJson.input.sliceProfile.latency`"/>
+                            <parameter name="field6" value="`$payloadJson.input.sliceProfile.uLThptPerSlice`"/>
+                            <parameter name="field7" value="`$payloadJson.input.sliceProfile.dLThptPerSlice`"/>
+                            <parameter name="field8" value="`$payloadJson.input.sliceProfile.maxNumberofConns`"/>
+                            <parameter name="field9" value="`$payloadJson.input.sliceProfile.coverageAreaList[0]`"/>
+                            <parameter name="field10" value="`$payloadJson.input.sliceProfile.uEMobilityLevel`"/>
+                            <parameter name="field11" value="`$payloadJson.input.sliceProfile.resourceSharingLevel`"/>
+                            <parameter name="field12" value="`$payloadJson.input.RANNSSIId`"/>
+                            <parameter name="field13" value="`$payloadJson.input.RANNFNSSIId`"/>
+                            <parameter name="field14" value="`$payloadJson.input.callbackURL`"/>
+                        </record>
+                    </block>
+                </outcome>
+            </execute>
+            <execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >
+                <parameter name='fileName' value='/opt/onap/ccsdk/data/properties/ran-slice-api-dg.properties' />
+                <parameter name='contextPrefix' value='prop' />
+            </execute>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="Properties read .. controller details "/>
+                <parameter name="field2" value="`$prop.controller.user`"/>
+                <parameter name="field3" value="`$prop.controller.pwd`"/>
+                <parameter name="field4" value="`$prop.controller.url`"/>
+                <parameter name="field5" value="ransim-mounted (true/false): "/>
+                <parameter name="field6" value="`$prop.ransim-mounted`"/>
+                <parameter name="field7" value="config DB deployed (true/false): "/>
+                <parameter name="field8" value="`$prop.configdb-deployed`"/>
+            </record>
+            <set>
+                <parameter name='tmp.trackingArea' value='`$payloadJson.input.sliceProfile.coverageAreaList[0]`'/>
+                <parameter name='tmp.callbackURL' value='`$payloadJson.input.callbackURL`'/>
+                <parameter name='tmp.RANNFNSSIId' value='`$payloadJson.input.RANNFNSSIId`'/>
+                <parameter name='tmp.RANNSSIId' value='`$payloadJson.input.RANNSSIId`'/>
+                <parameter name='tmp.coverageAreaList_length' value='`$payloadJson.input.sliceProfile.coverageAreaList_length`'/>
+                <parameter name='tmp.dLThptPerSlice' value='`$payloadJson.input.sliceProfile.dLThptPerSlice`'/>
+                <parameter name='tmp.latency' value='`$payloadJson.input.sliceProfile.latency`'/>
+                <parameter name='tmp.maxNumberofConns' value='`$payloadJson.input.sliceProfile.maxNumberofConns`'/>
+                <parameter name='tmp.maxNumberofUEs' value='`$payloadJson.input.sliceProfile.maxNumberofUEs`'/>
+                <parameter name='tmp.resourceSharingLevel' value='`$payloadJson.input.sliceProfile.resourceSharingLevel`'/>
+                <parameter name='tmp.sliceProfileId' value='`$payloadJson.input.sliceProfile.sliceProfileId`'/>
+                <parameter name='tmp.sNSSAI' value='`$payloadJson.input.sliceProfile.sNSSAI`'/>
+                <parameter name='tmp.uEMobilityLevel' value='`$payloadJson.input.sliceProfile.uEMobilityLevel`'/>
+                <parameter name='tmp.uLThptPerSlice' value='`$payloadJson.input.sliceProfile.uLThptPerSlice`'/>
+            </set>
+            <switch test='`$prop.configdb-deployed`'>
+                <outcome value='true'>
+                    <block atomic='true'>
+                        <block atomic='true'>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$prop.restapi.configdb.getNearRTRICsFromTrackingArea`"/>
+                                <parameter name="outputPath" value="tmp.configdb.getNearRTRICsFromTrackingArea.url"/>
+                                <parameter name="target" value="{trackingArea}"/>
+                                <parameter name="replacement" value="`$tmp.trackingArea`"/>
+                            </execute>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="URL for configDB Get NearRTRIC for tracking area"/>
+                                <parameter name='field2' value="`$prop.configdb.url + $tmp.configdb.getNearRTRICsFromTrackingArea.url`" />
+                                <parameter name='field3' value="`$tmp.trackingArea`" />
+                            </record>
+                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                <parameter name="restapiUrl" value="`$prop.configdb.url + $tmp.configdb.getNearRTRICsFromTrackingArea.url`"/>
+                                <parameter name="httpMethod" value="GET"/>
+                                <parameter name="responsePrefix" value="getRIC-configdb-response"/>
+                                <parameter name='contentType' value='application/json' />
+                                <parameter name='format' value='json' />
+                                <parameter name='accept' value='application/json' />
+                                <outcome value='failure'>
+                                    <block>
+                                        <set>
+                                            <parameter name='code' value='500'/>
+                                            <parameter name='message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
+                                        </set>
+                                        <return status='failure'>
+                                            <parameter name='ack-final' value='Y'/>
+                                            <parameter name='code' value='500'/>
+                                            <parameter name='message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
+                                        </return>
+                                    </block>
+                                </outcome>
+                                <outcome value='success'>
+                                    <block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="Successfully Obtained NearRT RIC info from ConfigDB"/>
+                                            <parameter name="field2" value="`$getRIC-configdb-response._length`"/>
+                                            <parameter name="field3" value="`$getRIC-configdb-response.[0].gNBCUCPList_length`"/>
+                                            <parameter name="field4" value="`$getRIC-configdb-response.[0].gNBCUUPList_length`"/>
+                                            <parameter name="field5" value="`$getRIC-configdb-response.[0].gNBDUList_length`"/>
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                                            <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-instantiateRANSlice-configrsp-context.log' />
+                                        </execute>
+                                    </block>
+                                </outcome>
+                            </execute>
+                        </block>
+                        <block atomic='true'>
+                            <for index='id1' start='0' end="`$getRIC-configdb-response._length`" >
+                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                    <parameter name='outputPath' value='tmp.nearRTRICId' />
+                                    <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].nearRTRICId'`" />
+                                </execute>
+                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                    <parameter name="level" value="info" />
+                                    <parameter name="field1" value="Config Payload Entry# "/>
+                                    <parameter name="field2" value="`$id1`"/>
+                                    <parameter name="field3" value="`$getRIC-configdb-response.[id1].nearRTRICId`"/>
+                                    <parameter name="field4" value="`$getRIC-configdb-response.[id1].gNBId`"/>
+                                </record>
+                                <block atomic='true'>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                        <parameter name='outputPath' value='tmp.CUCPListEntries' />
+                                        <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUCPList_length'`" />
+                                    </execute>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Number of CUCP List Entries "/>
+                                        <parameter name="field2" value="`$tmp.CUCPListEntries`"/>
+                                    </record>
+                                    <block atomic='true'>
+                                        <set>
+                                            <parameter name='tmp.uLThptPerSlicePerCell' value='5' />
+                                        </set>
+                                        <switch test='`$tmp.uLThptPerSlicePerCell`'>
+                                            <outcome value='5'>
+                                                <set>
+                                                    <parameter name='tmp.rRMPolicyDedicatedRatio.CellCU' value='1%' />
+                                                </set>
+                                            </outcome>
+                                            <outcome value='10'>
+                                                <set>
+                                                    <parameter name='tmp.rRMPolicyDedicatedRatio.CellCU' value='2%' />
+                                                </set>
+                                            </outcome>
+                                        </switch>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="rRMPolicyDedicatedRatio for CellCU "/>
+                                            <parameter name="field2" value="`$tmp.rRMPolicyDedicatedRatio.CellCU`"/>
+                                        </record>
+                                    </block>
+                                    <for index='id2' start='0' end='`$tmp.CUCPListEntries`' >
+                                        <block atomic='true'>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.cellCUListEntries' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUCPList[' + $id2 + '].cellCUList_length'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBCUCPList.gNBCUName' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUCPList[' + $id2 + '].gNBCUName'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBCUCPList.gNBId' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUCPList[' + $id2 + '].gNBId'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBCUCPList.gNBIdLength' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUCPList[' + $id2 + '].gNBIdLength'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBCUCPList.nFType' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUCPList[' + $id2 + '].nFType'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBCUCPList.pLMNId' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUCPList[' + $id2 + '].pLMNId'`" />
+                                            </execute>
+                                        </block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="Numberof cellCU of Entries "/>
+                                            <parameter name="field2" value="`$tmp.cellCUListEntries`"/>
+                                            <parameter name="field3" value="`$tmp.gNBCUCPList.gNBCUName`"/>
+                                            <parameter name="field4" value="`$tmp.gNBCUCPList.gNBId`"/>
+                                            <parameter name="field5" value="`$tmp.gNBCUCPList.gNBIdLengthh`"/>
+                                            <parameter name="field6" value="`$tmp.gNBCUCPList.nFType`"/>
+                                            <parameter name="field7" value="`$tmp.gNBCUCPList.pLMNId`"/>
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.gNBCUCPList.pLMNId`" />
+                                            <parameter name="result" value="tmp.mcc"/>
+                                            <parameter name="begin-index" value="0" />
+                                            <parameter name="end-index" value="3" />
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.gNBCUCPList.pLMNId`" />
+                                            <parameter name="result" value="tmp.mnc"/>
+                                            <parameter name="begin-index" value="4" />
+                                        </execute>
+                                        <set>
+                                            <parameter name='tmp.uLThptPerSlice1' value='`$payloadJson.input.sliceProfile.uLThptPerSlice * 1.1`' />
+                                            <parameter name='tmp.uLThptPerSlice' value='`$tmp.uLThptPerSlice1 / $tmp.cellCUListEntries`' />
+                                            <parameter name='tmp.dLThptPerSlice1' value='`$payloadJson.input.sliceProfile.dLThptPerSlice * 1.1`' />
+                                            <parameter name='tmp.dLThptPerSlice' value='`$tmp.dLThptPerSlice1 / $tmp.cellCUListEntries`' />
+                                        </set>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="MCC "/>
+                                            <parameter name="field2" value="`$tmp.mcc`"/>
+                                            <parameter name="field3" value="MNC "/>
+                                            <parameter name="field4" value="`$tmp.mnc`"/>
+                                            <parameter name="field5" value="Calculated uLThptPerSlice "/>
+                                            <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                            <parameter name="field7" value="Calculated dLThptPerSlice "/>
+                                            <parameter name="field8" value="`$tmp.dLThptPerSlice`"/>
+                                        </record>
+                                        <for index='id3' start='0' end='`$tmp.cellCUListEntries`' >
+                                            <block atomic='true'>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                    <parameter name='outputPath' value='tmp.pLMNInfoListEntries' />
+                                                    <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUCPList[' + $id2 + '].cellCUList[' + $id3 + '].pLMNInfoList_length'`" />
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                    <parameter name='outputPath' value='tmp.cellLocalId' />
+                                                    <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUCPList[' + $id2 + '].cellCUList[' + $id3 + '].cellLocalId'`" />
+                                                </execute>
+                                            </block>
+                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                <parameter name="level" value="info" />
+                                                <parameter name="field1" value="Numberof pLMNInfoList Entries "/>
+                                                <parameter name="field2" value="`$tmp.pLMNInfoListEntries`"/>
+                                                <parameter name="field3" value="cellLocalId "/>
+                                                <parameter name="field4" value="`$tmp.cellLocalId`"/>
+                                            </record>
+                                            <for index='id4' start='0' end='`$tmp.pLMNInfoListEntries`' >
+                                                <block atomic='true'>
+                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                        <parameter name='outputPath' value='tmp.fromRAN.sNSSAI' />
+                                                        <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].cellDUList[' + $id3 + '].pLMNInfoList[' + $id4 + '].sNSSAI.sNSSAI'`" />
+                                                    </execute>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="sNSSAI from RAN to check if already exists "/>
+                                                        <parameter name="field2" value="`$tmp.fromRAN.sNSSAI`"/>
+                                                    </record>
+                                                </block>
+                                            </for>
+                                            <block atomic='true'>
+                                                <switch test='`$prop.ransim-mounted`'>
+                                                    <outcome value='false'>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$prop.restapi.addPLMNInfoListEntry.ToNRCellCU`"/>
+                                                            <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellCU.url"/>
+                                                            <parameter name="target" value="{idNearRTRIC}"/>
+                                                            <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                        </execute>
+                                                    </outcome>
+                                                    <outcome value='true'>
+                                                        <block atomic='true'>
+                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                <parameter name="source" value="`$prop.restapi.addPLMNInfoListEntry.ToNRCellCU.ransim-mounted`"/>
+                                                                <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellCU.url"/>
+                                                                <parameter name="target" value="{idNearRTRIC}"/>
+                                                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                            </execute>
+                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellCU.url`"/>
+                                                                <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellCU.url"/>
+                                                                <parameter name="target" value="{mountName}"/>
+                                                                <parameter name="replacement" value="`$tmp.gNBCUCPList.gNBCUName`"/>
+                                                            </execute>
+                                                        </block>
+                                                    </outcome>
+                                                </switch>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellCU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellCU.url"/>
+                                                    <parameter name="target" value="{idGNBCUCPFunction}"/>
+                                                    <parameter name="replacement" value="`$tmp.gNBCUCPList.gNBCUName`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellCU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellCU.url"/>
+                                                    <parameter name="target" value="{idNRCellCU}"/>
+                                                    <parameter name="replacement" value="`$tmp.cellLocalId`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellCU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellCU.url"/>
+                                                    <parameter name="target" value="{mcc}"/>
+                                                    <parameter name="replacement" value="`$tmp.mcc`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellCU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellCU.url"/>
+                                                    <parameter name="target" value="{mnc}"/>
+                                                    <parameter name="replacement" value="`$tmp.mnc`"/>
+                                                </execute>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="Add PLMNInfoListEntry ToNRCellCU URL"/>
+                                                    <parameter name="field2" value="`$tmp.addPLMNInfoListEntry.ToNRCellCU.url`"/>
+                                                </record>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="Setting variables for PLMNInfoList Entry Add to NRCellCU"/>
+                                                    <parameter name="field2" value="`$tmp.addPLMNInfoListEntry.ToNRCellDU.url`"/>
+                                                    <parameter name="field3" value="`$tmp.mcc`"/>
+                                                    <parameter name="field4" value="`$tmp.mnc`"/>
+                                                    <parameter name="field5" value="`$payloadJson.input.sliceProfile.sNSSAI`"/>
+                                                    <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                                    <parameter name="field7" value="`$tmp.dLThptPerSlice`"/>
+                                                </record>
+                                            </block>
+                                            <block atomic='true'>
+                                                <switch test='`$prop.ransim-mounted`'>
+                                                    <outcome value='false'>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$prop.restapi.addRRMPolicyRatio.ToNRCellCU`"/>
+                                                            <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellCU.url"/>
+                                                            <parameter name="target" value="{idNearRTRIC}"/>
+                                                            <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                        </execute>
+                                                    </outcome>
+                                                    <outcome value='true'>
+                                                        <block atomic='true'>
+                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                <parameter name="source" value="`$prop.restapi.addRRMPolicyRatio.ToNRCellCU.ransim-mounted`"/>
+                                                                <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellCU.url"/>
+                                                                <parameter name="target" value="{idNearRTRIC}"/>
+                                                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                            </execute>
+                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToNRCellCU.url`"/>
+                                                                <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellCU.url"/>
+                                                                <parameter name="target" value="{mountName}"/>
+                                                                <parameter name="replacement" value="`$tmp.gNBCUCPList.gNBCUName`"/>
+                                                            </execute>
+                                                        </block>
+                                                    </outcome>
+                                                </switch>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToNRCellCU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellCU.url"/>
+                                                    <parameter name="target" value="{idGNBCUCPFunction}"/>
+                                                    <parameter name="replacement" value="`$tmp.gNBCUCPList.gNBCUName`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToNRCellCU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellCU.url"/>
+                                                    <parameter name="target" value="{idNRCellCU}"/>
+                                                    <parameter name="replacement" value="`$tmp.cellLocalId`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToNRCellCU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellCU.url"/>
+                                                    <parameter name="target" value="{id}"/>
+                                                    <parameter name="replacement" value="0"/>
+                                                </execute>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="addRRMPolicyRatio ToNRCellCU URL"/>
+                                                    <parameter name="field2" value="`$tmp.addRRMPolicyRatio.ToNRCellCU.url`"/>
+                                                </record>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="Setting variables for addRRMPolicyRatio to NRCellCU"/>
+                                                    <parameter name="field2" value="`$tmp.addRRMPolicyRatio.ToNRCellCU.url`"/>
+                                                    <parameter name="field3" value="`$tmp.mcc`"/>
+                                                    <parameter name="field4" value="`$tmp.mnc`"/>
+                                                    <parameter name="field5" value="`$payloadJson.input.sliceProfile.sNSSAI`"/>
+                                                    <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                                    <parameter name="field7" value="`$tmp.dLThptPerSlice`"/>
+                                                </record>
+                                            </block>
+                                        </for>
+                                    </for>
+                                </block>
+                                <block atomic='true'>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                        <parameter name='outputPath' value='tmp.CUUPListEntries' />
+                                        <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUUPList_length'`" />
+                                    </execute>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Number of CUUP List Entries "/>
+                                        <parameter name="field2" value="`$tmp.CUUPListEntries`"/>
+                                    </record>
+                                    <block atomic='true'>
+                                        <set>
+                                            <parameter name='tmp.uLThptPerSlicePerCell' value='5' />
+                                        </set>
+                                        <switch test='`$tmp.uLThptPerSlicePerCell`'>
+                                            <outcome value='5'>
+                                                <set>
+                                                    <parameter name='tmp.rRMPolicyDedicatedRatio.CUUP' value='1%' />
+                                                </set>
+                                            </outcome>
+                                            <outcome value='10'>
+                                                <set>
+                                                    <parameter name='tmp.rRMPolicyDedicatedRatio.CUUP' value='2%' />
+                                                </set>
+                                            </outcome>
+                                        </switch>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="rRMPolicyDedicatedRatio for CUUP "/>
+                                            <parameter name="field2" value="`$tmp.rRMPolicyDedicatedRatio.CUUP`"/>
+                                        </record>
+                                    </block>
+                                    <for index='id2' start='0' end='`$tmp.CUUPListEntries`' >
+                                        <block atomic='true'>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBCUUPList.gNBCUUPId' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUUPList[' + $id2 + '].gNBCUUPId'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBCUUPList.gNBId' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUUPList[' + $id2 + '].gNBId'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBCUUPList.gNBIdLength' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUUPList[' + $id2 + '].gNBIdLength'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.pLMNInfoListEntries' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUUPList[' + $id2 + '].pLMNInfoList_length'`" />
+                                            </execute>
+                                        </block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="CUCP Details "/>
+                                            <parameter name="field2" value="`$tmp.gNBCUUPList.gNBCUUPId`"/>
+                                            <parameter name="field3" value="`$tmp.gNBCUUPList.gNBId`"/>
+                                            <parameter name="field4" value="`$tmp.gNBCUUPList.gNBIdLength`"/>
+                                            <parameter name="field5" value="`$tmp.gNBCUUPList.pLMNInfoList_length`"/>
+                                            <parameter name="field6" value="`$tmp.gNBCUUPList.pLMNId`"/>
+                                        </record>
+                                        <set>
+                                            <parameter name='tmp.uLThptPerSlice1' value='`$payloadJson.input.sliceProfile.uLThptPerSlice * 1.1`' />
+                                            <parameter name='tmp.uLThptPerSlice' value='`$tmp.uLThptPerSlice1 / $tmp.cellCUListEntries`' />
+                                            <parameter name='tmp.dLThptPerSlice1' value='`$payloadJson.input.sliceProfile.dLThptPerSlice * 1.1`' />
+                                            <parameter name='tmp.dLThptPerSlice' value='`$tmp.dLThptPerSlice1 / $tmp.cellCUListEntries`' />
+                                        </set>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="MCC "/>
+                                            <parameter name="field2" value="`$tmp.mcc`"/>
+                                            <parameter name="field3" value="MNC "/>
+                                            <parameter name="field4" value="`$tmp.mnc`"/>
+                                            <parameter name="field5" value="Calculated uLThptPerSlice "/>
+                                            <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                            <parameter name="field7" value="Calculated dLThptPerSlice "/>
+                                            <parameter name="field8" value="`$tmp.dLThptPerSlice`"/>
+                                        </record>
+                                        <for index='id4' start='0' end='`$tmp.pLMNInfoListEntries`' >
+                                            <block atomic='true'>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                    <parameter name='outputPath' value='tmp.fromRAN.sNSSAI' />
+                                                    <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBCUUPList[' + $id2 + '].pLMNInfoList[' + $id3 + '].sNSSAI'`" />
+                                                </execute>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="sNSSAI from RAN to check if already exists "/>
+                                                    <parameter name="field2" value="`$tmp.fromRAN.sNSSAI`"/>
+                                                </record>
+                                            </block>
+                                        </for>
+                                        <block atomic='true'>
+                                            <switch test='`$prop.ransim-mounted`'>
+                                                <outcome value='false'>
+                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                        <parameter name="source" value="`$prop.restapi.addPLMNInfoListEntry.ToGNBCUUPFn`"/>
+                                                        <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url"/>
+                                                        <parameter name="target" value="{idNearRTRIC}"/>
+                                                        <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                    </execute>
+                                                </outcome>
+                                                <outcome value='true'>
+                                                    <block atomic='true'>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$prop.restapi.addPLMNInfoListEntry.ToGNBCUUPFn.ransim-mounted`"/>
+                                                            <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url"/>
+                                                            <parameter name="target" value="{idNearRTRIC}"/>
+                                                            <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                        </execute>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url`"/>
+                                                            <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url"/>
+                                                            <parameter name="target" value="{mountName}"/>
+                                                            <parameter name="replacement" value="`$tmp.gNBCUUPList.gNBCUUPId`"/>
+                                                        </execute>
+                                                    </block>
+                                                </outcome>
+                                            </switch>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url`"/>
+                                                <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url"/>
+                                                <parameter name="target" value="{idGNBCUUPFunction}"/>
+                                                <parameter name="replacement" value="`$tmp.gNBCUUPList.gNBCUUPId`"/>
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url`"/>
+                                                <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url"/>
+                                                <parameter name="target" value="{mcc}"/>
+                                                <parameter name="replacement" value="`$tmp.mcc`"/>
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url`"/>
+                                                <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url"/>
+                                                <parameter name="target" value="{mnc}"/>
+                                                <parameter name="replacement" value="`$tmp.mnc`"/>
+                                            </execute>
+                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                <parameter name="level" value="info" />
+                                                <parameter name="field1" value="Add PLMNInfoListEntry ToGNBCUUPFn URL"/>
+                                                <parameter name="field2" value="`$tmp.addPLMNInfoListEntry.ToGNBCUUPFn.url`"/>
+                                            </record>
+                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                <parameter name="level" value="info" />
+                                                <parameter name="field1" value="Setting variables for PLMNInfoList Entry Add to NRCellCU"/>
+                                                <parameter name="field2" value="`$tmp.addPLMNInfoListEntry.ToNRCellDU.url`"/>
+                                                <parameter name="field3" value="`$tmp.mcc`"/>
+                                                <parameter name="field4" value="`$tmp.mnc`"/>
+                                                <parameter name="field5" value="`$payloadJson.input.sliceProfile.sNSSAI`"/>
+                                                <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                                <parameter name="field7" value="`$tmp.dLThptPerSlice`"/>
+                                            </record>
+                                        </block>
+                                        <block atomic='true'>
+                                            <switch test='`$prop.ransim-mounted`'>
+                                                <outcome value='false'>
+                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                        <parameter name="source" value="`$prop.restapi.addRRMPolicyRatio.ToGNBCUUPFn`"/>
+                                                        <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToGNBCUUPFn.url"/>
+                                                        <parameter name="target" value="{idNearRTRIC}"/>
+                                                        <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                    </execute>
+                                                </outcome>
+                                                <outcome value='true'>
+                                                    <block atomic='true'>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$prop.restapi.addRRMPolicyRatio.ToGNBCUUPFn.ransim-mounted`"/>
+                                                            <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToGNBCUUPFn.url"/>
+                                                            <parameter name="target" value="{idNearRTRIC}"/>
+                                                            <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                        </execute>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToGNBCUUPFn.url`"/>
+                                                            <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToGNBCUUPFn.url"/>
+                                                            <parameter name="target" value="{mountName}"/>
+                                                            <parameter name="replacement" value="`$tmp.gNBCUUPList.gNBCUUPId`"/>
+                                                        </execute>
+                                                    </block>
+                                                </outcome>
+                                            </switch>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToGNBCUUPFn.url`"/>
+                                                <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToGNBCUUPFn.url"/>
+                                                <parameter name="target" value="{idGNBCUUPFunction}"/>
+                                                <parameter name="replacement" value="`$tmp.gNBCUUPList.gNBCUUPId`"/>
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToGNBCUUPFn.url`"/>
+                                                <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToGNBCUUPFn.url"/>
+                                                <parameter name="target" value="{id}"/>
+                                                <parameter name="replacement" value="0"/>
+                                            </execute>
+                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                <parameter name="level" value="info" />
+                                                <parameter name="field1" value="addRRMPolicyRatio ToGNBCUUPFn URL"/>
+                                                <parameter name="field2" value="`$tmp.addRRMPolicyRatio.ToGNBCUUPFn.url`"/>
+                                            </record>
+                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                <parameter name="level" value="info" />
+                                                <parameter name="field1" value="Setting variables for addRRMPolicyRatio to GNBCUUPFn"/>
+                                                <parameter name="field2" value="`$tmp.addRRMPolicyRatio.ToGNBCUUPFn.url`"/>
+                                                <parameter name="field3" value="`$tmp.mcc`"/>
+                                                <parameter name="field4" value="`$tmp.mnc`"/>
+                                                <parameter name="field5" value="`$payloadJson.input.sliceProfile.sNSSAI`"/>
+                                                <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                                <parameter name="field7" value="`$tmp.dLThptPerSlice`"/>
+                                            </record>
+                                        </block>
+                                    </for>
+                                </block>
+                                <block atomic='true'>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                        <parameter name='outputPath' value='tmp.DUListEntries' />
+                                        <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList_length'`" />
+                                    </execute>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Number of DU List Entries "/>
+                                        <parameter name="field2" value="`$tmp.DUListEntries`"/>
+                                    </record>
+                                    <block atomic='true'>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$prop.restapi.configdb.getListOfCells`"/>
+                                            <parameter name="outputPath" value="tmp.configdb.getListOfCells.url"/>
+                                            <parameter name="target" value="{trackingArea}"/>
+                                            <parameter name="replacement" value="`$tmp.trackingArea`"/>
+                                        </execute>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="URL for configDB Get getListOfCells for tracking area"/>
+                                            <parameter name='field2' value="`$prop.configdb.url + $tmp.configdb.getListOfCells.url`" />
+                                            <parameter name='field3' value="`$tmp.trackingArea`" />
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                            <parameter name="restapiUrl" value="`$prop.configdb.url + $tmp.configdb.getListOfCells.url`"/>
+                                            <parameter name="httpMethod" value="GET"/>
+                                            <parameter name="responsePrefix" value="getListofCells-configdb-response"/>
+                                            <parameter name='contentType' value='application/json' />
+                                            <parameter name='format' value='json' />
+                                            <parameter name='accept' value='application/json' />
+                                            <outcome value='failure'>
+                                                <block>
+                                                    <set>
+                                                        <parameter name='code' value='500'/>
+                                                        <parameter name='message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
+                                                    </set>
+                                                    <return status='failure'>
+                                                        <parameter name='ack-final' value='Y'/>
+                                                        <parameter name='code' value='500'/>
+                                                        <parameter name='message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
+                                                    </return>
+                                                </block>
+                                            </outcome>
+                                            <outcome value='success'>
+                                                <block>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="Successfully Obtained List of Cells from ConfigDB"/>
+                                                        <parameter name="field2" value="`$getListofCells-configdb-response._length`"/>
+                                                    </record>
+                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                                                        <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-instantiateRANSlice-configrsp-context.log' />
+                                                    </execute>
+                                                </block>
+                                            </outcome>
+                                        </execute>
+                                    </block>
+                                    <block atomic='true'>
+                                        <set>
+                                            <parameter name='tmp.uLThptPerSlicePerCell' value='5' />
+                                        </set>
+                                        <switch test='`$tmp.uLThptPerSlicePerCell`'>
+                                            <outcome value='5'>
+                                                <set>
+                                                    <parameter name='tmp.rRMPolicyDedicatedRatio.CellDU' value='1%' />
+                                                </set>
+                                            </outcome>
+                                            <outcome value='10'>
+                                                <set>
+                                                    <parameter name='tmp.rRMPolicyDedicatedRatio.CellDU' value='2%' />
+                                                </set>
+                                            </outcome>
+                                        </switch>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="rRMPolicyDedicatedRatio for CellDU "/>
+                                            <parameter name="field2" value="`$tmp.rRMPolicyDedicatedRatio.CellDU`"/>
+                                        </record>
+                                    </block>
+                                    <for index='id2' start='0' end='`$tmp.DUListEntries`' >
+                                        <block atomic='true'>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.cellDUListEntries' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].cellDUList_length'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBDUList.gNBDUId' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].gNBDUId'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBDUName' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].gNBDUName'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBId' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].gNBId'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.gNBIdLength' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].gNBIdLength'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.nFType' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].nFType'`" />
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.pLMNId' />
+                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].pLMNId'`" />
+                                            </execute>
+                                        </block>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="Numberof cellDU of Entries "/>
+                                            <parameter name="field2" value="`$tmp.cellDUListEntries`"/>
+                                            <parameter name="field3" value="`$tmp.gNBDUList.gNBDUId`"/>
+                                            <parameter name="field4" value="`$tmp.gNBDUName`"/>
+                                            <parameter name="field5" value="`$tmp.gNBId`"/>
+                                            <parameter name="field6" value="`$tmp.gNBIdLength`"/>
+                                            <parameter name="field7" value="`$tmp.nFType`"/>
+                                            <parameter name="field8" value="`$tmp.pLMNId`"/>
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.pLMNId`" />
+                                            <parameter name="result" value="tmp.mcc"/>
+                                            <parameter name="begin-index" value="0" />
+                                            <parameter name="end-index" value="3" />
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.pLMNId`" />
+                                            <parameter name="result" value="tmp.mnc"/>
+                                            <parameter name="begin-index" value="4" />
+                                        </execute>
+                                        <set>
+                                            <parameter name='tmp.uLThptPerSlice1' value='`$payloadJson.input.sliceProfile.uLThptPerSlice * 1.1`' />
+                                            <parameter name='tmp.uLThptPerSlice' value='`$tmp.uLThptPerSlice1 / $tmp.cellDUListEntries`' />
+                                            <parameter name='tmp.dLThptPerSlice1' value='`$payloadJson.input.sliceProfile.dLThptPerSlice * 1.1`' />
+                                            <parameter name='tmp.dLThptPerSlice' value='`$tmp.dLThptPerSlice1 / $tmp.cellDUListEntries`' />
+                                        </set>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="MCC "/>
+                                            <parameter name="field2" value="`$tmp.mcc`"/>
+                                            <parameter name="field3" value="MNC "/>
+                                            <parameter name="field4" value="`$tmp.mnc`"/>
+                                            <parameter name="field5" value="Calculated uLThptPerSlice "/>
+                                            <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                            <parameter name="field7" value="Calculated dLThptPerSlice "/>
+                                            <parameter name="field8" value="`$tmp.dLThptPerSlice`"/>
+                                        </record>
+                                        <for index='id3' start='0' end='`$tmp.cellDUListEntries`' >
+                                            <block atomic='true'>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                    <parameter name='outputPath' value='tmp.pLMNInfoListEntries' />
+                                                    <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].cellDUList[' + $id3 + '].pLMNInfoList_length'`" />
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                    <parameter name='outputPath' value='tmp.cellLocalId' />
+                                                    <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].cellDUList[' + $id3 + '].cellLocalId'`" />
+                                                </execute>
+                                            </block>
+                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                <parameter name="level" value="info" />
+                                                <parameter name="field1" value="Numberof pLMNInfoList Entries "/>
+                                                <parameter name="field2" value="`$tmp.pLMNInfoListEntries`"/>
+                                                <parameter name="field3" value="cellLocalId "/>
+                                                <parameter name="field4" value="`$tmp.cellLocalId`"/>
+                                            </record>
+                                            <for index='id4' start='0' end='`$tmp.pLMNInfoListEntries`' >
+                                                <block atomic='true'>
+                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                        <parameter name='outputPath' value='tmp.fromRAN.sNSSAI' />
+                                                        <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].cellDUList[' + $id3 + '].pLMNInfoList[' + $id4 + '].sNSSAI.sNSSAI'`" />
+                                                    </execute>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="sNSSAI from RAN to check if already exists "/>
+                                                        <parameter name="field2" value="`$tmp.fromRAN.sNSSAI`"/>
+                                                    </record>
+                                                </block>
+                                            </for>
+                                            <block atomic='true'>
+                                                <switch test='`$prop.ransim-mounted`'>
+                                                    <outcome value='false'>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$prop.restapi.addPLMNInfoListEntry.ToNRCellDU`"/>
+                                                            <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellDU.url"/>
+                                                            <parameter name="target" value="{idNearRTRIC}"/>
+                                                            <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                        </execute>
+                                                    </outcome>
+                                                    <outcome value='true'>
+                                                        <block atomic='true'>
+                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                <parameter name="source" value="`$prop.restapi.addPLMNInfoListEntry.ToNRCellDU.ransim-mounted`"/>
+                                                                <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellDU.url"/>
+                                                                <parameter name="target" value="{idNearRTRIC}"/>
+                                                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                            </execute>
+                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellDU.url`"/>
+                                                                <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellDU.url"/>
+                                                                <parameter name="target" value="{mountName}"/>
+                                                                <parameter name="replacement" value="`$tmp.gNBDUList.gNBDUId`"/>
+                                                            </execute>
+                                                        </block>
+                                                    </outcome>
+                                                </switch>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellDU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellDU.url"/>
+                                                    <parameter name="target" value="{idGNBDUFunction}"/>
+                                                    <parameter name="replacement" value="`$tmp.gNBDUList.gNBDUId`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellDU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellDU.url"/>
+                                                    <parameter name="target" value="{idNRCellDU}"/>
+                                                    <parameter name="replacement" value="`$tmp.cellLocalId`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellDU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellDU.url"/>
+                                                    <parameter name="target" value="{mcc}"/>
+                                                    <parameter name="replacement" value="`$tmp.mcc`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addPLMNInfoListEntry.ToNRCellDU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addPLMNInfoListEntry.ToNRCellDU.url"/>
+                                                    <parameter name="target" value="{mnc}"/>
+                                                    <parameter name="replacement" value="`$tmp.mnc`"/>
+                                                </execute>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="Add PLMNInfoListEntry ToNRCellDU URL"/>
+                                                    <parameter name="field2" value="`$tmp.addPLMNInfoListEntry.ToNRCellDU.url`"/>
+                                                </record>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="Setting variables for PLMNInfoList Entry Add to NRCellDU"/>
+                                                    <parameter name="field2" value="`$tmp.addPLMNInfoListEntry.ToNRCellDU.url`"/>
+                                                    <parameter name="field3" value="`$tmp.mcc`"/>
+                                                    <parameter name="field4" value="`$tmp.mnc`"/>
+                                                    <parameter name="field5" value="`$payloadJson.input.sliceProfile.sNSSAI`"/>
+                                                    <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                                    <parameter name="field7" value="`$tmp.dLThptPerSlice`"/>
+                                                </record>
+                                            </block>
+                                            <block atomic='true'>
+                                                <switch test='`$prop.ransim-mounted`'>
+                                                    <outcome value='false'>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$prop.restapi.addRRMPolicyRatio.ToNRCellDU`"/>
+                                                            <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellDU.url"/>
+                                                            <parameter name="target" value="{idNearRTRIC}"/>
+                                                            <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                        </execute>
+                                                    </outcome>
+                                                    <outcome value='true'>
+                                                        <block atomic='true'>
+                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                <parameter name="source" value="`$prop.restapi.addRRMPolicyRatio.ToNRCellDU.ransim-mounted`"/>
+                                                                <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellDU.url"/>
+                                                                <parameter name="target" value="{idNearRTRIC}"/>
+                                                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                            </execute>
+                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToNRCellDU.url`"/>
+                                                                <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellDU.url"/>
+                                                                <parameter name="target" value="{mountName}"/>
+                                                                <parameter name="replacement" value="`$tmp.gNBDUList.gNBDUId`"/>
+                                                            </execute>
+                                                        </block>
+                                                    </outcome>
+                                                </switch>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToNRCellDU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellDU.url"/>
+                                                    <parameter name="target" value="{idGNBDUFunction}"/>
+                                                    <parameter name="replacement" value="`$tmp.gNBDUList.gNBDUId`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToNRCellDU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellDU.url"/>
+                                                    <parameter name="target" value="{idNRCellDU}"/>
+                                                    <parameter name="replacement" value="`$tmp.cellLocalId`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.addRRMPolicyRatio.ToNRCellDU.url`"/>
+                                                    <parameter name="outputPath" value="tmp.addRRMPolicyRatio.ToNRCellDU.url"/>
+                                                    <parameter name="target" value="{id}"/>
+                                                    <parameter name="replacement" value="0"/>
+                                                </execute>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="addRRMPolicyRatio ToNRCellDU URL"/>
+                                                    <parameter name="field2" value="`$tmp.addRRMPolicyRatio.ToNRCellDU.url`"/>
+                                                </record>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="Setting variables for addRRMPolicyRatio to NRCellDU"/>
+                                                    <parameter name="field2" value="`$tmp.addRRMPolicyRatio.ToNRCellDU.url`"/>
+                                                    <parameter name="field3" value="`$tmp.mcc`"/>
+                                                    <parameter name="field4" value="`$tmp.mnc`"/>
+                                                    <parameter name="field5" value="`$payloadJson.input.sliceProfile.sNSSAI`"/>
+                                                    <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                                    <parameter name="field7" value="`$tmp.dLThptPerSlice`"/>
+                                                </record>
+                                            </block>
+                                        </for>
+                                    </for>
+                                </block>
+                            </for>
+                        </block>
+                    </block>
+                </outcome>
+            </switch>
             <return status='success'>
                 <parameter name="ack-final-indicator" value="Y" />
                 <parameter name="error-code" value="200" />
