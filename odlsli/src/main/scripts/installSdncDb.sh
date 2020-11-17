@@ -22,7 +22,7 @@
 ###
 
 CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
-MYSQL_PASSWD=${MYSQL_PASSWD:-openECOMP1.0}
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-openECOMP1.0}
 
 SDNC_DB_USER=${SDNC_DB_USER:-sdnctl}
 SDNC_DB_PASSWD=${SDNC_DB_PASSWD:-gamma}
@@ -30,7 +30,7 @@ SDNC_DB_DATABASE=${SDN_DB_DATABASE:-sdnctl}
 
 
 # Create tablespace and user account
-mysql -h dbhost -u root -p${MYSQL_PASSWD} mysql <<-END
+mysql -h dbhost -u root -p${MYSQL_ROOT_PASSWORD} mysql <<-END
 CREATE DATABASE ${SDNC_DB_DATABASE};
 CREATE USER '${SDNC_DB_USER}'@'localhost' IDENTIFIED BY '${SDNC_DB_PASSWD}';
 CREATE USER '${SDNC_DB_USER}'@'%' IDENTIFIED BY '${SDNC_DB_PASSWD}';
@@ -41,5 +41,5 @@ END
 
 if [ -f ${CCSDK_HOME}/data/odlsli.dump ]
 then
-mysql -h dbhost -u root -p${MYSQL_PASSWD} sdnctl < ${CCSDK_HOME}/data/odlsli.dump
+mysql -h dbhost -u root -p${MYSQL_ROOT_PASSWD} sdnctl < ${CCSDK_HOME}/data/odlsli.dump
 fi
