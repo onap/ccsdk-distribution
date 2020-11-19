@@ -18,8 +18,9 @@ Development Kit (CCSDK).
 Summary
 =======
 
-The Frankfurt release of CCSDK introduces new functionality to support PNFs (Physical Network Functions), extends support
-for Netconf/TLS to support CMPv2, and extends CDS to act as an agent in self-serve control loops.
+The Guilin release of CCSDK introduces new functionality to support network slicing and extends support
+for ORAN integration via the A1 interface.  It also includes a major OpenDaylight release
+upgrade (to Sodium), as well as a major Java upgrade (from Java 8 to Java 11).
 
 
 Release Data
@@ -31,7 +32,7 @@ Release Data
 +-------------------------+-------------------------------------------+
 | **Docker images**       | See :ref:`dockercontainers` section below |
 +-------------------------+-------------------------------------------+
-| **Release designation** | Guilin                                 |
+| **Release designation** | Guilin                                    |
 |                         |                                           |
 +-------------------------+-------------------------------------------+
 | **Release date**        | 11/19/2020                                |
@@ -113,7 +114,7 @@ tag 1.0-STAGING-latest to pull the latest daily Guilin build
 +-----------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-odlsli-alpine-image    | Alpine based OpenDaylight image with CCSDK | 1.0.3   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-saltstack-server-image | Saltstack server                           | 1.0.3  |
+| onap/ccsdk-saltstack-server-image | Saltstack server                           | 1.0.3   |
 +-----------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-sdclistener            | CDS SDC listener                           | 1.0.3   |
 +-----------------------------------+--------------------------------------------+---------+
@@ -165,7 +166,7 @@ Frankfurt version of each.
 | org.onap.ccsdk.parent | single-feature-parent        | 2.0.3   | Parent used in place of OpenDaylight single-feature-parent                                       |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
 | org.onap.ccsdk.parent | spring-boot-1-starter-parent | 2.0.3   | Parent used in place of spring-boot-starter-parent for Springboot 1.x.                           |
-|                       |                              |         | *NOTE* This is deprecated and will be removed in Guilin, since springboot 1.x should no          |
+|                       |                              |         | *NOTE* This is deprecated and will be removed in Honolulu, since springboot 1.x should no        |
 |                       |                              |         | longer be used due to security issues                                                            |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
 | org.onap.ccsdk.parent | spring-boot-starter-parent   | 2.0.3   | Parent used in place of spring-boot-starter-parent for Springboot 2.x                            |
