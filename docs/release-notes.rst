@@ -12,7 +12,7 @@ CCSDK Release Notes
 Abstract
 ========
 
-This document provides the release notes for the Frankfurt release of the Common Controller Software
+This document provides the release notes for the Guilin release of the Common Controller Software
 Development Kit (CCSDK).
 
 Summary
@@ -35,9 +35,6 @@ Release Data
 | **Release designation** | Guilin                                    |
 |                         |                                           |
 +-------------------------+-------------------------------------------+
-| **Release date**        | 11/19/2020                                |
-|                         |                                           |
-+-------------------------+-------------------------------------------+
 
 
 New features
@@ -56,7 +53,7 @@ Downstream projects that are consuming CCSDK maven artifacts, or that plan to in
 aware that the upgrades to OpenDaylight Sodium and to Java 11 are both potentially breaking changes.  Therefore, we consider
 Guilin to be a  major release and have reflected this in our version numbering.
 
-For the complete list of `CCSDK Guilin release epics <https://jira.onap.org/issues/?filter=12461>`_ and 
+For the complete list of `CCSDK Guilin release epics <https://jira.onap.org/issues/?filter=12461>`_ and
 `CCSDK Guilin release user stories <https://jira.onap.org/issues/?filter=12462>`_ , please see the `ONAP Jira`_.
 
 **Bug fixes**
@@ -78,7 +75,7 @@ Software Deliverables
 Docker Containers
 `````````````````
 
-The following table lists the docker containers comprising the CCSDK Guilin 
+The following table lists the docker containers comprising the CCSDK Guilin
 release along with the current stable Guilin version/tag.  Each of these is
 available on the ONAP nexus3 site (https://nexus3.onap.org) and can be downloaded
 with the following command::
@@ -132,7 +129,7 @@ ccsdk/parent
 Many CCSDK clients need to be able to inherit settings from third party parent poms provided
 by OpenDaylight or springboot, and therefore are unable to use the standard ONAP parent pom.
 The CCSDK parent repository provides its own version of parent poms whose contents are consistent
-with ONAP standard settings (as defined in oparent), but whose parent is the OpenDaylight or 
+with ONAP standard settings (as defined in oparent), but whose parent is the OpenDaylight or
 springboot parent, so that clients can effectively merge both sets of settings.
 
 The following table lists the parent poms provided by CCSDK and the current stable
@@ -177,7 +174,7 @@ Frankfurt version of each.
 ccsdk/sli/core
 ^^^^^^^^^^^^^^
 The ccsdk/sli/core library provides base functionality needed by the Service Logic Interpreter (SLI), which is the engine that runs directed graphs.  It also
-provides a number of libraries that can be used by other CCSDK client projects.  
+provides a number of libraries that can be used by other CCSDK client projects.
 
 The following table lists the maven artifacts provided for use by CCSDK client
 projects.
