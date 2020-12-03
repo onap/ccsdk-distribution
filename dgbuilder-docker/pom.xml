@@ -23,6 +23,7 @@
 		<image.name>onap/ccsdk-dgbuilder-image</image.name>
 		<ccsdk.project.version>${project.version}</ccsdk.project.version>
 		<ccsdk.build.timestamp>${maven.build.timestamp}</ccsdk.build.timestamp>
+		<uniquedockertag>${env.UNIQUE_DOCKER_TAG}</uniquedockertag>
 	</properties>
 
 	<build>
@@ -39,7 +40,7 @@
 							<goal>execute</goal>
 						</goals>
 						<configuration>
-							<source>${basedir}/../src/main/scripts/TagVersion.groovy</source>
+							<source>${basedir}/../src/main/scripts/TagSnapshotVersion.groovy</source>
 						</configuration>
 					</execution>
 				</executions>
@@ -185,6 +186,7 @@
 											<tag>${project.docker.latestminortag.version}</tag>
 											<tag>${project.docker.latestfulltag.version}</tag>
 											<tag>${project.docker.latesttagtimestamp.version}</tag>
+                                                                                        <tag>${project.docker.uniquedockertag.version}</tag>
 										</tags>
 									</build>
 								</image>
