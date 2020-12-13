@@ -1,0 +1,65 @@
+{
+  "gNBCUUPId": 0,
+  "gNBId": 0,
+  "gNBIdLength": 0,
+  "nearRTRICId": 0,
+  "pLMNInfoList": [
+    {
+      "pLMNId": "string",
+      "sNSSAI": {
+        "configData": {
+          "dLThptPerSlice": 0,
+          "lastUpdatedTS": {
+            "date": 0,
+            "day": 0,
+            "hours": 0,
+            "minutes": 0,
+            "month": 0,
+            "nanos": 0,
+            "seconds": 0,
+            "time": 0,
+            "timezoneOffset": 0,
+            "year": 0
+          },
+          "maxNumberOfConns": 0,
+          "uLThptPerSlice": 0
+        },
+        "globalSubscriberId": "string",
+        "sNSSAI": "string",
+        "status": "string",
+        "subscriptionServiceType": "string"
+      }
+    }
+  ],
+  "resourceType": "string"
+}
+
+
+{
+  "pLMNInfoList": [
+    {
+      "mcc": ${tmp.mcc},
+      "mnc": ${tmp.mnc},
+      "sNSSAIList": [
+        {
+          "sNssai": ${payloadJson.input.sliceProfile.sNSSAI},
+          "status": "INACTIVE",
+          "configData": [
+            {
+              "ran-network:configParameter": "maxNumberOfConns",
+              "ran-network:configValue": ${tmp.maxNumberOfConns}
+            },
+            {
+              "ran-network:configParameter": "uLThptPerSlice",
+              "ran-network:configValue": ${tmp.uLThptPerSlice}
+            },
+            {
+              "ran-network:configParameter": "dLThptPerSlice",
+              "ran-network:configValue": ${tmp.dLThptPerSlice}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
