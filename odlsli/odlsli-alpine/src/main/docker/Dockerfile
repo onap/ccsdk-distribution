@@ -1,6 +1,6 @@
 # Prepare stage for multistage image build
 ## START OF STAGE0 ##
-FROM ${base.image.name}:${project.docker.latestfulltag.version} AS stage0
+FROM ${base.image.name}:1.1.1-STAGING-latest AS stage0
 
 # copy the opendaylight credentials
 USER root
@@ -15,7 +15,7 @@ COPY opt /opt
 COPY org.ops4j.pax.logging.cfg $ODL_HOME/etc/org.ops4j.pax.logging.cfg
 ## END OF STAGE0 ##
 
-FROM ${base.image.name}:${project.docker.latestfulltag.version}
+FROM ${base.image.name}:1.1.1-STAGING-latest
 
 LABEL maintainer="CCSDK  Team (onap-ccsdk@lists.onap.org)"
 USER root
