@@ -17,7 +17,7 @@ COPY org.ops4j.pax.logging.cfg $ODL_HOME/etc/org.ops4j.pax.logging.cfg
 
 FROM ${base.image.name}:${project.docker.latestfulltag.version}
 
-LABEL maintainer="CCSDK  Team (onap-ccsdk@lists.onap.org)"
+LABEL maintainer="CCSDK Team (onap-ccsdk@lists.onap.org)"
 USER root
 
 ENV SDNC_CONFIG_DIR /opt/onap/ccsdk/data/properties
