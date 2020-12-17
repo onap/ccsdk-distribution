@@ -20,17 +20,29 @@ ORG="onap"
 IMAGES=("ccsdk-dgbuilder-image" "ccsdk-odlsli-alpine-image")
 IMAGE_NAME_BASE="${DOCKER_REPOSITORY}/${ORG}/"
 TAG_NAME=${UNIQUE_DOCKER_TAG}
-
+TIMESTAMP=`date +'%Y%m%dT%H%M%SZ'`
 set -x
+# Create tags based on version.properties
 source ../version.properties
+LATEST_MINOR_TAG=${release_name}.${sprint_number}-STAGING-latest
+LATEST_FULL_TAG=${release_name}.${sprint_number}.${feature_revision}-STAGING-latest
+LATEST_FULL_TIMESTAMP_TAG=${release_name}.${sprint_number}.${feature_revision}-STAGING-${TIMESTAMP}
+
 if [ ! -z "${TAG_NAME}" ]; then
 for i in ${!IMAGES[@]};
   do
     image=${IMAGE_NAME_BASE}${IMAGES[$i]}
-    echo "Push STAGING tag for docker image ${image}"
+    echo "Push STAGING tags for docker image ${image}"
     docker pull ${image}:${snapshot_version}-${TAG_NAME}
-    docker tag ${image}:${snapshot_version}-${TAG_NAME} ${image}:${release_name}.${sprint_number}.${feature_revision}-STAGING-latest
-    docker push ${image}:${release_name}.${sprint_number}.${feature_revision}-STAGING-latest
+
+    docker tag ${image}:${snapshot_version}-${TAG_NAME} ${image}:${LATEST_MINOR_TAG}
+    docker tag ${image}:${snapshot_version}-${TAG_NAME} ${image}:${LATEST_FULL_TAG}
+    docker tag ${image}:${snapshot_version}-${TAG_NAME} ${image}:${LATEST_FULL_TIMESTAMP_TAG}
+
+    docker push ${image}:${LATEST_MINOR_TAG}
+    docker push ${image}:${LATEST_FULL_TAG}
+    docker push ${image}:${LATEST_FULL_TIMESTAMP_TAG}
+
   done
 fi
 
