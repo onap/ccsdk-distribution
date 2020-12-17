@@ -23,17 +23,19 @@
     <properties>
         <base.image.name>onap/ccsdk-odl-sodium-alpine-image</base.image.name>
         <image.name>onap/ccsdk-odlsli-alpine-image</image.name>
+
         <ccsdk.project.version>${project.version}</ccsdk.project.version>
-	<ccsdk.build.timestamp>${maven.build.timestamp}</ccsdk.build.timestamp>
-	<uniquedockertag>${env.UNIQUE_DOCKER_TAG}</uniquedockertag>
-        <docker.buildArg.https_proxy>${https_proxy}</docker.buildArg.https_proxy>
         <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
-        <opendaylight.root>opt/opendaylight</opendaylight.root>
-        <docker.push.phase>deploy</docker.push.phase>
+	    <ccsdk.build.timestamp>${maven.build.timestamp}</ccsdk.build.timestamp>
+
         <docker.verbose>true</docker.verbose>
+
+        <uniquedockertag>${env.UNIQUE_DOCKER_TAG}</uniquedockertag>
+        <docker.buildArg.https_proxy>${https_proxy}</docker.buildArg.https_proxy>
+        <opendaylight.root>opt/opendaylight</opendaylight.root>
+
         <ansible.gpg.key>93C4A3FD7BB9C367</ansible.gpg.key>
-        <odl.features.extra>odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs, odl-daexim-all, odl-restconf-nb-rfc8040
-        </odl.features.extra>
+        <odl.features.extra>odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs, odl-daexim-all, odl-restconf-nb-rfc8040</odl.features.extra>
         <ccsdk.odl.features>
             ccsdk-sli-core-all,ccsdk-sli-adaptors-all,ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all
         </ccsdk.odl.features>
@@ -46,287 +48,277 @@
         <ccsdk.sli.plugins.version>1.1.0</ccsdk.sli.plugins.version>
         <ccsdk.oran.a1adapter.version>1.1.0</ccsdk.oran.a1adapter.version>
         <docker.autoCreateCustomNetworks>true</docker.autoCreateCustomNetworks>
-</properties>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>dependencies</artifactId>
             <version>${project.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
 
         <dependency>
             <groupId>org.onap.ccsdk.sli.core</groupId>
             <artifactId>dblib-installer</artifactId>
             <version>${ccsdk.sli.core.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.core</groupId>
             <artifactId>filters-installer</artifactId>
             <version>${ccsdk.sli.core.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.core</groupId>
             <artifactId>sli-installer</artifactId>
             <version>${ccsdk.sli.core.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.core</groupId>
             <artifactId>sliapi-installer</artifactId>
             <version>${ccsdk.sli.core.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.core</groupId>
             <artifactId>sliPluginUtils-installer</artifactId>
             <version>${ccsdk.sli.core.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.core</groupId>
             <artifactId>utils-installer</artifactId>
             <version>${ccsdk.sli.core.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.core</groupId>
             <artifactId>slicore-features-installer</artifactId>
             <version>${ccsdk.sli.core.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors</groupId>
             <artifactId>aai-service-installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors</groupId>
             <artifactId>ansible-adapter-installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors</groupId>
             <artifactId>base-http-installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors</groupId>
             <artifactId>mdsal-resource-installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors.messagerouter</groupId>
             <artifactId>publisher.installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors</groupId>
             <artifactId>netbox-client-installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors</groupId>
             <artifactId>resource-assignment-installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors</groupId>
             <artifactId>saltstack-adapter-installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors</groupId>
             <artifactId>sql-resource-installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.adaptors</groupId>
             <artifactId>sliadaptors-features-installer</artifactId>
             <version>${ccsdk.sli.adaptors.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
-
         <dependency>
             <groupId>org.onap.ccsdk.sli.northbound</groupId>
             <artifactId>asdcApi-installer</artifactId>
             <version>${ccsdk.sli.northbound.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.northbound</groupId>
             <artifactId>dataChange-installer</artifactId>
             <version>${ccsdk.sli.northbound.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.northbound</groupId>
             <artifactId>lcm-installer</artifactId>
             <version>${ccsdk.sli.northbound.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.northbound</groupId>
             <artifactId>slinorthbound-features-installer</artifactId>
             <version>${ccsdk.sli.northbound.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.plugins</groupId>
             <artifactId>properties-node-installer</artifactId>
             <version>${ccsdk.sli.plugins.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.plugins</groupId>
             <artifactId>restapi-call-node-installer</artifactId>
             <version>${ccsdk.sli.plugins.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.plugins</groupId>
             <artifactId>template-node-installer</artifactId>
             <version>${ccsdk.sli.plugins.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.plugins</groupId>
             <artifactId>restconf-client-installer</artifactId>
             <version>${ccsdk.sli.plugins.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.plugins</groupId>
             <artifactId>sshapi-call-node-installer</artifactId>
             <version>${ccsdk.sli.plugins.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.sli.plugins</groupId>
             <artifactId>sliplugins-features-installer</artifactId>
             <version>${ccsdk.sli.plugins.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.features</groupId>
             <artifactId>features-installer</artifactId>
             <version>${ccsdk.features.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.features.sdnr.wt</groupId>
             <artifactId>sdnr-wt-feature-aggregator-installer</artifactId>
             <version>${ccsdk.features.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.features</groupId>
             <artifactId>aafshiro-installer</artifactId>
             <version>${ccsdk.features.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.features.sdnr.northbound</groupId>
             <artifactId>sdnr-northbound-features-installer</artifactId>
             <version>${ccsdk.features.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.oran</groupId>
             <artifactId>a1-adapter-northbound-installer</artifactId>
             <version>${ccsdk.oran.a1adapter.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.features.sdnr.northbound</groupId>
             <artifactId>oofpcipoc-installer</artifactId>
             <version>${ccsdk.features.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.oran</groupId>
             <artifactId>a1-adapter-installer</artifactId>
             <version>${ccsdk.oran.a1adapter.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.features.sdnr.northbound</groupId>
             <artifactId>CMNotify-installer</artifactId>
             <version>${ccsdk.features.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.onap.ccsdk.features.sdnr.northbound</groupId>
             <artifactId>ranSlice-installer</artifactId>
             <version>${ccsdk.features.version}</version>
-            <classifier>repo</classifier>
             <type>zip</type>
+            <classifier>repo</classifier>
         </dependency>
     </dependencies>
 
     <build>
-        <extensions>
-            <extension>
-                <!-- this extension is required by wagon in order to pass the proxy -->
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-http-lightweight</artifactId>
-                <version>2.2</version>
-            </extension>
-        </extensions>
         <plugins>
-
-
             <plugin>
                 <groupId>org.codehaus.groovy.maven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
+                <version>1.0</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
@@ -339,8 +331,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
@@ -364,7 +354,6 @@
                             </resources>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>copy-scripts</id>
                         <goals>
@@ -384,7 +373,6 @@
                             </resources>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>copy-odl-resources</id>
                         <goals>
@@ -528,7 +516,6 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.5.0</version>
                 <executions>
-
                     <execution>
                         <id>change shell permissions</id>
                         <phase>process-sources</phase>
@@ -555,18 +542,25 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
-                  <execution>
-                    <goals>
-                      <goal>integration-test</goal>
-                      <goal>verify</goal>
-                    </goals>
-                  </execution>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
                 </executions>
                 <configuration>
-                  <skipITs>true</skipITs>
+                    <skipITs>true</skipITs>
                 </configuration>
-              </plugin>
+            </plugin>
         </plugins>
+        <extensions>
+            <extension><!-- this extension is required by wagon in order to pass the proxy -->
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-http-lightweight</artifactId>
+                <version>2.2</version>
+            </extension>
+        </extensions>
     </build>
 
     <profiles>
@@ -578,24 +572,24 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <executions>
-                          <execution>
-                            <goals>
-                              <goal>integration-test</goal>
-                              <goal>verify</goal>
-                            </goals>
-                          </execution>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
                         </executions>
                         <configuration>
-                          <skipITs>false</skipITs>
-                          <environmentVariables>
-                            <ODLSLI_PORT>${odlsli.port}</ODLSLI_PORT>
-                          </environmentVariables>
+                            <skipITs>false</skipITs>
+                            <environmentVariables>
+                                <ODLSLI_PORT>${odlsli.port}</ODLSLI_PORT>
+                            </environmentVariables>
                         </configuration>
-                      </plugin>
+                    </plugin>
                     <plugin>
                         <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.28.0</version>
+                        <version>0.34.0</version>
                         <inherited>false</inherited>
                         <configuration>
                             <images>
@@ -610,14 +604,18 @@
                                             <tag>${project.docker.latestfulltag.snapshot.version}</tag>
                                             <tag>${project.docker.latesttagtimestamp.snapshot.version}</tag>
                                             <tag>${project.docker.uniquedockertag.snapshot.version}</tag>
-				    </tags>
+                                        </tags>
                                     </build>
                                 </image>
                             </images>
+                            <verbose>${docker.verbose}</verbose>
+                            <!-- Hardocding skipPush to false, as during verification CSIT currently pulling docker image from nexus -->
+                            <!-- <skipPush>${docker.skip.push}</skipPush> -->
+                            <skipPush>false</skipPush>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>generate-images</id>
+                                <id>build-images</id>
                                 <phase>package</phase>
                                 <goals>
                                     <goal>build</goal>
@@ -700,9 +698,8 @@
                             </execution>
                             <execution>
                                 <id>push-images</id>
-                                <phase>${docker.push.phase}</phase>
                                 <goals>
-                                    <goal>build</goal>
+                                    <!--<goal>build</goal>-->
                                     <goal>push</goal>
                                 </goals>
                             </execution>

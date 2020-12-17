@@ -9,33 +9,27 @@
     </parent>
 
     <artifactId>distribution-odl-aluminum</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>ccsdk-distribution :: opendaylight</name>
+    <name>ccsdk-distribution :: opendaylight :: aluminum</name>
     <description>Creates OpenDaylight container</description>
-    
-    <properties>
-		<ccsdk.project.version>${project.version}</ccsdk.project.version>
-		<ccsdk.build.timestamp>${maven.build.timestamp}</ccsdk.build.timestamp>
-		<ccsdk.opendaylight.version>0.13.1</ccsdk.opendaylight.version>
-		<docker.push.phase>deploy</docker.push.phase>
-    </properties>
-    
-    	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.opendaylight.integration</groupId>
-				<artifactId>onap-karaf</artifactId>
-				<version>${ccsdk.opendaylight.version}</version>
-				<type>tar.gz</type>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-
 
     <modules>
-    	    <module>aluminum-alpine</module>
+        <module>aluminum-alpine</module>
     </modules>
+
+    <properties>
+        <ccsdk.opendaylight.version>0.13.1</ccsdk.opendaylight.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.opendaylight.integration</groupId>
+                <artifactId>onap-karaf</artifactId>
+                <version>${ccsdk.opendaylight.version}</version>
+                <type>tar.gz</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

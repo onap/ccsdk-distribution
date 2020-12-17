@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>distribution-j11-alpine</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>ccsdk-distribution :: alpine :: java11</name>
@@ -20,31 +19,28 @@
 
     <properties>
         <image.name>onap/ccsdk-alpine-j11-image</image.name>
-        <ccsdk.project.version>${project.version}</ccsdk.project.version>
-        <ccsdk.build.timestamp>${maven.build.timestamp}</ccsdk.build.timestamp>
         <base.image>onap/integration-java11</base.image>
         <base.image.version>7.1.0</base.image.version>
     </properties>
 
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.codehaus.groovy.maven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
+                <version>1.0</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
                         <goals>
                             <goal>execute</goal>
                         </goals>
-                        <configuration>     
+                        <configuration>
                             <source>${basedir}/../../src/main/scripts/TagVersion.groovy</source>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
@@ -81,10 +77,9 @@
                     <plugin>
                         <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.28.0</version>
+                        <version>0.34.0</version>
                         <inherited>false</inherited>
                         <configuration>
-
                             <images>
                                 <image>
                                     <name>${image.name}</name>
@@ -94,25 +89,18 @@
                                         <dockerFile>Dockerfile</dockerFile>
                                         <tags>
                                             <tag>${project.docker.latestminortag.version}</tag>
-                                            <tag>${project.docker.latestfulltag.version}</tag>              
+                                            <tag>${project.docker.latestfulltag.version}</tag>
                                             <tag>${project.docker.latesttagtimestamp.version}</tag>
                                         </tags>
                                     </build>
                                 </image>
                             </images>
+                            <verbose>${docker.verbose}</verbose>
+                            <skipPush>${docker.skip.push}</skipPush>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>generate-images</id>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-
-                            <execution>
-                                <id>push-images</id>
-                                <phase>deploy</phase>
+                                <id>build-push-images</id>
                                 <goals>
                                     <goal>build</goal>
                                     <goal>push</goal>
@@ -120,7 +108,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
                 </plugins>
             </build>
         </profile>
