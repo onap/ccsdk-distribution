@@ -9,33 +9,27 @@
     </parent>
 
     <artifactId>distribution-odl-sodium</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>ccsdk-distribution :: opendaylight</name>
+    <name>ccsdk-distribution :: opendaylight :: sodium</name>
     <description>Creates OpenDaylight container</description>
-    
-    <properties>
-		<ccsdk.project.version>${project.version}</ccsdk.project.version>
-		<ccsdk.build.timestamp>${maven.build.timestamp}</ccsdk.build.timestamp>
-		<ccsdk.opendaylight.version>0.11.4</ccsdk.opendaylight.version>
-		<docker.push.phase>deploy</docker.push.phase>
-    </properties>
-    
-    	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.opendaylight.integration</groupId>
-				<artifactId>onap-karaf</artifactId>
-				<version>${ccsdk.opendaylight.version}</version>
-				<type>tar.gz</type>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-
 
     <modules>
-    	    <module>sodium-alpine</module>
+        <module>sodium-alpine</module>
     </modules>
+
+    <properties>
+        <ccsdk.opendaylight.version>0.11.4</ccsdk.opendaylight.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.opendaylight.integration</groupId>
+                <artifactId>onap-karaf</artifactId>
+                <version>${ccsdk.opendaylight.version}</version>
+                <type>tar.gz</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
