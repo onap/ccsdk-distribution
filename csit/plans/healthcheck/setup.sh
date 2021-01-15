@@ -15,21 +15,14 @@
 # limitations under the License.
 #
 # Modifications copyright (c) 2017 AT&T Intellectual Property
-# Modifications copyright (c) 2020 Samsung Electronics Co., Ltd.
+# Modifications copyright (c) 2020-2021 Samsung Electronics Co., Ltd.
 #
 
 export MTU=$(/sbin/ifconfig | grep MTU | sed 's/.*MTU://' | sed 's/ .*//' | sort -n | head -1)
-export NEXUS_DOCKER_REPO="nexus3.onap.org:10001"
-export NEXUS_USERNAME=docker
-export NEXUS_PASSWD=docker
 export DMAAP_TOPIC=AUTO
 
-if [ "$UNIQUE_DOCKER_TAG" == "" ]; then
-    export CCSDK_DOCKER_IMAGE_VERSION=latest
-else
-    source "${WORKSPACE}/../version.properties"
-    export CCSDK_DOCKER_IMAGE_VERSION=${snapshot_version}-${UNIQUE_DOCKER_TAG}
-fi
+# TODO: any reason to ever read the version from version.properties? 
+export CCSDK_DOCKER_IMAGE_VERSION=latest
 
 if [ "$MTU" == "" ]; then
 	  export MTU="1450"
@@ -42,11 +35,18 @@ cd $WORKSPACE/archives/yaml
 unset http_proxy https_proxy
 
 sed -i "s/DMAAP_TOPIC_ENV=.*/DMAAP_TOPIC_ENV="AUTO"/g" docker-compose.yml
-docker login -u $NEXUS_USERNAME -p $NEXUS_PASSWD $NEXUS_DOCKER_REPO
 
-docker pull $NEXUS_DOCKER_REPO/onap/ccsdk-odlsli-alpine-image:$CCSDK_DOCKER_IMAGE_VERSION
+# TODO: is there ever need to pull the images from Nexus?
+# run-csit.sh already logins to nexus3.onap.org:10001 so this now works only if
+# NEXUS_DOCKER_REPO is not defined at all (in which case the images must be available
+# locally without any repository prefix) or if its value is nexus3.onap.org:10001
 
-docker pull $NEXUS_DOCKER_REPO/onap/ccsdk-dgbuilder-image:$CCSDK_DOCKER_IMAGE_VERSION
+if [ "$NEXUS_DOCKER_REPO" != "" ]; then
+   docker pull $NEXUS_DOCKER_REPO/onap/ccsdk-odlsli-alpine-image:$CCSDK_DOCKER_IMAGE_VERSION
+   docker pull $NEXUS_DOCKER_REPO/onap/ccsdk-dgbuilder-image:$CCSDK_DOCKER_IMAGE_VERSION
+   # Add trailing slash for docker-compose
+   export NEXUS_DOCKER_REPO=$NEXUS_DOCKER_REPO/
+fi
 
 # start CCSDK containers with docker compose and configuration from docker-compose.yml
 curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-`uname -s`-`uname -m` > docker-compose
