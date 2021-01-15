@@ -31,7 +31,6 @@ propertiesFile.withInputStream {
 project.properties['project.docker.latestminortag.snapshot.version']=properties.release_name + '.' + properties.sprint_number + "-SNAPSHOT-latest";
 project.properties['project.docker.latestfulltag.snapshot.version']=properties.release_name + '.' + properties.sprint_number + '.' + properties.feature_revision + "-SNAPSHOT-latest";
 project.properties['project.docker.latesttagtimestamp.snapshot.version']=properties.release_name + '.' + properties.sprint_number + '.' + properties.feature_revision + "-SNAPSHOT-"+project.properties['ccsdk.build.timestamp'];
-project.properties['project.docker.uniquedockertag.snapshot.version']=properties.release_name + '.' + properties.sprint_number + '.' + properties.feature_revision + "-SNAPSHOT-"+project.properties['uniquedockertag'];
 
 // Temporary solution for odl-sodium-alpine dependence in odlsli-alpine image build
 project.properties['project.docker.latestfulltag.version']=properties.release_name + '.' + properties.sprint_number + '.' + properties.feature_revision + "-STAGING-latest";

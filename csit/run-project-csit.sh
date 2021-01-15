@@ -29,6 +29,9 @@ export TESTOPTIONS=${1}
 export GERRIT_BRANCH=${GERRIT_BRANCH:-`git rev-parse --abbrev-ref HEAD`}
 export WORKSPACE=$(git rev-parse --show-toplevel)/csit
 
+# temporary DEBUG output, remove this
+docker images -a
+
 rm -rf ${WORKSPACE}/archives
 mkdir -p ${WORKSPACE}/archives
 rm -rf ${WORKSPACE}/data
@@ -49,3 +52,7 @@ do
     dir=${dir%*/}  # remove the trailing /
    ./run-csit.sh ${dir} ${TESTOPTIONS}
 done
+
+# temporary DEBUG output, remove this
+docker images -a
+
