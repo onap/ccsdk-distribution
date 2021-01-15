@@ -30,7 +30,6 @@
 
         <docker.verbose>true</docker.verbose>
 
-        <uniquedockertag>${env.UNIQUE_DOCKER_TAG}</uniquedockertag>
         <docker.buildArg.https_proxy>${https_proxy}</docker.buildArg.https_proxy>
         <opendaylight.root>opt/opendaylight</opendaylight.root>
 
@@ -603,14 +602,12 @@
                                             <tag>${project.docker.latestminortag.snapshot.version}</tag>
                                             <tag>${project.docker.latestfulltag.snapshot.version}</tag>
                                             <tag>${project.docker.latesttagtimestamp.snapshot.version}</tag>
-                                            <tag>${project.docker.uniquedockertag.snapshot.version}</tag>
                                         </tags>
                                     </build>
                                 </image>
                             </images>
                             <verbose>${docker.verbose}</verbose>
-                            <!-- Hardocding skipPush to false, as during verification CSIT currently pulling docker image from nexus -->
-                            <!-- <skipPush>${docker.skip.push}</skipPush> -->
+                            <skipPush>${docker.skip.push}</skipPush>
                             <skipPush>false</skipPush>
                         </configuration>
                         <executions>
