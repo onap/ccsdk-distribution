@@ -117,7 +117,12 @@
                         <switch test='`$instantiate-r-a-n-slice-input.action`'>
                             <outcome value='allocate'>
                                 <block atomic="true">
-                                    <call module='GENERIC-RESOURCE-API' rpc='instantiateRANSliceAllocate' mode='sync' >
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Calling instantiateRANSliceAllocate "/>
+                                    </record>
+                                    <call module='ran-slice-api' rpc='instantiateRANSliceAllocate' mode='sync' >
                                         <outcome value='failure'>
                                             <return status='failure'>
                                                 <parameter name='ack-final' value='Y' />
@@ -128,7 +133,12 @@
                             </outcome>
                             <outcome value='modify-allocate'>
                                 <block atomic="true">
-                                    <call module='GENERIC-RESOURCE-API' rpc='instantiateRANSliceModifyAllocate' mode='sync' >
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Calling instantiateRANSliceModifyAllocate "/>
+                                    </record>
+                                    <call module='ran-slice-api' rpc='instantiateRANSliceModifyAllocate' mode='sync' >
                                         <outcome value='failure'>
                                             <return status='failure'>
                                                 <parameter name='ack-final' value='Y' />
@@ -139,6 +149,11 @@
                             </outcome>
                             <outcome value='modify-deallocate'>
                                 <block atomic="true">
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Calling instantiateRANSliceModifyDeallocate "/>
+                                    </record>
                                     <call module='GENERIC-RESOURCE-API' rpc='instantiateRANSliceModifyDeallocate' mode='sync' >
                                         <outcome value='failure'>
                                             <return status='failure'>
@@ -150,6 +165,11 @@
                             </outcome>
                             <outcome value='reconfigure'>
                                 <block atomic="true">
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Calling instantiateRANSliceReconfigure "/>
+                                    </record>
                                     <call module='GENERIC-RESOURCE-API' rpc='instantiateRANSliceReconfigure' mode='sync' >
                                         <outcome value='failure'>
                                             <return status='failure'>
