@@ -1,4 +1,4 @@
-FROM onap/integration-python:7.0.1
+FROM onap/integration-python:8.0.0
 
 LABEL maintainer="SDN-C Team (sdnc@lists.openecomp.org)"
 ARG PIP_TAG=18.0
@@ -19,6 +19,8 @@ RUN apk add --no-cache curl \
                        iputils \
                        bash \
                        openssh-client &&\
+    curl https://sh.rustup.rs -sSf | sh -s -- -y &&\
+    source $HOME/.cargo/env &&\
     apk add --no-cache --virtual .build-deps build-base \
                                              libffi-dev \
                                              openssl-dev \
