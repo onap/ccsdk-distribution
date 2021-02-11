@@ -20,6 +20,7 @@
     <properties>
         <image.name>onap/ccsdk-odl-aluminum-alpine-image</image.name>
         <odl.karaf.artifactId>onap-karaf</odl.karaf.artifactId>
+        <odl.shiro.version>0.12.1</odl.shiro.version>
     </properties>
 
     <build>
@@ -63,6 +64,36 @@
 
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-with-alternalte-repo-2</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.highstreet-technologies.aaa</groupId>
+                                    <artifactId>aaa-shiro</artifactId>
+                                    <version>${odl.shiro.version}</version>
+                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/opendaylight/aaa/aaa-shiro/${odl.shiro.version}</outputDirectory>
+                                    <destFileName>aaa-shiro-${odl.shiro.version}.jar</destFileName>
+                                    <excludes>*</excludes>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.highstreet-technologies.aaa</groupId>
+                                    <artifactId>aaa-authn-api</artifactId>
+                                    <version>${odl.shiro.version}</version>
+                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/opendaylight/aaa/aaa-authn-api/${odl.shiro.version}</outputDirectory>
+                                    <destFileName>aaa-authn-api-${odl.shiro.version}.jar</destFileName>
+                                    <excludes>*</excludes>
                                 </artifactItem>
                             </artifactItems>
                             <overWriteReleases>false</overWriteReleases>
