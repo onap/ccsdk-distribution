@@ -1,0 +1,27 @@
+{
+        "ietf-yang-patch:yang-patch": {
+                "patch-id": "Patch 1",
+                "comment": "patch for NSSAIList",
+                "edit": [
+            {
+                        "edit-id": "edit1",
+                        "operation": "merge",
+                        "target": "/ran-network:sNSSAIList[ran-network:sNssai='${"tmp.payload.sNSSAI}']",
+                        "value": {
+      "ran-network:sNSSAIList": [
+        {
+          "ran-network:sNssai": ${tmp.payload.sNSSAI},
+          "ran-network:status": "INACTIVE",
+          "ran-network:configData": [
+            {
+              "ran-network:configParameter": "maxNumberOfConns",
+              "ran-network:configValue": ${tmp.nearRTRIC.maxNumberOfConns}
+            }
+          ]
+        }
+      ]
+}
+}
+]
+}
+}
