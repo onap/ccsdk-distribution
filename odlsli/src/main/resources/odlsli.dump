@@ -433,38 +433,6 @@ CREATE TABLE `GENERIC_VPN_BINDING` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `HOSTNAME`
---
-
-DROP TABLE IF EXISTS `HOSTNAME`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `HOSTNAME` (
-  `hostname` varchar(21) NOT NULL,
-  `parent_hostname` varchar(21) DEFAULT NULL,
-  `cust_id` int(11) NOT NULL,
-  `loc_id` int(11) NOT NULL,
-  `site_sequence` varchar(2) NOT NULL,
-  `server_sequence` varchar(2) NOT NULL,
-  `activation_code` varchar(11) DEFAULT NULL,
-  `vnf_sequence` varchar(2) DEFAULT NULL,
-  `vendor_code` varchar(1) NOT NULL,
-  `virtual_device_type` varchar(2) DEFAULT NULL,
-  `device_sequence` varchar(3) DEFAULT NULL,
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`hostname`),
-  KEY `IN1_HOSTNAME` (`cust_id`),
-  KEY `IN2_HOSTNAME` (`loc_id`),
-  KEY `IN3_HOSTNAME` (`vendor_code`),
-  KEY `IN4_HOSTNAME` (`parent_hostname`),
-  CONSTRAINT `FK1_HOSTNAME` FOREIGN KEY (`cust_id`) REFERENCES `CUSTOMER` (`cust_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK2_HOSTNAME` FOREIGN KEY (`loc_id`) REFERENCES `LOCATION` (`loc_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK3_HOSTNAME` FOREIGN KEY (`vendor_code`) REFERENCES `VENDOR_CODE` (`vendor_code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK4_HOSTNAME` FOREIGN KEY (`parent_hostname`) REFERENCES `HOSTNAME` (`hostname`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `IPV4_ADDRESS_POOL`
 --
 
@@ -554,8 +522,6 @@ CREATE TABLE `MAX_SERVER_SPEED` (
   UNIQUE KEY `max_server_speed_id` (`max_server_speed_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-
 
 --
 -- Table structure for table `NETWORK_PROFILE`
@@ -901,7 +867,6 @@ CREATE TABLE `THRESHOLD_NOTIFICATION` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-
 --
 -- Table structure for table `VENDOR_CODE`
 --
@@ -913,6 +878,38 @@ CREATE TABLE `VENDOR_CODE` (
   `vendor_code` varchar(1) NOT NULL,
   `vendor` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`vendor_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `HOSTNAME`
+--
+
+DROP TABLE IF EXISTS `HOSTNAME`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `HOSTNAME` (
+  `hostname` varchar(21) NOT NULL,
+  `parent_hostname` varchar(21) DEFAULT NULL,
+  `cust_id` int(11) NOT NULL,
+  `loc_id` int(11) NOT NULL,
+  `site_sequence` varchar(2) NOT NULL,
+  `server_sequence` varchar(2) NOT NULL,
+  `activation_code` varchar(11) DEFAULT NULL,
+  `vnf_sequence` varchar(2) DEFAULT NULL,
+  `vendor_code` varchar(1) NOT NULL,
+  `virtual_device_type` varchar(2) DEFAULT NULL,
+  `device_sequence` varchar(3) DEFAULT NULL,
+  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`hostname`),
+  KEY `IN1_HOSTNAME` (`cust_id`),
+  KEY `IN2_HOSTNAME` (`loc_id`),
+  KEY `IN3_HOSTNAME` (`vendor_code`),
+  KEY `IN4_HOSTNAME` (`parent_hostname`),
+  CONSTRAINT `FK1_HOSTNAME` FOREIGN KEY (`cust_id`) REFERENCES `CUSTOMER` (`cust_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK2_HOSTNAME` FOREIGN KEY (`loc_id`) REFERENCES `LOCATION` (`loc_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK3_HOSTNAME` FOREIGN KEY (`vendor_code`) REFERENCES `VENDOR_CODE` (`vendor_code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK4_HOSTNAME` FOREIGN KEY (`parent_hostname`) REFERENCES `HOSTNAME` (`hostname`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1353,10 +1350,10 @@ CREATE TABLE `WAN_COMBO_ALLOWABLE` (
 -- Table structure for table `emp1000`
 --
 
-DROP TABLE IF EXISTS `emp1000`;
+DROP TABLE IF EXISTS `EMP1000`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `emp1000` (
+CREATE TABLE `EMP1000` (
   `firstName` varchar(20) DEFAULT NULL,
   `lastName` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1366,10 +1363,10 @@ CREATE TABLE `emp1000` (
 -- Table structure for table `linda`
 --
 
-DROP TABLE IF EXISTS `linda`;
+DROP TABLE IF EXISTS `LINDA`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `linda` (
+CREATE TABLE `LINDA` (
   `c1` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1378,10 +1375,10 @@ CREATE TABLE `linda` (
 -- Table structure for table `testit`
 --
 
-DROP TABLE IF EXISTS `testit`;
+DROP TABLE IF EXISTS `TESTIT`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `testit` (
+CREATE TABLE `TESTIT` (
   `c1` varchar(12) DEFAULT NULL,
   `c2` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1391,10 +1388,10 @@ CREATE TABLE `testit` (
 -- Table structure for table `testtable`
 --
 
-DROP TABLE IF EXISTS `testtable`;
+DROP TABLE IF EXISTS `TESTTABLE`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `testtable` (
+CREATE TABLE `TESTTABLE` (
   `city_code_id` int(11) NOT NULL AUTO_INCREMENT,
   `city_code` varchar(3) NOT NULL,
   `city` varchar(150) NOT NULL,
