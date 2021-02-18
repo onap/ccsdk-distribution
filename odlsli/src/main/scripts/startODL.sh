@@ -28,20 +28,22 @@ ODL_HOME=${ODL_HOME:-/opt/opendaylight}
 ODL_ADMIN_PASSWORD=${ODL_ADMIN_PASSWORD:-Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U}
 CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 SLEEP_TIME=${SLEEP_TIME:-120}
-MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-openECOMP1.0}
-INSTALLED_DIR=${INSTALLED_FILE:-/opt/opendaylight/current/daexim}
+INSTALLED_DIR=${INSTALLED_FILE:-${ODL_HOME}/current/daexim}
 
+MYSQL_HOST=${MYSQL_HOST:-dbhost}
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-openECOMP1.0}
 
 #
 # Wait for database
 #
-echo "Waiting for mysql"
-until mysql -h dbhost -u root -p${MYSQL_ROOT_PASSWORD} mysql &> /dev/null
+echo -e "\nWaiting for mysql:(${MYSQL_HOST})"
+until mysql -h ${MYSQL_HOST} -u root -p${MYSQL_ROOT_PASSWORD} mysql &> /dev/null
 do
   printf "."
-  sleep 1
+  sleep 10
 done
-echo -e "\nmysql ready"
+echo -e "\nmysql:(${MYSQL_HOST}) is ready."
+
 
 if [ ! -d ${INSTALLED_DIR} ]
 then
