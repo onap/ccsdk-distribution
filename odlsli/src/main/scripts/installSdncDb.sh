@@ -2,7 +2,7 @@
 
 ###
 # ============LICENSE_START=======================================================
-# openECOMP : SDN-C
+# ONAP : SDN-C
 # ================================================================================
 # Copyright (C) 2017 AT&T Intellectual Property. All rights
 # 							reserved.
@@ -22,24 +22,28 @@
 ###
 
 CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
+MYSQL_HOST=${MYSQL_HOST:-dbhost}
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-openECOMP1.0}
 
 SDNC_DB_USER=${SDNC_DB_USER:-sdnctl}
-SDNC_DB_PASSWD=${SDNC_DB_PASSWD:-gamma}
+SDNC_DB_PASSWORD=${SDNC_DB_PASSWORD:-gamma}
 SDNC_DB_DATABASE=${SDN_DB_DATABASE:-sdnctl}
 
-
+echo -e "\nCreating database:($SDNC_DB_DATABASE) and user:($SDNC_DB_USER)"
 # Create tablespace and user account
-mysql -h dbhost -u root -p${MYSQL_ROOT_PASSWORD} mysql <<-END
-CREATE DATABASE ${SDNC_DB_DATABASE};
-CREATE USER '${SDNC_DB_USER}'@'localhost' IDENTIFIED BY '${SDNC_DB_PASSWD}';
-CREATE USER '${SDNC_DB_USER}'@'%' IDENTIFIED BY '${SDNC_DB_PASSWD}';
+mysql -h ${MYSQL_HOST} -u root -p${MYSQL_ROOT_PASSWORD} mysql <<-END
+CREATE DATABASE IF NOT EXISTS ${SDNC_DB_DATABASE};
+CREATE USER IF NOT EXISTS '${SDNC_DB_USER}'@'localhost' IDENTIFIED BY '${SDNC_DB_PASSWORD}';
+CREATE USER IF NOT EXISTS '${SDNC_DB_USER}'@'%' IDENTIFIED BY '${SDNC_DB_PASSWORD}';
 GRANT ALL PRIVILEGES ON ${SDNC_DB_DATABASE}.* TO '${SDNC_DB_USER}'@'localhost' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON ${SDNC_DB_DATABASE}.* TO '${SDNC_DB_USER}'@'%' WITH GRANT OPTION;
+flush privileges;
 commit;
 END
 
+# load schema
 if [ -f ${CCSDK_HOME}/data/odlsli.dump ]
 then
-mysql -h dbhost -u root -p${MYSQL_ROOT_PASSWD} sdnctl < ${CCSDK_HOME}/data/odlsli.dump
+    mysql -h ${MYSQL_HOST} -u root -p${MYSQL_ROOT_PASSWORD} ${SDNC_DB_DATABASE} < ${CCSDK_HOME}/data/odlsli.dump
+    echo -e "\n ${SDNC_DB_DATABASE} schema loaded."
 fi
