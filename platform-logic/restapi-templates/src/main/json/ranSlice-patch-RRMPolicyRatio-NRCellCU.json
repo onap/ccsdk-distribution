@@ -1,0 +1,35 @@
+{
+        "ietf-yang-patch:yang-patch" : {
+          "patch-id" : "patch-2",
+          "comment" : "Patch NRCellCU RRMPolicyRatio",
+          "edit" : [
+            {
+              "edit-id" : "edit2",
+              "operation" : "merge",
+              "target" : "/ran-network:RRMPolicyRatio[ran-network:id='${"tmp.RRMPolicyRatio_id}']",
+              "value" : {
+                  "ran-network:RRMPolicyRatio": [
+                    {
+                      "ran-network:id": ${tmp.RRMPolicyRatio_id},
+                      "ran-network:attributes": {
+                        "ran-network:quotaType": "STRICT",
+                        "ran-network:rRMPolicyMaxRatio": ${tmp.rrmPolicyDedicatedRatio_CellCU_updated},
+                        "ran-network:rRMPolicyMinRatio": ${tmp.rrmPolicyDedicatedRatio_CellCU_updated},
+                        "ran-network:rRMPolicyDedicatedRatio": ${tmp.rrmPolicyDedicatedRatio_CellCU_updated},
+                        "ran-network:resourceType": "RRC Connected Users",
+                        "ran-network:rRMPolicyMemberList": [
+                          {
+                            "ran-network:idx": ${tmp.RRMPolicyMember_id},
+                            "ran-network:sNSSAI": ${tmp.payload.sNSSAI},
+                            "ran-network:mcc": ${tmp.mcc},
+                            "ran-network:mnc": ${tmp.mnc}
+                          }
+                        ]
+                      }
+                    }
+                  ]
+              }
+            }
+          ]
+        }
+      }
