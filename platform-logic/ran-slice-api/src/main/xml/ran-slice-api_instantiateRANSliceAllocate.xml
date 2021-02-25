@@ -1057,7 +1057,10 @@
                         </record>
                         <block atomic='true'>
                             <set>
-                                <parameter name='tmp.TotalNumberOfDRBForNSSAI' value='`$tmp.maxNumberOfConns`' />
+                                <parameter name='tmp.maxNumberOfConns' value='`$payloadJson.input.sliceProfile.maxNumberOfConns`' />
+                            </set>
+                            <set>
+                                <parameter name='tmp.TotalNumberOfDRBForNSSAI' value='`$tmp.maxNumberOfConns*4`' />
                             </set>
                             <set>
                                 <parameter name='tmp.DRBPerCUUPForSNSSAI' value='`$tmp.TotalNumberOfDRBForNSSAI / $tmp.CUUPListEntries`' />
