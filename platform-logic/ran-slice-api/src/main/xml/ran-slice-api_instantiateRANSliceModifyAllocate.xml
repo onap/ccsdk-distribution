@@ -95,115 +95,6 @@
                     </outcome>
                 </execute>
             </block>
-            <block atomic='true'>
-                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                    <parameter name="source" value="`$prop.restapi.configdb.getListOfCells`"/>
-                    <parameter name="outputPath" value="tmp.configdb.getListOfCells.url"/>
-                    <parameter name="target" value="{trackingArea}"/>
-                    <parameter name="replacement" value="`$tmp.payload.trackingArea`"/>
-                </execute>
-                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
-                    <parameter name="level" value="info" />
-                    <parameter name="field1" value="URL for configDB Get getListOfCells for tracking area"/>
-                    <parameter name='field2' value="`$prop.configdb.url + $tmp.configdb.getListOfCells.url`" />
-                    <parameter name='field3' value="`$tmp.payload.trackingArea`" />
-                </record>
-                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                    <parameter name="restapiUrl" value="`$prop.configdb.url + $tmp.configdb.getListOfCells.url`"/>
-                    <parameter name="httpMethod" value="GET"/>
-                    <parameter name="responsePrefix" value="getListofCells-configdb-response"/>
-                    <parameter name='contentType' value='application/json' />
-                    <parameter name='format' value='json' />
-                    <parameter name='accept' value='application/json' />
-                    <parameter name="convertResponse" value="true"/>
-                    <outcome value='failure'>
-                        <block>
-                            <set>
-                                <parameter name='error-code' value='500'/>
-                                <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
-                            </set>
-                            <return status='failure'>
-                                <parameter name='ack-final' value='Y'/>
-                                <parameter name='error-code' value='500'/>
-                                <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
-                            </return>
-                            <block atomic='true'>
-                                <set>
-                                    <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
-                                    <parameter name="tmp.status" value="`$error-code`"/>
-                                    <parameter name="tmp.reason" value="`$error-message`"/>
-                                    <parameter name="tmp.requestID" value="`$instantiateRANSlice-input.common-header.request-id`"/>
-                                    <parameter name="tmp.action" value="`$instantiateRANSlice-input.action`"/>
-                                </set>
-                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                    <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                    <parameter name="level" value="info" />
-                                    <parameter name="field1" value="URL for SO Callback Response"/>
-                                    <parameter name='field2' value="`$tmp.so.callbackURL`" />
-                                    <parameter name='field3' value="`$tmp.status`" />
-                                    <parameter name='field4' value="`$tmp.reason`" />
-                                    <parameter name='field5' value="`$tmp.requestID`" />
-                                    <parameter name='field6' value="`$tmp.action`" />
-                                </record>
-                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
-                                    <parameter name="restapiUrl" value="`$tmp.so.callbackURL`"/>
-                                    <parameter name="httpMethod" value="POST"/>
-                                    <parameter name="responsePrefix" value="so-callback-modify-response"/>
-                                    <parameter name='contentType' value='application/json' />
-                                    <parameter name='format' value='json' />
-                                    <parameter name='accept' value='application/json' />
-                                    <parameter name="convertResponse" value="true"/>
-                                    <outcome value='failure'>
-                                        <block>
-                                            <return status='failure'>
-                                                <parameter name='ack-final' value='Y'/>
-                                                <parameter name="error-code" value="500" />
-                                                <parameter name="error-message" value="Error sending SO Response" />
-                                            </return>
-                                        </block>
-                                    </outcome>
-                                    <outcome value='success'>
-                                        <block>
-                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
-                                                <parameter name="level" value="info" />
-                                                <parameter name="field1" value="SO Response Sent "/>
-                                            </record>
-                                        </block>
-                                    </outcome>
-                                </execute>
-                            </block>
-                        </block>
-                    </outcome>
-                    <outcome value='success'>
-                        <block>
-                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
-                                <parameter name="level" value="info" />
-                                <parameter name="field1" value="Successfully Obtained List of Cells from ConfigDB"/>
-                                <parameter name="field2" value="`$getListofCells-configdb-response._length`"/>
-                                <parameter name="field3" value="List of Cells in the Tracking Area Relevant for RAN Slice Instantiation "/>
-                            </record>
-                            <for index='idx' start='0' end='`$getListofCells-configdb-response._length `' >
-                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                    <parameter name='outputPath' value='tmp.trackingarea.cell' />
-                                    <parameter name='source' value="`'getListofCells-configdb-response.[' + $idx + ']'`" />
-                                </execute>
-                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
-                                    <parameter name="level" value="info" />
-                                    <parameter name="field1" value="`$tmp.trackingarea.cell`"/>
-                                </record>
-                            </for>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
-                                <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-instantiateRANSlice-configrsp-context.log' />
-                            </execute>
-                        </block>
-                    </outcome>
-                </execute>
-            </block>
             <for index='idy' start='0' end='`$getNFNSSIRIC-configdb-response._length`' >
                 <block atomic='true'>
                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
@@ -307,25 +198,25 @@
                             </execute>
                             <for index='idcu' start='0' end='`$tmp.cellCUList_length`' >
                                 <block atomic='true'>
-                                    <for index='id-ta' start='0' end='`$getListofCells-configdb-response._length`' >
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                        <parameter name='outputPath' value='tmp.pLMNInfoList_length' />
+                                        <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUCPList['+ $idz +'].cellCUList['+ $idcu +'].pLMNInfoList_length '`" />
+                                    </execute>
+                                    <for index='id-cuplmn' start='0' end='`$tmp.pLMNInfoList_length`' >
                                         <block atomic='true'>
                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                                <parameter name='outputPath' value='tmp.cellCU1' />
-                                                <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUCPList['+ $idz +'].cellCUList['+ $idcu +'].cellLocalId'`" />
-                                            </execute>
-                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                                <parameter name='outputPath' value='tmp.cellCU2' />
-                                                <parameter name='source' value="`'getListofCells-configdb-response.[' + $id-ta + ']'`" />
+                                                <parameter name='outputPath' value='tmp.configDBSNSSAI' />
+                                                <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUCPList['+ $idz +'].cellCUList['+ $idcu +'].pLMNInfoList['+ $id-cuplmn +'].sNSSAI.sNSSAI'`" />
                                             </execute>
                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
                                                 <parameter name="level" value="info" />
-                                                <parameter name="field1" value="Cell - getNFNSSIRIC-configdb-response"/>
-                                                <parameter name="field2" value="`$tmp.cellCU1`"/>
-                                                <parameter name="field3" value="Cell - getListofCells-configdb-response"/>
-                                                <parameter name="field4" value="`$tmp.cellCU2`"/>
+                                                <parameter name="field1" value="sNSSAI - getNFNSSIRIC-configdb-response"/>
+                                                <parameter name="field2" value="`$tmp.configDBSNSSAI`"/>
+                                                <parameter name="field3" value="sNSSAI from request"/>
+                                                <parameter name="field4" value="`$tmp.sNSSAI`"/>
                                             </record>
-                                            <switch test='`$tmp.cellCU1 == $tmp.cellCU2`'>
+                                            <switch test='`$tmp.configDBSNSSAI == $tmp.sNSSAI`'>
                                                 <outcome value='true'>
                                                     <block atomic='true'>
                                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
@@ -342,7 +233,22 @@
                                                                     <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                                                 </execute>
                                                             </outcome>
-                                                            <outcome value='true'></outcome>
+                                                            <outcome value='true'>
+                                                                <block atomic='true'>
+                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                        <parameter name="source" value="`$prop.restapi.patchPLMNInfoListEntry.ToNRCellCU.ransim-mounted`"/>
+                                                                        <parameter name="outputPath" value="tmp.patchPLMNInfoListEntry.url"/>
+                                                                        <parameter name="target" value="{idNearRTRIC}"/>
+                                                                        <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                                    </execute>
+                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                        <parameter name="source" value="`$tmp.patchPLMNInfoListEntry.url`"/>
+                                                                        <parameter name="outputPath" value="tmp.patchPLMNInfoListEntry.url"/>
+                                                                        <parameter name="target" value="{mountName}"/>
+                                                                        <parameter name="replacement" value="`$tmp.CUCPName`"/>
+                                                                    </execute>
+                                                                </block>
+                                                            </outcome>
                                                         </switch>
                                                         <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                             <parameter name='outputPath' value='tmp.cellCULocalId' />
@@ -484,6 +390,22 @@
                                                                         <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                                                     </execute>
                                                                 </outcome>
+                                                                <outcome value='true'>
+                                                                    <block atomic='true'>
+                                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                            <parameter name="source" value="`$prop.restapi.RRMPolicyRatioEntry.ToNRCellCU.ransim-mounted`"/>
+                                                                            <parameter name="outputPath" value="tmp.getRRMPolicyRatio.url"/>
+                                                                            <parameter name="target" value="{idNearRTRIC}"/>
+                                                                            <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                                        </execute>
+                                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                            <parameter name="source" value="`$tmp.getRRMPolicyRatio.url`"/>
+                                                                            <parameter name="outputPath" value="tmp.getRRMPolicyRatio.url"/>
+                                                                            <parameter name="target" value="{mountName}"/>
+                                                                            <parameter name="replacement" value="`$tmp.CUCPName`"/>
+                                                                        </execute>
+                                                                    </block>
+                                                                </outcome>
                                                             </switch>
                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                                                 <parameter name="source" value="`$tmp.getRRMPolicyRatio.url`"/>
@@ -604,6 +526,22 @@
                                                                                 <parameter name="target" value="{idNearRTRIC}"/>
                                                                                 <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                                                             </execute>
+                                                                        </outcome>
+                                                                        <outcome value='true'>
+                                                                            <block atomic='true'>
+                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                    <parameter name="source" value="`$prop.restapi.RRMPolicyRatioEntry.ToNRCellCU.ransim-mounted`"/>
+                                                                                    <parameter name="outputPath" value="tmp.getRRMPolicyRatio.url"/>
+                                                                                    <parameter name="target" value="{idNearRTRIC}"/>
+                                                                                    <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                                                </execute>
+                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                    <parameter name="source" value="`$tmp.getRRMPolicyRatio.url`"/>
+                                                                                    <parameter name="outputPath" value="tmp.getRRMPolicyRatio.url"/>
+                                                                                    <parameter name="target" value="{mountName}"/>
+                                                                                    <parameter name="replacement" value="`$tmp.CUCPName`"/>
+                                                                                </execute>
+                                                                            </block>
                                                                         </outcome>
                                                                     </switch>
                                                                     <set>
@@ -911,7 +849,22 @@
                                                 <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                             </execute>
                                         </outcome>
-                                        <outcome value='true'></outcome>
+                                        <outcome value='true'>
+                                            <block atomic='true'>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$prop.restapi.patchPLMNInfoListEntry.ToGNBCUUP.ransim-mounted`"/>
+                                                    <parameter name="outputPath" value="tmp.patchPLMNInfoList-CUUP.url"/>
+                                                    <parameter name="target" value="{idNearRTRIC}"/>
+                                                    <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.patchPLMNInfoList-CUUP.url`"/>
+                                                    <parameter name="outputPath" value="tmp.patchPLMNInfoList-CUUP.url"/>
+                                                    <parameter name="target" value="{mountName}"/>
+                                                    <parameter name="replacement" value="`$tmp.idGNBCUUPFunction`"/>
+                                                </execute>
+                                            </block>
+                                        </outcome>
                                     </switch>
                                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                         <parameter name="source" value="`$tmp.patchPLMNInfoList-CUUP.url`"/>
@@ -931,10 +884,6 @@
                                         <parameter name='format' value='json' />
                                         <outcome value='failure'>
                                             <block atomic='true'>
-                                                <set>
-                                                    <parameter name='error-code' value='500'/>
-                                                    <parameter name='error-message' value='Error patching CUUP PLMNInfoList. Aborting RPC executiopn'/>
-                                                </set>
                                                 <block atomic='true'>
                                                     <set>
                                                         <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
@@ -982,6 +931,10 @@
                                                         </outcome>
                                                     </execute>
                                                 </block>
+                                                <set>
+                                                    <parameter name='error-code' value='500'/>
+                                                    <parameter name='error-message' value='Error patching CUUP PLMNInfoList. Aborting RPC executiopn'/>
+                                                </set>
                                                 <return status='failure'>
                                                     <parameter name='ack-final' value='Y'/>
                                                     <parameter name='error-code' value='500'/>
@@ -1019,6 +972,22 @@
                                                 <parameter name="target" value="{idNearRTRIC}"/>
                                                 <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                             </execute>
+                                        </outcome>
+                                        <outcome value='true'>
+                                            <block atomic='true'>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$prop.restapi.RRMPolicyRatioEntry.ToGNBCUUP.ransim-mounted`"/>
+                                                    <parameter name="outputPath" value="tmp.getRRMPolicyRatio-CUUP.url"/>
+                                                    <parameter name="target" value="{idNearRTRIC}"/>
+                                                    <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                </execute>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                    <parameter name="source" value="`$tmp.getRRMPolicyRatio-CUUP.url`"/>
+                                                    <parameter name="outputPath" value="tmp.getRRMPolicyRatio-CUUP.url"/>
+                                                    <parameter name="target" value="{mountName}"/>
+                                                    <parameter name="replacement" value="`$tmp.idGNBCUUPFunction`"/>
+                                                </execute>
+                                            </block>
                                         </outcome>
                                     </switch>
                                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
@@ -1134,6 +1103,22 @@
                                                         <parameter name="target" value="{idNearRTRIC}"/>
                                                         <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                                     </execute>
+                                                </outcome>
+                                                <outcome value='true'>
+                                                    <block atomic='true'>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$prop.restapi.RRMPolicyRatioEntry.ToGNBCUUP.ransim-mounted`"/>
+                                                            <parameter name="outputPath" value="tmp.getRRMPolicyRatio-CUUP.url"/>
+                                                            <parameter name="target" value="{idNearRTRIC}"/>
+                                                            <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                        </execute>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$tmp.getRRMPolicyRatio-CUUP.url`"/>
+                                                            <parameter name="outputPath" value="tmp.getRRMPolicyRatio-CUUP.url"/>
+                                                            <parameter name="target" value="{mountName}"/>
+                                                            <parameter name="replacement" value="`$tmp.idGNBCUUPFunction`"/>
+                                                        </execute>
+                                                    </block>
                                                 </outcome>
                                             </switch>
                                             <set>
@@ -1425,26 +1410,26 @@
                                 <parameter name='source' value="`'getNFNSSIRIC-configdb-response.[' + $idy +'].gNBDUList[' + $id-du +'].cellDUList_length'`" />
                             </execute>
                             <for index='id-celldu' start='0' end='`$tmp.cellDUList_length`' >
-                                <block atomic='true'>
-                                    <for index='id-ta' start='0' end='`$getListofCells-configdb-response._length`' >
+                                <block>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                        <parameter name='outputPath' value='tmp.DUpLMNInfoList_length' />
+                                        <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].cellDUList['+ $id-celldu +'].pLMNInfoList_length '`" />
+                                    </execute>
+                                    <for index='id-duplmn' start='0' end='`$tmp.DUpLMNInfoList_length`' >
                                         <block atomic='true'>
                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                                <parameter name='outputPath' value='tmp.cellDU1' />
-                                                <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].cellCUList['+ $id-celldu +'].cellLocalId'`" />
-                                            </execute>
-                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                                <parameter name='outputPath' value='tmp.cellDU2' />
-                                                <parameter name='source' value="`'getListofCells-configdb-response.[' + $id-ta + ']'`" />
+                                                <parameter name='outputPath' value='tmp.configDBSNSSAI-DU' />
+                                                <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].cellDUList['+ $id-celldu +'].pLMNInfoList['+ $id-duplmn +'].sNSSAI.sNSSAI'`" />
                                             </execute>
                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
                                                 <parameter name="level" value="info" />
-                                                <parameter name="field1" value="Cell - getNFNSSIRIC-configdb-response"/>
-                                                <parameter name="field2" value="`$tmp.cellDU1`"/>
-                                                <parameter name="field3" value="Cell - getListofCells-configdb-response"/>
-                                                <parameter name="field4" value="`$tmp.cellDU2`"/>
+                                                <parameter name="field1" value="sNSSAI - getNFNSSIRIC-configdb-response"/>
+                                                <parameter name="field2" value="`$tmp.configDBSNSSAI-DU`"/>
+                                                <parameter name="field3" value="sNSSAI from request"/>
+                                                <parameter name="field4" value="`$tmp.sNSSAI`"/>
                                             </record>
-                                            <switch test='`$tmp.cellDU1 == $tmp.cellDU2`'>
+                                            <switch test='`$tmp.configDBSNSSAI-DU == $tmp.sNSSAI`'>
                                                 <outcome value='true'>
                                                     <block atomic='true'>
                                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
@@ -1461,7 +1446,22 @@
                                                                     <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                                                 </execute>
                                                             </outcome>
-                                                            <outcome value='true'></outcome>
+                                                            <outcome value='true'>
+                                                                <block atomic='true'>
+                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                        <parameter name="source" value="`$prop.restapi.patchPLMNInfoListEntry.ToNRCellDU.ransim-mounted`"/>
+                                                                        <parameter name="outputPath" value="tmp.patchPLMNInfoListEntry-cellDU.url"/>
+                                                                        <parameter name="target" value="{idNearRTRIC}"/>
+                                                                        <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                                    </execute>
+                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                        <parameter name="source" value="`$tmp.patchPLMNInfoListEntry-cellDU.url`"/>
+                                                                        <parameter name="outputPath" value="tmp.patchPLMNInfoListEntry-cellDU.url"/>
+                                                                        <parameter name="target" value="{mountName}"/>
+                                                                        <parameter name="replacement" value="`$tmp.GNBDUId`"/>
+                                                                    </execute>
+                                                                </block>
+                                                            </outcome>
                                                         </switch>
                                                         <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                             <parameter name='outputPath' value='tmp.cellDULocalId' />
@@ -1642,6 +1642,22 @@
                                                                         <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                                                     </execute>
                                                                 </outcome>
+                                                                <outcome value='true'>
+                                                                    <block atomic='true'>
+                                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                            <parameter name="source" value="`$prop.restapi.RRMPolicyRatioEntry.ToGNBDU.ransim-mounted`"/>
+                                                                            <parameter name="outputPath" value="tmp.getRRMPolicyRatio-gNBDU.url"/>
+                                                                            <parameter name="target" value="{idNearRTRIC}"/>
+                                                                            <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                                        </execute>
+                                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                            <parameter name="source" value="`$tmp.getRRMPolicyRatio-gNBDU.url`"/>
+                                                                            <parameter name="outputPath" value="tmp.getRRMPolicyRatio-gNBDU.url"/>
+                                                                            <parameter name="target" value="{mountName}"/>
+                                                                            <parameter name="replacement" value="`$tmp.GNBDUId`"/>
+                                                                        </execute>
+                                                                    </block>
+                                                                </outcome>
                                                             </switch>
                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                                                 <parameter name="source" value="`$tmp.getRRMPolicyRatio-gNBDU.url`"/>
@@ -1762,6 +1778,22 @@
                                                                                 <parameter name="target" value="{idNearRTRIC}"/>
                                                                                 <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                                                             </execute>
+                                                                        </outcome>
+                                                                        <outcome value='true'>
+                                                                            <block atomic='true'>
+                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                    <parameter name="source" value="`$prop.restapi.RRMPolicyRatioEntry.ToGNBDU.ransim-mounted`"/>
+                                                                                    <parameter name="outputPath" value="tmp.getRRMPolicyRatio-gNBDU.url"/>
+                                                                                    <parameter name="target" value="{idNearRTRIC}"/>
+                                                                                    <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                                                                </execute>
+                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                    <parameter name="source" value="`$tmp.getRRMPolicyRatio-gNBDU.url`"/>
+                                                                                    <parameter name="outputPath" value="tmp.getRRMPolicyRatio-gNBDU.url"/>
+                                                                                    <parameter name="target" value="{mountName}"/>
+                                                                                    <parameter name="replacement" value="`$tmp.GNBDUId`"/>
+                                                                                </execute>
+                                                                            </block>
                                                                         </outcome>
                                                                     </switch>
                                                                     <set>
@@ -2030,6 +2062,11 @@
                     </for>
                 </block>
             </for>
+            <return status='success'>
+                <parameter name="ack-final" value="Y" />
+                <parameter name="error-code" value="200" />
+                <parameter name="error-message" value="SUCCESSFUL Execution" />
+            </return>
             <block atomic='true'>
                 <set>
                     <parameter name="tmp.status" value="`$error-code`"/>
