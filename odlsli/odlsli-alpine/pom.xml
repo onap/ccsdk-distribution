@@ -33,16 +33,16 @@
         <opendaylight.root>opt/opendaylight</opendaylight.root>
 
         <ansible.gpg.key>93C4A3FD7BB9C367</ansible.gpg.key>
-        <odl.features.extra>odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs, odl-daexim-all, odl-restconf-nb-rfc8040</odl.features.extra>
+        <odl.features.extra>odl-restconf-all,odl-mdsal-all,odl-mdsal-apidocs,odl-daexim-all,odl-restconf-nb-rfc8040</odl.features.extra>
         <ccsdk.odl.features>
             ccsdk-sli-core-all,ccsdk-sli-adaptors-all,ccsdk-sli-northbound-all,ccsdk-sli-plugins-all,ccsdk-features-all
         </ccsdk.odl.features>
         <odl.boot.features.extra>${odl.features.extra},${ccsdk.odl.features}</odl.boot.features.extra>
-	<ccsdk.features.version>1.1.1</ccsdk.features.version>
-	<ccsdk.sli.core.version>1.2.0</ccsdk.sli.core.version>
+    	<ccsdk.features.version>1.1.1</ccsdk.features.version>
+    	<ccsdk.sli.core.version>1.2.0</ccsdk.sli.core.version>
         <ccsdk.sli.adaptors.version>1.2.0</ccsdk.sli.adaptors.version>
         <ccsdk.sli.northbound.version>1.2.0</ccsdk.sli.northbound.version>
-	<ccsdk.sli.plugins.version>1.2.0</ccsdk.sli.plugins.version>
+	    <ccsdk.sli.plugins.version>1.2.0</ccsdk.sli.plugins.version>
         <ccsdk.oran.a1adapter.version>1.1.1</ccsdk.oran.a1adapter.version>
         <docker.autoCreateCustomNetworks>true</docker.autoCreateCustomNetworks>
     </properties>
@@ -509,6 +509,26 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>change shell permissions</id>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <target>
+                                <chmod dir="${basedir}/target/docker-stage/opt/onap/ccsdk" perm="+x" includes="**/*.sh"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.5.0</version>
@@ -535,6 +555,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -605,6 +626,7 @@
                                 </image>
                             </images>
                             <verbose>${docker.verbose}</verbose>
+                            <skipRun>${docker.skip.run}</skipRun>
                             <skipPush>${docker.skip.push}</skipPush>
                         </configuration>
                         <executions>
