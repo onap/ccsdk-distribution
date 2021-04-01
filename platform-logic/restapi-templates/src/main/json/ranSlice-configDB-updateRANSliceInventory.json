@@ -1,31 +1,19 @@
 {
-  "isShareable": "string",
-  "nSSAIList": [
-    "string"
-  ],
-  "nsstId": "string",
-  "ranNFNSSIId": "string",
-  "ranNSSIList": [
-    "string"
-  ],
-  "sliceProfilesList": [
-    {
-      "coverageAreaList": [
-        "string"
-      ],
-      "dLThptPerSlice": 0,
-      "latency": 0,
-      "maxNumberofConns": 0,
-      "maxNumberofUEs": 0,
-      "pLMNIdList": "string",
-      "resourceSharingLevel": "string",
-      "sNSSAI": "string",
-      "sliceProfileId": "string",
-      "uEMobilityLevel": "string",
-      "uLThptPerSlice": 0
-    }
-  ],
-  "sliceType": "string",
-  "subnetStatus": "string",
-  "trackingAreaList": "string"
+    "ranNFNSSIId":${tmp.payload.RANNFNSSIId},
+    "nSSAIList":[
+        ${tmp.payload.sNSSAI}
+    ],
+    "sliceProfilesList":[
+        {
+            "sliceProfileId": ${tmp.payload.sliceProfileId},
+            "dLThptPerSlice": ${tmp.dLThptPerSlice},
+            "uLThptPerSlice": ${tmp.uLThptPerSlice},
+            "maxNumberofConns":${tmp.maxNumberOfConns},
+            "sNSSAI":${tmp.payload.sNSSAI},
+            "pLMNIdList":${tmp.payload.pLMNId}
+        }
+    ],
+    "trackingAreaList":${tmp.payload.trackingArea},
+    "subnetStatus":"ACTIVE",
+    "isShareable":${tmp.payload.resourceSharingLevel}
 }

@@ -1,20 +1,20 @@
 [
     {
-        "id": "761c81c0.93298",
+        "id": "ef2ca718.430178",
         "type": "dgstart",
         "name": "DGSTART",
         "outputs": 1,
-        "x": 118.4375,
-        "y": 113.4375,
-        "z": "73e537e.8932bc8",
+        "x": 174.16665649414062,
+        "y": 88.6111068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "9f552ddd.503aa"
+                "f487ed1.d8ff91"
             ]
         ]
     },
     {
-        "id": "9f552ddd.503aa",
+        "id": "f487ed1.d8ff91",
         "type": "service-logic",
         "name": "ran-slice-api ${project.version}",
         "module": "ran-slice-api",
@@ -22,2492 +22,2872 @@
         "comments": "",
         "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='ran-slice-api' version='${project.version}'>",
         "outputs": 1,
-        "x": 203.4375228881836,
-        "y": 180.43746948242188,
-        "z": "73e537e.8932bc8",
+        "x": 259.1666793823242,
+        "y": 155.61107635498047,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "f4b6fe3c.09964"
+                "54b7eb6a.51cd34"
             ]
         ]
     },
     {
-        "id": "f4b6fe3c.09964",
+        "id": "54b7eb6a.51cd34",
         "type": "method",
         "name": "method",
         "xml": "<method rpc='activateRANSliceInstance' mode='sync'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 137.4375,
-        "y": 240.43743515014648,
-        "z": "73e537e.8932bc8",
+        "x": 193.16665649414062,
+        "y": 215.61104202270508,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "43cfd799.e43718"
+                "fc53b74f.5bca78"
             ]
         ]
     },
     {
-        "id": "43cfd799.e43718",
+        "id": "fc53b74f.5bca78",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 159.9375114440918,
-        "y": 320.93750381469727,
-        "z": "73e537e.8932bc8",
+        "x": 215.66666793823242,
+        "y": 296.11111068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "f0cba510.d429c8",
-                "61526ba5.4b2eb4",
-                "1045a904.a81917",
-                "db76a950.2c38e8",
-                "952aa6bf.fd8938",
-                "d3040b3a.dd43a8",
-                "66891c41.e89ca4",
-                "a052b62c.1fa458",
-                "67aabd43.7b3e14",
-                "198c87cb.f1d948",
-                "d302afcf.237ef",
-                "f2b8e61a.a5c8c8",
-                "738ca283.54ba9c",
-                "c80b56a5.99a988",
-                "1c09cf50.00c361",
-                "20d20dea.8129f2",
-                "a16a753b.c1e978",
-                "ef19e8dd.548808",
-                "b72487f2.f75598",
-                "8eaff649.12a058",
-                "f53bf76b.8dba48"
+                "522069f6.36a2c8",
+                "48244fcd.67686",
+                "b7808f5b.51c85",
+                "38be2a26.e07a36",
+                "33072642.74859a",
+                "d77970c5.107ab",
+                "65905504.7752bc",
+                "253dd730.841928",
+                "72519e66.86268",
+                "ae36073a.d61748",
+                "e8706dc4.5a81b",
+                "9227e420.d769d8",
+                "118a9166.3752bf",
+                "30fa502.42137b",
+                "87dd3f2b.2826d",
+                "e73bf4c7.eb1d48",
+                "51734263.da003c",
+                "7056f58c.cbd93c",
+                "1f3735d.7ce59ca",
+                "63bf8010.4abdc",
+                "4119896c.9c68b8",
+                "ea6a18bc.839118"
             ]
         ]
     },
     {
-        "id": "f0cba510.d429c8",
+        "id": "522069f6.36a2c8",
         "type": "execute",
         "name": "generate getNearRTRICsFromRANNFNSSI URL",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.configdb.getNearRTRICByNSSI`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.configdb.getNearRTRICByNSSI.url\"/>\n    <parameter name=\"target\" value=\"{ranNFNSSIId}\"/>\n    <parameter name=\"replacement\" value=\"`$payloadJson.input.RANNFNSSIId`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 741.6875,
-        "y": 501.6875081062317,
-        "z": "73e537e.8932bc8",
+        "x": 797.4167175292969,
+        "y": 491.3055667877197,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "61526ba5.4b2eb4",
+        "id": "48244fcd.67686",
         "type": "record",
         "name": "record configdb RestAPI params",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"URL for configDB to Get NearRTRIC for RANNFNSSI\"/>\n<parameter name='field2' value=\"`$prop.configdb.url + $tmp.configdb.getNearRTRICByNSSI.url`\" />\n<parameter name='field3' value=\"`$ranNFNSSIId`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 681.6875152587891,
-        "y": 552.687527179718,
-        "z": "73e537e.8932bc8",
+        "x": 737.4166717529297,
+        "y": 527.8611340522766,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "1045a904.a81917",
+        "id": "b7808f5b.51c85",
         "type": "execute",
-        "name": "Get nearRTRIC for TrackingArea",
+        "name": "Get nearRTRIC for NFNSSI",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.configdb.url + $tmp.configdb.getNearRTRICByNSSI.url`\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"getNFNSSIRIC-configdb-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />\n<parameter name=\"convertResponse\" value=\"true\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 671.6875915527344,
-        "y": 604.6875576972961,
-        "z": "73e537e.8932bc8",
+        "x": 727.416748046875,
+        "y": 579.8611645698547,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "12546ac7.74cd65",
-                "dcd91128.9ebfa"
+                "a9b256ac.842128",
+                "66038c0.8eb0274"
             ]
         ]
     },
     {
-        "id": "12546ac7.74cd65",
+        "id": "a9b256ac.842128",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 970.5055961608887,
-        "y": 622.5055813789368,
-        "z": "73e537e.8932bc8",
+        "x": 1026.2347526550293,
+        "y": 597.6791882514954,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "2520024f.3e60fe"
+                "498f20b0.325db"
             ]
         ]
     },
     {
-        "id": "2520024f.3e60fe",
+        "id": "498f20b0.325db",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1140.5054931640625,
-        "y": 623.505696773529,
-        "z": "73e537e.8932bc8",
+        "x": 1196.2346496582031,
+        "y": 598.6793036460876,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "c854edfe.78e89",
-                "80b014dc.086ba8"
+                "cc79fe58.bd76a",
+                "95d36220.b628d"
             ]
         ]
     },
     {
-        "id": "c854edfe.78e89",
+        "id": "cc79fe58.bd76a",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Successfully Obtained NearRT RIC info from ConfigDB\"/>\n<parameter name=\"field2\" value=\"`$getNFNSSIRIC-configdb-response._length`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1363.5052909851074,
-        "y": 568.5056805610657,
-        "z": "73e537e.8932bc8",
+        "x": 1419.234447479248,
+        "y": 543.6792874336243,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "80b014dc.086ba8",
+        "id": "95d36220.b628d",
         "type": "execute",
         "name": "printContext",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >\n<parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-terminateRANSlice-configrsp-context.log' />\n\n\n",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >\n<parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-activateRANSlice-context.log' />\n\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 1359.283432006836,
-        "y": 639.5056881904602,
-        "z": "73e537e.8932bc8",
+        "x": 1415.0125885009766,
+        "y": 614.6792950630188,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "dcd91128.9ebfa",
+        "id": "66038c0.8eb0274",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 976.5055503845215,
-        "y": 562.5056653022766,
-        "z": "73e537e.8932bc8",
+        "x": 1032.234706878662,
+        "y": 537.6792721748352,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "62e0747d.afde9c"
+                "560cf38c.29b49c"
             ]
         ]
     },
     {
-        "id": "62e0747d.afde9c",
+        "id": "560cf38c.29b49c",
         "type": "block",
         "name": "block",
         "xml": "<block>",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1256.5056266784668,
-        "y": 468.5057191848755,
-        "z": "73e537e.8932bc8",
+        "x": 1312.2347831726074,
+        "y": 443.6793260574341,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "11953360.467cdd",
-                "cf52b92f.10a1a8"
+                "7dbe505c.27a84",
+                "1d2d8078.f320b"
             ]
         ]
     },
     {
-        "id": "11953360.467cdd",
+        "id": "7dbe505c.27a84",
         "type": "set",
         "name": "set",
         "xml": "<set>\n<parameter name='error-code' value='500'/>\n<parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>",
         "comments": "",
-        "x": 1434.50541305542,
-        "y": 422.6167459487915,
-        "z": "73e537e.8932bc8",
+        "x": 1490.2345695495605,
+        "y": 397.7903528213501,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "db76a950.2c38e8",
+        "id": "38be2a26.e07a36",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"RPC to handle terminateRANSlice.: \"/>\n<parameter name=\"field2\" value=\"`$activate-r-a-n-slice-input.action`\"/>\n<parameter name=\"field3\" value=\"`$activate-r-a-n-slice-input.common-header.timestamp`\"/>\n<parameter name=\"field4\" value=\"`$activate-r-a-n-slice-input.common-header.request-id`\"/>\n<parameter name=\"field5\" value=\"`$activate-r-a-n-slice-input.common-header.originator-id`\"/>\n<parameter name=\"field6\" value=\"RPC Payload String \"/>\n<parameter name=\"field7\" value=\"`$activate-r-a-n-slice-input.payload`\"/>",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"RPC to handle activateRANSlice.: \"/>\n<parameter name=\"field2\" value=\"`$activate-r-a-n-slice-instance-input.action`\"/>\n<parameter name=\"field3\" value=\"`$activate-r-a-n-slice-instance-input.timestamp`\"/>\n<parameter name=\"field4\" value=\"`$activate-r-a-n-slice-instance-input.common-header.request-id`\"/>\n<parameter name=\"field5\" value=\"`$activate-r-a-n-slice-instance-input.common-header.originator-id`\"/>\n<parameter name=\"field6\" value=\"RPC Payload String \"/>\n<parameter name=\"field7\" value=\"`$activate-r-a-n-slice-instance-input.payload`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 646.4375,
-        "y": 129.43748664855957,
-        "z": "73e537e.8932bc8",
+        "x": 702.1666564941406,
+        "y": 104.61109352111816,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "952aa6bf.fd8938",
+        "id": "33072642.74859a",
         "type": "set",
         "name": "set default status value",
-        "xml": "<set>\n<parameter name='error-code' value='200' />\n<parameter name='error-message' value='Successful execution of terminateRANSice RPC' />",
+        "xml": "<set>\n<parameter name='error-code' value='200' />\n<parameter name='error-message' value='Successful execution of activateRANSice RPC' />",
         "comments": "",
-        "x": 685.437255859375,
-        "y": 172.43749904632568,
-        "z": "73e537e.8932bc8",
+        "x": 741.1664123535156,
+        "y": 147.61110591888428,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "d3040b3a.dd43a8",
+        "id": "d77970c5.107ab",
         "type": "execute",
         "name": "execute jsonStringToCtx",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='jsonStringToCtx'>\n\t<parameter name='source' value='activate-r-a-n-slice-input.payload' />\n\t<parameter name='outputPath' value='payloadJson' />\n\t<parameter name='isEscaped' value='false' />",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='jsonStringToCtx'>\n\t<parameter name='source' value='activate-r-a-n-slice-instance-input.payload' />\n\t<parameter name='outputPath' value='payloadJson' />\n\t<parameter name='isEscaped' value='false' />",
         "comments": "",
         "outputs": 1,
-        "x": 690.4372711181641,
-        "y": 217.18748474121094,
-        "z": "73e537e.8932bc8",
+        "x": 746.1664276123047,
+        "y": 192.36109161376953,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "34ba53e7.4fbc7c"
+                "16633e83.085581"
             ]
         ]
     },
     {
-        "id": "66891c41.e89ca4",
+        "id": "65905504.7752bc",
         "type": "execute",
         "name": "printContext",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >\n<parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-terminateRANSlice-context.log' />\n\n\n",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >\n<parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-activateRANSlice-context.log' />\n\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 661.1872253417969,
-        "y": 316.1770477294922,
-        "z": "73e537e.8932bc8",
+        "x": 705.8052749633789,
+        "y": 281.3506450653076,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "a052b62c.1fa458",
+        "id": "253dd730.841928",
         "type": "execute",
         "name": "execute Properties",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >\n    <parameter name='fileName' value='/opt/onap/ccsdk/data/properties/ran-slice-api-dg.properties' />\n    <parameter name='contextPrefix' value='prop' />\n",
         "comments": "",
         "outputs": 1,
-        "x": 681.1872100830078,
-        "y": 357.1874132156372,
-        "z": "73e537e.8932bc8",
+        "x": 734.694221496582,
+        "y": 322.36106872558594,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "67aabd43.7b3e14",
+        "id": "72519e66.86268",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Properties read .. controller details \"/>\n<parameter name=\"field2\" value=\"`$prop.controller.user`\"/>\n<parameter name=\"field3\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"field4\" value=\"`$prop.controller.url`\"/>\n<parameter name=\"field5\" value=\"ransim-mounted (true/false): \"/>\n<parameter name=\"field6\" value=\"`$prop.ransim-mounted`\"/>\n<parameter name=\"field7\" value=\"config DB deployed (true/false): \"/>\n<parameter name=\"field8\" value=\"`$prop.configdb-deployed`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 654.6872825622559,
-        "y": 408.18753147125244,
-        "z": "73e537e.8932bc8",
+        "x": 703.7499370574951,
+        "y": 367.80558586120605,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "34ba53e7.4fbc7c",
+        "id": "16633e83.085581",
         "type": "other",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 956.9372825622559,
-        "y": 219.18747425079346,
-        "z": "73e537e.8932bc8",
+        "x": 1012.6664390563965,
+        "y": 194.36108112335205,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "5b6cca11.9cad94"
+                "ad1a2b92.a458a8"
             ]
         ]
     },
     {
-        "id": "5b6cca11.9cad94",
+        "id": "ad1a2b92.a458a8",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1156.9374389648438,
-        "y": 221.9374704360962,
-        "z": "73e537e.8932bc8",
+        "x": 1212.6665954589844,
+        "y": 197.11107730865479,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "98c043ee.951b8",
-                "423b0303.ed9b0c"
+                "31ecc915.f91656",
+                "298f13d.da229ec"
             ]
         ]
     },
     {
-        "id": "98c043ee.951b8",
+        "id": "31ecc915.f91656",
         "type": "execute",
         "name": "printContext",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >\n<parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-terminateRANSlice-context.log' />\n\n\n",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >\n<parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-activateRANSlice-context.log' />\n\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 1346.937515258789,
-        "y": 183.43750476837158,
-        "z": "73e537e.8932bc8",
+        "x": 1402.6666717529297,
+        "y": 158.61111164093018,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "423b0303.ed9b0c",
+        "id": "298f13d.da229ec",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Payload for terminateRANSlice.: \"/>\n<parameter name=\"field2\" value=\"`$tmp.sNSSAI`\"/>\n<parameter name=\"field3\" value=\"`$payloadJson.input.RANNFNSSIId`\"/>\n<parameter name=\"field4\" value=\"`$payloadJson.input.callbackURL`\"/>\n<parameter name=\"field5\" value=\"`$payloadJson.input.sliceProfileId`\"/>\n\n\n",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Payload for activateRANSlice.: \"/>\n<parameter name=\"field2\" value=\"`$payloadJson.input.sNSSAI`\"/>\n<parameter name=\"field3\" value=\"`$payloadJson.input.RANNFNSSIId`\"/>\n<parameter name=\"field4\" value=\"`$payloadJson.input.callbackURL`\"/>\n<parameter name=\"field5\" value=\"`$payloadJson.input.sliceProfileId`\"/>\n\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 1346.18745803833,
-        "y": 247.43752098083496,
-        "z": "73e537e.8932bc8",
+        "x": 1401.9166145324707,
+        "y": 222.61112785339355,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "198c87cb.f1d948",
+        "id": "ae36073a.d61748",
         "type": "for",
         "name": "foreach NearRTRIC",
-        "xml": "<for index='idy' start='0' end='`$getNFNSSIRIC-configdb-response._length`' >\n",
+        "xml": "<for index='idy' start='0' end='`$tmp.RICList_length`' >\n",
         "comments": "",
         "outputs": 1,
-        "x": 424.3750915527344,
-        "y": 1045.3125171661377,
-        "z": "73e537e.8932bc8",
+        "x": 480.104248046875,
+        "y": 1020.4861240386963,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "bb11e40f.ebaa68",
-                "623b8887.a167d8",
-                "52b3e00e.e5abf"
+                "4a455a.c97ffaa8",
+                "4a7a46d9.0a7f98",
+                "616b13a5.03b89c",
+                "a26eb581.df1338"
             ]
         ]
     },
     {
-        "id": "bb11e40f.ebaa68",
+        "id": "4a455a.c97ffaa8",
         "type": "block",
         "name": "Process CUCP",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 689.6250305175781,
-        "y": 1038.7444477081299,
-        "z": "73e537e.8932bc8",
+        "x": 745.3541870117188,
+        "y": 1013.9180545806885,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "4e224bda.30d0a4",
-                "d8c32c5c.092ed",
-                "8b1c383c.6f0db8"
+                "3ab9892a.507f56",
+                "60a218b5.42f148",
+                "6d4f086f.3c1ab8"
             ]
         ]
     },
     {
-        "id": "4e224bda.30d0a4",
+        "id": "3ab9892a.507f56",
         "type": "execute",
         "name": "read CUCP list size",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.CUCPList_length' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.[' + $idy +'].gNBCUCPList_length'`\" />\n    ",
         "comments": "",
         "outputs": 1,
-        "x": 1035.875015258789,
-        "y": 908.4943561553955,
-        "z": "73e537e.8932bc8",
+        "x": 1091.6041717529297,
+        "y": 883.6679630279541,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "d8c32c5c.092ed",
+        "id": "60a218b5.42f148",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Number of CUCP List Entries \"/>\n<parameter name=\"field2\" value=\"`$tmp.CUCPList_length`\"/>\n<parameter name=\"field3\" value=\"for the NearRTRIC\"/>\n<parameter name=\"field4\" value=\"`$tmp.nearRTRICId`\"/>\n",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Number of CUCP List Entries \"/>\n<parameter name=\"field2\" value=\"`$tmp.CUCPList_length`\"/>\n<parameter name=\"field3\" value=\"for the NearRTRIC\"/>\n<parameter name=\"field4\" value=\"`$tmp.nearRTRICId`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 995.3749961853027,
-        "y": 955.9944334030151,
-        "z": "73e537e.8932bc8",
+        "x": 1051.1041526794434,
+        "y": 931.1680402755737,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "8b1c383c.6f0db8",
+        "id": "6d4f086f.3c1ab8",
         "type": "for",
         "name": "foreach CUCP",
         "xml": "<for index='idz' start='0' end='`$tmp.CUCPList_length`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1012.1251220703125,
-        "y": 1005.9944341182709,
-        "z": "73e537e.8932bc8",
+        "x": 1067.8542785644531,
+        "y": 981.1680409908295,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "52cdfc02.d2b554"
+                "c042879b.9ee0c8"
             ]
         ]
     },
     {
-        "id": "52cdfc02.d2b554",
+        "id": "c042879b.9ee0c8",
         "type": "block",
         "name": "block : process CUCP",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1223.125015258789,
-        "y": 969.244327545166,
-        "z": "73e537e.8932bc8",
+        "x": 1278.8541717529297,
+        "y": 944.4179344177246,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "646b737c.114bfc",
-                "a4f6f876.fca2c8",
-                "705aec8e.889684",
-                "effc97f7.aa0768"
+                "b1097c38.58417",
+                "f20f72c3.586ff",
+                "12c2d2c7.ff60fd",
+                "8168d645.c4e9d8"
             ]
         ]
     },
     {
-        "id": "646b737c.114bfc",
+        "id": "b1097c38.58417",
         "type": "execute",
         "name": "read CUCP name",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.CUCPName' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUCPList['+ $idz +'].gNBCUName'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 1477.8750228881836,
-        "y": 705.9943523406982,
-        "z": "73e537e.8932bc8",
+        "x": 1533.604263305664,
+        "y": 674.501335144043,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "705aec8e.889684",
+        "id": "12c2d2c7.ff60fd",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"CUCPName \"/>\n<parameter name=\"field2\" value=\"`$tmp.CUCPName`\"/>\n\n",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"CUCPName \"/>\n<parameter name=\"field2\" value=\"`$tmp.CUCPName`\"/>\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 1449.625114440918,
-        "y": 754.4943389892578,
-        "z": "73e537e.8932bc8",
+        "x": 1505.3542709350586,
+        "y": 729.6679458618164,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "effc97f7.aa0768",
+        "id": "8168d645.c4e9d8",
         "type": "execute",
         "name": "read cellCU list size",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.cellCUList_length' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.[' + $idy +'].gNBCUCPList[' + $idz +'].cellCUList_length'`\" />\n    ",
         "comments": "",
         "outputs": 1,
-        "x": 1486.8750228881836,
-        "y": 802.2443542480469,
-        "z": "73e537e.8932bc8",
+        "x": 1542.6041793823242,
+        "y": 777.4179611206055,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "a4f6f876.fca2c8",
+        "id": "f20f72c3.586ff",
         "type": "for",
         "name": "for cellCUList",
         "xml": "<for index='idcu' start='0' end='`$tmp.cellCUList_length`' >\n",
         "comments": "",
         "outputs": 1,
-        "x": 1461.8749923706055,
-        "y": 854.9943695068359,
-        "z": "73e537e.8932bc8",
+        "x": 1517.604148864746,
+        "y": 830.1679763793945,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "e61d08b.c8d36f8"
+                "846567ee.819058"
             ]
         ]
     },
     {
-        "id": "e61d08b.c8d36f8",
+        "id": "846567ee.819058",
         "type": "block",
         "name": "block",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1676.8750343322754,
-        "y": 855.2443866729736,
-        "z": "73e537e.8932bc8",
+        "x": 1732.604190826416,
+        "y": 830.4179935455322,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "d3fb7cf3.0407",
-                "90d4169b.0cd418"
+                "958049c8.3f4fa8",
+                "a603b30f.95aef",
+                "ba2b4d57.e2ac"
             ]
         ]
     },
     {
-        "id": "d3fb7cf3.0407",
+        "id": "958049c8.3f4fa8",
         "type": "execute",
         "name": "read PLMNList size",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.pLMNInfoList_length' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUCPList['+ $idz +'].cellCUList['+ $idcu +'].pLMNInfoList_length '`\" />",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.pLMNInfoList_length' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUCPList['+ $idz +'].cellCUList['+ $idcu +'].pLMNInfoList_length'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 1908.2781448364258,
-        "y": 828.3415851593018,
-        "z": "73e537e.8932bc8",
+        "x": 1949.5630798339844,
+        "y": 769.0709629058838,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "90d4169b.0cd418",
+        "id": "ba2b4d57.e2ac",
         "type": "for",
         "name": "foreach PLMNInfo",
         "xml": "<for index='id-cuplmn' start='0' end='`$tmp.pLMNInfoList_length`' >\n",
         "comments": "",
         "outputs": 1,
-        "x": 1922.8615798950195,
-        "y": 892.091628074646,
-        "z": "73e537e.8932bc8",
+        "x": 1978.5907363891602,
+        "y": 867.2652349472046,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "1306eaa1.403c05"
+                "d8d6c45.3f70e38"
             ]
         ]
     },
     {
-        "id": "1306eaa1.403c05",
+        "id": "d8d6c45.3f70e38",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 2100.750556945801,
-        "y": 814.8694171905518,
-        "z": "73e537e.8932bc8",
+        "x": 2156.4797134399414,
+        "y": 790.0430240631104,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "d2c18ab3.c24978",
-                "eaa59340.e8939",
-                "980da038.262e2"
+                "a9bbaf09.71923",
+                "11976132.1e5c0f",
+                "20bb732f.19585c"
             ]
         ]
     },
     {
-        "id": "980da038.262e2",
+        "id": "20bb732f.19585c",
         "type": "execute",
         "name": "read sNSSAI from getNFNSSIRIC-configdb-response",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.configDBSNSSAI' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUCPList['+ $idz +'].cellCUList['+ $idcu +'].pLMNInfoList['+ $id-cuplmn +'].sNSSAI.sNSSAI'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 2435.6394119262695,
-        "y": 770.0916481018066,
-        "z": "73e537e.8932bc8",
+        "x": 2506.9241333007812,
+        "y": 803.0430192947388,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "d2c18ab3.c24978",
+        "id": "a9bbaf09.71923",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"sNSSAI - getNFNSSIRIC-configdb-response\"/>\n<parameter name=\"field2\" value=\"`$tmp.configDBSNSSAI`\"/>\n<parameter name=\"field3\" value=\"sNSSAI from request\"/>\n<parameter name=\"field4\" value=\"`$tmp.sNSSAI`\"/>\n\n",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"sNSSAI - getNFNSSIRIC-configdb-response\"/>\n<parameter name=\"field2\" value=\"`$tmp.configDBSNSSAI`\"/>\n<parameter name=\"field3\" value=\"sNSSAI from request\"/>\n<parameter name=\"field4\" value=\"`$tmp.sNSSAI`\"/>\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 2306.639518737793,
-        "y": 838.0915994644165,
-        "z": "73e537e.8932bc8",
+        "x": 2365.7020378112793,
+        "y": 836.5985450744629,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "eaa59340.e8939",
+        "id": "11976132.1e5c0f",
         "type": "switchNode",
         "name": "is NSSAI exists",
         "xml": "<switch test='`$tmp.configDBSNSSAI == $tmp.sNSSAI`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2345.5283584594727,
-        "y": 902.6471662521362,
-        "z": "73e537e.8932bc8",
+        "x": 2401.2575149536133,
+        "y": 877.8207731246948,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "4f3107a.2937ef8"
+                "5b09ebc6.efe9e4"
             ]
         ]
     },
     {
-        "id": "4f3107a.2937ef8",
+        "id": "5b09ebc6.efe9e4",
         "type": "outcome",
         "name": "True",
         "xml": "<outcome value='true'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2535.000556945801,
-        "y": 902.8694953918457,
-        "z": "73e537e.8932bc8",
+        "x": 2590.7297134399414,
+        "y": 878.0431022644043,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "1d241be7.c8bbc4"
+                "d7a8b93a.948468"
             ]
         ]
     },
     {
-        "id": "1d241be7.c8bbc4",
+        "id": "d7a8b93a.948468",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 2755.625,
-        "y": 900.625,
-        "z": "73e537e.8932bc8",
+        "x": 2811.3541564941406,
+        "y": 875.7986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "a302bf1.efd614",
-                "3fd39755.b5cbf8",
-                "3a12865a.0d117a",
-                "299e60f.af51ea",
-                "ba736919.8a3b38",
-                "bccb9a19.543658",
-                "29628860.8b8dc8",
-                "a04a1ff1.c04b6",
-                "45de62b8.cced2c"
+                "6c62ceff.19a3d",
+                "a8c3eb35.841368",
+                "33dff673.7b4ada",
+                "55ec219e.8af69",
+                "93fa1df2.1b084",
+                "901e14df.7d5258",
+                "a24b8d43.bcbfe",
+                "460302ae.396fcc",
+                "c7140a97.a32808"
             ]
         ]
     },
     {
-        "id": "45de62b8.cced2c",
+        "id": "c7140a97.a32808",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"CellCU is applicable for the NSSAI \"/>\n\n\n",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"CellCU is applicable for the NSSAI \"/>\n\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 2950.625,
-        "y": 895.625,
-        "z": "73e537e.8932bc8",
+        "x": 3006.3541564941406,
+        "y": 870.7986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "a04a1ff1.c04b6",
+        "id": "460302ae.396fcc",
         "type": "switchNode",
         "name": "ransim mounted",
         "xml": "<switch test='`$prop.ransim-mounted`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2978.625,
-        "y": 963.625,
-        "z": "73e537e.8932bc8",
+        "x": 3034.3541564941406,
+        "y": 938.7986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "27bc8985.294fc6",
-                "3ce10ed5.092432"
+                "4d052798.d7d948",
+                "74f67b3.0788684"
             ]
         ]
     },
     {
-        "id": "27bc8985.294fc6",
+        "id": "4d052798.d7d948",
         "type": "outcome",
         "name": "Not Mounted",
         "xml": "<outcome value='false'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3186.625,
-        "y": 928.624755859375,
-        "z": "73e537e.8932bc8",
+        "x": 3242.3541564941406,
+        "y": 903.7983627319336,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "5c98a9b7.805fb8"
+                "aaadbb43.ac8a08"
             ]
         ]
     },
     {
-        "id": "5c98a9b7.805fb8",
+        "id": "aaadbb43.ac8a08",
         "type": "execute",
         "name": "generate patch PLMNInfoListEntry ToNRCellCU",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.patchPLMNInfoListEntry.ToNRCellCU`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry.url\"/>\n    <parameter name=\"target\" value=\"{idNearRTRIC}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.nearRTRICId`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3506.625,
-        "y": 943.625,
-        "z": "73e537e.8932bc8",
+        "x": 3562.3541564941406,
+        "y": 918.7986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "c0149f76.a0f0e",
+        "id": "1b8ce5f9.2c88ca",
         "type": "execute",
         "name": "generate patchPLMNInfoList.ToNRCellCU",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.patchPLMNInfoListEntry.ToNRCellCU.ransim-mounted`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry.url\"/>\n    <parameter name=\"target\" value=\"{idNearRTRIC}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.nearRTRICId`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 3685.125030517578,
-        "y": 1001.6249389648438,
-        "z": "73e537e.8932bc8",
+        "x": 3740.8541870117188,
+        "y": 976.7985458374023,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "986e780a.2b92f8",
+        "id": "ca26c0f6.4566f",
         "type": "execute",
         "name": "populate mountName",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry.url\"/>\n    <parameter name=\"target\" value=\"{mountName}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.CUCPName`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 3629.125431060791,
-        "y": 1054.62513256073,
-        "z": "73e537e.8932bc8",
+        "x": 3684.8545875549316,
+        "y": 1029.7987394332886,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "ceac5f2d.de7c3",
+        "id": "146ea38c.756e1c",
         "type": "block",
         "name": "ransim  URL",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 3378.125,
-        "y": 1031.625,
-        "z": "73e537e.8932bc8",
+        "x": 3433.8541564941406,
+        "y": 1006.7986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "c0149f76.a0f0e",
-                "986e780a.2b92f8"
+                "1b8ce5f9.2c88ca",
+                "ca26c0f6.4566f"
             ]
         ]
     },
     {
-        "id": "3ce10ed5.092432",
+        "id": "74f67b3.0788684",
         "type": "outcome",
         "name": "Mounted",
         "xml": "<outcome value='true'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3174.625,
-        "y": 1030.625,
-        "z": "73e537e.8932bc8",
+        "x": 3230.3541564941406,
+        "y": 1005.7986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "ceac5f2d.de7c3"
+                "146ea38c.756e1c"
             ]
         ]
     },
     {
-        "id": "a302bf1.efd614",
+        "id": "6c62ceff.19a3d",
         "type": "execute",
         "name": "read cellCU",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.cellCULocalId' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUCPList['+ $idz +'].cellCUList['+ $idcu +'].cellLocalId'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 2945.625,
-        "y": 1063.625,
-        "z": "73e537e.8932bc8",
+        "x": 3001.3541564941406,
+        "y": 1038.7986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "ba736919.8a3b38",
+        "id": "93fa1df2.1b084",
         "type": "execute",
         "name": "prepare idGNBCUCPFunction",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry.url\"/>\n    <parameter name=\"target\" value=\"{idGNBCUCPFunction}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.CUCPName`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2972.625,
-        "y": 1127.625,
-        "z": "73e537e.8932bc8",
+        "x": 3028.3541564941406,
+        "y": 1102.7986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "bccb9a19.543658",
+        "id": "901e14df.7d5258",
         "type": "execute",
         "name": "prepare idNRCellCU",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry.url\"/>\n    <parameter name=\"target\" value=\"{idNRCellCU}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cellCULocalId`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2933.625259399414,
-        "y": 1173.1250286102295,
-        "z": "73e537e.8932bc8",
+        "x": 2989.3544158935547,
+        "y": 1148.298635482788,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "29628860.8b8dc8",
+        "id": "a24b8d43.bcbfe",
         "type": "execute",
         "name": "prepare mcc",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry.url\"/>\n    <parameter name=\"target\" value=\"{mcc}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.mcc`\"/>\n   ",
         "comments": "",
         "outputs": 1,
-        "x": 2899.3750610351562,
-        "y": 1254.8750562667847,
-        "z": "73e537e.8932bc8",
+        "x": 2955.104217529297,
+        "y": 1230.0486631393433,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "3fd39755.b5cbf8",
+        "id": "a8c3eb35.841368",
         "type": "execute",
         "name": "prepare mnc",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry.url\"/>\n    <parameter name=\"target\" value=\"{mnc}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.mnc`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 2888.12548828125,
-        "y": 1315.125072479248,
-        "z": "73e537e.8932bc8",
+        "x": 2943.8546447753906,
+        "y": 1290.2986793518066,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "3a12865a.0d117a",
+        "id": "33dff673.7b4ada",
         "type": "record",
         "name": "record API params",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"patch cellCU NSSAI parameters\"/>\n<parameter name=\"field2\" value=\"`$tmp.nearRTRICId`\"/>\n<parameter name=\"field3\" value=\"`$tmp.CUCPName`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cellCULocalId`\"/>\n<parameter name=\"field5\" value=\"`$tmp.mcc`\"/>\n<parameter name=\"field6\" value=\"`$tmp.mnc`\"/>\n<parameter name=\"field7\" value=\"`$tmp.patchPLMNInfoListEntry.url`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2884.625,
-        "y": 1383.625,
-        "z": "73e537e.8932bc8",
+        "x": 2940.3541564941406,
+        "y": 1358.7986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "299e60f.af51ea",
+        "id": "55ec219e.8af69",
         "type": "execute",
-        "name": "activate PLMNInfoListEntry ToNRCellCU",
+        "name": "activate PLMNInfoListEntry ToNRCellDU",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/ranSlice-patch-sNSSAI-status.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.patchPLMNInfoListEntry.url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"activate-cellCU-PLMNInfoList-response\"/>\n<parameter name='contentType' value='application/yang.patch+json' />\n<parameter name='accept' value='application/yang.patch-status+json'/>\n<parameter name='format' value='json' />",
         "comments": "",
         "outputs": 1,
-        "x": 2924.6251068115234,
-        "y": 1446.6249732971191,
-        "z": "73e537e.8932bc8",
+        "x": 2980.354263305664,
+        "y": 1421.7985801696777,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "2cf676c2.3fd4ea",
-                "f8fba380.e8c38"
+                "c4715537.4d9d28",
+                "6fe83c14.47c9a4"
             ]
         ]
     },
     {
-        "id": "f8fba380.e8c38",
+        "id": "6fe83c14.47c9a4",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3140.62508392334,
-        "y": 1325.6249732971191,
-        "z": "73e537e.8932bc8",
+        "x": 3196.3542404174805,
+        "y": 1300.7985801696777,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "930a46d3.3df258"
+                "912dcb56.c269b8"
             ]
         ]
     },
     {
-        "id": "930a46d3.3df258",
+        "id": "912dcb56.c269b8",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 3290.625358581543,
-        "y": 1284.625156402588,
-        "z": "73e537e.8932bc8",
+        "x": 3346.3545150756836,
+        "y": 1259.7987632751465,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "debf2a5f.a15d48",
-                "62751a13.a72014",
-                "cf52b92f.10a1a8"
+                "cd61ffc8.1b20e",
+                "bfb86283.3c1ca",
+                "1d2d8078.f320b"
             ]
         ]
     },
     {
-        "id": "62751a13.a72014",
+        "id": "bfb86283.3c1ca",
         "type": "set",
         "name": "set",
         "xml": "<set>\n<parameter name='error-code' value='500'/>\n<parameter name='error-message' value='Error patching cellCU PLMNInfoList. Aborting RPC executiopn'/>",
         "comments": "",
-        "x": 3456.625114440918,
-        "y": 1250.625156402588,
-        "z": "73e537e.8932bc8",
+        "x": 3512.3542709350586,
+        "y": 1225.7987632751465,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "debf2a5f.a15d48",
+        "id": "cd61ffc8.1b20e",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name='error-code' value='500'/>\n<parameter name='error-message' value='Error updating NRcellCU - PLMNInfo. Aborting RPC executiopn'/>",
         "comments": "",
-        "x": 3461.6249923706055,
-        "y": 1345.6252174377441,
-        "z": "73e537e.8932bc8",
+        "x": 3517.354148864746,
+        "y": 1320.7988243103027,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "54cfb6bf.e47b78",
+        "id": "2b3fb6b4.a0e59a",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Successfully Patched - cellCU PLMNInfo List\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 3546.6249618530273,
-        "y": 1438.625400543213,
-        "z": "73e537e.8932bc8",
+        "x": 3602.354118347168,
+        "y": 1413.7990074157715,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "188f83ea.3d48fc",
+        "id": "74c7cb25.bf1b14",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 3348.624900817871,
-        "y": 1441.6252784729004,
-        "z": "73e537e.8932bc8",
+        "x": 3404.3540573120117,
+        "y": 1416.798885345459,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "54cfb6bf.e47b78"
+                "2b3fb6b4.a0e59a"
             ]
         ]
     },
     {
-        "id": "2cf676c2.3fd4ea",
+        "id": "c4715537.4d9d28",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3175.625114440918,
-        "y": 1442.6252174377441,
-        "z": "73e537e.8932bc8",
+        "x": 3231.3542709350586,
+        "y": 1417.7988243103027,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "188f83ea.3d48fc"
+                "74c7cb25.bf1b14"
             ]
         ]
     },
     {
-        "id": "d302afcf.237ef",
-        "type": "set",
-        "name": "set status as ACTIVE",
-        "xml": "<set>\n<parameter name='tmp.status' value='ACTIVE' />",
-        "comments": "",
-        "x": 693.4375,
-        "y": 454.375,
-        "z": "73e537e.8932bc8",
-        "wires": []
-    },
-    {
-        "id": "f2b8e61a.a5c8c8",
+        "id": "e8706dc4.5a81b",
         "type": "execute",
         "name": "read sNSSAI from input",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.sNSSAI' />\n\t<parameter name='source' value=\"`$payloadJson.input.NSSAI`\" />\n",
+        "xml": "<set>\n<parameter name='tmp.sNSSAI' value=\"`$payloadJson.input.sNSSAI`\" />\n",
         "comments": "",
         "outputs": 1,
-        "x": 698.1250152587891,
-        "y": 263.4375057220459,
-        "z": "73e537e.8932bc8",
+        "x": 753.8541717529297,
+        "y": 238.6111125946045,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "623b8887.a167d8",
+        "id": "4a7a46d9.0a7f98",
         "type": "block",
         "name": "Process CUUP",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 690.6250534057617,
-        "y": 1180.6250257492065,
-        "z": "73e537e.8932bc8",
+        "x": 746.3542098999023,
+        "y": 1155.7986326217651,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "5edb379d.514778",
-                "4d3d871.621e378",
-                "b3a7abd3.ab2ac8"
+                "4fc4f5dc.4d5aac",
+                "c239af8f.4c02d",
+                "a2079e60.52fde"
             ]
         ]
     },
     {
-        "id": "5edb379d.514778",
+        "id": "4fc4f5dc.4d5aac",
         "type": "execute",
         "name": "read CUUP list size",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.CUUPList_length' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.[' + $idy +'].gNBCUUPList_length'`\" />\n    ",
         "comments": "",
         "outputs": 1,
-        "x": 1021.625057220459,
-        "y": 1080.6250228881836,
-        "z": "73e537e.8932bc8",
+        "x": 1077.3542137145996,
+        "y": 1055.7986297607422,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "4d3d871.621e378",
+        "id": "c239af8f.4c02d",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Number of CUCP List Entries \"/>\n<parameter name=\"field2\" value=\"`$tmp.CUUPList_length`\"/>\n<parameter name=\"field3\" value=\"for the NearRTRIC\"/>\n<parameter name=\"field4\" value=\"`$tmp.nearRTRICId`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 978.6251220703125,
-        "y": 1131.8750252723694,
-        "z": "73e537e.8932bc8",
+        "x": 1034.3542785644531,
+        "y": 1107.048632144928,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "b3a7abd3.ab2ac8",
+        "id": "a2079e60.52fde",
         "type": "for",
         "name": "foreach CUUP",
         "xml": "<for index='id-cuup' start='0' end='`$tmp.CUUPList_length`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1004.1250152587891,
-        "y": 1180.6250247955322,
-        "z": "73e537e.8932bc8",
+        "x": 1059.8541717529297,
+        "y": 1155.7986316680908,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "b36e4008.81623"
+                "dbbdd777.2bef48"
             ]
         ]
     },
     {
-        "id": "b36e4008.81623",
+        "id": "dbbdd777.2bef48",
         "type": "block",
         "name": "block : process CUUP",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1227.6250610351562,
-        "y": 1163.8750705718994,
-        "z": "73e537e.8932bc8",
+        "x": 1283.3542175292969,
+        "y": 1139.048677444458,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "22f58645.55e61a",
-                "62e419e7.9c4ab8",
-                "7516a8f.7a59058",
-                "5c4c4274.95bb3c"
+                "a133ebb1.7208f8",
+                "4f005e6b.cdbf2",
+                "bd72fca6.c509e",
+                "7a4b5310.f8c63c"
             ]
         ]
     },
     {
-        "id": "22f58645.55e61a",
+        "id": "a133ebb1.7208f8",
         "type": "execute",
         "name": "read CUUP id",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.idGNBCUUPFunction' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUUPList['+ $id-cuup +'].gNBCUUPId'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 1471.625,
-        "y": 939.125,
-        "z": "73e537e.8932bc8",
+        "x": 1527.3541564941406,
+        "y": 914.2986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "62e419e7.9c4ab8",
+        "id": "4f005e6b.cdbf2",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"idGNBCUUPFunction \"/>\n<parameter name=\"field2\" value=\"`$tmp.idGNBCUUPFunction`\"/>\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 1467.625,
-        "y": 993.125,
-        "z": "73e537e.8932bc8",
+        "x": 1523.3541564941406,
+        "y": 968.2986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "7516a8f.7a59058",
+        "id": "bd72fca6.c509e",
         "type": "execute",
         "name": "read plmninfolist size",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.pLMNInfoList' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUUPList['+ $id-cuup +'].pLMNInfoList_length'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 1518.625,
-        "y": 1058.125,
-        "z": "73e537e.8932bc8",
+        "x": 1574.3541564941406,
+        "y": 1033.2986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "5c4c4274.95bb3c",
+        "id": "7a4b5310.f8c63c",
         "type": "for",
         "name": "foreach pLMNInfo",
         "xml": "<for index='id-plmn' start='0' end='`$tmp.pLMNInfoList`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1504.625,
-        "y": 1113.125,
-        "z": "73e537e.8932bc8",
+        "x": 1560.3541564941406,
+        "y": 1088.2986068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "2c5e82ef.5ab08e"
+                "20e32925.344246"
             ]
         ]
     },
     {
-        "id": "2c5e82ef.5ab08e",
+        "id": "22705dcb.70b392",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1743.75,
-        "y": 1110.3125,
-        "z": "73e537e.8932bc8",
+        "x": 1799.4791564941406,
+        "y": 1085.4861068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "d7e78b50.130018",
-                "ae1fc405.ff2a58",
-                "ce7f221.e3090e"
+                "8429c3b8.a1992",
+                "91e2f682.5ee478",
+                "19245baa.f98764",
+                "760fbb9c.1fe0f4",
+                "c1d6662b.ac2dc8",
+                "4ae26bfb.2cf8b4"
             ]
         ]
     },
     {
-        "id": "d7e78b50.130018",
+        "id": "8429c3b8.a1992",
         "type": "switchNode",
         "name": "ransim mounted",
         "xml": "<switch test='`$prop.ransim-mounted`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1957.000259399414,
-        "y": 1111.0626487731934,
-        "z": "73e537e.8932bc8",
+        "x": 2012.7294158935547,
+        "y": 1086.236255645752,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "43dda371.85d0cc",
-                "b28fc0c6.768a6"
+                "8ddc5a57.7d51f8",
+                "5dcf9efb.36263"
             ]
         ]
     },
     {
-        "id": "43dda371.85d0cc",
+        "id": "8ddc5a57.7d51f8",
         "type": "outcome",
         "name": "Not Mounted",
         "xml": "<outcome value='false'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2170.000141143799,
-        "y": 1078.5622673034668,
-        "z": "73e537e.8932bc8",
+        "x": 2225.7292976379395,
+        "y": 1053.7358741760254,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "92eabe0e.0ecdb"
+                "b493fd94.6742b"
             ]
         ]
     },
     {
-        "id": "92eabe0e.0ecdb",
+        "id": "b493fd94.6742b",
         "type": "execute",
         "name": "generate patch PLMNInfoListEntry CUUP URL",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.patchPLMNInfoListEntry.ToGNBCUUP`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoList-CUUP.url\"/>\n    <parameter name=\"target\" value=\"{idNearRTRIC}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.nearRTRICId`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2495.0000228881836,
-        "y": 1033.5625715255737,
-        "z": "73e537e.8932bc8",
+        "x": 2550.729179382324,
+        "y": 1008.7361783981323,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "1e03d99f.4b54d6",
+        "id": "8f6ac090.b47a3",
         "type": "execute",
         "name": "generate patchPLMNInfoList.TogNBCUUP",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.patchPLMNInfoListEntry.ToGNBCUUP.ransim-mounted`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoList-CUUP.url\"/>\n    <parameter name=\"target\" value=\"{idNearRTRIC}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.nearRTRICId`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 2605.7495651245117,
-        "y": 1116.3122825622559,
-        "z": "73e537e.8932bc8",
+        "x": 2661.4787216186523,
+        "y": 1091.4858894348145,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "cfddd286.9a08f",
+        "id": "ac53172f.a81cc8",
         "type": "execute",
         "name": "populate mountName",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoList-CUUP.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoList-CUUP.url\"/>\n    <parameter name=\"target\" value=\"{mountName}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.idGNBCUUPFunction`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 2589.7500858306885,
-        "y": 1184.3125429153442,
-        "z": "73e537e.8932bc8",
+        "x": 2645.479242324829,
+        "y": 1159.4861497879028,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "1e46f7a0.12e1b8",
+        "id": "8cd56360.4c754",
         "type": "block",
         "name": "ransim  URL",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 2329.999870300293,
-        "y": 1175.062283039093,
-        "z": "73e537e.8932bc8",
+        "x": 2385.7290267944336,
+        "y": 1150.2358899116516,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "1e03d99f.4b54d6",
-                "cfddd286.9a08f"
+                "8f6ac090.b47a3",
+                "ac53172f.a81cc8"
             ]
         ]
     },
     {
-        "id": "b28fc0c6.768a6",
+        "id": "5dcf9efb.36263",
         "type": "outcome",
         "name": "Mounted",
         "xml": "<outcome value='true'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2155.500015258789,
-        "y": 1164.31254196167,
-        "z": "73e537e.8932bc8",
+        "x": 2211.2291717529297,
+        "y": 1139.4861488342285,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "1e46f7a0.12e1b8"
+                "8cd56360.4c754"
             ]
         ]
     },
     {
-        "id": "ae1fc405.ff2a58",
+        "id": "91e2f682.5ee478",
         "type": "execute",
         "name": "prepare idGNBCUUPFunction",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoList-CUUP.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoList-CUUP.url\"/>\n    <parameter name=\"target\" value=\"{idGNBCUUPFunction}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.idGNBCUUPFunction`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1983.4375,
-        "y": 1241.875,
-        "z": "73e537e.8932bc8",
+        "x": 2081.3887939453125,
+        "y": 1199.2708134651184,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "ce7f221.e3090e",
+        "id": "19245baa.f98764",
         "type": "execute",
         "name": "patch PLMNInfoListEntry gNBCUUP",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/ranSlice-patch-sNSSAI-status.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.patchPLMNInfoList-CUUP.url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"activate-gNBCUUP-PLMNInfoList-response\"/>\n<parameter name='contentType' value='application/yang.patch+json' />\n<parameter name='accept' value='application/yang.patch-status+json'/>\n<parameter name='format' value='json' />",
         "comments": "",
         "outputs": 1,
-        "x": 1999.4375,
-        "y": 1298.875,
-        "z": "73e537e.8932bc8",
+        "x": 2030.7222900390625,
+        "y": 1312.937484741211,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "aee81218.72027",
-                "7d297bbe.d06bd4"
+                "607507d2.076828",
+                "a4ba49bc.319898"
             ]
         ]
     },
     {
-        "id": "aee81218.72027",
+        "id": "607507d2.076828",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2301.4376525878906,
-        "y": 1300.8752393722534,
-        "z": "73e537e.8932bc8",
+        "x": 2357.1668090820312,
+        "y": 1276.048846244812,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "8453c6af.a13a18"
+                "3b8c2bff.4a8384"
             ]
         ]
     },
     {
-        "id": "7d297bbe.d06bd4",
+        "id": "a4ba49bc.319898",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2295.437530517578,
-        "y": 1367.8751783370972,
-        "z": "73e537e.8932bc8",
+        "x": 2351.1666870117188,
+        "y": 1343.0487852096558,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "d8b21643.b8fd78"
+                "897bf22d.1244"
             ]
         ]
     },
     {
-        "id": "8453c6af.a13a18",
+        "id": "3b8c2bff.4a8384",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 2478.437774658203,
-        "y": 1289.875117301941,
-        "z": "73e537e.8932bc8",
+        "x": 2534.1669311523438,
+        "y": 1265.0487241744995,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "1de38af1.68ef85",
-                "484c6fd2.3298c",
-                "cf52b92f.10a1a8"
+                "dcb187c6.3c2a98",
+                "6fe85c0b.cfed34",
+                "1d2d8078.f320b"
             ]
         ]
     },
     {
-        "id": "d8b21643.b8fd78",
+        "id": "897bf22d.1244",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 2475.437530517578,
-        "y": 1372.8749952316284,
-        "z": "73e537e.8932bc8",
+        "x": 2531.1666870117188,
+        "y": 1348.048602104187,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "bd12c7c4.296008"
+                "b6c60408.ac42f8"
             ]
         ]
     },
     {
-        "id": "bd12c7c4.296008",
+        "id": "b6c60408.ac42f8",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Successfully Patched - gNBCUUP PLMNInfo List\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 2628.437225341797,
-        "y": 1372.8752393722534,
-        "z": "73e537e.8932bc8",
+        "x": 2684.1663818359375,
+        "y": 1348.048846244812,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "1de38af1.68ef85",
+        "id": "dcb187c6.3c2a98",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name='error-code' value='500'/>\n<parameter name='error-message' value='Error patching CUUP PLMNInfo. Aborting RPC executiopn'/>",
         "comments": "",
-        "x": 2683.1877365112305,
-        "y": 1290.3753967285156,
-        "z": "73e537e.8932bc8",
+        "x": 2738.916893005371,
+        "y": 1265.5490036010742,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "484c6fd2.3298c",
+        "id": "6fe85c0b.cfed34",
         "type": "set",
         "name": "set",
         "xml": "<set>\n<parameter name='error-code' value='500'/>\n<parameter name='error-message' value='Error patching CUUP PLMNInfoList. Aborting RPC executiopn'/>",
         "comments": "",
-        "x": 2688.1879234313965,
-        "y": 1236.3755326271057,
-        "z": "73e537e.8932bc8",
+        "x": 2743.917079925537,
+        "y": 1211.5491394996643,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "52b3e00e.e5abf",
+        "id": "616b13a5.03b89c",
         "type": "block",
         "name": "Process gNBDU",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 685.0000076293945,
-        "y": 1329.0625247955322,
-        "z": "73e537e.8932bc8",
+        "x": 740.7291641235352,
+        "y": 1304.2361316680908,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "7e06ceca.74922",
-                "1051a27a.b8e44e",
-                "352a5eb7.c4dff2"
+                "10fb2c3d.dfce64",
+                "70cc2ee.327ead",
+                "6a2616fc.39c188"
             ]
         ]
     },
     {
-        "id": "7e06ceca.74922",
+        "id": "10fb2c3d.dfce64",
         "type": "execute",
         "name": "read DUlist size",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.DUList_length' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.[' + $idy +'].gNBDUList_length'`\" />\n    ",
         "comments": "",
         "outputs": 1,
-        "x": 1017.7500305175781,
-        "y": 1235.0625114440918,
-        "z": "73e537e.8932bc8",
+        "x": 1073.4791870117188,
+        "y": 1210.2361183166504,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "1051a27a.b8e44e",
+        "id": "70cc2ee.327ead",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Number of DU List Entries \"/>\n<parameter name=\"field2\" value=\"`$tmp.DUList_length`\"/>\n<parameter name=\"field3\" value=\"for the NearRTRIC\"/>\n<parameter name=\"field4\" value=\"`$tmp.nearRTRICId`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 990.750057220459,
-        "y": 1278.562572479248,
-        "z": "73e537e.8932bc8",
+        "x": 1046.4792137145996,
+        "y": 1253.7361793518066,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "352a5eb7.c4dff2",
+        "id": "6a2616fc.39c188",
         "type": "for",
         "name": "foreach DU",
         "xml": "<for index='id-du' start='0' end='`$tmp.DUList_length`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 1002.7500305175781,
-        "y": 1329.8125,
-        "z": "73e537e.8932bc8",
+        "x": 1058.4791870117188,
+        "y": 1304.9861068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "e932e598.a8e4d8"
+                "56903078.1f15a"
             ]
         ]
     },
     {
-        "id": "e932e598.a8e4d8",
+        "id": "56903078.1f15a",
         "type": "block",
         "name": "block : process gNBDU",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1283.75,
-        "y": 1330.8124694824219,
-        "z": "73e537e.8932bc8",
+        "x": 1339.4791564941406,
+        "y": 1305.9860763549805,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "67418177.4b675",
-                "76ffbff1.a238b",
-                "4501d8aa.3adbf8",
-                "48d81af7.03f064"
+                "8815af69.bf19a",
+                "6c129f65.c2cb9",
+                "d9dc2c7b.dd00a",
+                "dc885ed2.b0e5d"
             ]
         ]
     },
     {
-        "id": "67418177.4b675",
+        "id": "8815af69.bf19a",
         "type": "execute",
         "name": "read DU id",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.GNBDUId' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].gNBDUId'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 1562.7498245239258,
-        "y": 1326.8117713928223,
-        "z": "73e537e.8932bc8",
+        "x": 1618.4789810180664,
+        "y": 1301.9853782653809,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "76ffbff1.a238b",
+        "id": "6c129f65.c2cb9",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"GNBDUId \"/>\n<parameter name=\"field2\" value=\"`$tmp.GNBDUId`\"/>\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 1535.7498245239258,
-        "y": 1377.8117713928223,
-        "z": "73e537e.8932bc8",
+        "x": 1591.4789810180664,
+        "y": 1352.9853782653809,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "4501d8aa.3adbf8",
+        "id": "d9dc2c7b.dd00a",
         "type": "execute",
         "name": "read cellDU list size",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.cellDUList_length' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.[' + $idy +'].gNBDUList[' + $id-du +'].cellDUList_length'`\" />\n    ",
         "comments": "",
         "outputs": 1,
-        "x": 1576.7498245239258,
-        "y": 1426.8117713928223,
-        "z": "73e537e.8932bc8",
+        "x": 1632.4789810180664,
+        "y": 1401.9853782653809,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "48d81af7.03f064",
+        "id": "dc885ed2.b0e5d",
         "type": "for",
         "name": "for cellDUList",
         "xml": "<for index='id-celldu' start='0' end='`$tmp.cellDUList_length`' >\n",
         "comments": "",
         "outputs": 1,
-        "x": 1566.7498245239258,
-        "y": 1470.8117713928223,
-        "z": "73e537e.8932bc8",
+        "x": 1622.4789810180664,
+        "y": 1445.9853782653809,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "98b4252b.430ee8"
+                "cf6daf94.a4519"
             ]
         ]
     },
     {
-        "id": "98b4252b.430ee8",
+        "id": "cf6daf94.a4519",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1726.499885559082,
-        "y": 1470.5618963241577,
-        "z": "73e537e.8932bc8",
+        "x": 1782.2290420532227,
+        "y": 1445.7355031967163,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "13016587.c7632a",
-                "c22a6693.7c9d58"
+                "cd3443f.60a62c",
+                "fa791c73.94b2e",
+                "a86c8a66.29e048"
             ]
         ]
     },
     {
-        "id": "13016587.c7632a",
+        "id": "cd3443f.60a62c",
         "type": "execute",
         "name": "read PLMNList size",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.DUpLMNInfoList_length' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].cellDUList['+ $id-celldu +'].pLMNInfoList_length '`\" />",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.DUpLMNInfoList_length' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].cellDUList['+ $id-celldu +'].pLMNInfoList_length'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 1974.6875,
-        "y": 1470.3125,
-        "z": "73e537e.8932bc8",
+        "x": 2030.4166564941406,
+        "y": 1445.4861068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "c22a6693.7c9d58",
+        "id": "fa791c73.94b2e",
         "type": "for",
         "name": "foreach PLMNInfo",
         "xml": "<for index='id-duplmn' start='0' end='`$tmp.DUpLMNInfoList_length`' >\n",
         "comments": "",
         "outputs": 1,
-        "x": 1953.0208740234375,
-        "y": 1540.3125,
-        "z": "73e537e.8932bc8",
+        "x": 2008.7500305175781,
+        "y": 1515.4861068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "ae921aff.c45078"
+                "313e638f.f742ec"
             ]
         ]
     },
     {
-        "id": "ae921aff.c45078",
+        "id": "313e638f.f742ec",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 2138.4096603393555,
-        "y": 1534.3402099609375,
-        "z": "73e537e.8932bc8",
+        "x": 2194.138816833496,
+        "y": 1509.513816833496,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "7383ae7b.5b99f",
-                "7503b7ce.7796d8",
-                "e0761d19.bc37e"
+                "52e7e56.cbb151c",
+                "e0f61457.8125e8",
+                "91bf12a7.d0c93"
             ]
         ]
     },
     {
-        "id": "e0761d19.bc37e",
+        "id": "e0f61457.8125e8",
         "type": "execute",
         "name": "read sNSSAI from getNFNSSIRIC-configdb-response",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.configDBSNSSAI-DU' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].cellDUList['+ $id-celldu +'].pLMNInfoList['+ $id-duplmn +'].sNSSAI.sNSSAI'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 2513.2986068725586,
-        "y": 1453.3128719329834,
-        "z": "73e537e.8932bc8",
+        "x": 2565.694496154785,
+        "y": 1449.5976209640503,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "7383ae7b.5b99f",
+        "id": "cf30123e.20ea6",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"sNSSAI - getNFNSSIRIC-configdb-response\"/>\n<parameter name=\"field2\" value=\"`$tmp.configDBSNSSAI-DU`\"/>\n<parameter name=\"field3\" value=\"sNSSAI from request\"/>\n<parameter name=\"field4\" value=\"`$tmp.sNSSAI`\"/>\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 2374.2986030578613,
-        "y": 1511.3127517700195,
-        "z": "73e537e.8932bc8",
+        "x": 2430.027759552002,
+        "y": 1486.4863586425781,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "7503b7ce.7796d8",
+        "id": "52e7e56.cbb151c",
         "type": "switchNode",
         "name": "is NSSAI exists",
         "xml": "<switch test='`$tmp.configDBSNSSAI-DU == $tmp.sNSSAI`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2369.43758392334,
-        "y": 1560.8682289123535,
-        "z": "73e537e.8932bc8",
+        "x": 2425.1667404174805,
+        "y": 1536.041835784912,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "8ded1517.4c32d8"
+                "3a8ebde1.e6da42"
             ]
         ]
     },
     {
-        "id": "8ded1517.4c32d8",
+        "id": "3a8ebde1.e6da42",
         "type": "outcome",
         "name": "True",
         "xml": "<outcome value='true'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2543.909828186035,
-        "y": 1553.5905861854553,
-        "z": "73e537e.8932bc8",
+        "x": 2599.638984680176,
+        "y": 1528.764193058014,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "50499d51.fe3e14"
+                "274d0a32.b45fa6"
             ]
         ]
     },
     {
-        "id": "50499d51.fe3e14",
+        "id": "274d0a32.b45fa6",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 2717.937629699707,
-        "y": 1549.56272315979,
-        "z": "73e537e.8932bc8",
+        "x": 2773.6667861938477,
+        "y": 1524.7363300323486,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "4efbb0f2.f7229",
-                "67913975.042ea8",
-                "b11b382e.43f478",
-                "9472e52c.249c78",
-                "7eb7f6b8.3dba48",
-                "9a055ee1.e66aa",
-                "b402baa1.acbe58",
-                "b43da734.c06b08",
-                "3b663477.76ed6c"
+                "71cdbc0a.3622b4",
+                "ec44bdd1.bcf45",
+                "b4f0ef58.afece",
+                "38f96ec1.612702",
+                "87bfb017.e52f5",
+                "622005bb.6ae9cc",
+                "ef70ea15.eee9e8"
             ]
         ]
     },
     {
-        "id": "67913975.042ea8",
+        "id": "5253749f.cf47cc",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"CellDU is applicable for the NSSAI \"/>\n\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 2930.4379959106445,
-        "y": 1518.3127232789993,
-        "z": "73e537e.8932bc8",
+        "x": 2986.167152404785,
+        "y": 1493.486330151558,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "4efbb0f2.f7229",
+        "id": "71cdbc0a.3622b4",
         "type": "switchNode",
         "name": "ransim mounted",
         "xml": "<switch test='`$prop.ransim-mounted`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2934.6875076293945,
-        "y": 1576.3127555847168,
-        "z": "73e537e.8932bc8",
+        "x": 2990.416664123535,
+        "y": 1551.4863624572754,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "c638f3de.dea5",
-                "78e627e0.d15b08"
+                "3f634a3a.bbc3a6",
+                "e495c954.919aa8"
             ]
         ]
     },
     {
-        "id": "c638f3de.dea5",
+        "id": "3f634a3a.bbc3a6",
         "type": "outcome",
         "name": "Not Mounted",
         "xml": "<outcome value='false'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3143.937999725342,
-        "y": 1531.3122968673706,
-        "z": "73e537e.8932bc8",
+        "x": 3199.6671562194824,
+        "y": 1506.4859037399292,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "a42b1236.4707e"
+                "42c47733.226eb8"
             ]
         ]
     },
     {
-        "id": "78e627e0.d15b08",
+        "id": "e495c954.919aa8",
         "type": "outcome",
         "name": "Mounted",
         "xml": "<outcome value='true'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3138.937999725342,
-        "y": 1592.8129997253418,
-        "z": "73e537e.8932bc8",
+        "x": 3194.6671562194824,
+        "y": 1567.9866065979004,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "8131e6bc.784858"
+                "605bb58c.b455ec"
             ]
         ]
     },
     {
-        "id": "a42b1236.4707e",
+        "id": "42c47733.226eb8",
         "type": "execute",
         "name": "generate patch PLMNInfoListEntry ToNRCellDU",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.patchPLMNInfoListEntry.ToNRCellDU`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry-cellDU.url\"/>\n    <parameter name=\"target\" value=\"{idNearRTRIC}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.nearRTRICId`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3490.187759399414,
-        "y": 1530.0627536773682,
-        "z": "73e537e.8932bc8",
+        "x": 3545.9169158935547,
+        "y": 1505.2363605499268,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "8131e6bc.784858",
+        "id": "605bb58c.b455ec",
         "type": "block",
         "name": "ransim  URL",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 3316.4375762939453,
-        "y": 1599.3126335144043,
-        "z": "73e537e.8932bc8",
+        "x": 3372.166732788086,
+        "y": 1574.486240386963,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "1754b665.854bca",
-                "b0b55a4d.efcde8"
+                "18b79e75.37e392",
+                "f0161312.03f32"
             ]
         ]
     },
     {
-        "id": "1754b665.854bca",
+        "id": "18b79e75.37e392",
         "type": "execute",
         "name": "generate patchPLMNInfoList.ToNRCellDU",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.patchPLMNInfoListEntry.ToNRCellDU.ransim-mounted`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry-cellDU.url\"/>\n    <parameter name=\"target\" value=\"{idNearRTRIC}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.nearRTRICId`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 3598.437942504883,
-        "y": 1588.0626335144043,
-        "z": "73e537e.8932bc8",
+        "x": 3654.1670989990234,
+        "y": 1563.236240386963,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "b0b55a4d.efcde8",
+        "id": "f0161312.03f32",
         "type": "execute",
         "name": "populate mountName",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry-cellDU.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry-cellDU.url\"/>\n    <parameter name=\"target\" value=\"{mountName}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.GNBDUId`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 3548.688247680664,
-        "y": 1648.5626649856567,
-        "z": "73e537e.8932bc8",
+        "x": 3604.4174041748047,
+        "y": 1623.7362718582153,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "b11b382e.43f478",
-        "type": "execute",
-        "name": "read cellDU",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.cellDULocalId' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].cellCUList['+ $id-celldu +'].cellLocalId'`\" />",
-        "comments": "",
-        "outputs": 1,
-        "x": 2926.5625,
-        "y": 1638.125,
-        "z": "73e537e.8932bc8",
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "9472e52c.249c78",
+        "id": "ec44bdd1.bcf45",
         "type": "execute",
         "name": "prepare idGNBDUFunction",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry-cellDU.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry-cellDU.url\"/>\n    <parameter name=\"target\" value=\"{idGNBDUFunction}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.GNBDUId`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2981.5625610351562,
-        "y": 1703.1249380111694,
-        "z": "73e537e.8932bc8",
+        "x": 3037.291717529297,
+        "y": 1678.298544883728,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "7eb7f6b8.3dba48",
+        "id": "b4f0ef58.afece",
         "type": "execute",
         "name": "prepare idNRCellDU",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry-cellDU.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry-cellDU.url\"/>\n    <parameter name=\"target\" value=\"{idNRCellDU}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cellCULocalId`\"/>\n",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry-cellDU.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry-cellDU.url\"/>\n    <parameter name=\"target\" value=\"{idNRCellDU}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.cellDULocalId`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2954.562744140625,
-        "y": 1758.124939918518,
-        "z": "73e537e.8932bc8",
+        "x": 3010.2919006347656,
+        "y": 1733.2985467910767,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "9a055ee1.e66aa",
+        "id": "38f96ec1.612702",
         "type": "execute",
         "name": "prepare mcc",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry-cellDU.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry-cellDU.url\"/>\n    <parameter name=\"target\" value=\"{mcc}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.mcc`\"/>\n   ",
         "comments": "",
         "outputs": 1,
-        "x": 2934.5624389648438,
-        "y": 1821.1252460479736,
-        "z": "73e537e.8932bc8",
+        "x": 2990.2915954589844,
+        "y": 1796.2988529205322,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "b402baa1.acbe58",
+        "id": "87bfb017.e52f5",
         "type": "execute",
         "name": "prepare mnc",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoListEntry-cellDU.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoListEntry-cellDU.url\"/>\n    <parameter name=\"target\" value=\"{mnc}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.mnc`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 2936.5626831054688,
-        "y": 1879.1248788833618,
-        "z": "73e537e.8932bc8",
+        "x": 2992.2918395996094,
+        "y": 1854.2984857559204,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "b43da734.c06b08",
+        "id": "622005bb.6ae9cc",
         "type": "record",
         "name": "record API params",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"patch cellCU NSSAI parameters\"/>\n<parameter name=\"field2\" value=\"`$tmp.nearRTRICId`\"/>\n<parameter name=\"field3\" value=\"`$tmp.GNBDUId`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cellDULocalId`\"/>\n<parameter name=\"field5\" value=\"`$tmp.mcc`\"/>\n<parameter name=\"field6\" value=\"`$tmp.mnc`\"/>\n<parameter name=\"field7\" value=\"`$tmp.patchPLMNInfoListEntry-cellDU.url`\"/>\n",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"patch cellDU NSSAI parameters\"/>\n<parameter name=\"field2\" value=\"`$tmp.nearRTRICId`\"/>\n<parameter name=\"field3\" value=\"`$tmp.GNBDUId`\"/>\n<parameter name=\"field4\" value=\"`$tmp.cellDULocalId`\"/>\n<parameter name=\"field5\" value=\"`$tmp.mcc`\"/>\n<parameter name=\"field6\" value=\"`$tmp.mnc`\"/>\n<parameter name=\"field7\" value=\"`$tmp.patchPLMNInfoListEntry-cellDU.url`\"/>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2941.5623168945312,
-        "y": 1947.1253700256348,
-        "z": "73e537e.8932bc8",
+        "x": 2997.291473388672,
+        "y": 1922.2989768981934,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "3b663477.76ed6c",
+        "id": "ef70ea15.eee9e8",
         "type": "execute",
         "name": "patch PLMNInfoListEntry ToNRCellDU",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/ranSlice-patch-sNSSAI-status.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$prop.controller.url + $tmp.patchPLMNInfoListEntry-cellDU.url`\"/>\n<parameter name=\"restapiUser\" value=\"`$prop.controller.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.controller.pwd`\"/>\n<parameter name=\"httpMethod\" value=\"PATCH\"/>\n<parameter name=\"responsePrefix\" value=\"activate-cellDU-PLMNInfoList-response\"/>\n<parameter name='contentType' value='application/yang.patch+json' />\n<parameter name='accept' value='application/yang.patch-status+json'/>\n<parameter name='format' value='json' />",
         "comments": "",
         "outputs": 1,
-        "x": 2998.5623474121094,
-        "y": 2022.374755859375,
-        "z": "73e537e.8932bc8",
+        "x": 3054.29150390625,
+        "y": 1997.5483627319336,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "e9376312.2afc9",
-                "3fa0b327.7d77bc"
+                "31094a59.71c6b6",
+                "e17e12d8.7bf9b"
             ]
         ]
     },
     {
-        "id": "3fa0b327.7d77bc",
+        "id": "e17e12d8.7bf9b",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3265.5623474121094,
-        "y": 1922.374755859375,
-        "z": "73e537e.8932bc8",
+        "x": 3321.29150390625,
+        "y": 1897.5483627319336,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "7812bc5b.b7e9e4"
+                "cb59d78a.e2f718"
             ]
         ]
     },
     {
-        "id": "7812bc5b.b7e9e4",
+        "id": "cb59d78a.e2f718",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 3423.5625915527344,
-        "y": 1870.374755859375,
-        "z": "73e537e.8932bc8",
+        "x": 3479.291748046875,
+        "y": 1845.5483627319336,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "dc07a63a.07b3e8",
-                "b8e4a7fe.f431d8",
-                "cf52b92f.10a1a8"
+                "d2c3eb8a.9f6058",
+                "dca325ed.2d4808",
+                "1d2d8078.f320b"
             ]
         ]
     },
     {
-        "id": "b8e4a7fe.f431d8",
+        "id": "dca325ed.2d4808",
         "type": "set",
         "name": "set",
         "xml": "<set>\n<parameter name='error-code' value='500'/>\n<parameter name='error-message' value='Error patching cellDU PLMNInfoList. Aborting RPC executiopn'/>",
         "comments": "",
-        "x": 3589.5623474121094,
-        "y": 1836.374755859375,
-        "z": "73e537e.8932bc8",
+        "x": 3645.29150390625,
+        "y": 1811.5483627319336,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "dc07a63a.07b3e8",
+        "id": "d2c3eb8a.9f6058",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name='error-code' value='500'/>\n<parameter name='error-message' value='Error updating NECellDU - PLMNInfo. Aborting RPC executiopn'/>",
         "comments": "",
-        "x": 3594.562225341797,
-        "y": 1931.3748168945312,
-        "z": "73e537e.8932bc8",
+        "x": 3650.2913818359375,
+        "y": 1906.5484237670898,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "bbe2b1be.4721c",
+        "id": "ae420b40.974238",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Successfully Patched - cellDU PLMNInfo List\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 3578.562225341797,
-        "y": 2017.375,
-        "z": "73e537e.8932bc8",
+        "x": 3634.2913818359375,
+        "y": 1992.5486068725586,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "dbdffb78.99de48",
+        "id": "b31a279f.84d848",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 3432.5623474121094,
-        "y": 2018.3747584819794,
-        "z": "73e537e.8932bc8",
+        "x": 3488.29150390625,
+        "y": 1993.548365354538,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "bbe2b1be.4721c"
+                "ae420b40.974238"
             ]
         ]
     },
     {
-        "id": "e9376312.2afc9",
+        "id": "31094a59.71c6b6",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 3264.5623474121094,
-        "y": 2021.374755859375,
-        "z": "73e537e.8932bc8",
+        "x": 3320.29150390625,
+        "y": 1996.5483627319336,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "dbdffb78.99de48"
+                "b31a279f.84d848"
             ]
         ]
     },
     {
-        "id": "738ca283.54ba9c",
+        "id": "9227e420.d769d8",
         "type": "execute",
         "name": "get PLMNId URL",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.configdb.getplmn`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.configdb.getPLMNId.url\"/>\n    <parameter name=\"target\" value=\"{sliceProfileId}\"/>\n    <parameter name=\"replacement\" value=\"`$payloadJson.input.sliceProfileId`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 646.2500305175781,
-        "y": 661.8750114440918,
-        "z": "73e537e.8932bc8",
+        "x": 701.9791870117188,
+        "y": 637.0486183166504,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "c80b56a5.99a988",
+        "id": "118a9166.3752bf",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Get PLMN from SliceProfileId URL: \"/>\n<parameter name=\"field2\" value=\"`$tmp.configdb.getPLMNId.url`\"/>\n\n",
         "comments": "",
         "outputs": 1,
-        "x": 619.7500305175781,
-        "y": 717.3750429153442,
-        "z": "73e537e.8932bc8",
+        "x": 675.4791870117188,
+        "y": 692.5486497879028,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "1c09cf50.00c361",
+        "id": "30fa502.42137b",
         "type": "execute",
         "name": "Get PLMN from Sliceprofile id",
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.configdb.url + $tmp.configdb.getPLMNId.url`\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"getPLMN-configdb-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />\n<parameter name=\"convertResponse\" value=\"true\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 688.5000152587891,
-        "y": 770.874979019165,
-        "z": "73e537e.8932bc8",
+        "x": 744.2291717529297,
+        "y": 746.0485858917236,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "20d20dea.8129f2",
+        "id": "87dd3f2b.2826d",
         "type": "execute",
         "name": "read PLMN Id",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.pLMNId' />\n\t<parameter name='source' value=\"`getPLMN-configdb-response.pLMNId`\" />\n",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.pLMNId' />\n\t<parameter name='source' value=\"`getPLMN-configdb-response.plmnId`\" />\n",
         "comments": "",
         "outputs": 1,
-        "x": 641.5000076293945,
-        "y": 828.8750276565552,
-        "z": "73e537e.8932bc8",
+        "x": 697.2291641235352,
+        "y": 785.1598272323608,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "a16a753b.c1e978",
+        "id": "e73bf4c7.eb1d48",
         "type": "execute",
         "name": "find MCC",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>\n    <parameter name=\"string\" value=\"`$tmp.pLMNId`\" />\n    <parameter name=\"result\" value=\"tmp.mcc\"/>\n    <parameter name=\"begin-index\" value=\"0\" />\n    <parameter name=\"end-index\" value=\"3\" />",
         "comments": "",
         "outputs": 1,
-        "x": 634.7500152587891,
-        "y": 888.1250905990601,
-        "z": "73e537e.8932bc8",
+        "x": 682.7014083862305,
+        "y": 822.1875896453857,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "ef19e8dd.548808",
+        "id": "51734263.da003c",
         "type": "execute",
         "name": "find MNC",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>\n    <parameter name=\"string\" value=\"`$tmp.pLMNId`\" />\n    <parameter name=\"result\" value=\"tmp.mnc\"/>\n    <parameter name=\"begin-index\" value=\"4\" />",
         "comments": "",
         "outputs": 1,
-        "x": 634.7500686645508,
-        "y": 939.1249685287476,
-        "z": "73e537e.8932bc8",
+        "x": 679.3681449890137,
+        "y": 860.9653186798096,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "b72487f2.f75598",
+        "id": "7056f58c.cbd93c",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"`$tmp.pLMNId`\"/>\n<parameter name=\"field2\" value=\"`$tmp.mcc`\"/>\n<parameter name=\"field3\" value=\"`$tmp.mnc`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 631.743537902832,
-        "y": 996.118483543396,
-        "z": "73e537e.8932bc8",
+        "x": 668.5838088989258,
+        "y": 895.7365913391113,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "cf52b92f.10a1a8",
+        "id": "1d2d8078.f320b",
         "type": "block",
         "name": "block : SO Response",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 4067.5,
-        "y": 1668.9285888671875,
-        "z": "73e537e.8932bc8",
+        "x": 4123.229156494141,
+        "y": 1644.102195739746,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "862727fd.1c2328",
-                "ba2f13e6.fb244",
-                "48d208ea.6b73a8"
+                "95d91ff1.aee05",
+                "860df61e.6c4d98",
+                "fb12db36.56d558"
             ]
         ]
     },
     {
-        "id": "862727fd.1c2328",
+        "id": "95d91ff1.aee05",
         "type": "set",
         "name": "set tmp variables for SO response",
-        "xml": "<set>\n<parameter name=\"tmp.so.callbackURL\" value=\"`$payloadJson.input.callbackURL`\"/>\n<parameter name=\"tmp.status\" value=\"`$error-code`\"/>\n<parameter name=\"tmp.reason\" value=\"`$error-message`\"/>\n<parameter name=\"tmp.requestID\" value=\"`$instantiateRANSlice-input.common-header.request-id`\"/>\n<parameter name=\"tmp.action\" value=\"`$instantiateRANSlice-input.action`\"/>\n",
+        "xml": "<set>\n<parameter name=\"tmp.so.callbackURL\" value=\"`$payloadJson.input.callbackURL`\"/>\n<parameter name=\"tmp.status\" value=\"`$error-code`\"/>\n<parameter name=\"tmp.reason\" value=\"`$error-message`\"/>\n<parameter name=\"tmp.requestID\" value=\"`$activate-r-a-n-slice-instance-input.common-header.request-id`\"/>\n<parameter name=\"tmp.action\" value=\"`$activate-r-a-n-slice-instance-input.action`\"/>\n",
         "comments": "",
-        "x": 4446.643783569336,
-        "y": 1526.5425758361816,
-        "z": "73e537e.8932bc8",
+        "x": 4502.372940063477,
+        "y": 1501.7161827087402,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "ba2f13e6.fb244",
+        "id": "860df61e.6c4d98",
         "type": "record",
-        "name": "record configdb RestAPI parms",
+        "name": "record RestAPI parms",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/so-callback-response.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"URL for SO Callback Response\"/>\n<parameter name='field2' value=\"`$tmp.so.callbackURL`\" />\n<parameter name='field3' value=\"`$tmp.status`\" />\n<parameter name='field4' value=\"`$tmp.reason`\" />\n<parameter name='field5' value=\"`$tmp.requestID`\" />\n<parameter name='field6' value=\"`$tmp.action`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 4450.214241027832,
-        "y": 1592.2146625518799,
-        "z": "73e537e.8932bc8",
+        "x": 4505.943397521973,
+        "y": 1567.3882694244385,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "48d208ea.6b73a8",
+        "id": "fb12db36.56d558",
         "type": "execute",
         "name": "Send to SO",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/ranSlice-so-response.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$tmp.so.callbackURL`\"/>\n<parameter name=\"httpMethod\" value=\"POST\"/>\n<parameter name=\"responsePrefix\" value=\"so-callback-modify-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />\n<parameter name=\"convertResponse\" value=\"true\"/>",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/ranSlice-so-response.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$tmp.so.callbackURL`\"/>\n<parameter name=\"httpMethod\" value=\"POST\"/>\n<parameter name=\"responsePrefix\" value=\"so-callback-activate-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />\n<parameter name=\"convertResponse\" value=\"true\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 4376.642807006836,
-        "y": 1670.6432371139526,
-        "z": "73e537e.8932bc8",
+        "x": 4432.371963500977,
+        "y": 1645.8168439865112,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "866030e9.b444e",
-                "4f0f6de5.73b094"
+                "9980158f.406e88",
+                "67b08216.a3393c"
             ]
         ]
     },
     {
-        "id": "866030e9.b444e",
+        "id": "9980158f.406e88",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 4614.071365356445,
-        "y": 1653.3572883605957,
-        "z": "73e537e.8932bc8",
+        "x": 4669.800521850586,
+        "y": 1628.5308952331543,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "52d6b739.76f9c8"
+                "87660bcc.628228"
             ]
         ]
     },
     {
-        "id": "52d6b739.76f9c8",
+        "id": "87660bcc.628228",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 4806.499732971191,
-        "y": 1644.071725845337,
-        "z": "73e537e.8932bc8",
+        "x": 4862.228889465332,
+        "y": 1619.2453327178955,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "cb07e63f.970f58"
+                "71da56df.06b538"
             ]
         ]
     },
     {
-        "id": "cb07e63f.970f58",
+        "id": "71da56df.06b538",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error sending SO Response\" />",
         "comments": "",
-        "x": 5008.2136154174805,
-        "y": 1632.785837650299,
-        "z": "73e537e.8932bc8",
+        "x": 5063.942771911621,
+        "y": 1607.9594445228577,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "589e3583.45b27c",
+        "id": "a4c90aa5.4590d8",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"SO Response Sent \"/>",
         "comments": "",
         "outputs": 1,
-        "x": 5002.35689163208,
-        "y": 1707.785903930664,
-        "z": "73e537e.8932bc8",
+        "x": 5058.086048126221,
+        "y": 1682.9595108032227,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "e5f066ec.ee08a8",
+        "id": "c87cca3b.177cf8",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 4818.356742858887,
-        "y": 1713.2143459320068,
-        "z": "73e537e.8932bc8",
+        "x": 4874.085899353027,
+        "y": 1688.3879528045654,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "589e3583.45b27c"
+                "a4c90aa5.4590d8"
             ]
         ]
     },
     {
-        "id": "4f0f6de5.73b094",
+        "id": "67b08216.a3393c",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 4608.356689453125,
-        "y": 1717.071584701538,
-        "z": "73e537e.8932bc8",
+        "x": 4664.085845947266,
+        "y": 1692.2451915740967,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "e5f066ec.ee08a8"
+                "c87cca3b.177cf8"
             ]
         ]
     },
     {
-        "id": "8eaff649.12a058",
+        "id": "1f3735d.7ce59ca",
         "type": "block",
         "name": "SO Response",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 615,
-        "y": 1646.0714111328125,
-        "z": "73e537e.8932bc8",
+        "x": 670.7291564941406,
+        "y": 1621.245018005371,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "e7d5db02.65b2d8",
-                "dad1b3aa.d6985",
-                "e85cda54.0fe538",
-                "b91c3aef.b188c8"
+                "a80d850.d925878",
+                "9999f77f.9d0b48",
+                "2c826e96.56d782",
+                "fb15841c.d43108"
             ]
         ]
     },
     {
-        "id": "e85cda54.0fe538",
+        "id": "2c826e96.56d782",
         "type": "set",
         "name": "set tmp variables for SO response",
         "xml": "<set>\n<parameter name=\"tmp.status\" value=\"`$error-code`\"/>\n<parameter name=\"tmp.reason\" value=\"`$error-message`\"/>\n<parameter name=\"tmp.requestID\" value=\"`$activate-r-a-n-slice-input.common-header.request-id `\"/>\n<parameter name=\"tmp.action\" value=\"`$activate-r-a-n-slice-input.action`\"/>\n",
         "comments": "",
-        "x": 895.0011444091797,
-        "y": 1495.970895767212,
-        "z": "73e537e.8932bc8",
+        "x": 950.7303009033203,
+        "y": 1471.1445026397705,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "e7d5db02.65b2d8",
+        "id": "a80d850.d925878",
         "type": "record",
         "name": "record SO reply parms",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/so-callback-response.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"URL for SO Callback Response\"/>\n<parameter name='field2' value=\"`$payloadJson.input.callbackURL`\" />\n<parameter name='field3' value=\"`$tmp.status`\" />\n<parameter name='field4' value=\"`$tmp.reason`\" />\n<parameter name='field5' value=\"`$tmp.requestID`\" />\n<parameter name='field6' value=\"`$tmp.action`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 891.9999771118164,
-        "y": 1650.0715942382812,
-        "z": "73e537e.8932bc8",
+        "x": 947.729133605957,
+        "y": 1625.2452011108398,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "dad1b3aa.d6985",
+        "id": "9999f77f.9d0b48",
         "type": "execute",
         "name": "Send to SO",
-        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/ranSlice-so-response.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$payloadJson.input.callbackURL`\"/>\n<parameter name=\"httpMethod\" value=\"POST\"/>\n<parameter name=\"responsePrefix\" value=\"so-callback-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />\n<parameter name=\"restapiUser\" value=\"`$prop.restapi.so.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.restapi.so.password`\"/>",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"templateFileName\" value=\"`$prop.restapi.templateDir + '/ranSlice-so-response.json'`\" />\n<parameter name=\"restapiUrl\" value=\"`$payloadJson.input.callbackURL`\"/>\n<parameter name=\"httpMethod\" value=\"POST\"/>\n<parameter name=\"responsePrefix\" value=\"so-callback-activate-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />\n<parameter name=\"restapiUser\" value=\"`$prop.restapi.so.user`\" />\n<parameter name=\"restapiPassword\" value=\"`$prop.restapi.so.password`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 761.0000762939453,
-        "y": 1767.0712985992432,
-        "z": "73e537e.8932bc8",
+        "x": 816.7292327880859,
+        "y": 1742.2449054718018,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "2999f62a.11666a",
-                "a0ffbca7.ce015"
+                "2063bf67.d5503",
+                "ee4d36f.2eaa2c8"
             ]
         ]
     },
     {
-        "id": "2999f62a.11666a",
+        "id": "2063bf67.d5503",
         "type": "failure",
         "name": "failure",
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 926.0000762939453,
-        "y": 1747.0712976455688,
-        "z": "73e537e.8932bc8",
+        "x": 981.7292327880859,
+        "y": 1722.2449045181274,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "77937eda.00d3c"
+                "7b7497de.9bd2e8"
             ]
         ]
     },
     {
-        "id": "a0ffbca7.ce015",
+        "id": "ee4d36f.2eaa2c8",
         "type": "success",
         "name": "success",
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 917.9999694824219,
-        "y": 1820.0712480545044,
-        "z": "73e537e.8932bc8",
+        "x": 973.7291259765625,
+        "y": 1795.244854927063,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "bbd0fc65.b213e"
+                "9a9bad68.9f109"
             ]
         ]
     },
     {
-        "id": "bbd0fc65.b213e",
+        "id": "9a9bad68.9f109",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1063.999813079834,
-        "y": 1825.0713567733765,
-        "z": "73e537e.8932bc8",
+        "x": 1119.7289695739746,
+        "y": 1800.244963645935,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "3b8c718a.3fa84e"
+                "6a0f5572.75136c"
             ]
         ]
     },
     {
-        "id": "77937eda.00d3c",
+        "id": "7b7497de.9bd2e8",
         "type": "block",
         "name": "block",
         "xml": "<block>\n",
         "atomic": "false",
         "comments": "",
         "outputs": 1,
-        "x": 1074.9999771118164,
-        "y": 1743.0714330673218,
-        "z": "73e537e.8932bc8",
+        "x": 1130.729133605957,
+        "y": 1718.2450399398804,
+        "z": "8810ce64.4a102",
         "wires": [
             [
-                "88a2ea8a.397928",
-                "f5257e8c.2252a"
+                "a9943a91.4d4d58",
+                "9f7d08ba.2c9008"
             ]
         ]
     },
     {
-        "id": "88a2ea8a.397928",
+        "id": "a9943a91.4d4d58",
         "type": "returnFailure",
         "name": "return failure",
         "xml": "<return status='failure'>\n<parameter name='ack-final' value='Y'/>\n<parameter name=\"error-code\" value=\"500\" />\n<parameter name=\"error-message\" value=\"Error sending SO Response\" />",
         "comments": "",
-        "x": 1221.9995956420898,
-        "y": 1754.071174621582,
-        "z": "73e537e.8932bc8",
+        "x": 1277.7287521362305,
+        "y": 1729.2447814941406,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "3b8c718a.3fa84e",
+        "id": "6a0f5572.75136c",
         "type": "record",
         "name": "record",
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"SO Response Sent \"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1224.9997329711914,
-        "y": 1831.0712490081787,
-        "z": "73e537e.8932bc8",
+        "x": 1280.728889465332,
+        "y": 1806.2448558807373,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "f5257e8c.2252a",
+        "id": "9f7d08ba.2c9008",
         "type": "set",
         "name": "set",
         "xml": "<set>\n<parameter name='error-code' value='500'/>\n<parameter name='error-message' value='Error sending SO response. Aborting RPC executiopn'/>",
         "comments": "",
-        "x": 1209.5102043151855,
-        "y": 1658.0606660842896,
-        "z": "73e537e.8932bc8",
+        "x": 1265.2393608093262,
+        "y": 1633.2342729568481,
+        "z": "8810ce64.4a102",
         "wires": []
     },
     {
-        "id": "b91c3aef.b188c8",
+        "id": "fb15841c.d43108",
         "type": "execute",
         "name": "generate URL for SO Callback",
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.so.callbackURL`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.so.callbackURL\"/>\n    <parameter name=\"target\" value=\"{requestId}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.requestID`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 914.339599609375,
-        "y": 1586.0567483901978,
-        "z": "73e537e.8932bc8",
+        "x": 970.0687561035156,
+        "y": 1561.2303552627563,
+        "z": "8810ce64.4a102",
         "wires": [
             []
         ]
     },
     {
-        "id": "f53bf76b.8dba48",
+        "id": "63bf8010.4abdc",
         "type": "returnSuccess",
         "name": "return success",
         "xml": "<return status='success'>\n<parameter name=\"ack-final\" value=\"Y\" />\n<parameter name=\"error-code\" value=\"200\" />\n<parameter name=\"error-message\" value=\"SUCCESSFUL Execution\" />",
         "comments": "",
-        "x": 272.5,
-        "y": 1162.5,
-        "z": "73e537e.8932bc8",
+        "x": 328.2291564941406,
+        "y": 1137.6736068725586,
+        "z": "8810ce64.4a102",
         "wires": []
+    },
+    {
+        "id": "4119896c.9c68b8",
+        "type": "execute",
+        "name": "read RIC list size",
+        "xml": "<set>\n<parameter name='tmp.RICList_length' value=\"`$getNFNSSIRIC-configdb-response._length`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 697.2221603393555,
+        "y": 928.3332767486572,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9549e73d.16fbf8",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"cellLocalId \"/>\n<parameter name=\"field2\" value=\"`$tmp.cellLocalId`\"/>\n\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1911.6665649414062,
+        "y": 720.0001373291016,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7ab6a74c.7816e8",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"pLMNInfoList_length \"/>\n<parameter name=\"field2\" value=\"`$tmp.pLMNInfoList_length`\"/>\n\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1911.666603088379,
+        "y": 811.1111469268799,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a4f056d4.272128",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"PLMNInfo exists\"/>\n\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 2371.66650390625,
+        "y": 758.3333129882812,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "19abab8d.4a9414",
+        "type": "execute",
+        "name": "read nearRTRICID",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.nearRTRICId' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.[' + $idy +'].nearRTRICId'`\" />\n    ",
+        "comments": "",
+        "outputs": 1,
+        "x": 844.1666488647461,
+        "y": 960.8332462310791,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a26eb581.df1338",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 651.9443969726562,
+        "y": 977.4999389648438,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "19abab8d.4a9414"
+            ]
+        ]
+    },
+    {
+        "id": "760fbb9c.1fe0f4",
+        "type": "execute",
+        "name": "prepare nearRTRICId",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoList-CUUP.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoList-CUUP.url\"/>\n    <parameter name=\"target\" value=\"{idNearRTRIC}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.nearRTRICId`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 2040.833251953125,
+        "y": 1163.0555419921875,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c1d6662b.ac2dc8",
+        "type": "execute",
+        "name": "prepare mcc",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoList-CUUP.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoList-CUUP.url\"/>\n    <parameter name=\"target\" value=\"{mcc}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.mcc`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 2037.4998779296875,
+        "y": 1239.72216796875,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4ae26bfb.2cf8b4",
+        "type": "execute",
+        "name": "prepare mnc",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$tmp.patchPLMNInfoList-CUUP.url`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.patchPLMNInfoList-CUUP.url\"/>\n    <parameter name=\"target\" value=\"{mnc}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.mnc`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 2034.16650390625,
+        "y": 1273.0555419921875,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "edc43ccd.f324e",
+        "type": "execute",
+        "name": "read sNSSAI from getNFNSSIRIC-configdb-response",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.configDBSNSSAI' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUUPList['+ $idz +'].pLMNInfoList['+ $id-plmn +'].sNSSAI.sNSSAI'`\" />",
+        "comments": "",
+        "outputs": 1,
+        "x": 2115,
+        "y": 945.2777061462402,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "59abfdfd.c246c4",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"sNSSAI - getNFNSSIRIC-configdb-response\"/>\n<parameter name=\"field2\" value=\"`$tmp.configDBSNSSAI`\"/>\n<parameter name=\"field3\" value=\"sNSSAI from request\"/>\n<parameter name=\"field4\" value=\"`$tmp.sNSSAI`\"/>\n\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1964.889030456543,
+        "y": 981.0555400848389,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "33d0ad10.4a9b82",
+        "type": "switchNode",
+        "name": "is NSSAI exists",
+        "xml": "<switch test='`$tmp.configDBSNSSAI == $tmp.sNSSAI`'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 1977.1112747192383,
+        "y": 1021.1666297912598,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "81194fd7.433ad",
+                "9078ea63.753fd8"
+            ]
+        ]
+    },
+    {
+        "id": "81194fd7.433ad",
+        "type": "outcome",
+        "name": "True",
+        "xml": "<outcome value='true'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 2158.805805206299,
+        "y": 1000.277868270874,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "22705dcb.70b392"
+            ]
+        ]
+    },
+    {
+        "id": "20e32925.344246",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 1766.1109619140625,
+        "y": 1005.2777099609375,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "edc43ccd.f324e",
+                "59abfdfd.c246c4",
+                "33d0ad10.4a9b82"
+            ]
+        ]
+    },
+    {
+        "id": "9078ea63.753fd8",
+        "type": "outcome",
+        "name": "false",
+        "xml": "<outcome value='false'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 2339.4443359375,
+        "y": 971.9443969726562,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "3f6d8320.acc2dc"
+            ]
+        ]
+    },
+    {
+        "id": "3f6d8320.acc2dc",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"sNSSAI doesn't match\"/>\n\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 2479.444393157959,
+        "y": 961.9443674087524,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "91bf12a7.d0c93",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"DUpLMNInfoList_length\"/>\n<parameter name=\"field2\" value=\"`$tmp.DUpLMNInfoList_length`\"/>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 2415,
+        "y": 1395.2777099609375,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a603b30f.95aef",
+        "type": "execute",
+        "name": "read cell id",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.cellLocalId' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBCUCPList['+ $idz +'].cellCUList['+ $idcu +'].cellLocalId'`\" />",
+        "comments": "",
+        "outputs": 1,
+        "x": 1930.5554962158203,
+        "y": 667.4999494552612,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a86c8a66.29e048",
+        "type": "execute",
+        "name": "read cellDU",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.cellDULocalId' />\n\t<parameter name='source' value=\"`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].cellDUList['+ $id-celldu +'].cellLocalId'`\" />",
+        "comments": "",
+        "outputs": 1,
+        "x": 2009.72216796875,
+        "y": 1370.833251953125,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1c30356c.7a78eb",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/activateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"cellLocalId \"/>\n<parameter name=\"field2\" value=\"`$tmp.cellDULocalId`\"/>\n\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 2009.0968475341797,
+        "y": 1406.1456327438354,
+        "z": "8810ce64.4a102",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ea6a18bc.839118",
+        "type": "switchNode",
+        "name": "check the action",
+        "xml": "<switch test='`$activate-r-a-n-slice-instance-input.action == activate`'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 713.3333206176758,
+        "y": 415.2777533531189,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "24f480c0.215e",
+                "d5be92c1.19ca2"
+            ]
+        ]
+    },
+    {
+        "id": "24f480c0.215e",
+        "type": "outcome",
+        "name": "True",
+        "xml": "<outcome value='true'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 940.8333168029785,
+        "y": 360.8333568572998,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "cbae8ce4.fffa9"
+            ]
+        ]
+    },
+    {
+        "id": "d5be92c1.19ca2",
+        "type": "outcome",
+        "name": "False",
+        "xml": "<outcome value='false'>\n",
+        "comments": "",
+        "outputs": 1,
+        "x": 943.0554618835449,
+        "y": 419.7222442626953,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "dbb21ae4.bc9e08"
+            ]
+        ]
+    },
+    {
+        "id": "db9bee55.c76d8",
+        "type": "set",
+        "name": "set status as ACTIVE",
+        "xml": "<set>\n<parameter name='tmp.status' value='ACTIVE' />",
+        "comments": "",
+        "x": 1395.277889251709,
+        "y": 330.8333206176758,
+        "z": "8810ce64.4a102",
+        "wires": []
+    },
+    {
+        "id": "6250ead9.88d1e4",
+        "type": "set",
+        "name": "set status as INACTIVE",
+        "xml": "<set>\n<parameter name='tmp.status' value='INACTIVE' />",
+        "comments": "",
+        "x": 1369.7222328186035,
+        "y": 364.16667461395264,
+        "z": "8810ce64.4a102",
+        "wires": []
+    },
+    {
+        "id": "cbae8ce4.fffa9",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 1150.8333168029785,
+        "y": 348.6110668182373,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "db9bee55.c76d8"
+            ]
+        ]
+    },
+    {
+        "id": "dbb21ae4.bc9e08",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 1147.5000610351562,
+        "y": 405.2777953147888,
+        "z": "8810ce64.4a102",
+        "wires": [
+            [
+                "6250ead9.88d1e4"
+            ]
+        ]
     }
 ]
