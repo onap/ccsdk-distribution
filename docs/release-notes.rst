@@ -42,12 +42,7 @@ New features
 
 The CCSDK Guilin release includes the following features:
 
-* Upgrade to OpenDaylight Sodium release (Jira `CCSDK-2396 <https://jira.onap.org/browse/CCSDK-2396>`_)
-* Upgrade to Java 11 (Jira `CCSDK-2422 <https://jira.onap.org/browse/CCSDK-2422>`_)
-* Second phase of OpenDaylight Decouple (Jira `CCSDK-2093 <https://jira.onap.org/browse/CCSDK-2093>`_)
-* A1 Adapter Evolution (Jira `CCSDK-2475 <https://jira.onap.org/browse/CCSDK-2475>`_)
-* A1 Policy Management (Jira `CCSDK-2476 <https://jira.onap.org/browse/CCSDK-2476>`_)
-* Network Slicing (Jira `CCSDK-2533 <https://jira.onap.org/browse/CCSDK-2533>`_)
+* Native CNF Day-2 operations support (Jira `CCSDK-2922 <https://jira.onap.org/browse/CCSDK-2922>`_)
 
 Downstream projects that are consuming CCSDK maven artifacts, or that plan to ingest CCSDK as source and do local compiles should be
 aware that the upgrades to OpenDaylight Sodium and to Java 11 are both potentially breaking changes.  Therefore, we consider
