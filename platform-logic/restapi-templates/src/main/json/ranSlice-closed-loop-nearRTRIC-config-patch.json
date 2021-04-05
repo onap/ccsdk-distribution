@@ -1,0 +1,33 @@
+{
+        "ietf-yang-patch:yang-patch": {
+                "patch-id": "ClosedLoopPatch1",
+                "comment": "patch for configuring NearRTRIC SliceProfile ",
+                "edit": [{
+                        "edit-id": "edit1",
+                        "operation": "merge",
+                        "target": "/ran-network:sNSSAIList[ran-network:sNssai='${"tmp.payload.sNSSAI}']",
+                        "value": {
+  "ran-network:sNSSAIList": [
+    {
+      "ran-network:sNssai": ${tmp.payload.sNSSAI},
+      "ran-network:status": "INACTIVE",
+      "ran-network:configData": [
+        {
+          "ran-network:configParameter": "uLThptPerSlice",
+          "ran-network:configValue": ${tmp.uLThptPerSlice}
+        },
+        {
+          "ran-network:configParameter": "dLThptPerSlice",
+          "ran-network:configValue": ${tmp.dLThptPerSlice}
+        },
+	  {
+          "ran-network:configParameter": ${tmp.cellLocalId},
+          "ran-network:configValue": ${tmp.predictedMaxNumberofConns}
+        }
+      ]
+    }
+  ]
+}
+                }]
+        }
+}
