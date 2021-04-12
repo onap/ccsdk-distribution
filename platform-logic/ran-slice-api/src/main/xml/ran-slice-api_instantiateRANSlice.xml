@@ -141,17 +141,30 @@
                                 <parameter name='tmp.RRMPolicyRatioID.NRCellCU' value="`'NRCellCU-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $payloadJson.input.sliceProfile.coverageAreaList[0]`" />
                                 <parameter name='prop.ranNetwork.RRMPolicyRatioMemberID' value='`$prop.ranNetwork.RRMPolicyRatioMemberID + 1`' />
                             </set>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                <parameter name="result" value="tmp.mcc"/>
-                                <parameter name="begin-index" value="0" />
-                                <parameter name="end-index" value="3" />
-                            </execute>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                <parameter name="result" value="tmp.mnc"/>
-                                <parameter name="begin-index" value="4" />
-                            </execute>
+                            <switch test='`$tmp.payload.pLMNId`'>
+                                <outcome value=''>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="It is allocate-modify flow. PLMNId is null"/>
+                                    </record>
+                                </outcome>
+                                <outcome value='Other'>
+                                    <block atomic="true">
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
+                                            <parameter name="result" value="tmp.mcc"/>
+                                            <parameter name="begin-index" value="0" />
+                                            <parameter name="end-index" value="3" />
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
+                                            <parameter name="result" value="tmp.mnc"/>
+                                            <parameter name="begin-index" value="4" />
+                                        </execute>
+                                    </block>
+                                </outcome>
+                            </switch>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
                                 <parameter name="level" value="info" />
@@ -189,17 +202,30 @@
                                 <parameter name='tmp.RRMPolicyRatioID.NRCellCU' value="`'NRCellCU-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $payloadJson.input.sliceProfile.coverageAreaList[0]`" />
                                 <parameter name='prop.ranNetwork.RRMPolicyRatioMemberID' value='`$prop.ranNetwork.RRMPolicyRatioMemberID + 1`' />
                             </set>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                <parameter name="result" value="tmp.mcc"/>
-                                <parameter name="begin-index" value="0" />
-                                <parameter name="end-index" value="3" />
-                            </execute>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                <parameter name="result" value="tmp.mnc"/>
-                                <parameter name="begin-index" value="4" />
-                            </execute>
+                            <switch test='`$tmp.payload.pLMNId`'>
+                                <outcome value=''>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="It is allocate-modify flow. PLMNId is null"/>
+                                    </record>
+                                </outcome>
+                                <outcome value='Other'>
+                                    <block atomic="true">
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
+                                            <parameter name="result" value="tmp.mcc"/>
+                                            <parameter name="begin-index" value="0" />
+                                            <parameter name="end-index" value="3" />
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
+                                            <parameter name="result" value="tmp.mnc"/>
+                                            <parameter name="begin-index" value="4" />
+                                        </execute>
+                                    </block>
+                                </outcome>
+                            </switch>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
                                 <parameter name="level" value="info" />
@@ -237,17 +263,30 @@
                                 <parameter name='tmp.RRMPolicyRatioID.NRCellCU' value="`'NRCellCU-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $payloadJson.input.sliceProfile.coverageAreaList[0]`" />
                                 <parameter name='prop.ranNetwork.RRMPolicyRatioMemberID' value='`$prop.ranNetwork.RRMPolicyRatioMemberID + 1`' />
                             </set>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                <parameter name="result" value="tmp.mcc"/>
-                                <parameter name="begin-index" value="0" />
-                                <parameter name="end-index" value="3" />
-                            </execute>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                <parameter name="result" value="tmp.mnc"/>
-                                <parameter name="begin-index" value="4" />
-                            </execute>
+                            <switch test='`$tmp.payload.pLMNId`'>
+                                <outcome value=''>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="It is allocate-modify flow. PLMNId is null"/>
+                                    </record>
+                                </outcome>
+                                <outcome value='Other'>
+                                    <block atomic="true">
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
+                                            <parameter name="result" value="tmp.mcc"/>
+                                            <parameter name="begin-index" value="0" />
+                                            <parameter name="end-index" value="3" />
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
+                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
+                                            <parameter name="result" value="tmp.mnc"/>
+                                            <parameter name="begin-index" value="4" />
+                                        </execute>
+                                    </block>
+                                </outcome>
+                            </switch>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
                                 <parameter name="level" value="info" />
