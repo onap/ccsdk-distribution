@@ -53,8 +53,8 @@
         "name": "return success",
         "xml": "<return status='success'>\n<parameter name=\"ack-final\" value=\"N\" />\n<parameter name=\"error-code\" value=\"200\" />\n<parameter name=\"error-message\" value=\"SUCCESSFUL Execution\" />",
         "comments": "",
-        "x": 434.48983097076416,
-        "y": 2724.5283212661743,
+        "x": 324.4898452758789,
+        "y": 2784.5286865234375,
         "z": "a2c243d0.ad36e",
         "wires": []
     },
@@ -77,8 +77,8 @@
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1776.055576324463,
-        "y": 265.90970039367676,
+        "x": 1650.4999542236328,
+        "y": 340.3541946411133,
         "z": "a2c243d0.ad36e",
         "wires": [
             [
@@ -123,8 +123,8 @@
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.configdb.url + $tmp.configdb.getNearRTRICsFromTrackingArea.url`\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"getRIC-configdb-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />\n<parameter name=\"convertResponse\" value=\"true\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 2103.055767059326,
-        "y": 354.90972900390625,
+        "x": 2108.6114501953125,
+        "y": 314.9097480773926,
         "z": "a2c243d0.ad36e",
         "wires": [
             [
@@ -302,8 +302,11 @@
         "z": "a2c243d0.ad36e",
         "wires": [
             [
-                "8e4a2db8.c53ca",
-                "bd377d99.e91fd"
+                "add03b35.2459c8",
+                "3f7470f5.37976",
+                "e89fecb2.b5374",
+                "eedce730.f46188",
+                "8e31db94.e70678"
             ]
         ]
     },
@@ -315,17 +318,15 @@
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1287.055461883545,
-        "y": 638.01043176651,
+        "x": 1075.9444122314453,
+        "y": 540.2326898574829,
         "z": "a2c243d0.ad36e",
         "wires": [
             [
                 "a97a496a.e7a168",
-                "adc8ef28.065cf",
-                "eedce730.f46188",
-                "8e31db94.e70678",
                 "afcd8575.ce5a88",
-                "946e6c1f.7bb9d"
+                "946e6c1f.7bb9d",
+                "adc8ef28.065cf"
             ]
         ]
     },
@@ -2135,14 +2136,12 @@
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 1560.035011291504,
-        "y": 557.3441619873047,
+        "x": 1513.3684043884277,
+        "y": 568.4552726745605,
         "z": "a2c243d0.ad36e",
         "wires": [
             [
-                "31f24c7a.033584",
-                "8282f63d.edb3e8",
-                "e13282a4.a3907"
+                "8fb0f823.745438"
             ]
         ]
     },
@@ -2153,8 +2152,8 @@
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >\n    <parameter name=\"source\" value=\"`$prop.restapi.configdb.getListOfCells`\"/>\n    <parameter name=\"outputPath\" value=\"tmp.configdb.getListOfCells.url\"/>\n    <parameter name=\"target\" value=\"{trackingArea}\"/>\n    <parameter name=\"replacement\" value=\"`$tmp.payload.trackingArea`\"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1816.0351333618164,
-        "y": 417.34410095214844,
+        "x": 2109.3683013916016,
+        "y": 434.010799407959,
         "z": "a2c243d0.ad36e",
         "wires": [
             []
@@ -2167,8 +2166,8 @@
         "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"URL for configDB Get getListOfCells for tracking area\"/>\n<parameter name='field2' value=\"`$prop.configdb.url + $tmp.configdb.getListOfCells.url`\" />\n<parameter name='field3' value=\"`$tmp.payload.trackingArea`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 1841.0351333618164,
-        "y": 519.3443145751953,
+        "x": 2108.8130645751953,
+        "y": 483.7887592315674,
         "z": "a2c243d0.ad36e",
         "wires": [
             []
@@ -2181,8 +2180,8 @@
         "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >\n<parameter name=\"restapiUrl\" value=\"`$prop.configdb.url + $tmp.configdb.getListOfCells.url`\"/>\n<parameter name=\"httpMethod\" value=\"GET\"/>\n<parameter name=\"responsePrefix\" value=\"getListofCells-configdb-response\"/>\n<parameter name='contentType' value='application/json' /> \n<parameter name='format' value='json' />\n<parameter name='accept' value='application/json' />",
         "comments": "",
         "outputs": 1,
-        "x": 1843.0351333618164,
-        "y": 602.3442153930664,
+        "x": 2004.1461486816406,
+        "y": 532.3442220687866,
         "z": "a2c243d0.ad36e",
         "wires": [
             [
@@ -2198,8 +2197,8 @@
         "xml": "<outcome value='failure'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2120.034828186035,
-        "y": 536.3442993164062,
+        "x": 2320.0348224639893,
+        "y": 503.0109806060791,
         "z": "a2c243d0.ad36e",
         "wires": [
             [
@@ -2214,8 +2213,8 @@
         "xml": "<outcome value='success'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 2069.034736633301,
-        "y": 682.3442153930664,
+        "x": 2230.146026611328,
+        "y": 550.122091293335,
         "z": "a2c243d0.ad36e",
         "wires": [
             [
@@ -3634,17 +3633,6 @@
         ]
     },
     {
-        "id": "19ed9e08.dbfce2",
-        "type": "comment",
-        "name": "TO DO",
-        "info": "- Use \"List of Cells for Tracking Area\" everywhere list\nof cells are sequenced for Restconf transactions...\nNo need to go through all cells as captured in the configDB\nresponse....localID will be the actual value returned \nin \n<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.trackingarea.cell' />\n\t<parameter name='source' value=\"`'getListofCells-configdb-response.[' + $ids + ']'`\" />\n\t\n\ttmp.trackingarea.cell would be cellLocalID",
-        "comments": "",
-        "x": 849.0555686950684,
-        "y": 241.01039123535156,
-        "z": "a2c243d0.ad36e",
-        "wires": []
-    },
-    {
         "id": "6f40dd43.c32694",
         "type": "execute",
         "name": "cellLocalID",
@@ -3666,8 +3654,8 @@
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 477.0494775772095,
-        "y": 2630.764775276184,
+        "x": 352.04947662353516,
+        "y": 2560.7651081085205,
         "z": "a2c243d0.ad36e",
         "wires": [
             [
@@ -5206,8 +5194,8 @@
         "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.gNBDUList.cellLocalId' />\n\t<parameter name='source' value=\"`'getListofCells-configdb-response.[' + $id3 + ']'`\" />",
         "comments": "",
         "outputs": 1,
-        "x": 2898.300163269043,
-        "y": 6228.014333724976,
+        "x": 2899.4110794067383,
+        "y": 6238.014590680599,
         "z": "a2c243d0.ad36e",
         "wires": [
             []
@@ -6215,7 +6203,7 @@
         "id": "c89590a8.227f1",
         "type": "set",
         "name": "set resourceID",
-        "xml": "<set>\n<parameter name='tmp.resourceID-DU' value='`$tmp.cellLocalId`'/>",
+        "xml": "<set>\n<parameter name='tmp.resourceID' value='`$tmp.gNBDUList.cellLocalId`'/>",
         "comments": "",
         "x": 2369.0555381774902,
         "y": 7184.74999332428,
@@ -6352,6 +6340,117 @@
         "outputs": 1,
         "x": 755.3055572509766,
         "y": 2235.5000376701355,
+        "z": "a2c243d0.ad36e",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8fb0f823.745438",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 1848.8888320922852,
+        "y": 441.6666898727417,
+        "z": "a2c243d0.ad36e",
+        "wires": [
+            [
+                "31f24c7a.033584",
+                "8282f63d.edb3e8",
+                "e13282a4.a3907"
+            ]
+        ]
+    },
+    {
+        "id": "5a6dbfd5.a48f5",
+        "type": "execute",
+        "name": "set trackingArea",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>\n\t<parameter name='outputPath' value='tmp.payload.trackingArea' />\n\t<parameter name='source' value=\"`'payloadJson.input.sliceProfile.coverageAreaList[' + $ta + ']'`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1365.631492614746,
+        "y": 288.48922061920166,
+        "z": "a2c243d0.ad36e",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2bb85138.bdd50e",
+        "type": "block",
+        "name": "block : atomic",
+        "xml": "<block atomic='true'>",
+        "atomic": "true",
+        "comments": "",
+        "outputs": 1,
+        "x": 977.0205383300781,
+        "y": 449.60031175613403,
+        "z": "a2c243d0.ad36e",
+        "wires": [
+            [
+                "5a6dbfd5.a48f5",
+                "1c0164dc.8d644b",
+                "8e4a2db8.c53ca",
+                "bd377d99.e91fd"
+            ]
+        ]
+    },
+    {
+        "id": "1c0164dc.8d644b",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Tracking Area\"/>\n<parameter name=\"field2\" value=\"`$tmp.payload.trackingArea`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 1349.2426452636719,
+        "y": 338.489200592041,
+        "z": "a2c243d0.ad36e",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "add03b35.2459c8",
+        "type": "for",
+        "name": "For coverageAreaTAList",
+        "xml": "<for index='ta' start='0' end='`$tmp.trackingAreaListEntries`'>",
+        "comments": "",
+        "outputs": 1,
+        "x": 743.0555191040039,
+        "y": 500.83333015441895,
+        "z": "a2c243d0.ad36e",
+        "wires": [
+            [
+                "2bb85138.bdd50e"
+            ]
+        ]
+    },
+    {
+        "id": "e89fecb2.b5374",
+        "type": "record",
+        "name": "record",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Tracking Area size\"/>\n<parameter name=\"field2\" value=\"`$tmp.trackingAreaListEntries`\"/>",
+        "comments": "",
+        "outputs": 1,
+        "x": 715.2777709960938,
+        "y": 445.5555419921875,
+        "z": "a2c243d0.ad36e",
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3f7470f5.37976",
+        "type": "execute",
+        "name": "set trackingArea size",
+        "xml": "<set>\n\t<parameter name='tmp.trackingAreaListEntries' value=\"`$payloadJson.input.sliceProfile.coverageAreaList_length`\"/>\n\t",
+        "comments": "",
+        "outputs": 1,
+        "x": 746.3888549804688,
+        "y": 395.5555419921875,
         "z": "a2c243d0.ad36e",
         "wires": [
             []

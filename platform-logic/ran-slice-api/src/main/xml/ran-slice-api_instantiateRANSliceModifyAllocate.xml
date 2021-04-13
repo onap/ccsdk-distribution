@@ -219,8 +219,31 @@
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
                                 <parameter name="level" value="info" />
                                 <parameter name="field1" value="Successfully Retrieved coverageAreaTAList"/>
-                                <parameter name="field2" value="`$get-coverageAreaTAList-response`"/>
+                                <parameter name="field2" value="`$get-coverageAreaTAList-response.coverage-area-TA-list`"/>
                             </record>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                                <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-instantiateRANSlice-configrsp-context.log' />
+                            </execute>
+                            <set>
+                                <parameter name='tmp.aai.coverageAreaTAList' value="`$get-coverageAreaTAList-response.coverage-area-TA-list`"/>
+                            </set>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.aai.coverageAreaTAList`"/>
+                                <parameter name="outputPath" value="tmp.aai.coverageAreaTAList"/>
+                                <parameter name="target" value="["/>
+                                <parameter name="replacement" value=""/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.aai.coverageAreaTAList`"/>
+                                <parameter name="outputPath" value="tmp.aai.coverageAreaTAList"/>
+                                <parameter name="target" value="]"/>
+                                <parameter name="replacement" value=""/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='split'>
+                                <parameter name="original_string" value="`$tmp.aai.coverageAreaTAList`" />
+                                <parameter name="regex" value=","/>
+                                <parameter name="ctx_memory_result_key" value="tmp.coverageAreaTAList"/>
+                            </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
                                 <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-instantiateRANSlice-configrsp-context.log' />
                             </execute>
@@ -240,75 +263,91 @@
                         </block>
                     </outcome>
                 </execute>
+                <set>
+                    <parameter name='tmp.trackingAreaListEntries' value="`$tmp.coverageAreaTAList_length`"/>
+                </set>
                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                     <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
                     <parameter name="level" value="info" />
-                    <parameter name="field1" value="`$tmp.pLMNId`"/>
-                    <parameter name="field2" value="`$tmp.mcc`"/>
-                    <parameter name="field3" value="`$tmp.mnc`"/>
+                    <parameter name="field1" value="Tracking Area size"/>
+                    <parameter name="field2" value="`$tmp.trackingAreaListEntries`"/>
                 </record>
             </block>
-            <block atomic='true'>
-                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                    <parameter name="source" value="`$prop.restapi.configdb.getListOfCells`"/>
-                    <parameter name="outputPath" value="tmp.configdb.getListOfCells.url"/>
-                    <parameter name="target" value="{trackingArea}"/>
-                    <parameter name="replacement" value="`$tmp.payload.trackingArea`"/>
-                </execute>
-                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
-                    <parameter name="level" value="info" />
-                    <parameter name="field1" value="URL for configDB Get getListOfCells for tracking area"/>
-                    <parameter name='field2' value="`$prop.configdb.url + $tmp.configdb.getListOfCells.url`" />
-                    <parameter name='field3' value="`$tmp.payload.trackingArea`" />
-                </record>
-                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                    <parameter name="restapiUrl" value="`$prop.configdb.url + $tmp.configdb.getListOfCells.url`"/>
-                    <parameter name="httpMethod" value="GET"/>
-                    <parameter name="responsePrefix" value="getListofCells-configdb-response"/>
-                    <parameter name='contentType' value='application/json' />
-                    <parameter name='format' value='json' />
-                    <parameter name='accept' value='application/json' />
-                    <outcome value='failure'>
-                        <block>
-                            <set>
-                                <parameter name='error-code' value='500'/>
-                                <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
-                            </set>
-                            <return status='failure'>
-                                <parameter name='ack-final' value='Y'/>
-                                <parameter name='error-code' value='500'/>
-                                <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
-                            </return>
-                        </block>
-                    </outcome>
-                    <outcome value='success'>
-                        <block>
-                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
-                                <parameter name="level" value="info" />
-                                <parameter name="field1" value="Successfully Obtained List of Cells from ConfigDB"/>
-                                <parameter name="field2" value="`$getListofCells-configdb-response._length`"/>
-                                <parameter name="field3" value="List of Cells in the Tracking Area Relevant for RAN Slice Instantiation "/>
-                            </record>
-                            <for index='idx' start='0' end='`$getListofCells-configdb-response._length `' >
-                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                    <parameter name='outputPath' value='tmp.trackingarea.cell' />
-                                    <parameter name='source' value="`'getListofCells-configdb-response.[' + $idx + ']'`" />
-                                </execute>
-                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
-                                    <parameter name="level" value="info" />
-                                    <parameter name="field1" value="`$tmp.trackingarea.cell`"/>
-                                </record>
-                            </for>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
-                                <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-instantiateRANSlice-configrsp-context.log' />
-                            </execute>
-                        </block>
-                    </outcome>
-                </execute>
-            </block>
+            <for index='ta' start='0' end='`$tmp.trackingAreaListEntries`'>
+                <block atomic='true'>
+                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                        <parameter name='outputPath' value='tmp.payload.trackingArea' />
+                        <parameter name='source' value="`'tmp.coverageAreaTAList['+ $ta+']'`" />
+                    </execute>
+                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
+                        <parameter name="level" value="info" />
+                        <parameter name="field1" value="trackingArea "/>
+                        <parameter name="field2" value="`$tmp.payload.trackingArea`"/>
+                    </record>
+                    <block atomic='true'>
+                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                            <parameter name="source" value="`$prop.restapi.configdb.getListOfCells`"/>
+                            <parameter name="outputPath" value="tmp.configdb.getListOfCells.url"/>
+                            <parameter name="target" value="{trackingArea}"/>
+                            <parameter name="replacement" value="`$tmp.payload.trackingArea`"/>
+                        </execute>
+                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                            <parameter name="level" value="info" />
+                            <parameter name="field1" value="URL for configDB Get getListOfCells for tracking area"/>
+                            <parameter name='field2' value="`$prop.configdb.url + $tmp.configdb.getListOfCells.url`" />
+                            <parameter name='field3' value="`$tmp.payload.trackingArea`" />
+                        </record>
+                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                            <parameter name="restapiUrl" value="`$prop.configdb.url + $tmp.configdb.getListOfCells.url`"/>
+                            <parameter name="httpMethod" value="GET"/>
+                            <parameter name="responsePrefix" value="getListofCells-configdb-response"/>
+                            <parameter name='contentType' value='application/json' />
+                            <parameter name='format' value='json' />
+                            <parameter name='accept' value='application/json' />
+                            <outcome value='failure'>
+                                <block>
+                                    <set>
+                                        <parameter name='error-code' value='500'/>
+                                        <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
+                                    </set>
+                                    <return status='failure'>
+                                        <parameter name='ack-final' value='Y'/>
+                                        <parameter name='error-code' value='500'/>
+                                        <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
+                                    </return>
+                                </block>
+                            </outcome>
+                            <outcome value='success'>
+                                <block>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Successfully Obtained List of Cells from ConfigDB"/>
+                                        <parameter name="field2" value="`$getListofCells-configdb-response._length`"/>
+                                        <parameter name="field3" value="List of Cells in the Tracking Area Relevant for RAN Slice Instantiation "/>
+                                    </record>
+                                    <for index='idx' start='0' end='`$getListofCells-configdb-response._length `' >
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                            <parameter name='outputPath' value='tmp.trackingarea.cell' />
+                                            <parameter name='source' value="`'getListofCells-configdb-response.[' + $idx + ']'`" />
+                                        </execute>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="`$tmp.trackingarea.cell`"/>
+                                        </record>
+                                    </for>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                                        <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-instantiateRANSlice-configrsp-context.log' />
+                                    </execute>
+                                </block>
+                            </outcome>
+                        </execute>
+                    </block>
+                </block>
+            </for>
             <for index='idy' start='0' end='`$getNFNSSIRIC-configdb-response._length`' >
                 <block atomic='true'>
                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
