@@ -22,8 +22,7 @@ The Guilin release of CCSDK introduces new functionality to support network slic
 for ORAN integration via the A1 interface.  It also includes a major OpenDaylight release
 upgrade (to Sodium), as well as a major Java upgrade (from Java 8 to Java 11).
 
-
-Release Data
+Release Data 
 ============
 
 +-------------------------+-------------------------------------------+
@@ -32,7 +31,7 @@ Release Data
 +-------------------------+-------------------------------------------+
 | **Docker images**       | See :ref:`dockercontainers` section below |
 +-------------------------+-------------------------------------------+
-| **Release designation** | Guilin                                    |
+| **Release designation** | Guilin Maintenance Release 1              |
 |                         |                                           |
 +-------------------------+-------------------------------------------+
 
@@ -58,6 +57,14 @@ For the complete list of `CCSDK Guilin release epics <https://jira.onap.org/issu
 
 **Bug fixes**
 
+The following bugs are fixed in Guilin Maintenance Release 1:
+
+* k8s components do not render template values properly (Jira `CCSDK-3265 <https://jira.onap.org/browse/CCSDK-3265>`_)
+* Created k8s profile has no kubernetes-version specified (Jira `CCSDK-3239 <https://jira.onap.org/browse/CCSDK-3239>`_)
+* CCSDK is using incorrect version of AAI interface (Jira `CCSDK-3075 <https://jira.onap.org/browse/CCSDK-3075>`_)
+* AAI API missing from CCSDK aai-path.properties (Jira `CCSDK-3013 <https://jira.onap.org/browse/CCSDK-3013>`_)
+* Yang action url not supported in blueprint proc (Jira `CCSDK-2993 <https://jira.onap.org/browse/CCSDK-2993>`_)
+  
 The full list of `bugs fixed in the CCSDK Guilin release <https://jira.onap.org/issues/?filter=12463>`_ is maintained on the `ONAP Jira`_.
 
 **Known Issues**
@@ -89,33 +96,33 @@ tag 1.0-STAGING-latest to pull the latest daily Guilin build
 +-----------------------------------+--------------------------------------------+---------+
 | Image name                        | Description                                | Version |
 +===================================+============================================+=========+
-| onap/ccsdk-alpine-image           | Base Alpine Linux image for CCSDK          | 1.0.3   |
+| onap/ccsdk-alpine-image           | Base Alpine Linux image for CCSDK          | 1.0.5   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-ansible-server-image   | Ansible server image                       | 1.0.3   |
+| onap/ccsdk-ansible-server-image   | Ansible server image                       | 1.0.5   |
 +-----------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-apps-ms-neng           | Naming microservice                        | 1.0.2   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-blueprints-processor   | CDS blueprint processor                    | 1.0.2   |
+| onap/ccsdk-blueprints-processor   | CDS blueprint processor                    | 1.0.3   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-cds-ui                 | CDS web interface                          | 1.0.2   |
+| onap/ccsdk-cds-ui                 | CDS web interface                          | 1.0.3   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-cds-ui-server          | CDS user interface back end                | 1.0.2   |
+| onap/ccsdk-cds-ui-server          | CDS user interface back end                | 1.0.3   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-commandexecutor        | CDS command executor                       | 1.0.2   |
+| onap/ccsdk-commandexecutor        | CDS command executor                       | 1.0.3   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-controllerblueprint    | CDS controller blueprints                  | 1.0.2   |
+| onap/ccsdk-controllerblueprint    | CDS controller blueprints                  | 1.0.3   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-dgbuilder-image        | Directed graph builder                     | 1.0.3   |
+| onap/ccsdk-dgbuilder-image        | Directed graph builder                     | 1.0.5   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-odl-neon-alpine-image  | Alpine based OpenDaylight Neon SR1 image   | 1.0.3   |
+| onap/ccsdk-odl-neon-alpine-image  | Alpine based OpenDaylight Neon SR1 image   | 1.0.5   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-odlsli-alpine-image    | Alpine based OpenDaylight image with CCSDK | 1.0.3   |
+| onap/ccsdk-odlsli-alpine-image    | Alpine based OpenDaylight image with CCSDK | 1.0.5   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-saltstack-server-image | Saltstack server                           | 1.0.3   |
+| onap/ccsdk-saltstack-server-image | Saltstack server                           | 1.0.5   |
 +-----------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-sdclistener            | CDS SDC listener                           | 1.0.3   |
 +-----------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-ubuntu-image           | Base Ubuntu image for CCSDK                | 1.0.3   |
+| onap/ccsdk-ubuntu-image           | Base Ubuntu image for CCSDK                | 1.0.5   |
 +-----------------------------------+--------------------------------------------+---------+
 
 Maven Artifacts
@@ -138,37 +145,37 @@ Frankfurt version of each.
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
 | groupId               | artifactId                   | version | Description                                                                                      |
 +=======================+==============================+=========+==================================================================================================+
-| org.onap.ccsdk.parent | binding-parent               | 2.0.3   | Parent used in place of OpenDaylight binding-parent                                              |
+| org.onap.ccsdk.parent | binding-parent               | 2.0.5   | Parent used in place of OpenDaylight binding-parent                                              |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | bundle-parent                | 2.0.3   | Parent used in place of OpenDaylight bundle-parent                                               |
+| org.onap.ccsdk.parent | bundle-parent                | 2.0.5   | Parent used in place of OpenDaylight bundle-parent                                               |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | client-parent                | 2.0.3   | Parent used for projects that create client libraries for OpenDaylight APIs                      |
+| org.onap.ccsdk.parent | client-parent                | 2.0.5   | Parent used for projects that create client libraries for OpenDaylight APIs                      |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | dependencies-bom             | 2.0.3   | Bill of Materials POM that defines versions of third party libraries used outside ODL container. |
+| org.onap.ccsdk.parent | dependencies-bom             | 2.0.5   | Bill of Materials POM that defines versions of third party libraries used outside ODL container. |
 |                       |                              |         | Intended to be imported in dependencyManagement section.                                         |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | dependencies-odl-bom         | 2.0.3   | Bill of Materials POM that defines versions of third party libraries used within ODL container.  |
+| org.onap.ccsdk.parent | dependencies-odl-bom         | 2.0.5   | Bill of Materials POM that defines versions of third party libraries used within ODL container.  |
 |                       |                              |         | Intended to be imported in dependencyManagement section.                                         |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | feature-repo-parent          | 2.0.3   | Parent used in place of OpenDaylight feature-repo-parent                                         |
+| org.onap.ccsdk.parent | feature-repo-parent          | 2.0.5   | Parent used in place of OpenDaylight feature-repo-parent                                         |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | karaf4-parent                | 2.0.3   | Parent used in place of OpenDaylight karaf4-parent                                               |
+| org.onap.ccsdk.parent | karaf4-parent                | 2.0.5   | Parent used in place of OpenDaylight karaf4-parent                                               |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | mdsal-it-parent              | 2.0.3   | Parent used in place of OpenDaylight mdsal-it-parent                                             |
+| org.onap.ccsdk.parent | mdsal-it-parent              | 2.0.5   | Parent used in place of OpenDaylight mdsal-it-parent                                             |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | odlparent                    | 2.0.3   | Parent used in place of OpenDaylight odlparent                                                   |
+| org.onap.ccsdk.parent | odlparent                    | 2.0.5   | Parent used in place of OpenDaylight odlparent                                                   |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | odlparent-lite               | 2.0.3   | Parent used in place of OpenDaylight odlparent-lite                                              |
+| org.onap.ccsdk.parent | odlparent-lite               | 2.0.5   | Parent used in place of OpenDaylight odlparent-lite                                              |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | single-feature-parent        | 2.0.3   | Parent used in place of OpenDaylight single-feature-parent                                       |
+| org.onap.ccsdk.parent | single-feature-parent        | 2.0.5   | Parent used in place of OpenDaylight single-feature-parent                                       |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | spring-boot-1-starter-parent | 2.0.3   | Parent used in place of spring-boot-starter-parent for Springboot 1.x.                           |
+| org.onap.ccsdk.parent | spring-boot-1-starter-parent | 2.0.5   | Parent used in place of spring-boot-starter-parent for Springboot 1.x.                           |
 |                       |                              |         | *NOTE* This is deprecated and will be removed in Honolulu, since springboot 1.x should no        |
 |                       |                              |         | longer be used due to security issues                                                            |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | spring-boot-starter-parent   | 2.0.3   | Parent used in place of spring-boot-starter-parent for Springboot 2.x                            |
+| org.onap.ccsdk.parent | spring-boot-starter-parent   | 2.0.5   | Parent used in place of spring-boot-starter-parent for Springboot 2.x                            |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
-| org.onap.ccsdk.parent | standalone-parent            | 2.0.3   | Parent used for projects that have no need for other third party parent poms                     |
+| org.onap.ccsdk.parent | standalone-parent            | 2.0.5   | Parent used for projects that have no need for other third party parent poms                     |
 +-----------------------+------------------------------+---------+--------------------------------------------------------------------------------------------------+
 
 ccsdk/sli/core
@@ -182,17 +189,17 @@ projects.
 +-------------------------+-------------------------+---------+--------------------------------------------+
 | groupId                 | artifactId              | version | Description                                |
 +=========================+=========================+=========+============================================+
-| org.onap.ccsdk.sli.core | dblib-provider          | 1.0.2   | Database access library                    |
+| org.onap.ccsdk.sli.core | dblib-provider          | 1.0.4   | Database access library                    |
 +-------------------------+-------------------------+---------+--------------------------------------------+
-| org.onap.ccsdk.sli.core | sli-common              | 1.0.2   | Common SLI data objects                    |
+| org.onap.ccsdk.sli.core | sli-common              | 1.0.4   | Common SLI data objects                    |
 +-------------------------+-------------------------+---------+--------------------------------------------+
-| org.onap.ccsdk.sli.core | sli-provider-base       | 1.0.2   | ODL-independent SLI implementation objects |
+| org.onap.ccsdk.sli.core | sli-provider-base       | 1.0.4   | ODL-independent SLI implementation objects |
 +-------------------------+-------------------------+---------+--------------------------------------------+
-| org.onap.ccsdk.sli.core | sli-provider            | 1.0.2   | ODL-dependent SLI implementation objects   |
+| org.onap.ccsdk.sli.core | sli-provider            | 1.0.4   | ODL-dependent SLI implementation objects   |
 +-------------------------+-------------------------+---------+--------------------------------------------+
-| org.onap.ccsdk.sli.core | sliPluginUtils-provider | 1.0.2   | Utilities for use in SLI adaptors/plugins  |
+| org.onap.ccsdk.sli.core | sliPluginUtils-provider | 1.0.4   | Utilities for use in SLI adaptors/plugins  |
 +-------------------------+-------------------------+---------+--------------------------------------------+
-| org.onap.ccsdk.sli.core | utils-provider          | 1.0.2   | Utilities                                  |
+| org.onap.ccsdk.sli.core | utils-provider          | 1.0.4   | Utilities                                  |
 +-------------------------+-------------------------+---------+--------------------------------------------+
 
 ccsdk/sli/adaptors
@@ -205,19 +212,19 @@ projects.
 +-----------------------------+------------------------------+---------+--------------------------------+
 | groupId                     | artifactId                   | version | Description                    |
 +=============================+==============================+=========+================================+
-| org.onap.ccsdk.sli.adaptors | aai-service-provider         | 1.0.2   | A&AI interface adaptor         |
+| org.onap.ccsdk.sli.adaptors | aai-service-provider         | 1.0.4   | A&AI interface adaptor         |
 +-----------------------------+------------------------------+---------+--------------------------------+
-| org.onap.ccsdk.sli.adaptors | ansible-adapter-bundle       | 1.0.2   | Ansible interface adaptor      |
+| org.onap.ccsdk.sli.adaptors | ansible-adapter-bundle       | 1.0.4   | Ansible interface adaptor      |
 +-----------------------------+------------------------------+---------+--------------------------------+
-| org.onap.ccsdk.sli.adaptors | mdsal-resource-provider      | 1.0.2   | MD-SAL interface adaptor       |
+| org.onap.ccsdk.sli.adaptors | mdsal-resource-provider      | 1.0.4   | MD-SAL interface adaptor       |
 +-----------------------------+------------------------------+---------+--------------------------------+
-| org.onap.ccsdk.sli.adaptors | netbox-client-provider       | 1.0.2   | netbox interface adaptor       |
+| org.onap.ccsdk.sli.adaptors | netbox-client-provider       | 1.0.4   | netbox interface adaptor       |
 +-----------------------------+------------------------------+---------+--------------------------------+
-| org.onap.ccsdk.sli.adaptors | resource-assignment-provider | 1.0.2   | resource allocator             |
+| org.onap.ccsdk.sli.adaptors | resource-assignment-provider | 1.0.4   | resource allocator             |
 +-----------------------------+------------------------------+---------+--------------------------------+
-| org.onap.ccsdk.sli.adaptors | saltstack-adaptor-provider   | 1.0.2   | saltstack interface adaptor    |
+| org.onap.ccsdk.sli.adaptors | saltstack-adaptor-provider   | 1.0.4   | saltstack interface adaptor    |
 +-----------------------------+------------------------------+---------+--------------------------------+
-| org.onap.ccsdk.sli.adaptors | sql-resource-provider        | 1.0.2   | SQL database interface adaptor |
+| org.onap.ccsdk.sli.adaptors | sql-resource-provider        | 1.0.4   | SQL database interface adaptor |
 +-----------------------------+------------------------------+---------+--------------------------------+
 
 ccsdk/sli/northbound
@@ -230,15 +237,15 @@ The following table lists the maven artifacts provided for use by CCSDK client p
 +-------------------------------+---------------------+---------+-----------------------------------------+
 | groupId                       | artifactId          | version | Description                             |
 +===============================+=====================+=========+=========================================+
-| org.onap.ccsdk.sli.northbound | asdcApi-provider    | 1.0.2   | ODL-based SDC interface                 |
+| org.onap.ccsdk.sli.northbound | asdcApi-provider    | 1.0.4   | ODL-based SDC interface                 |
 +-------------------------------+---------------------+---------+-----------------------------------------+
-| org.onap.ccsdk.sli.northbound | dataChange-provider | 1.0.2   | A&AI data change notification interface |
+| org.onap.ccsdk.sli.northbound | dataChange-provider | 1.0.4   | A&AI data change notification interface |
 +-------------------------------+---------------------+---------+-----------------------------------------+
-| org.onap.ccsdk.sli.northbound | dmaap-listener      | 1.0.2   | DMaaP listener interface                |
+| org.onap.ccsdk.sli.northbound | dmaap-listener      | 1.0.4   | DMaaP listener interface                |
 +-------------------------------+---------------------+---------+-----------------------------------------+
-| org.onap.ccsdk.sli.northbound | lcm-provider        | 1.0.2   | Life Cycle Management event interface   |
+| org.onap.ccsdk.sli.northbound | lcm-provider        | 1.0.4   | Life Cycle Management event interface   |
 +-------------------------------+---------------------+---------+-----------------------------------------+
-| org.onap.ccsdk.sli.northbound | ueb-listener        | 1.0.2   | SDC event listener                      |
+| org.onap.ccsdk.sli.northbound | ueb-listener        | 1.0.4   | SDC event listener                      |
 +-------------------------------+---------------------+---------+-----------------------------------------+
 
 ccsdk/sli/plugins
@@ -251,17 +258,17 @@ The following table lists the maven artifacts provided for use by CCSDK client p
 +----------------------------+----------------------------+---------+-------------------------------------------------------+
 | groupId                    | artifactId                 | version | Description                                           |
 +============================+============================+=========+=======================================================+
-| org.onap.ccsdk.sli.plugins | properties-node-provider   | 1.0.2   | Used to load a properties file for use in             |
+| org.onap.ccsdk.sli.plugins | properties-node-provider   | 1.0.4   | Used to load a properties file for use in             |
 |                            |                            |         | a directed graph                                      |
 +----------------------------+----------------------------+---------+-------------------------------------------------------+
-| org.onap.ccsdk.sli.plugins | restapi-call-node-provider | 1.0.2   | Used to call a generic REST API from a directed       |
+| org.onap.ccsdk.sli.plugins | restapi-call-node-provider | 1.0.4   | Used to call a generic REST API from a directed       |
 |                            |                            |         | graph                                                 |
 +----------------------------+----------------------------+---------+-------------------------------------------------------+
-| org.onap.ccsdk.sli.plugins | restconf-client-provider   | 1.0.2   | Used to call a RESTCONF API from a directed graph     |
+| org.onap.ccsdk.sli.plugins | restconf-client-provider   | 1.0.4   | Used to call a RESTCONF API from a directed graph     |
 +----------------------------+----------------------------+---------+-------------------------------------------------------+
-| org.onap.ccsdk.sli.plugins | sshapi-call-node           | 1.0.2   | Used to invoke an SSH interface from a directed graph |
+| org.onap.ccsdk.sli.plugins | sshapi-call-node           | 1.0.4   | Used to invoke an SSH interface from a directed graph |
 +----------------------------+----------------------------+---------+-------------------------------------------------------+
-| org.onap.ccsdk.sli.plugins | template-node-provider     | 1.0.2   | Provides velocity template support                    |
+| org.onap.ccsdk.sli.plugins | template-node-provider     | 1.0.4   | Provides velocity template support                    |
 +----------------------------+----------------------------+---------+-------------------------------------------------------+
 
 Documentation Deliverables
