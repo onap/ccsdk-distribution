@@ -116,21 +116,20 @@
                     <outcome value='allocate'>
                         <block atomic="true">
                             <set>
-                                <parameter name='tmp.payload.trackingArea' value='`$payloadJson.input.sliceProfile.coverageAreaList[0]`'/>
                                 <parameter name='tmp.payload.callbackURL' value='`$payloadJson.input.callbackURL`'/>
                                 <parameter name='tmp.payload.RANNFNSSIId' value='`$payloadJson.input.RANNFNSSIId`'/>
                                 <parameter name='tmp.payload.RANNSSIId' value='`$payloadJson.input.RANNSSIId`'/>
-                                <parameter name='tmp.payload.coverageAreaList_length' value='`$payloadJson.input.sliceProfile.coverageAreaList_length`'/>
+                                <parameter name='tmp.payload.coverageAreaList_length' value='`$payloadJson.input.sliceProfile.coverageAreaTAList_length`'/>
                                 <parameter name='tmp.payload.dLThptPerSlice' value='`$payloadJson.input.sliceProfile.dLThptPerSlice`'/>
                                 <parameter name='tmp.payload.latency' value='`$payloadJson.input.sliceProfile.latency`'/>
                                 <parameter name='tmp.payload.maxNumberofConns' value='`$payloadJson.input.sliceProfile.maxNumberofConns`'/>
                                 <parameter name='tmp.payload.maxNumberofUEs' value='`$payloadJson.input.sliceProfile.maxNumberofUEs`'/>
                                 <parameter name='tmp.payload.resourceSharingLevel' value='`$payloadJson.input.sliceProfile.resourceSharingLevel`'/>
                                 <parameter name='tmp.payload.sliceProfileId' value='`$payloadJson.input.sliceProfile.sliceProfileId`'/>
-                                <parameter name='tmp.payload.sNSSAI' value='`$payloadJson.input.sliceProfile.sNSSAI`'/>
+                                <parameter name='tmp.payload.sNSSAI' value='`$payloadJson.input.sliceProfile.snssaiList[0]`'/>
                                 <parameter name='tmp.payload.uEMobilityLevel' value='`$payloadJson.input.sliceProfile.uEMobilityLevel`'/>
                                 <parameter name='tmp.payload.uLThptPerSlice' value='`$payloadJson.input.sliceProfile.uLThptPerSlice`'/>
-                                <parameter name='tmp.payload.pLMNId' value='`$payloadJson.input.sliceProfile.pLMNIdList[0]`'/>
+                                <parameter name='tmp.payload.pLMNId' value='`$payloadJson.input.sliceProfile.plmnIdList[0]`'/>
                             </set>
                             <set>
                                 <parameter name='tmp.RRMPolicyRatioID.NearRTRIC' value="`'NearRTRIC-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $payloadJson.input.sliceProfile.coverageAreaList[0]`" />
@@ -151,17 +150,15 @@
                                 </outcome>
                                 <outcome value='Other'>
                                     <block atomic="true">
-                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                            <parameter name="result" value="tmp.mcc"/>
-                                            <parameter name="begin-index" value="0" />
-                                            <parameter name="end-index" value="3" />
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='split'>
+                                            <parameter name="original_string" value="`$tmp.payload.pLMNId`" />
+                                            <parameter name="regex" value="-"/>
+                                            <parameter name="ctx_memory_result_key" value="tmp.plmnList" />
                                         </execute>
-                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                            <parameter name="result" value="tmp.mnc"/>
-                                            <parameter name="begin-index" value="4" />
-                                        </execute>
+                                        <set>
+                                            <parameter name='tmp.mcc' value='`$tmp.plmnList[0]`'/>
+                                            <parameter name='tmp.mnc' value='`$tmp.plmnList[1]`'/>
+                                        </set>
                                     </block>
                                 </outcome>
                             </switch>
@@ -177,21 +174,20 @@
                     <outcome value='modify-allocate'>
                         <block atomic="true">
                             <set>
-                                <parameter name='tmp.payload.trackingArea' value='`$payloadJson.input.sliceProfile.coverageAreaList[0]`'/>
                                 <parameter name='tmp.payload.callbackURL' value='`$payloadJson.input.callbackURL`'/>
                                 <parameter name='tmp.payload.RANNFNSSIId' value='`$payloadJson.input.RANNFNSSIId`'/>
                                 <parameter name='tmp.payload.RANNSSIId' value='`$payloadJson.input.RANNSSIId`'/>
-                                <parameter name='tmp.payload.coverageAreaList_length' value='`$payloadJson.input.sliceProfile.coverageAreaList_length`'/>
+                                <parameter name='tmp.payload.coverageAreaList_length' value='`$payloadJson.input.sliceProfile.coverageAreaTAList_length`'/>
                                 <parameter name='tmp.payload.dLThptPerSlice' value='`$payloadJson.input.sliceProfile.dLThptPerSlice`'/>
                                 <parameter name='tmp.payload.latency' value='`$payloadJson.input.sliceProfile.latency`'/>
                                 <parameter name='tmp.payload.maxNumberofConns' value='`$payloadJson.input.sliceProfile.maxNumberofConns`'/>
                                 <parameter name='tmp.payload.maxNumberofUEs' value='`$payloadJson.input.sliceProfile.maxNumberofUEs`'/>
                                 <parameter name='tmp.payload.resourceSharingLevel' value='`$payloadJson.input.sliceProfile.resourceSharingLevel`'/>
                                 <parameter name='tmp.payload.sliceProfileId' value='`$payloadJson.input.sliceProfile.sliceProfileId`'/>
-                                <parameter name='tmp.payload.sNSSAI' value='`$payloadJson.input.sliceProfile.sNSSAI`'/>
+                                <parameter name='tmp.payload.sNSSAI' value='`$payloadJson.input.sliceProfile.snssaiList[0]`'/>
                                 <parameter name='tmp.payload.uEMobilityLevel' value='`$payloadJson.input.sliceProfile.uEMobilityLevel`'/>
                                 <parameter name='tmp.payload.uLThptPerSlice' value='`$payloadJson.input.sliceProfile.uLThptPerSlice`'/>
-                                <parameter name='tmp.payload.pLMNId' value='`$payloadJson.input.sliceProfile.pLMNIdList[0]`'/>
+                                <parameter name='tmp.payload.pLMNId' value='`$payloadJson.input.sliceProfile.plmnIdList[0]`'/>
                             </set>
                             <set>
                                 <parameter name='tmp.RRMPolicyRatioID.NearRTRIC' value="`'NearRTRIC-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $payloadJson.input.sliceProfile.coverageAreaList[0]`" />
@@ -212,17 +208,15 @@
                                 </outcome>
                                 <outcome value='Other'>
                                     <block atomic="true">
-                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                            <parameter name="result" value="tmp.mcc"/>
-                                            <parameter name="begin-index" value="0" />
-                                            <parameter name="end-index" value="3" />
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='split'>
+                                            <parameter name="original_string" value="`$tmp.payload.pLMNId`" />
+                                            <parameter name="regex" value="-"/>
+                                            <parameter name="ctx_memory_result_key" value="tmp.plmnList" />
                                         </execute>
-                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                            <parameter name="result" value="tmp.mnc"/>
-                                            <parameter name="begin-index" value="4" />
-                                        </execute>
+                                        <set>
+                                            <parameter name='tmp.mcc' value='`$tmp.plmnList[0]`'/>
+                                            <parameter name='tmp.mnc' value='`$tmp.plmnList[1]`'/>
+                                        </set>
                                     </block>
                                 </outcome>
                             </switch>
@@ -238,21 +232,20 @@
                     <outcome value='modify-deallocate'>
                         <block atomic="true">
                             <set>
-                                <parameter name='tmp.payload.trackingArea' value='`$payloadJson.input.sliceProfile.coverageAreaList[0]`'/>
                                 <parameter name='tmp.payload.callbackURL' value='`$payloadJson.input.callbackURL`'/>
                                 <parameter name='tmp.payload.RANNFNSSIId' value='`$payloadJson.input.RANNFNSSIId`'/>
                                 <parameter name='tmp.payload.RANNSSIId' value='`$payloadJson.input.RANNSSIId`'/>
-                                <parameter name='tmp.payload.coverageAreaList_length' value='`$payloadJson.input.sliceProfile.coverageAreaList_length`'/>
+                                <parameter name='tmp.payload.coverageAreaList_length' value='`$payloadJson.input.sliceProfile.coverageAreaTAList_length`'/>
                                 <parameter name='tmp.payload.dLThptPerSlice' value='`$payloadJson.input.sliceProfile.dLThptPerSlice`'/>
                                 <parameter name='tmp.payload.latency' value='`$payloadJson.input.sliceProfile.latency`'/>
                                 <parameter name='tmp.payload.maxNumberofConns' value='`$payloadJson.input.sliceProfile.maxNumberofConns`'/>
                                 <parameter name='tmp.payload.maxNumberofUEs' value='`$payloadJson.input.sliceProfile.maxNumberofUEs`'/>
                                 <parameter name='tmp.payload.resourceSharingLevel' value='`$payloadJson.input.sliceProfile.resourceSharingLevel`'/>
                                 <parameter name='tmp.payload.sliceProfileId' value='`$payloadJson.input.sliceProfile.sliceProfileId`'/>
-                                <parameter name='tmp.payload.sNSSAI' value='`$payloadJson.input.sliceProfile.sNSSAI`'/>
+                                <parameter name='tmp.payload.sNSSAI' value='`$payloadJson.input.sliceProfile.snssaiList[0]`'/>
                                 <parameter name='tmp.payload.uEMobilityLevel' value='`$payloadJson.input.sliceProfile.uEMobilityLevel`'/>
                                 <parameter name='tmp.payload.uLThptPerSlice' value='`$payloadJson.input.sliceProfile.uLThptPerSlice`'/>
-                                <parameter name='tmp.payload.pLMNId' value='`$payloadJson.input.sliceProfile.pLMNIdList[0]`'/>
+                                <parameter name='tmp.payload.pLMNId' value='`$payloadJson.input.sliceProfile.plmnIdList[0]`'/>
                             </set>
                             <set>
                                 <parameter name='tmp.RRMPolicyRatioID.NearRTRIC' value="`'NearRTRIC-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $payloadJson.input.sliceProfile.coverageAreaList[0]`" />
@@ -273,17 +266,15 @@
                                 </outcome>
                                 <outcome value='Other'>
                                     <block atomic="true">
-                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                            <parameter name="result" value="tmp.mcc"/>
-                                            <parameter name="begin-index" value="0" />
-                                            <parameter name="end-index" value="3" />
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='split'>
+                                            <parameter name="original_string" value="`$tmp.payload.pLMNId`" />
+                                            <parameter name="regex" value="-"/>
+                                            <parameter name="ctx_memory_result_key" value="tmp.plmnList" />
                                         </execute>
-                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                            <parameter name="string" value="`$tmp.payload.pLMNId`" />
-                                            <parameter name="result" value="tmp.mnc"/>
-                                            <parameter name="begin-index" value="4" />
-                                        </execute>
+                                        <set>
+                                            <parameter name='tmp.mcc' value='`$tmp.plmnList[0]`'/>
+                                            <parameter name='tmp.mnc' value='`$tmp.plmnList[1]`'/>
+                                        </set>
                                     </block>
                                 </outcome>
                             </switch>
