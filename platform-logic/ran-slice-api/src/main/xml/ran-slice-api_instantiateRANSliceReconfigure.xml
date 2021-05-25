@@ -273,17 +273,17 @@
                                     <set>
                                         <parameter name='tmp.pLMNId' value='`$getPLMN-CL-configdb-response.plmnId`'/>
                                     </set>
-                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                        <parameter name="string" value="`$tmp.pLMNId`" />
-                                        <parameter name="result" value="tmp.mcc"/>
-                                        <parameter name="begin-index" value="0" />
-                                        <parameter name="end-index" value="3" />
-                                    </execute>
-                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                        <parameter name="string" value="`$tmp.pLMNId`" />
-                                        <parameter name="result" value="tmp.mnc"/>
-                                        <parameter name="begin-index" value="4" />
-                                    </execute>
+                                    <block atomic="true">
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='split'>
+                                            <parameter name="original_string" value="`$tmp.pLMNId`" />
+                                            <parameter name="regex" value="-"/>
+                                            <parameter name="ctx_memory_result_key" value="tmp.plmnList" />
+                                        </execute>
+                                        <set>
+                                            <parameter name='tmp.mcc' value='`$tmp.plmnList[0]`'/>
+                                            <parameter name='tmp.mnc' value='`$tmp.plmnList[1]`'/>
+                                        </set>
+                                    </block>
                                     <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                         <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                         <parameter name="level" value="info" />
@@ -554,17 +554,17 @@
                                         <set>
                                             <parameter name='tmp.pLMNId' value='`$getPLMN-CL-configdb-response.plmnId`'/>
                                         </set>
-                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                            <parameter name="string" value="`$tmp.pLMNId`" />
-                                            <parameter name="result" value="tmp.mcc"/>
-                                            <parameter name="begin-index" value="0" />
-                                            <parameter name="end-index" value="3" />
-                                        </execute>
-                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='substring'>
-                                            <parameter name="string" value="`$tmp.pLMNId`" />
-                                            <parameter name="result" value="tmp.mnc"/>
-                                            <parameter name="begin-index" value="4" />
-                                        </execute>
+                                        <block atomic="true">
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='split'>
+                                                <parameter name="original_string" value="`$tmp.pLMNId`" />
+                                                <parameter name="regex" value="-"/>
+                                                <parameter name="ctx_memory_result_key" value="tmp.plmnList" />
+                                            </execute>
+                                            <set>
+                                                <parameter name='tmp.mcc' value='`$tmp.plmnList[0]`'/>
+                                                <parameter name='tmp.mnc' value='`$tmp.plmnList[1]`'/>
+                                            </set>
+                                        </block>
                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                             <parameter name="level" value="info" />
