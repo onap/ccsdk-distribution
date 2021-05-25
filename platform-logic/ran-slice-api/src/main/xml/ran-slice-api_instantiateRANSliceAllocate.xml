@@ -4,7 +4,7 @@
     <method rpc='instantiateRANSliceAllocate' mode='sync'>
         <block atomic='true'>
             <set>
-                <parameter name='tmp.trackingAreaListEntries' value="`$payloadJson.input.sliceProfile.coverageAreaList_length`"/>
+                <parameter name='tmp.trackingAreaListEntries' value="`$payloadJson.input.sliceProfile.coverageAreaTAList_length`"/>
             </set>
             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                 <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
@@ -16,7 +16,7 @@
                 <block atomic='true'>
                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                         <parameter name='outputPath' value='tmp.payload.trackingArea' />
-                        <parameter name='source' value="`'payloadJson.input.sliceProfile.coverageAreaList[' + $ta + ']'`"/>
+                        <parameter name='source' value="`'payloadJson.input.sliceProfile.coverageAreaTAList[' + $ta + ']'`"/>
                     </execute>
                     <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                         <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
@@ -243,6 +243,15 @@
                                 </execute>
                             </block>
                         </block>
+                        <set>
+                            <parameter name='tmp.RRMPolicyRatioID.NearRTRIC' value="`'NearRTRIC-' + $tmp.payload.trackingArea`" />
+                            <parameter name='tmp.RRMPolicyRatioID.GNBDUFunction' value="`'GNBDUFunction-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $tmp.payload.trackingArea`" />
+                            <parameter name='tmp.RRMPolicyRatioID.NRCellDU' value="`'NRCellDU-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $tmp.payload.trackingArea`" />
+                            <parameter name='tmp.RRMPolicyRatioID.GNBCUUPFunction' value="`'GNBCUUPFunction-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $tmp.payload.trackingArea`" />
+                            <parameter name='tmp.RRMPolicyRatioID.GNBCUCPFunction' value="`'GNBCUCPFunction-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $tmp.payload.trackingArea`" />
+                            <parameter name='tmp.RRMPolicyRatioID.NRCellCU' value="`'NRCellCU-' + $payloadJson.input.sliceProfile.sliceProfileId  + '-' + $tmp.payload.trackingArea`" />
+                            <parameter name='prop.ranNetwork.RRMPolicyRatioMemberID' value='`$prop.ranNetwork.RRMPolicyRatioMemberID + 1`' />
+                        </set>
                         <for index='id1' start='0' end="`$getRIC-configdb-response._length`" >
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                 <parameter name='outputPath' value='tmp.nearRTRICId' />
@@ -252,10 +261,9 @@
                                 <parameter name='outputPath' value='tmp.gNBId' />
                                 <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBId'`" />
                             </execute>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                <parameter name='outputPath' value='tmp.ranNFNSSIListEntry' />
-                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].ranNFNSSIList[0]'`" />
-                            </execute>
+                            <set>
+                                <parameter name='tmp.ranNFNSSIListEntry' value='`$tmp.payload.RANNFNSSIId`'/>
+                            </set>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
                                 <parameter name="level" value="info" />
@@ -839,7 +847,7 @@
                                                                     <parameter name="field2" value="`$prop.controller.url + $tmp.addRRMPolicyRatio.ToNRCellCU.url`"/>
                                                                     <parameter name="field3" value="`$tmp.mcc`"/>
                                                                     <parameter name="field4" value="`$tmp.mnc`"/>
-                                                                    <parameter name="field5" value="`$payloadJson.input.sliceProfile.sNSSAI`"/>
+                                                                    <parameter name="field5" value="`$tmp.payload.sNSSAI`"/>
                                                                     <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
                                                                     <parameter name="field7" value="`$tmp.dLThptPerSlice`"/>
                                                                 </record>
@@ -1697,7 +1705,7 @@
                                         <parameter name='tmp.nearRTRIC.trafficCapacity' value='`$tmp.nearRTRIC.trafficCapacity1 / 2`' />
                                     </set>
                                     <set>
-                                        <parameter name='tmp.nearRTRIC.trafficCapacityBPS' value='`$tmp.nearRTRIC.trafficCapacity * 1000000`' />
+                                        <parameter name='tmp.nearRTRIC.trafficCapacityBPS' value='`$tmp.nearRTRIC.trafficCapacity * 1000`' />
                                     </set>
                                     <set>
                                         <parameter name='tmp.nrcelldu.totalPRBForSNSSAI' value='`$tmp.nearRTRIC.trafficCapacityBPS / 1008000`' />
@@ -1757,10 +1765,9 @@
                                                 <parameter name='outputPath' value='tmp.nFType' />
                                                 <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].nFType'`" />
                                             </execute>
-                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                                <parameter name='outputPath' value='tmp.pLMNId' />
-                                                <parameter name='source' value="`'getRIC-configdb-response.[' + $id1 + '].gNBDUList[' + $id2 + '].pLMNId'`" />
-                                            </execute>
+                                            <set>
+                                                <parameter name="tmp.pLMNId" value="`$tmp.payload.pLMNId`"/>
+                                            </set>
                                         </block>
                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
@@ -2413,8 +2420,25 @@
                 </block>
             </for>
             <block atomic='true'>
+                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                    <parameter name="level" value="info" />
+                    <parameter name="field1" value="Response code"/>
+                    <parameter name="field2" value="`$error-code`" />
+                </record>
+                <switch test='`$error-code`'>
+                    <outcome value='200'>
+                        <set>
+                            <parameter name="tmp.status" value="success"/>
+                        </set>
+                    </outcome>
+                    <outcome value='Other'>
+                        <set>
+                            <parameter name="tmp.status" value="`$error-code`"/>
+                        </set>
+                    </outcome>
+                </switch>
                 <set>
-                    <parameter name="tmp.status" value="`$error-code`"/>
                     <parameter name="tmp.reason" value="`$error-message`"/>
                     <parameter name="tmp.requestID" value="`$instantiate-r-a-n-slice-input.common-header.request-id `"/>
                     <parameter name="tmp.action" value="`$instantiate-r-a-n-slice-input.action`"/>
