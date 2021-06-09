@@ -1,9 +1,9 @@
 # Prepare stage for multistage image build
 ## START OF STAGE0 ##
 FROM ${base.image.name}:${project.docker.latestfulltag.version} AS stage0
+USER root
 
 # copy the opendaylight credentials
-USER root
 COPY idmlight.db.mv.db $ODL_HOME/data
 
 # copy CCSDK mvn artifacts to ODL repository
@@ -22,16 +22,16 @@ USER root
 
 ENV SDNC_CONFIG_DIR /opt/onap/ccsdk/data/properties
 ENV CCSDKFEATUREVERSION ${ccsdk.features.version}
-ENV CCSDK_SLI_CORE_REPO mvn:org.onap.ccsdk.sli.core/ccsdk-sli-core-all/${ccsdk.sli.core.version}/xml/features
-ENV CCSDK_SLI_ADAPTORS_REPO mvn:org.onap.ccsdk.sli.adaptors/ccsdk-sli-adaptors-all/${ccsdk.sli.adaptors.version}/xml/features
+ENV CCSDK_SLI_CORE_REPO mvn:org.onap.ccsdk.sli.core/ccsdk-sli-core-all/${ccsdk.sli.version}/xml/features
+ENV CCSDK_SLI_ADAPTORS_REPO mvn:org.onap.ccsdk.sli.adaptors/ccsdk-sli-adaptors-all/${ccsdk.sli.version}/xml/features
 ENV CCSDK_FEATURES_REPO mvn:org.onap.ccsdk.features/ccsdk-features-all/${ccsdk.features.version}/xml/features
 ENV CCSDK_FEATURES_SDNR_WT_REPO mvn:org.onap.ccsdk.features.sdnr.wt/sdnr-wt-feature-aggregator/${ccsdk.features.version}/xml/features,\
  mvn:org.onap.ccsdk.features.sdnr.wt/sdnr-wt-feature-aggregator-oauth/${ccsdk.features.version}/xml/features,\
  mvn:org.onap.ccsdk.features.sdnr.wt/sdnr-wt-feature-aggregator-devicemanager/${ccsdk.features.version}/xml/features,\
  mvn:org.onap.ccsdk.features.sdnr.wt/sdnr-wt-feature-aggregator-devicemanager-base/${ccsdk.features.version}/xml/features
 ENV CCSDK_FEATURES_SDNR_NORTHBOUND_REPO mvn:org.onap.ccsdk.features.sdnr.northbound/sdnr-northbound-all/${ccsdk.features.version}/xml/features
-ENV CCSDK_SLI_NORTHBOUND_REPO mvn:org.onap.ccsdk.sli.northbound/ccsdk-sli-northbound-all/${ccsdk.sli.northbound.version}/xml/features
-ENV CCSDK_SLI_PLUGINS_REPO mvn:org.onap.ccsdk.sli.plugins/ccsdk-sli-plugins-all/${ccsdk.sli.plugins.version}/xml/features
+ENV CCSDK_SLI_NORTHBOUND_REPO mvn:org.onap.ccsdk.sli.northbound/ccsdk-sli-northbound-all/${ccsdk.sli.version}/xml/features
+ENV CCSDK_SLI_PLUGINS_REPO mvn:org.onap.ccsdk.sli.plugins/ccsdk-sli-plugins-all/${ccsdk.sli.version}/xml/features
 ENV A1ADAPTER_NORTHBOUND_REPO mvn:org.onap.ccsdk.oran/a1-adapter-northbound/${ccsdk.oran.a1adapter.version}/xml/features
 ENV ANSIBLE_GPG_KEY ${ansible.gpg.key}
 ENV ODL_BOOT_FEATURES_EXTRA ${odl.boot.features.extra}
