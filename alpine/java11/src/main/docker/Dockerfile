@@ -14,6 +14,6 @@ ENV https_proxy ${HTTPS_PROXY}
 ENV JAVA_HOME /opt/java/openjdk
 
 # Add tools needed for OpenDaylight
-RUN apk update && apk --no-cache add bash git  mysql-client nodejs npm python3 py3-pip graphviz unzip rsync nss
+RUN apk update && apk --no-cache add sudo bash iputils openssl git mysql-client nodejs npm python3 py3-pip graphviz unzip rsync nss
 
 USER onap
