@@ -29,6 +29,7 @@ FROM scratch
 MAINTAINER CCSDK Team (onap-ccsdk@lists.onap.org)
 USER root
 
+ENV PATH /opt/java/openjdk/bin:$PATH
 ENV JAVA_HOME /opt/java/openjdk
 ENV ODL_HOME /opt/opendaylight/current
 
