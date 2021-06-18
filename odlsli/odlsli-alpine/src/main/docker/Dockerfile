@@ -56,6 +56,7 @@ LABEL maintainer="CCSDK Team (onap-ccsdk@lists.onap.org)"
 USER root
 
 ENV JAVA_HOME /opt/java/openjdk
+ENV PATH ${JAVA_HOME}/bin:$PATH
 ENV ODL_HOME /opt/opendaylight/current
 ENV SDNC_CONFIG_DIR /opt/onap/ccsdk/data/properties
 ENV ANSIBLE_GPG_KEY ${ansible.gpg.key}
