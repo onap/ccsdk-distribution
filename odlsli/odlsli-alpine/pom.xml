@@ -503,29 +503,21 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.5.0</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
                 <executions>
                     <execution>
-                        <id>change shell permissions</id>
+                        <id>change-shell-permissions</id>
                         <phase>process-sources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
                         <configuration>
-                            <executable>/usr/bin/find</executable>
-                            <arguments>
-                                <argument>${basedir}/target/docker-stage/opt/onap/ccsdk</argument>
-                                <argument>-name</argument>
-                                <argument>*.sh</argument>
-                                <argument>-exec</argument>
-                                <argument>chmod</argument>
-                                <argument>+x</argument>
-                                <argument>{}</argument>
-                                <argument>;</argument>
-                            </arguments>
+                            <target>
+                                <chmod dir="${basedir}/target/docker-stage/opt/onap/ccsdk" perm="+x" includes="**/*.sh"/>
+                            </target>
                         </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -599,6 +591,7 @@
                                 </image>
                             </images>
                             <verbose>${docker.verbose}</verbose>
+                            <skipRun>${docker.skip.run}</skipRun>
                             <skipPush>${docker.skip.push}</skipPush>
                         </configuration>
                         <executions>
