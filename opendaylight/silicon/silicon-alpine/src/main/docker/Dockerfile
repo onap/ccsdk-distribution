@@ -30,7 +30,7 @@ MAINTAINER CCSDK Team (onap-ccsdk@lists.onap.org)
 USER root
 
 ENV JAVA_HOME /opt/java/openjdk
-ENV PATH $JAVA_HOME/bin:$PATH
+ENV PATH $PATH:/opt/java/openjdk/bin
 ENV ODL_HOME /opt/opendaylight/current
 
 # Copy Everything from stage0
