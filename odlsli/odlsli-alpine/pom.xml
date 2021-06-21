@@ -600,99 +600,13 @@
                                 </image>
                             </images>
                             <verbose>${docker.verbose}</verbose>
-                            <skipRun>${docker.skip.run}</skipRun>
                             <skipPush>${docker.skip.push}</skipPush>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>build-images</id>
-                                <phase>package</phase>
+                                <id>build-push-images</id>
                                 <goals>
                                     <goal>build</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>start-it-instance</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                                <configuration>
-                                    <images>
-                                        <image>
-                                            <name>mariadb:10.5</name>
-                                            <alias>odlsli-db</alias>
-                                            <run>
-                                                <env>
-                                                    <MYSQL_ROOT_PASSWORD>itsASecret</MYSQL_ROOT_PASSWORD>
-                                                    <!-- Below are not required as installSdncDb.sh handles same -->
-                                                    <!--
-                                                    <MYSQL_USER>sdnctl</MYSQL_USER>
-                                                    <MYSQL_PASSWORD>gamma</MYSQL_PASSWORD>
-                                                    <MYSQL_DATABASE>sdnctl</MYSQL_DATABASE>
-                                                    -->
-                                                </env>
-                                                <network>
-                                                    <mode>custom</mode>
-                                                    <name>onap</name>
-                                                    <alias>dbhost</alias>
-                                                    <alias>sdnctldb01</alias>
-                                                    <alias>sdnctldb02</alias>
-                                                </network>
-                                                <ports>
-                                                    <port>odlslidb.port:3306</port>
-                                                </ports>
-                                                <log>
-                                                    <enabled>true</enabled>
-                                                </log>
-                                            </run>
-                                        </image>
-                                        <image>
-                                            <name>${image.name}:${project.docker.latesttagtimestamp.snapshot.version}</name>
-                                            <alias>odlsli-container</alias>
-                                            <run>
-                                                <env>
-                                                    <MYSQL_ROOT_PASSWORD>itsASecret</MYSQL_ROOT_PASSWORD>
-                                                    <SDNC_DB_USER>sdnctl</SDNC_DB_USER>
-                                                    <SDNC_DB_PASSWORD>gamma</SDNC_DB_PASSWORD>
-                                                    <SDNC_DB_DATABASE>sdnctl</SDNC_DB_DATABASE>
-                                                    <SDNC_CONFIG_DIR>/opt/onap/ccsdk/data/properties</SDNC_CONFIG_DIR>
-                                                    <KARAF_CONSOLE_LOG_LEVEL>INFO</KARAF_CONSOLE_LOG_LEVEL>
-                                                </env>
-                                                <dependsOn>
-                                                    <container>odlsli-db</container>
-                                                </dependsOn>
-                                                <network>
-                                                    <mode>custom</mode>
-                                                    <name>onap</name>
-                                                    <alias>odlsli</alias>
-                                                </network>
-                                                <ports>
-                                                    <port>odlsli.port:8181</port>
-                                                </ports>
-                                                <wait>
-                                                    <log>all warp coils are now operating at peak efficiency</log>
-                                                    <time>300000</time>
-                                                </wait>
-                                                <log>
-                                                    <enabled>true</enabled>
-                                                </log>
-                                            </run>
-                                        </image>
-                                    </images>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>stop-it-instance</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>push-images</id>
-                                <goals>
-                                    <!--<goal>build</goal>-->
                                     <goal>push</goal>
                                 </goals>
                             </execution>
