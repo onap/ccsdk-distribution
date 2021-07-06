@@ -14,6 +14,15 @@ RUN mkdir -p /opt/odl \
     && ln -s  /opt/opendaylight /opt/opendaylight/${odl.karaf.artifactId}-${ccsdk.opendaylight.version} \
     && ln -s /opt/opendaylight /opt/opendaylight/current
 
+# Enable wheel and create a group and user
+RUN sed -i -e 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers \
+    && addgroup -S odl \
+    && adduser -S odl -G odl \
+    && addgroup odl wheel
+
+# Changing ownership and permission of /opt
+RUN chown -R odl:odl /opt && chmod -R 755 /opt
+
 # Patch some opendaylight artifacts
 COPY system $ODL_HOME/system
 # Add missing scripts see SDNC-1056
@@ -29,14 +38,14 @@ FROM scratch
 MAINTAINER CCSDK Team (onap-ccsdk@lists.onap.org)
 USER root
 
-ENV JAVA_HOME /opt/java/openjdk
-ENV PATH $PATH:/opt/java/openjdk/bin
-ENV ODL_HOME /opt/opendaylight/current
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH=$PATH:/opt/java/openjdk/bin \
+    ODL_HOME=/opt/opendaylight/current
 
 # Copy Everything from stage0
 COPY --from=stage0 / /
 
-# ENTRYPOINT exec /opt/opendaylight/bin/karaf
-WORKDIR $ODL_HOME
-USER onap
+USER odl
 EXPOSE 8181
+WORKDIR $ODL_HOME
+# ENTRYPOINT exec /opt/opendaylight/bin/karaf
