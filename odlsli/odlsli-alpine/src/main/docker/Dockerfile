@@ -14,19 +14,10 @@ RUN rsync -a /tmp/system $ODL_HOME
 COPY opt /opt
 COPY org.ops4j.pax.logging.cfg $ODL_HOME/etc/org.ops4j.pax.logging.cfg
 
-# CCSDK SLI FEATURES
-ENV CCSDK_SLI_FEATURES_REPO mvn:org.onap.ccsdk.sli.core/ccsdk-sli-core-all/${ccsdk.sli.version}/xml/features,\
-mvn:org.onap.ccsdk.sli.adaptors/ccsdk-sli-adaptors-all/${ccsdk.sli.version}/xml/features,\
-mvn:org.onap.ccsdk.sli.northbound/ccsdk-sli-northbound-all/${ccsdk.sli.version}/xml/features,\
-mvn:org.onap.ccsdk.sli.plugins/ccsdk-sli-plugins-all/${ccsdk.sli.version}/xml/features
-
-# ODL and CCSDK SLI featuresBoot defined in pom.xml
-ENV ODL_BOOT_FEATURES_EXTRA ${extra.odl.features},${ccsdk.sli.features}
-
-# Backing up existing karaf cfg and updating features boot and features repository
+# Backing up existing karaf cfg and updating features boot and features repositories defined in pom.xml
 RUN cp $ODL_HOME/etc/org.apache.karaf.features.cfg $ODL_HOME/etc/org.apache.karaf.features.cfg.orig
-RUN sed -i -e "\|featuresBoot[^a-zA-Z]|s|$|,${ODL_BOOT_FEATURES_EXTRA}|" $ODL_HOME/etc/org.apache.karaf.features.cfg
-RUN sed -i -e "\|featuresRepositories|s|$|,${CCSDK_SLI_FEATURES_REPO} |" $ODL_HOME/etc/org.apache.karaf.features.cfg
+RUN sed -i -e "\|featuresBoot[^a-zA-Z]|s|$|,${extra.odl.features},${ccsdk.sli.features}|" $ODL_HOME/etc/org.apache.karaf.features.cfg
+RUN sed -i -e "\|featuresRepositories|s|$|,${ccsdk.sli.features.repo}|" $ODL_HOME/etc/org.apache.karaf.features.cfg
 
 # Enable wheel and create a group and user
 RUN sed -i -e 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers \

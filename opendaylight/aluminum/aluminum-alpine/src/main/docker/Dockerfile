@@ -37,5 +37,4 @@ COPY --from=stage0 / /
 
 # ENTRYPOINT exec /opt/opendaylight/bin/karaf
 WORKDIR $ODL_HOME
-USER onap
 EXPOSE 8181
