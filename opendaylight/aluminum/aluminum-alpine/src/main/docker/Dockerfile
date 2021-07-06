@@ -22,17 +22,20 @@ COPY system $ODL_HOME/system
 
 ## END OF STAGE0 ##
 
+#################################################
 
 ## This will create actual image
-FROM onap/ccsdk-alpine-j11-image:${project.docker.latestfulltag.version}
+FROM scratch
 MAINTAINER CCSDK Team (onap-ccsdk@lists.onap.org)
 USER root
 
-ENV ODL_HOME /opt/opendaylight/current
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH=$PATH:/opt/java/openjdk/bin \
+    ODL_HOME=/opt/opendaylight/current
 
-COPY --from=stage0 /opt /opt
+# Copy Everything from stage0
+COPY --from=stage0 / /
 
-# ENTRYPOINT exec /opt/opendaylight/bin/karaf
-WORKDIR $ODL_HOME
-USER onap
 EXPOSE 8181
+WORKDIR $ODL_HOME
+# ENTRYPOINT exec /opt/opendaylight/bin/karaf
