@@ -20,7 +20,8 @@
     <properties>
         <image.name>onap/ccsdk-odl-silicon-alpine-image</image.name>
         <odl.karaf.artifactId>onap-karaf</odl.karaf.artifactId>
-        <odl.shiro.version>0.13.2</odl.shiro.version>
+        <odl.shiro.version>0.13.3</odl.shiro.version>
+        <odl.ops4j.version>7.3.13</odl.ops4j.version>
     </properties>
 
     <build>
@@ -92,6 +93,14 @@
                                     <version>${odl.shiro.version}</version>
                                     <outputDirectory>${project.build.directory}/docker-stage/system/org/opendaylight/aaa/aaa-authn-api/${odl.shiro.version}</outputDirectory>
                                     <destFileName>aaa-authn-api-${odl.shiro.version}.jar</destFileName>
+                                    <excludes>*</excludes>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.highstreet-technologies.ops4j.pax.web</groupId>
+                                    <artifactId>pax-web-jetty</artifactId>
+                                    <version>${odl.ops4j.version}</version>
+                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/ops4j/pax/web/pax-web-jetty/${odl.ops4j.version}</outputDirectory>
+                                    <destFileName>pax-web-jetty-${odl.ops4j.version}.jar</destFileName>
                                     <excludes>*</excludes>
                                 </artifactItem>
                             </artifactItems>
