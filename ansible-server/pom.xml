@@ -73,51 +73,27 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.5.0</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
                 <executions>
                     <execution>
-                        <id>change python permissions</id>
+                        <id>change-permissions</id>
                         <phase>process-sources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
                         <configuration>
-                            <executable>/usr/bin/find</executable>
-                            <arguments>
-                                <argument>${basedir}/target/docker-stage/ansible-server</argument>
-                                <argument>-name</argument>
-                                <argument>*.py</argument>
-                                <argument>-exec</argument>
-                                <argument>chmod</argument>
-                                <argument>+x</argument>
-                                <argument>{}</argument>
-                                <argument>;</argument>
-                            </arguments>
+                            <target>
+                                <chmod perm="+x" type="file">
+                                    <fileset dir="${basedir}/target/docker-stage/ansible-server">
+                                        <include name="**/*.py"/>
+                                        <include name="**/*.sh"/>
+                                    </fileset>
+                                </chmod>
+                            </target>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>change shell permissions</id>
-                        <phase>process-sources</phase>
                         <goals>
-                            <goal>exec</goal>
+                            <goal>run</goal>
                         </goals>
-                        <configuration>
-                            <executable>/usr/bin/find</executable>
-                            <arguments>
-                                <argument>${basedir}/target/docker-stage/ansible-server</argument>
-                                <argument>-name</argument>
-                                <argument>*.sh</argument>
-                                <argument>-exec</argument>
-                                <argument>chmod</argument>
-                                <argument>+x</argument>
-                                <argument>{}</argument>
-                                <argument>;</argument>
-                            </arguments>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
