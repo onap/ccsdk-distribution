@@ -1,7 +1,7 @@
-#FROM centos:7
 FROM onap/ccsdk-alpine-j11-image:${project.docker.latestfulltag.version}
-
+LABEL maintainer="SDN-C Team (sdnc@lists.openecomp.org)"
 USER root
+
 RUN apk add git tmux vim salt-master salt-minion
 
 #RUN yum clean all && \
@@ -11,16 +11,12 @@ RUN apk add git tmux vim salt-master salt-minion
 #      yum install -y sudo git tmux vim salt-master salt-minion && \
 #      yum clean all
 
-EXPOSE 4505 4506
-
 # Create non root user
-RUN addgroup -S saltstack && adduser -S saltstack -G saltstack
-# RUN groupadd --system saltstack && useradd --system -g saltstack saltstack
-RUN chown -R saltstack /etc/salt /var/log/salt
-RUN mkdir /var/run/salt && chown saltstack:saltstack /var/run/salt
-RUN mkdir /var/cache/salt && chown saltstack:saltstack /var/cache/salt
+RUN addgroup -S saltstack && adduser -S saltstack -G saltstack \
+    && mkdir -p /var/run/salt /var/cache/salt && chown saltstack:saltstack \
+    && chown -R saltstack /etc/salt /var/log/salt /var/run/salt /var/cache/salt
+
 
 USER saltstack
-
-# Run salt-master in foreground (not as a daemon)
+EXPOSE 4505 4506
 ENTRYPOINT [ "/usr/bin/salt-master" ]
