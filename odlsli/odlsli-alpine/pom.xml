@@ -41,10 +41,10 @@
         </ccsdk.sli.features>
         <!-- SLI Features Repositories -->
         <ccsdk.sli.features.repo>
-            mvn:org.onap.ccsdk.sli.core/ccsdk-sli-core-all/${ccsdk.sli.version}/xml/features,\
-            mvn:org.onap.ccsdk.sli.adaptors/ccsdk-sli-adaptors-all/${ccsdk.sli.version}/xml/features,\
-            mvn:org.onap.ccsdk.sli.northbound/ccsdk-sli-northbound-all/${ccsdk.sli.version}/xml/features,\
-            mvn:org.onap.ccsdk.sli.plugins/ccsdk-sli-plugins-all/${ccsdk.sli.version}/xml/features
+            mvn:org.onap.ccsdk.sli.core/ccsdk-sli-core-all/${resolvedVersion.slicore-features-installer}/xml/features,\
+            mvn:org.onap.ccsdk.sli.adaptors/ccsdk-sli-adaptors-all/${resolvedVersion.sliadaptors-features-installer}/xml/features,\
+            mvn:org.onap.ccsdk.sli.northbound/ccsdk-sli-northbound-all/${resolvedVersion.slinorthbound-features-installer}/xml/features,\
+            mvn:org.onap.ccsdk.sli.plugins/ccsdk-sli-plugins-all/${resolvedVersion.sliplugins-features-installer}/xml/features
         </ccsdk.sli.features.repo>
         <docker.autoCreateCustomNetworks>true</docker.autoCreateCustomNetworks>
     </properties>
@@ -250,12 +250,27 @@
 
     <build>
         <plugins>
+          
             <plugin>
                 <groupId>org.codehaus.groovy.maven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
                 <version>1.0</version>
                 <executions>
                     <execution>
+                        <id>derive-resolved-versions</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                for (art in project.getArtifacts())
+                                    project.properties['resolvedVersion.' + art.getArtifactId()] = art.getVersion()
+                            </source>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>derive-docker-tags</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>execute</goal>
