@@ -1,13 +1,13 @@
-version: '2'
+version: '2.1'
 
 services:
   db:
-    image: mysql/mysql-server:5.6
+    image: mariadb:10.5
     container_name: ccsdk_db_container
     ports:
       - "3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=openECOMP1.0
+      - MYSQL_ROOT_PASSWORD=MySecretPassword
       - MYSQL_ROOT_HOST=%
     logging:       
       driver:   "json-file"
@@ -29,8 +29,10 @@ services:
       - db:sdnctldb01
       - db:sdnctldb02
     environment:
-      - MYSQL_ROOT_PASSWORD=openECOMP1.0
+      - MYSQL_ROOT_PASSWORD=MySecretPassword
       - SDNC_CONFIG_DIR=/opt/onap/ccsdk/data/properties
+      - JAVA_OPTS=-Xms512m -Xmx2048m
+      - KARAF_CONSOLE_LOG_LEVEL=info
     logging:       
       driver:   "json-file"
       options:  
@@ -54,7 +56,7 @@ services:
       - db:sdnctldb02
       - odlsli:sdnhost
     environment:
-      - MYSQL_ROOT_PASSWORD=openECOMP1.0
+      - MYSQL_ROOT_PASSWORD=MySecretPassword
       - SDNC_CONFIG_DIR=/opt/onap/ccsdk/data/properties
     logging:       
       driver:   "json-file"
