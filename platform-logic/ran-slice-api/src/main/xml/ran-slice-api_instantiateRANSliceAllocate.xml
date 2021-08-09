@@ -287,14 +287,12 @@
                                     <parameter name="field8" value="`$payloadJson.input.sliceProfile.uLThptPerSlice`"/>
                                 </record>
                                 <set>
-                                    <parameter name='tmp.nearRTRIC.uLThptPerSlice' value='`$payloadJson.input.sliceProfile.uLThptPerSlice`' />
-                                    <parameter name='tmp.nearRTRIC.dLThptPerSlice' value='`$payloadJson.input.sliceProfile.dLThptPerSlice`' />
-                                </set>
-                                <set>
-                                    <parameter name='tmp.nearRTRIC.maxNumberOfConns' value='`$payloadJson.input.sliceProfile.maxNumberofConns`' />
-                                    <parameter name='tmp.maxNumberOfConns' value='`$payloadJson.input.sliceProfile.maxNumberofConns`' />
-                                    <parameter name='tmp.uLThptPerSlice' value='`$payloadJson.input.sliceProfile.uLThptPerSlice`' />
-                                    <parameter name='tmp.dLThptPerSlice' value='`$payloadJson.input.sliceProfile.dLThptPerSlice`' />
+                                    <parameter name='tmp.nearRTRIC.uLThptPerSlice1' value='`$payloadJson.input.sliceProfile.uLThptPerSlice * 1.1`' />
+                                    <parameter name='tmp.nearRTRIC.uLThptPerSlice' value='`$tmp.nearRTRIC.uLThptPerSlice1 / $getRIC-configdb-response._length`' />
+                                    <parameter name='tmp.nearRTRIC.dLThptPerSlice1' value='`$payloadJson.input.sliceProfile.dLThptPerSlice * 1.1`' />
+                                    <parameter name='tmp.nearRTRIC.dLThptPerSlice' value='`$tmp.nearRTRIC.dLThptPerSlice1 / $getRIC-configdb-response._length`' />
+                                    <parameter name='tmp.nearRTRIC.maxNumberOfConns1' value='`$payloadJson.input.sliceProfile.maxNumberofConns * 1.1`' />
+                                    <parameter name='tmp.nearRTRIC.maxNumberOfConns' value='`$tmp.nearRTRIC.maxNumberOfConns1 / $getRIC-configdb-response._length`' />
                                 </set>
                                 <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
                                     <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-instantiateRANSlice-sliceparms-context.log' />
@@ -687,7 +685,7 @@
                                                                     <parameter name="replacement" value="`$tmp.mnc`"/>
                                                                 </execute>
                                                                 <set>
-                                                                    <parameter name='tmp.maxNumberOfConns' value='`$tmp.payload.maxNumberofConns/$tmp.cellCUListEntries`'/>
+                                                                    <parameter name='tmp.maxNumberOfConns' value='`$tmp.nearRTRIC.maxNumberOfConns/$tmp.cellCUListEntries`'/>
                                                                 </set>
                                                                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                     <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
@@ -1261,7 +1259,7 @@
                                             <parameter name="replacement" value="`$tmp.mnc`"/>
                                         </execute>
                                         <set>
-                                            <parameter name='tmp.maxNumberOfConns' value='`$tmp.payload.maxNumberofConns/$tmp.cellCUListEntries`'/>
+                                            <parameter name='tmp.maxNumberOfConns' value='`$tmp.nearRTRIC.maxNumberOfConns/$tmp.cellCUListEntries`'/>
                                         </set>
                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
@@ -1886,8 +1884,8 @@
                                                                             <parameter name="replacement" value="`$tmp.mnc`"/>
                                                                         </execute>
                                                                         <set>
-                                                                            <parameter name='tmp.uLThptPerSlice' value='`$tmp.payload.uLThptPerSlice/$tmp.cellDUListEntries`'/>
-                                                                            <parameter name='tmp.dLThptPerSlice' value='`$tmp.payload.dLThptPerSlice/$tmp.cellDUListEntries`'/>
+                                                                            <parameter name='tmp.uLThptPerSlice' value='`$tmp.nearRTRIC.uLThptPerSlice/$tmp.cellDUListEntries`'/>
+                                                                            <parameter name='tmp.dLThptPerSlice' value='`$tmp.nearRTRIC.uLThptPerSlice/$tmp.cellDUListEntries`'/>
                                                                         </set>
                                                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                             <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
