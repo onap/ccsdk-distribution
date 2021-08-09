@@ -268,6 +268,85 @@
             <for index='idy' start='0' end='`$getNFNSSIRIC-configdb-response._length`' >
                 <block atomic='true'>
                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                        <parameter name='outputPath' value='tmp.nearRTRICId' />
+                        <parameter name='source' value="`'getNFNSSIRIC-configdb-response.[' + $idy + '].nearRTRICId'`" />
+                    </execute>
+                    <switch test='`$prop.ransim-mounted`'>
+                        <outcome value='false'>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$prop.restapi.nearrtric.removeSliceProfile`"/>
+                                <parameter name="outputPath" value="tmp.deleteSliceProfileEntry.url"/>
+                                <parameter name="target" value="{idNearRTRIC}"/>
+                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                            </execute>
+                        </outcome>
+                        <outcome value='true'>
+                            <block atomic='true'>
+                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                    <parameter name="source" value="`$prop.restapi.nearrtric.removeSliceProfile.ransim-mounted`"/>
+                                    <parameter name="outputPath" value="tmp.deleteSliceProfileEntry.url"/>
+                                    <parameter name="target" value="{idNearRTRIC}"/>
+                                    <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                </execute>
+                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                    <parameter name="source" value="`$tmp.deleteSliceProfileEntry.url`"/>
+                                    <parameter name="outputPath" value="tmp.deleteSliceProfileEntry.url"/>
+                                    <parameter name="target" value="{mountName}"/>
+                                    <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                </execute>
+                            </block>
+                        </outcome>
+                    </switch>
+                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                        <parameter name="source" value="`$tmp.deleteSliceProfileEntry.url`"/>
+                        <parameter name="outputPath" value="tmp.deleteSliceProfileEntry.url"/>
+                        <parameter name="target" value="{sliceProfileId}"/>
+                        <parameter name="replacement" value="`$tmp.sliceprofileid`"/>
+                    </execute>
+                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                        <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                        <parameter name="level" value="info" />
+                        <parameter name="field1" value="sliceprofileid"/>
+                        <parameter name="field2" value="`$tmp.sliceprofileid`" />
+                        <parameter name="field3" value="nearRTRICId"/>
+                        <parameter name="field4" value="`$tmp.nearRTRICId`" />
+                        <parameter name="field5" value="endpoint URL"/>
+                        <parameter name="field6" value="`$tmp.deleteSliceProfileEntry.url`" />
+                    </record>
+                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                        <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.deleteSliceProfileEntry.url`"/>
+                        <parameter name="restapiUser" value="`$prop.controller.user`" />
+                        <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                        <parameter name="httpMethod" value="DELETE"/>
+                        <parameter name="responsePrefix" value="delete-slice-profile-response"/>
+                        <parameter name='contentType' value='application/json' />
+                        <parameter name='format' value='json' />
+                        <parameter name='accept' value='application/json' />
+                        <parameter name="convertResponse" value="true"/>
+                        <outcome value='failure'>
+                            <block atomic='true'>
+                                <set>
+                                    <parameter name='error-code' value='500'/>
+                                    <parameter name='error-message' value='Error updating nearRTRIC info in ConfigDB. Aborting RPC executiopn'/>
+                                </set>
+                                <return status='failure'>
+                                    <parameter name='ack-final' value='Y'/>
+                                    <parameter name='error-code' value='500'/>
+                                    <parameter name='error-message' value='Error updating nearRTRIC info in ConfigDB. Aborting RPC executiopn'/>
+                                </return>
+                            </block>
+                        </outcome>
+                        <outcome value='success'>
+                            <block atomic='true'>
+                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                    <parameter name="level" value="info" />
+                                    <parameter name="field1" value="Successfully REmoved Slice Profile"/>
+                                </record>
+                            </block>
+                        </outcome>
+                    </execute>
+                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                         <parameter name='outputPath' value='tmp.RICPLMNEntries' />
                         <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].pLMNInfoList_length'`" />
                     </execute>
@@ -285,10 +364,6 @@
                             </execute>
                             <for index='id-ric-snssai' start='0' end='`$tmp.ric.sNSSAILength`' >
                                 <block atomic='true'>
-                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                        <parameter name='outputPath' value='tmp.ric.sNSSAI' />
-                                        <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].pLMNInfoList['+$id-ric+'].sNSSAI['+$id-ric-snssai+'].sNSSAI'`" />
-                                    </execute>
                                     <switch test='`$tmp.ric.sNSSAI == $tmp.sNSSAI`'>
                                         <outcome value='true'>
                                             <block atomic='true'>
@@ -364,6 +439,10 @@
                                             </block>
                                         </outcome>
                                     </switch>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                        <parameter name='outputPath' value='tmp.ric.sNSSAI' />
+                                        <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].pLMNInfoList['+$id-ric+'].sNSSAI['+$id-ric-snssai+'].sNSSAI'`" />
+                                    </execute>
                                 </block>
                             </for>
                         </block>
