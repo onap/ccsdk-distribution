@@ -167,6 +167,72 @@
                                         <parameter name='error-code' value='500'/>
                                         <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
                                     </return>
+                                    <block atomic='true'>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="Response code"/>
+                                            <parameter name="field2" value="`$error-code`" />
+                                        </record>
+                                        <set>
+                                            <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
+                                            <parameter name="tmp.reason" value="`$error-message`"/>
+                                            <parameter name="tmp.requestID" value="`$instantiateRANSlice-input.common-header.request-id`"/>
+                                            <parameter name="tmp.action" value="`$instantiateRANSlice-input.action`"/>
+                                        </set>
+                                        <switch test='`$error-code`'>
+                                            <outcome value='200'>
+                                                <set>
+                                                    <parameter name="tmp.status" value="success"/>
+                                                </set>
+                                            </outcome>
+                                            <outcome value='Other'>
+                                                <set>
+                                                    <parameter name="tmp.status" value="`$error-code`"/>
+                                                </set>
+                                            </outcome>
+                                        </switch>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="URL for SO Callback Response"/>
+                                            <parameter name='field2' value="`$tmp.so.callbackURL`" />
+                                            <parameter name='field3' value="`$tmp.status`" />
+                                            <parameter name='field4' value="`$tmp.reason`" />
+                                            <parameter name='field5' value="`$tmp.requestID`" />
+                                            <parameter name='field6' value="`$tmp.action`" />
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                            <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
+                                            <parameter name="restapiUrl" value="`$tmp.so.callbackURL`"/>
+                                            <parameter name="httpMethod" value="POST"/>
+                                            <parameter name="responsePrefix" value="so-callback-modify-response"/>
+                                            <parameter name='contentType' value='application/json' />
+                                            <parameter name='format' value='json' />
+                                            <parameter name='accept' value='*/*' />
+                                            <parameter name="convertResponse" value="true"/>
+                                            <parameter name="restapiUser" value="`$prop.restapi.so.user`" />
+                                            <parameter name="restapiPassword" value="`$prop.restapi.so.password`"/>
+                                            <outcome value='failure'>
+                                                <block>
+                                                    <return status='failure'>
+                                                        <parameter name='ack-final' value='Y'/>
+                                                        <parameter name="error-code" value="500" />
+                                                        <parameter name="error-message" value="Error sending SO Response" />
+                                                    </return>
+                                                </block>
+                                            </outcome>
+                                            <outcome value='success'>
+                                                <block>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="SO Response Sent "/>
+                                                    </record>
+                                                </block>
+                                            </outcome>
+                                        </execute>
+                                    </block>
                                 </block>
                             </outcome>
                             <outcome value='success'>
@@ -256,6 +322,164 @@
                                 <parameter name="field13" value="NSSAI"/>
                                 <parameter name="field14" value="`$tmp.payload.sNSSAI`"/>
                             </record>
+                            <block atomic='true'>
+                                <switch test='`$prop.ransim-mounted`'>
+                                    <outcome value='false'>
+                                        <block atomic='true'>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$prop.restapi.addSliceProfile.ToNearRTRIC`"/>
+                                                <parameter name="outputPath" value="tmp.restapi.addSliceProfile.ToNearRTRIC.url"/>
+                                                <parameter name="target" value="{idNearRTRIC}"/>
+                                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$tmp.restapi.addSliceProfile.ToNearRTRIC.url`"/>
+                                                <parameter name="outputPath" value="tmp.restapi.addSliceProfile.ToNearRTRIC.url"/>
+                                                <parameter name="target" value="{sliceProfileId}"/>
+                                                <parameter name="replacement" value="`$payloadJson.input.sliceProfile.sliceProfileId`"/>
+                                            </execute>
+                                        </block>
+                                    </outcome>
+                                    <outcome value='true'>
+                                        <block atomic='true'>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$prop.restapi.addSliceProfile.ToNearRTRIC.ransim-mounted`"/>
+                                                <parameter name="outputPath" value="tmp.restapi.addSliceProfile.ToNearRTRIC.url"/>
+                                                <parameter name="target" value="{idNearRTRIC}"/>
+                                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$tmp.restapi.addSliceProfile.ToNearRTRIC.url`"/>
+                                                <parameter name="outputPath" value="tmp.restapi.addSliceProfile.ToNearRTRIC.url"/>
+                                                <parameter name="target" value="{sliceProfileId}"/>
+                                                <parameter name="replacement" value="`$payloadJson.input.sliceProfile.sliceProfileId`"/>
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$tmp.restapi.addSliceProfile.ToNearRTRIC.url`"/>
+                                                <parameter name="outputPath" value="tmp.restapi.addSliceProfile.ToNearRTRIC.url"/>
+                                                <parameter name="target" value="{mountName}"/>
+                                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                                            </execute>
+                                        </block>
+                                    </outcome>
+                                </switch>
+                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                    <parameter name="level" value="info" />
+                                    <parameter name="field1" value="Add SliceProfile ToNearRTRIC url:"/>
+                                    <parameter name="field2" value="`$tmp.restapi.addSliceProfile.ToNearRTRIC.url`"/>
+                                </record>
+                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                    <parameter name="level" value="info" />
+                                    <parameter name="field1" value="Setting variables for ADD SliceProfile ToNearRTRIC"/>
+                                    <parameter name="field2" value="`$prop.controller.url + $tmp.restapi.addSliceProfile.ToNearRTRIC.url`"/>
+                                    <parameter name="field3" value="`$payloadJson.input.sliceProfile.sliceProfileId`"/>
+                                    <parameter name="field4" value="`$payloadJson.input.sliceProfile.sNSSAI`"/>
+                                    <parameter name="field5" value="`$payloadJson.input.sliceProfile.maxNumberofUEs`"/>
+                                    <parameter name="field6" value="`$payloadJson.input.sliceProfile.latency`"/>
+                                    <parameter name="field7" value="`$tmp.nearRTRIC.uLThptPerSlice`"/>
+                                    <parameter name="field8" value="`$tmp.nearRTRIC.dLThptPerSlice`"/>
+                                    <parameter name="field9" value="`$tmp.nearRTRIC.maxNumberOfConns`"/>
+                                    <parameter name="field10" value="`$payloadJson.input.sliceProfile.uEMobilityLevel`"/>
+                                    <parameter name="field11" value="`$tmp.trackingArea`"/>
+                                    <parameter name="field12" value="`$payloadJson.input.sliceProfile.resourceSharingLevel`"/>
+                                </record>
+                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-add-sliceProfile-NRRIC.json'`" />
+                                    <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.restapi.addSliceProfile.ToNearRTRIC.url`"/>
+                                    <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                    <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                    <parameter name="httpMethod" value="PUT"/>
+                                    <parameter name="responsePrefix" value="addSliceProfile-NRTRIC-response"/>
+                                    <parameter name='contentType' value='application/json' />
+                                    <parameter name='format' value='json' />
+                                    <outcome value='failure'>
+                                        <block>
+                                            <return status='failure'>
+                                                <parameter name='ack-final' value='Y'/>
+                                                <parameter name="error-code" value="500" />
+                                                <parameter name="error-message" value="Error adding slice proficle to NearRTRIC" />
+                                            </return>
+                                            <block atomic='true'>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="Response code"/>
+                                                    <parameter name="field2" value="`$error-code`" />
+                                                </record>
+                                                <set>
+                                                    <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
+                                                    <parameter name="tmp.reason" value="`$error-message`"/>
+                                                    <parameter name="tmp.requestID" value="`$instantiateRANSlice-input.common-header.request-id`"/>
+                                                    <parameter name="tmp.action" value="`$instantiateRANSlice-input.action`"/>
+                                                </set>
+                                                <switch test='`$error-code`'>
+                                                    <outcome value='200'>
+                                                        <set>
+                                                            <parameter name="tmp.status" value="success"/>
+                                                        </set>
+                                                    </outcome>
+                                                    <outcome value='Other'>
+                                                        <set>
+                                                            <parameter name="tmp.status" value="`$error-code`"/>
+                                                        </set>
+                                                    </outcome>
+                                                </switch>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="URL for SO Callback Response"/>
+                                                    <parameter name='field2' value="`$tmp.so.callbackURL`" />
+                                                    <parameter name='field3' value="`$tmp.status`" />
+                                                    <parameter name='field4' value="`$tmp.reason`" />
+                                                    <parameter name='field5' value="`$tmp.requestID`" />
+                                                    <parameter name='field6' value="`$tmp.action`" />
+                                                </record>
+                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
+                                                    <parameter name="restapiUrl" value="`$tmp.so.callbackURL`"/>
+                                                    <parameter name="httpMethod" value="POST"/>
+                                                    <parameter name="responsePrefix" value="so-callback-modify-response"/>
+                                                    <parameter name='contentType' value='application/json' />
+                                                    <parameter name='format' value='json' />
+                                                    <parameter name='accept' value='*/*' />
+                                                    <parameter name="convertResponse" value="true"/>
+                                                    <parameter name="restapiUser" value="`$prop.restapi.so.user`" />
+                                                    <parameter name="restapiPassword" value="`$prop.restapi.so.password`"/>
+                                                    <outcome value='failure'>
+                                                        <block>
+                                                            <return status='failure'>
+                                                                <parameter name='ack-final' value='Y'/>
+                                                                <parameter name="error-code" value="500" />
+                                                                <parameter name="error-message" value="Error sending SO Response" />
+                                                            </return>
+                                                        </block>
+                                                    </outcome>
+                                                    <outcome value='success'>
+                                                        <block>
+                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSliceModifyAllocate.log" />
+                                                                <parameter name="level" value="info" />
+                                                                <parameter name="field1" value="SO Response Sent "/>
+                                                            </record>
+                                                        </block>
+                                                    </outcome>
+                                                </execute>
+                                            </block>
+                                        </block>
+                                    </outcome>
+                                    <outcome value='success'>
+                                        <block>
+                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                                <parameter name="level" value="info" />
+                                                <parameter name="field1" value="PLMNInfo List Entry Add to NRCELLCU Executed Successfully "/>
+                                            </record>
+                                        </block>
+                                    </outcome>
+                                </execute>
+                            </block>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
                                 <parameter name="restapiUrl" value="`$prop.configdb.url + $prop.restapi.configdb.updatenearRTRIC`"/>
                                 <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-configDB-updatenearRTRIC.json'`" />
