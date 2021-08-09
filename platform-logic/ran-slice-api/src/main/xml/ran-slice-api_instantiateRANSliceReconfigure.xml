@@ -634,6 +634,11 @@
                                                         <parameter name='outputPath' value='tmp.cellLocalId' />
                                                         <parameter name='source' value="`'payloadJson.input.additionalproperties.resourceConfig.data['+$id-is+'].cellCUList['+$id2+'].cellLocalId'`" />
                                                     </execute>
+                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='concat'>
+                                                        <parameter name="source" value="`$tmp.cellLocalId`" />
+                                                        <parameter name="target" value="-maxNumberofConns"/>
+                                                        <parameter name="outputPath" value="tmp.cellLocalId" />
+                                                    </execute>
                                                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                         <parameter name='outputPath' value='tmp.predictedMaxNumberofConns' />
                                                         <parameter name='source' value="`'payloadJson.input.additionalproperties.resourceConfig.data['+$id-is+'].cellCUList['+$id2+'].configData.predictedMaxNumberofConns'`" />
