@@ -30,6 +30,111 @@
                                     <parameter name="tmp.uLThptPerSlice" value="`$payloadJson.input.additionalproperties.resourceConfig.data[$id1].uLThptPerSlice`"/>
                                     <parameter name="tmp.nearRTRICId" value="`$payloadJson.input.additionalproperties.resourceConfig.data[$id1].nearRTRICId`"/>
                                 </set>
+                                <switch test='`$tmp.nearRTRICId == 11 `'>
+                                    <outcome value='true'>
+                                        <set>
+                                            <parameter name='tmp.policytype.url' value='`$prop.a1.policytype.url.nearrtric11`'/>
+                                            <parameter name="tmp.policyinstance.url" value="`$prop.a1.policyinstance.url.nearrtric11`"/>
+                                        </set>
+                                    </outcome>
+                                    <outcome value='false'>
+                                        <set>
+                                            <parameter name='tmp.policytype.url' value='`$prop.a1.policytype.url.nearrtric22`'/>
+                                            <parameter name="tmp.policyinstance.url" value="`$prop.a1.policyinstance.url.nearrtric22`"/>
+                                        </set>
+                                    </outcome>
+                                </switch>
+                                <block atomic='true'>
+                                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                        <parameter name="restapiUrl" value="`$tmp.policytype.url`"/>
+                                        <parameter name='format' value='json' />
+                                        <parameter name='httpMethod' value='GET' />
+                                        <parameter name='contentType' value='application/json' />
+                                        <parameter name='responsePrefix' value='get-policytypes-responsse' />
+                                        <outcome value='success'>
+                                            <block atomic='true'>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                    <parameter name='outputPath' value='tmp.policytypelength' />
+                                                    <parameter name='source' value="`'get-policytypes-responsse._length'`" />
+                                                </execute>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="policy types length "/>
+                                                    <parameter name="field2" value="`$tmp.policytypelength`"/>
+                                                </record>
+                                                <switch test='`$tmp.policytypelength > 0`'>
+                                                    <outcome value='true'>
+                                                        <block atomic='true'>
+                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
+                                                                <parameter name="level" value="info" />
+                                                                <parameter name="field1" value="policy type already exists "/>
+                                                                <parameter name="field2" value="SUCCESSFULL"/>
+                                                            </record>
+                                                        </block>
+                                                    </outcome>
+                                                    <outcome value='false'>
+                                                        <block atomic='true'>
+                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
+                                                                <parameter name="level" value="info" />
+                                                                <parameter name="field1" value="creating new policy "/>
+                                                                <parameter name="field2" value="SUCCESSFULL"/>
+                                                            </record>
+                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/A1policytype.json'`" />
+                                                                <parameter name="restapiUrl" value="https://10.31.4.11:30226/events/A1-P"/>
+                                                                <parameter name='format' value='json' />
+                                                                <parameter name='httpMethod' value='POST' />
+                                                                <parameter name='contentType' value='application/json' />
+                                                                <parameter name='responsePrefix' value='dmaap' />
+                                                                <outcome value='success'>
+                                                                    <block atomic='true'>
+                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
+                                                                            <parameter name="level" value="info" />
+                                                                            <parameter name="field1" value="Create policytype "/>
+                                                                            <parameter name="field2" value="Succesfull"/>
+                                                                        </record>
+                                                                    </block>
+                                                                </outcome>
+                                                            </execute>
+                                                        </block>
+                                                    </outcome>
+                                                </switch>
+                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/A1policyinstance.json'`" />
+                                                    <parameter name="restapiUrl" value="https://10.31.4.11:30226/events/A1-P"/>
+                                                    <parameter name='format' value='json' />
+                                                    <parameter name='httpMethod' value='POST' />
+                                                    <parameter name='contentType' value='application/json' />
+                                                    <parameter name='responsePrefix' value='dmaap-res' />
+                                                    <outcome value='success'>
+                                                        <block atomic='true'>
+                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
+                                                                <parameter name="level" value="info" />
+                                                                <parameter name="field1" value="Create policyinstance "/>
+                                                                <parameter name="field2" value="Succesfull"/>
+                                                            </record>
+                                                        </block>
+                                                    </outcome>
+                                                </execute>
+                                            </block>
+                                        </outcome>
+                                        <outcome value='failure'>
+                                            <block atomic='true'>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="req error "/>
+                                                    <parameter name="field2" value="Failure"/>
+                                                </record>
+                                            </block>
+                                        </outcome>
+                                    </execute>
+                                </block>
                                 <block atomic='true'>
                                     <switch test='`$prop.ransim-mounted`'>
                                         <outcome value='false'>
