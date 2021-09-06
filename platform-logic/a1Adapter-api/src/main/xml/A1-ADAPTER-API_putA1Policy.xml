@@ -85,13 +85,13 @@
                     <outcome value='failure'>
                         <block>
                             <set>
-                                <parameter name='response-code' value='500'/>
-                                <parameter name='response-message' value='Seems A1 Mediator Not Healthy'/>
+                                <parameter name='response-code' value='`$a1MediatorRsp.response-code`'/>
+                                <parameter name='response-message' value='`$a1MediatorRsp.response-message`'/>
                             </set>
                             <return status='failure'>
                                 <parameter name='ack-final' value='Y'/>
-                                <parameter name="response-code" value="404" />
-                                <parameter name="response-message" value="Error creating A1 Policy. Aborting A1 Policy creation" />
+                                <parameter name='response-code' value='`$a1MediatorRsp.response-code`'/>
+                                <parameter name='response-message' value='`$a1MediatorRsp.response-message`'/>
                             </return>
                         </block>
                     </outcome>
@@ -101,7 +101,13 @@
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
                                 <parameter name="level" value="info" />
                                 <parameter name="field1" value="A1 Policy Instance Created."/>
+                                <parameter name='field2' value='`$a1MediatorRsp.response-code`'/>
+                                <parameter name='field3' value='`$a1MediatorRsp.response-message`'/>
                             </record>
+                            <set>
+                                <parameter name='response-code' value='`$a1MediatorRsp.response-code`'/>
+                                <parameter name='response-message' value='`$a1MediatorRsp.response-message`'/>
+                            </set>
                         </block>
                     </outcome>
                 </execute>

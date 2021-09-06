@@ -91,22 +91,26 @@
                                 <parameter name="level" value="info" />
                                 <parameter name="field1" value="A1 Policy Type Information "/>
                                 <parameter name="field2" value="`$tmp.a1-mediator-restapi.httpResponse`"/>
+                                <parameter name='field3' value='`$a1MediatorRsp.response-code`'/>
+                                <parameter name='field4' value='`$a1MediatorRsp.response-message`'/>
                             </record>
                             <set>
                                 <parameter name='responseBody' value="`$tmp.a1-mediator-restapi.httpResponse`"/>
+                                <parameter name='response-code' value='`$a1MediatorRsp.response-code`'/>
+                                <parameter name='response-message' value='`$a1MediatorRsp.response-message`'/>
                             </set>
                         </block>
                     </outcome>
                     <outcome value='failure'>
                         <block>
                             <set>
-                                <parameter name='response-code' value='500'/>
-                                <parameter name='response-message' value='Seems A1 Mediator Not Healthy'/>
+                                <parameter name='response-code' value='`$a1MediatorRsp.response-code`'/>
+                                <parameter name='response-message' value='`$a1MediatorRsp.response-message`'/>
                             </set>
                             <return status='failure'>
                                 <parameter name='ack-final' value='Y'/>
-                                <parameter name="response-code" value="404" />
-                                <parameter name="response-message" value="Error in Getting A1 Policy Type. Aborting" />
+                                <parameter name='response-code' value='`$a1MediatorRsp.response-code`'/>
+                                <parameter name='response-message' value='`$a1MediatorRsp.response-message`'/>
                             </return>
                         </block>
                     </outcome>
