@@ -20,17 +20,9 @@
             <block atomic='true'>
                 <set>
                     <parameter name="tmp.near-rt-ric-url" value="`$get-a1-policy-type-input.near-rt-ric-url`"/>
+                    <parameter name="tmp.proxy-url" value="`$prop.a1Mediator.proxy.url`"/>
                 </set>
                 <block>
-                    <set>
-                        <parameter name="tmp.proxy-url" value="`$prop.a1Mediator.proxy.url`"/>
-                    </set>
-                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                        <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
-                        <parameter name="level" value="info" />
-                        <parameter name="field1" value="Get Policy Type: Check for proxy url: "/>
-                        <parameter name="field2" value="`$tmp.proxy-url`"/>
-                    </record>
                     <switch test='`$tmp.proxy-url`'>
                         <outcome value=''>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
@@ -40,27 +32,12 @@
                             </record>
                         </outcome>
                         <outcome value='Other'>
-                            <block>
-                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='split'>
-                                    <parameter name="original_string" value="`$tmp.near-rt-ric-url`" />
-                                    <parameter name="regex" value="/"/>
-                                    <parameter name="ctx_memory_result_key" value="tmp.near-rt-ric-url-splitList"/>
-                                </execute>
-                                <for index='idx' start='3' end="`$tmp.near-rt-ric-url-splitList_length`" >
-                                    <set>
-                                        <parameter name='tmp.proxy-url' value="`$tmp.proxy-url +'/' + $tmp.near-rt-ric-url-splitList[$idx] `" />
-                                    </set>
-                                </for>
-                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                    <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
-                                    <parameter name="level" value="info" />
-                                    <parameter name="field1" value="Get Policy Type: Url with proxy: "/>
-                                    <parameter name="field2" value="`$tmp.proxy-url`"/>
-                                </record>
-                                <set>
-                                    <parameter name="tmp.near-rt-ric-url" value="`$tmp.proxy-url`"/>
-                                </set>
-                            </block>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/A1-Adapter.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Get Policy Type: Proxy url: "/>
+                                <parameter name="field2" value="`$tmp.proxy-url`"/>
+                            </record>
                         </outcome>
                     </switch>
                 </block>
@@ -78,6 +55,7 @@
                     <parameter name='contentType' value='application/json' />
                     <parameter name='accept' value='application/json' />
                     <parameter name="convertResponse" value="true"/>
+                    <parameter name="proxyUrl" value="`$tmp.proxy-url`"/>
                     <outcome value='success'>
                         <block>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replaceAll' >
