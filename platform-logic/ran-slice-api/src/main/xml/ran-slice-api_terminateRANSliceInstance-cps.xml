@@ -1011,6 +1011,15 @@
                                                                                                                     <for index='idcu-rrm' start='0' end='`$tmp.rrmPolicyRatioList_length`'>
                                                                                                                         <block atomic='true'>
                                                                                                                             <set>
+                                                                                                                                <parameter name='tmp.setboolflagcucp' value="false" />
+                                                                                                                            </set>
+                                                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                <parameter name="level" value="info" />
+                                                                                                                                <parameter name="field1" value="bool flag after setting"/>
+                                                                                                                                <parameter name="field2" value="`$tmp.setboolflagcucp`"/>
+                                                                                                                            </record>
+                                                                                                                            <set>
                                                                                                                                 <parameter name='tmp.rrmPolicyDedicatedRatio_cellCU' value="`'$get-rrmpolicyratio-response.attributes.RRMPolicyRatio['+ $idcu-rrm +'].attributes.rRMPolicyDedicatedRatio'`" />
                                                                                                                                 <parameter name='tmp.rrmPolicyDedicatedRatio_CellCU_updated' value="`$tmp.rrmPolicyDedicatedRatio_cellCU + $tmp.rRMPolicyDedicatedRatio_SliceProfile`" />
                                                                                                                             </set>
@@ -1030,9 +1039,16 @@
                                                                                                                             </record>
                                                                                                                             <for index='idcu-rrm1' start='0' end='`$tmp.NRCellCURRMPolicyMembersLength`' >
                                                                                                                                 <block atomic='true'>
-                                                                                                                                    <switch test='`$tmp.NRCellCURRMPolicyMembersLength > 0`'>
+                                                                                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                                                                                                        <parameter name='outputPath' value='tmp.RRMPolicyMember_id' />
+                                                                                                                                        <parameter name='source' value="`'get-rrmpolicyratio-response.attributes.RRMPolicyRatio['+ $idcu-rrm+'].attributes.rRMPolicyMemberList['+ $idcu-rrm1 +'].idx'`" />
+                                                                                                                                    </execute>
+                                                                                                                                    <switch test='`$tmp.NRCellCURRMPolicyMembersLength == 1`'>
                                                                                                                                         <outcome value='true'>
                                                                                                                                             <block atomic='true'>
+                                                                                                                                                <set>
+                                                                                                                                                    <parameter name='tmp.setboolflagcucp' value="true" />
+                                                                                                                                                </set>
                                                                                                                                                 <switch test='`$prop.ransim-mounted`'>
                                                                                                                                                     <outcome value='false'>
                                                                                                                                                         <block atomic='true'>
@@ -1065,15 +1081,27 @@
                                                                                                                                         </outcome>
                                                                                                                                         <outcome value='false'>
                                                                                                                                             <block atomic='true'>
-                                                                                                                                                <set>
-                                                                                                                                                    <parameter name='tmp.RRMPolicyMember_sNSSAI' value="`'$get-rrmpolicyratio-response.attributes.RRMPolicyRatio['+ $idcu-rrm+'].attributes.rRMPolicyMemberList['+ $idcu-rrm1 +'].sNSSAI'`" />
-                                                                                                                                                </set>
+                                                                                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                                                                                                                    <parameter name='outputPath' value='tmp.RRMPolicyMember_sNSSAI' />
+                                                                                                                                                    <parameter name='source' value="`'get-rrmpolicyratio-response.attributes.RRMPolicyRatio['+ $idcu-rrm+'].attributes.rRMPolicyMemberList['+ $idcu-rrm1 +'].sNSSAI'`" />
+                                                                                                                                                </execute>
+                                                                                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                    <parameter name="level" value="info" />
+                                                                                                                                                    <parameter name="field1" value="rrm policy nsssai"/>
+                                                                                                                                                    <parameter name="field2" value="`$tmp.RRMPolicyMember_sNSSAI`"/>
+                                                                                                                                                </record>
                                                                                                                                                 <switch test='`$tmp.RRMPolicyMember_sNSSAI==$tmp.sNSSAI`'>
-                                                                                                                                                    <outcome value='success'>
+                                                                                                                                                    <outcome value='true'>
                                                                                                                                                         <block atomic='true'>
                                                                                                                                                             <set>
-                                                                                                                                                                <parameter name='tmp.RRMPolicyMember_id' value="`'$get-rrmpolicyratio-response.attributes.RRMPolicyRatio['+ $idcu-rrm+'].attributes.rRMPolicyMemberList['+ $idcu-rrm1 +'].idx'`" />
+                                                                                                                                                                <parameter name='tmp.setboolflagcucp' value="true" />
                                                                                                                                                             </set>
+                                                                                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                                <parameter name="level" value="info" />
+                                                                                                                                                                <parameter name="field1" value="Matching snssai found for rrmmember "/>
+                                                                                                                                                            </record>
                                                                                                                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                                                                                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
                                                                                                                                                                 <parameter name="level" value="info" />
@@ -1108,6 +1136,18 @@
                                                                                                                                                             </switch>
                                                                                                                                                         </block>
                                                                                                                                                     </outcome>
+                                                                                                                                                    <outcome value='false'>
+                                                                                                                                                        <block atomic='true'>
+                                                                                                                                                            <set>
+                                                                                                                                                                <parameter name='tmp.setboolflagcucp' value="false" />
+                                                                                                                                                            </set>
+                                                                                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                                <parameter name="level" value="info" />
+                                                                                                                                                                <parameter name="field1" value="Matching snssai  not found for rrmmember "/>
+                                                                                                                                                            </record>
+                                                                                                                                                        </block>
+                                                                                                                                                    </outcome>
                                                                                                                                                 </switch>
                                                                                                                                             </block>
                                                                                                                                         </outcome>
@@ -1131,11 +1171,149 @@
                                                                                                                                         <parameter name="replacement" value="`$tmp.RRMPolicyRatio_id`"/>
                                                                                                                                     </execute>
                                                                                                                                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                                                                                        <parameter name="source" value="`$tmp.getRRMPolicyRatio.url`"/>
-                                                                                                                                        <parameter name="outputPath" value="tmp.getRRMPolicyRatio.url"/>
+                                                                                                                                        <parameter name="source" value="`$tmp.deleteRRMPolicyRatio.url`"/>
+                                                                                                                                        <parameter name="outputPath" value="tmp.deleteRRMPolicyRatio.url"/>
                                                                                                                                         <parameter name="target" value="{idx}"/>
                                                                                                                                         <parameter name="replacement" value="`$tmp.RRMPolicyMember_id`"/>
                                                                                                                                     </execute>
+                                                                                                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                        <parameter name="level" value="info" />
+                                                                                                                                        <parameter name="field1" value="id set before calling url "/>
+                                                                                                                                        <parameter name="field2" value="`$tmp.RRMPolicyMember_id`"/>
+                                                                                                                                    </record>
+                                                                                                                                    <switch test='`$tmp.setboolflagcucp == true`'>
+                                                                                                                                        <outcome value='true'>
+                                                                                                                                            <block atomic='true'>
+                                                                                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                    <parameter name="level" value="info" />
+                                                                                                                                                    <parameter name="field1" value="bool flag true calling deletion"/>
+                                                                                                                                                </record>
+                                                                                                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                                                                                                                    <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.deleteRRMPolicyRatio.url`"/>
+                                                                                                                                                    <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                                                                                                                                    <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                                                                                                                                    <parameter name="httpMethod" value="DELETE"/>
+                                                                                                                                                    <parameter name="responsePrefix" value="delete-cellCU-RRMPolicyRatio-response"/>
+                                                                                                                                                    <parameter name='contentType' value='application/json' />
+                                                                                                                                                    <parameter name='format' value='json' />
+                                                                                                                                                    <outcome value='success'>
+                                                                                                                                                        <block atomic='true'>
+                                                                                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                                <parameter name="level" value="info" />
+                                                                                                                                                                <parameter name="field1" value="Successfully Deleted - cellCU RRMpolicyRatio/RRMPolicyMember"/>
+                                                                                                                                                            </record>
+                                                                                                                                                        </block>
+                                                                                                                                                    </outcome>
+                                                                                                                                                    <outcome value='failure'>
+                                                                                                                                                        <block atomic='true'>
+                                                                                                                                                            <set>
+                                                                                                                                                                <parameter name='error-code' value='500'/>
+                                                                                                                                                                <parameter name='error-message' value='Error Removing cellCU RRMPolicyRatio. Aborting RPC executiopn'/>
+                                                                                                                                                            </set>
+                                                                                                                                                            <return status='failure'>
+                                                                                                                                                                <parameter name='ack-final' value='Y'/>
+                                                                                                                                                                <parameter name='error-code' value='500'/>
+                                                                                                                                                                <parameter name='error-message' value='Error removing NRCellDU - RRMPolicyRAtio. Aborting RPC executiopn'/>
+                                                                                                                                                            </return>
+                                                                                                                                                            <block atomic='true'>
+                                                                                                                                                                <set>
+                                                                                                                                                                    <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
+                                                                                                                                                                    <parameter name="tmp.status" value="success"/>
+                                                                                                                                                                    <parameter name="tmp.reason" value="`$error-message`"/>
+                                                                                                                                                                    <parameter name="tmp.requestID" value="`$terminate-r-a-n-slice-input.common-header.request-id `"/>
+                                                                                                                                                                    <parameter name="tmp.action" value="`$terminate-r-a-n-slice-instance-input.action`"/>
+                                                                                                                                                                </set>
+                                                                                                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
+                                                                                                                                                                    <parameter name="level" value="info" />
+                                                                                                                                                                    <parameter name="field1" value="URL for SO Callback Response"/>
+                                                                                                                                                                    <parameter name='field2' value="`$tmp.so.callbackURL`" />
+                                                                                                                                                                    <parameter name='field3' value="`$tmp.status`" />
+                                                                                                                                                                    <parameter name='field4' value="`$tmp.reason`" />
+                                                                                                                                                                    <parameter name='field5' value="`$tmp.requestID`" />
+                                                                                                                                                                    <parameter name='field6' value="`$tmp.action`" />
+                                                                                                                                                                </record>
+                                                                                                                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                                                                                                                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
+                                                                                                                                                                    <parameter name="restapiUrl" value="`$payloadJson.input.callbackURL`"/>
+                                                                                                                                                                    <parameter name="httpMethod" value="POST"/>
+                                                                                                                                                                    <parameter name="responsePrefix" value="so-callback-terminate-response"/>
+                                                                                                                                                                    <parameter name='contentType' value='application/json' />
+                                                                                                                                                                    <parameter name='format' value='json' />
+                                                                                                                                                                    <parameter name='accept' value='*/*' />
+                                                                                                                                                                    <parameter name="convertResponse" value="true"/>
+                                                                                                                                                                    <parameter name="restapiUser" value="`$prop.restapi.so.user`" />
+                                                                                                                                                                    <parameter name="restapiPassword" value="`$prop.restapi.so.password`"/>
+                                                                                                                                                                    <outcome value='failure'>
+                                                                                                                                                                        <block>
+                                                                                                                                                                            <return status='failure'>
+                                                                                                                                                                                <parameter name='ack-final' value='Y'/>
+                                                                                                                                                                                <parameter name="error-code" value="500" />
+                                                                                                                                                                                <parameter name="error-message" value="Error sending SO Response" />
+                                                                                                                                                                            </return>
+                                                                                                                                                                        </block>
+                                                                                                                                                                    </outcome>
+                                                                                                                                                                    <outcome value='success'>
+                                                                                                                                                                        <block>
+                                                                                                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                                                <parameter name="level" value="info" />
+                                                                                                                                                                                <parameter name="field1" value="SO Response Sent "/>
+                                                                                                                                                                            </record>
+                                                                                                                                                                        </block>
+                                                                                                                                                                    </outcome>
+                                                                                                                                                                </execute>
+                                                                                                                                                            </block>
+                                                                                                                                                        </block>
+                                                                                                                                                    </outcome>
+                                                                                                                                                </execute>
+                                                                                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                                                                                    <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                                                                                                                                    <parameter name="outputPath" value="tmp.cps.deletenssai.cellcu.rrmpolicy.url"/>
+                                                                                                                                                    <parameter name="target" value="{schemaSet}"/>
+                                                                                                                                                    <parameter name="replacement" value="`$tmp.schemaset.name`"/>
+                                                                                                                                                </execute>
+                                                                                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                                                                                    <parameter name="source" value="`$tmp.cps.deletenssai.cellcu.rrmpolicy.url`"/>
+                                                                                                                                                    <parameter name="outputPath" value="tmp.cps.deletenssai.cellcu.rrmpolicy.url"/>
+                                                                                                                                                    <parameter name="target" value="{templateId}"/>
+                                                                                                                                                    <parameter name="replacement" value="`$prop.tbdmt.template.delete-nssai-from-cucp-rrmpolicy`"/>
+                                                                                                                                                </execute>
+                                                                                                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                                                                                                                    <parameter name="restapiUrl" value="`$tmp.cps.deletenssai.cellcu.rrmpolicy.url`"/>
+                                                                                                                                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/delete-cucp-rrmpolicy-nssai.json'`" />
+                                                                                                                                                    <parameter name="httpMethod" value="POST"/>
+                                                                                                                                                    <parameter name="responsePrefix" value="cps-cucp-rrmpolicy-nssai-delete-response"/>
+                                                                                                                                                    <parameter name='contentType' value='application/json' />
+                                                                                                                                                    <parameter name='format' value='json' />
+                                                                                                                                                    <parameter name='accept' value='application/json' />
+                                                                                                                                                    <parameter name="convertResponse" value="true"/>
+                                                                                                                                                    <outcome value='failure'>
+                                                                                                                                                        <block atomic='true'></block>
+                                                                                                                                                    </outcome>
+                                                                                                                                                    <outcome value='success'>
+                                                                                                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                            <parameter name="level" value="info" />
+                                                                                                                                                            <parameter name="field1" value="Successfully removed - gNBCU rrmpolicy Entry from configdb"/>
+                                                                                                                                                        </record>
+                                                                                                                                                    </outcome>
+                                                                                                                                                </execute>
+                                                                                                                                            </block>
+                                                                                                                                        </outcome>
+                                                                                                                                        <outcome value='false'>
+                                                                                                                                            <block atomic='true'>
+                                                                                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                    <parameter name="level" value="info" />
+                                                                                                                                                    <parameter name="field1" value="Bool flag Failed no deletion"/>
+                                                                                                                                                </record>
+                                                                                                                                            </block>
+                                                                                                                                        </outcome>
+                                                                                                                                    </switch>
                                                                                                                                 </block>
                                                                                                                             </for>
                                                                                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
@@ -1145,119 +1323,9 @@
                                                                                                                                 <parameter name="field2" value="`$tmp.deleteRRMPolicyRatio.url`"/>
                                                                                                                                 <parameter name="field3" value="RRMPolicyRatio id"/>
                                                                                                                                 <parameter name="field4" value="`$tmp.RRMPolicyRatio_id`"/>
+                                                                                                                                <parameter name="field5" value="RRMPolicyRatio member id"/>
+                                                                                                                                <parameter name="field6" value="`$tmp.RRMPolicyMember_id`"/>
                                                                                                                             </record>
-                                                                                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                                                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.deleteRRMPolicyRatio.url`"/>
-                                                                                                                                <parameter name="restapiUser" value="`$prop.controller.user`" />
-                                                                                                                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
-                                                                                                                                <parameter name="httpMethod" value="DELETE"/>
-                                                                                                                                <parameter name="responsePrefix" value="delete-cellCU-RRMPolicyRatio-response"/>
-                                                                                                                                <parameter name='contentType' value='application/json' />
-                                                                                                                                <parameter name='format' value='json' />
-                                                                                                                                <outcome value='success'>
-                                                                                                                                    <block atomic='true'>
-                                                                                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
-                                                                                                                                            <parameter name="level" value="info" />
-                                                                                                                                            <parameter name="field1" value="Successfully Deleted - cellCU RRMpolicyRatio/RRMPolicyMember"/>
-                                                                                                                                        </record>
-                                                                                                                                    </block>
-                                                                                                                                </outcome>
-                                                                                                                                <outcome value='failure'>
-                                                                                                                                    <block atomic='true'>
-                                                                                                                                        <set>
-                                                                                                                                            <parameter name='error-code' value='500'/>
-                                                                                                                                            <parameter name='error-message' value='Error Removing cellCU RRMPolicyRatio. Aborting RPC executiopn'/>
-                                                                                                                                        </set>
-                                                                                                                                        <return status='failure'>
-                                                                                                                                            <parameter name='ack-final' value='Y'/>
-                                                                                                                                            <parameter name='error-code' value='500'/>
-                                                                                                                                            <parameter name='error-message' value='Error removing NRCellDU - RRMPolicyRAtio. Aborting RPC executiopn'/>
-                                                                                                                                        </return>
-                                                                                                                                        <block atomic='true'>
-                                                                                                                                            <set>
-                                                                                                                                                <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
-                                                                                                                                                <parameter name="tmp.status" value="success"/>
-                                                                                                                                                <parameter name="tmp.reason" value="`$error-message`"/>
-                                                                                                                                                <parameter name="tmp.requestID" value="`$terminate-r-a-n-slice-input.common-header.request-id `"/>
-                                                                                                                                                <parameter name="tmp.action" value="`$terminate-r-a-n-slice-instance-input.action`"/>
-                                                                                                                                            </set>
-                                                                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                                                                                <parameter name="level" value="info" />
-                                                                                                                                                <parameter name="field1" value="URL for SO Callback Response"/>
-                                                                                                                                                <parameter name='field2' value="`$tmp.so.callbackURL`" />
-                                                                                                                                                <parameter name='field3' value="`$tmp.status`" />
-                                                                                                                                                <parameter name='field4' value="`$tmp.reason`" />
-                                                                                                                                                <parameter name='field5' value="`$tmp.requestID`" />
-                                                                                                                                                <parameter name='field6' value="`$tmp.action`" />
-                                                                                                                                            </record>
-                                                                                                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
-                                                                                                                                                <parameter name="restapiUrl" value="`$payloadJson.input.callbackURL`"/>
-                                                                                                                                                <parameter name="httpMethod" value="POST"/>
-                                                                                                                                                <parameter name="responsePrefix" value="so-callback-terminate-response"/>
-                                                                                                                                                <parameter name='contentType' value='application/json' />
-                                                                                                                                                <parameter name='format' value='json' />
-                                                                                                                                                <parameter name='accept' value='*/*' />
-                                                                                                                                                <parameter name="convertResponse" value="true"/>
-                                                                                                                                                <parameter name="restapiUser" value="`$prop.restapi.so.user`" />
-                                                                                                                                                <parameter name="restapiPassword" value="`$prop.restapi.so.password`"/>
-                                                                                                                                                <outcome value='failure'>
-                                                                                                                                                    <block>
-                                                                                                                                                        <return status='failure'>
-                                                                                                                                                            <parameter name='ack-final' value='Y'/>
-                                                                                                                                                            <parameter name="error-code" value="500" />
-                                                                                                                                                            <parameter name="error-message" value="Error sending SO Response" />
-                                                                                                                                                        </return>
-                                                                                                                                                    </block>
-                                                                                                                                                </outcome>
-                                                                                                                                                <outcome value='success'>
-                                                                                                                                                    <block>
-                                                                                                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
-                                                                                                                                                            <parameter name="level" value="info" />
-                                                                                                                                                            <parameter name="field1" value="SO Response Sent "/>
-                                                                                                                                                        </record>
-                                                                                                                                                    </block>
-                                                                                                                                                </outcome>
-                                                                                                                                            </execute>
-                                                                                                                                        </block>
-                                                                                                                                    </block>
-                                                                                                                                </outcome>
-                                                                                                                            </execute>
-                                                                                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                                                                                <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
-                                                                                                                                <parameter name="outputPath" value="tmp.cps.deletenssai.cellcu.rrmpolicy.url"/>
-                                                                                                                                <parameter name="target" value="{schemaSet}"/>
-                                                                                                                                <parameter name="replacement" value="`$tmp.schemaset.name`"/>
-                                                                                                                            </execute>
-                                                                                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                                                                                <parameter name="source" value="`$tmp.cps.deletenssai.cellcu.rrmpolicy.url`"/>
-                                                                                                                                <parameter name="outputPath" value="tmp.cps.deletenssai.cellcu.rrmpolicy.url"/>
-                                                                                                                                <parameter name="target" value="{templateId}"/>
-                                                                                                                                <parameter name="replacement" value="`$prop.tbdmt.template.delete-nssai-from-cucp-rrmpolicy`"/>
-                                                                                                                            </execute>
-                                                                                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                                                                <parameter name="restapiUrl" value="`$tmp.cps.deletenssai.cellcu.rrmpolicy.url`"/>
-                                                                                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/delete-cucp-rrmpolicy-nssai.json'`" />
-                                                                                                                                <parameter name="httpMethod" value="POST"/>
-                                                                                                                                <parameter name="responsePrefix" value="cps-cucp-rrmpolicy-nssai-delete-response"/>
-                                                                                                                                <parameter name='contentType' value='application/json' />
-                                                                                                                                <parameter name='format' value='json' />
-                                                                                                                                <parameter name='accept' value='application/json' />
-                                                                                                                                <parameter name="convertResponse" value="true"/>
-                                                                                                                                <outcome value='failure'>
-                                                                                                                                    <block atomic='true'></block>
-                                                                                                                                </outcome>
-                                                                                                                                <outcome value='success'>
-                                                                                                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
-                                                                                                                                        <parameter name="level" value="info" />
-                                                                                                                                        <parameter name="field1" value="Successfully removed - gNBCU rrmpolicy Entry from configdb"/>
-                                                                                                                                    </record>
-                                                                                                                                </outcome>
-                                                                                                                            </execute>
                                                                                                                         </block>
                                                                                                                     </for>
                                                                                                                 </block>
@@ -1723,6 +1791,9 @@
                                                     </record>
                                                     <for index='idcuup-rrm' start='0' end='`$tmp.rrmPolicyRatioList_CUUP_length`' >
                                                         <block atomic='true'>
+                                                            <set>
+                                                                <parameter name='tmp.setboolflagcuup' value="false" />
+                                                            </set>
                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                                 <parameter name='outputPath' value='tmp.CUUPRRMPolicyRatio_id' />
                                                                 <parameter name='source' value="`'get-rrmpolicyratio-cuup-response.attributes.RRMPolicyRatio['+ $idcuup-rrm+'].id'`" />
@@ -1739,9 +1810,16 @@
                                                             </record>
                                                             <for index='idcu-rrm2' start='0' end='`$tmp.CUUPRRMPolicyMembersLength`' >
                                                                 <block atomic='true'>
-                                                                    <switch test='`$tmp.CUUPRRMPolicyMembersLength > 0`'>
+                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                                        <parameter name='outputPath' value='tmp.CUUPRRMPolicyMember_id' />
+                                                                        <parameter name='source' value="`'get-rrmpolicyratio-cuup-response.attributes.RRMPolicyRatio['+ $idcuup-rrm+'].attributes.rRMPolicyMemberList['+ $idcu-rrm2 +'].idx'`" />
+                                                                    </execute>
+                                                                    <switch test='`$tmp.CUUPRRMPolicyMembersLength == 1`'>
                                                                         <outcome value='true'>
                                                                             <block atomic='true'>
+                                                                                <set>
+                                                                                    <parameter name='tmp.setboolflagcuup' value="true" />
+                                                                                </set>
                                                                                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                                     <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
                                                                                     <parameter name="level" value="info" />
@@ -1763,12 +1841,6 @@
                                                                                                 <parameter name="target" value="{idNearRTRIC}"/>
                                                                                                 <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                                                                                             </execute>
-                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
-                                                                                                <parameter name="level" value="info" />
-                                                                                                <parameter name="field1" value="Delete RRMPolicy URL after setting - "/>
-                                                                                                <parameter name="field2" value="`$tmp.deleteRRMPolicyRatio-CUUP.url`"/>
-                                                                                            </record>
                                                                                         </block>
                                                                                     </outcome>
                                                                                     <outcome value='true'>
@@ -1798,14 +1870,15 @@
                                                                                     <parameter name="field1" value="Failure" />
                                                                                     <parameter name="field2" value="Tocheck if ransim  mounted" />
                                                                                 </record>
-                                                                                <set>
-                                                                                    <parameter name='tmp.CUUPRRMPolicyMember_sNSSAI' value="`'$get-rrmpolicyratio-cuup-response.attributes.RRMPolicyRatio['+ $idcuup-rrm+'].attributes.rRMPolicyMemberList['+ $idcu-rrm2 +'].sNSSAI'`" />
-                                                                                </set>
+                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                                                    <parameter name='outputPath' value='tmp.CUUPRRMPolicyMember_sNSSAI' />
+                                                                                    <parameter name='source' value="`'get-rrmpolicyratio-cuup-response.attributes.RRMPolicyRatio['+ $idcuup-rrm+'].attributes.rRMPolicyMemberList['+ $idcu-rrm2 +'].sNSSAI'`" />
+                                                                                </execute>
                                                                                 <switch test='`$tmp.CUUPRRMPolicyMember_sNSSAI==$tmp.sNSSAI`'>
-                                                                                    <outcome value='success'>
+                                                                                    <outcome value='true'>
                                                                                         <block atomic='true'>
                                                                                             <set>
-                                                                                                <parameter name='tmp.CUUPRRMPolicyMember_id' value="`'$get-rrmpolicyratio-cuup-response.attributes.RRMPolicyRatio['+ $idcuup-rrm+'].attributes.rRMPolicyMemberList['+ $idcu-rrm2 +'].idx'`" />
+                                                                                                <parameter name='tmp.setboolflagcuup' value="true" />
                                                                                             </set>
                                                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
@@ -1841,6 +1914,13 @@
                                                                                             </switch>
                                                                                         </block>
                                                                                     </outcome>
+                                                                                    <outcome value='false'>
+                                                                                        <block atomic='true'>
+                                                                                            <set>
+                                                                                                <parameter name='tmp.setboolflagcuup' value="false" />
+                                                                                            </set>
+                                                                                        </block>
+                                                                                    </outcome>
                                                                                 </switch>
                                                                             </block>
                                                                         </outcome>
@@ -1869,6 +1949,94 @@
                                                                         <parameter name="target" value="{idx}"/>
                                                                         <parameter name="replacement" value="`$tmp.CUUPRRMPolicyMember_id`"/>
                                                                     </execute>
+                                                                    <switch test='`$tmp.setboolflagcuup == true`'>
+                                                                        <outcome value='true'>
+                                                                            <block atomic='true'>
+                                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                                                    <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.deleteRRMPolicyRatio-CUUP.url`"/>
+                                                                                    <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                                                                    <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                                                                    <parameter name="httpMethod" value="DELETE"/>
+                                                                                    <parameter name="responsePrefix" value="delete-CUUP-RRMPolicyRatio-response"/>
+                                                                                    <parameter name='contentType' value='application/json' />
+                                                                                    <parameter name='format' value='json' />
+                                                                                    <outcome value='success'>
+                                                                                        <block atomic='true'>
+                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                <parameter name="level" value="info" />
+                                                                                                <parameter name="field1" value="Successfully removed - CUUP RRMpolicyRatio"/>
+                                                                                            </record>
+                                                                                        </block>
+                                                                                    </outcome>
+                                                                                    <outcome value='failure'>
+                                                                                        <block atomic='true'>
+                                                                                            <set>
+                                                                                                <parameter name='error-code' value='500'/>
+                                                                                                <parameter name='error-message' value='Error removing CUUP RRMPolicyRatio. Aborting RPC executiopn'/>
+                                                                                            </set>
+                                                                                            <return status='failure'>
+                                                                                                <parameter name='ack-final' value='Y'/>
+                                                                                                <parameter name='error-code' value='500'/>
+                                                                                                <parameter name='error-message' value='Error removing RRMPolicyRatio. Aborting RPC executiopn'/>
+                                                                                            </return>
+                                                                                        </block>
+                                                                                    </outcome>
+                                                                                </execute>
+                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                    <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                                                                    <parameter name="outputPath" value="tmp.cps.deletenssai.cuup.rrmpolicy.url"/>
+                                                                                    <parameter name="target" value="{schemaSet}"/>
+                                                                                    <parameter name="replacement" value="`$tmp.schemaset.name`"/>
+                                                                                </execute>
+                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                    <parameter name="source" value="`$tmp.cps.deletenssai.cuup.rrmpolicy.url`"/>
+                                                                                    <parameter name="outputPath" value="tmp.cps.deletenssai.cuup.rrmpolicy.url"/>
+                                                                                    <parameter name="target" value="{templateId}"/>
+                                                                                    <parameter name="replacement" value="`$prop.tbdmt.template.delete-nssai-from-cuup-rrmpolicy`"/>
+                                                                                </execute>
+                                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                                                    <parameter name="restapiUrl" value="`$tmp.cps.deletenssai.cuup.rrmpolicy.url`"/>
+                                                                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/delete-cuup-rrm-nssai.json'`" />
+                                                                                    <parameter name="httpMethod" value="POST"/>
+                                                                                    <parameter name="responsePrefix" value="cps-cuup-rrm-nssai-delete-response"/>
+                                                                                    <parameter name='contentType' value='application/json' />
+                                                                                    <parameter name='format' value='json' />
+                                                                                    <parameter name='accept' value='application/json' />
+                                                                                    <parameter name="convertResponse" value="true"/>
+                                                                                    <outcome value='failure'>
+                                                                                        <block atomic='true'>
+                                                                                            <set>
+                                                                                                <parameter name='error-code' value='500'/>
+                                                                                                <parameter name='error-message' value='Error removing CUUP PLMNInfoList. Aborting RPC executiopn'/>
+                                                                                            </set>
+                                                                                            <return status='failure'>
+                                                                                                <parameter name='ack-final' value='Y'/>
+                                                                                                <parameter name='error-code' value='500'/>
+                                                                                                <parameter name='error-message' value='Error removing CUUP PLMNInfo. Aborting RPC executiopn'/>
+                                                                                            </return>
+                                                                                        </block>
+                                                                                    </outcome>
+                                                                                    <outcome value='success'>
+                                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                            <parameter name="level" value="info" />
+                                                                                            <parameter name="field1" value="Successfully removed - gNBCUUP rrmpolicy Entry from configdb"/>
+                                                                                        </record>
+                                                                                    </outcome>
+                                                                                </execute>
+                                                                            </block>
+                                                                        </outcome>
+                                                                        <outcome value='false'>
+                                                                            <block atomic='true'>
+                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                    <parameter name="level" value="info" />
+                                                                                    <parameter name="field1" value="Bool flag Failed no deletion"/>
+                                                                                </record>
+                                                                            </block>
+                                                                        </outcome>
+                                                                    </switch>
                                                                 </block>
                                                             </for>
                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
@@ -1879,79 +2047,12 @@
                                                                 <parameter name="field3" value="RRMPolicyRatio id"/>
                                                                 <parameter name="field4" value="`$tmp.CUUPRRMPolicyRatio_id`"/>
                                                             </record>
-                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.deleteRRMPolicyRatio-CUUP.url`"/>
-                                                                <parameter name="restapiUser" value="`$prop.controller.user`" />
-                                                                <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
-                                                                <parameter name="httpMethod" value="DELETE"/>
-                                                                <parameter name="responsePrefix" value="delete-CUUP-RRMPolicyRatio-response"/>
-                                                                <parameter name='contentType' value='application/json' />
-                                                                <parameter name='format' value='json' />
-                                                                <outcome value='success'>
-                                                                    <block atomic='true'>
-                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
-                                                                            <parameter name="level" value="info" />
-                                                                            <parameter name="field1" value="Successfully removed - CUUP RRMpolicyRatio"/>
-                                                                        </record>
-                                                                    </block>
-                                                                </outcome>
-                                                                <outcome value='failure'>
-                                                                    <block atomic='true'>
-                                                                        <set>
-                                                                            <parameter name='error-code' value='500'/>
-                                                                            <parameter name='error-message' value='Error removing CUUP RRMPolicyRatio. Aborting RPC executiopn'/>
-                                                                        </set>
-                                                                        <return status='failure'>
-                                                                            <parameter name='ack-final' value='Y'/>
-                                                                            <parameter name='error-code' value='500'/>
-                                                                            <parameter name='error-message' value='Error removing RRMPolicyRatio. Aborting RPC executiopn'/>
-                                                                        </return>
-                                                                    </block>
-                                                                </outcome>
-                                                            </execute>
-                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
-                                                                <parameter name="outputPath" value="tmp.cps.deletenssai.cuup.rrmpolicy.url"/>
-                                                                <parameter name="target" value="{schemaSet}"/>
-                                                                <parameter name="replacement" value="`$tmp.schemaset.name`"/>
-                                                            </execute>
-                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                <parameter name="source" value="`$tmp.cps.deletenssai.cuup.rrmpolicy.url`"/>
-                                                                <parameter name="outputPath" value="tmp.cps.deletenssai.cuup.rrmpolicy.url"/>
-                                                                <parameter name="target" value="{templateId}"/>
-                                                                <parameter name="replacement" value="`$prop.tbdmt.template.delete-nssai-from-cuup-rrmpolicy`"/>
-                                                            </execute>
-                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                <parameter name="restapiUrl" value="`$tmp.cps.deletenssai.cuup.rrmpolicy.url`"/>
-                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/delete-cuup-rrm-nssai.json'`" />
-                                                                <parameter name="httpMethod" value="POST"/>
-                                                                <parameter name="responsePrefix" value="cps-cuup-rrm-nssai-delete-response"/>
-                                                                <parameter name='contentType' value='application/json' />
-                                                                <parameter name='format' value='json' />
-                                                                <parameter name='accept' value='application/json' />
-                                                                <parameter name="convertResponse" value="true"/>
-                                                                <outcome value='failure'>
-                                                                    <block atomic='true'>
-                                                                        <set>
-                                                                            <parameter name='error-code' value='500'/>
-                                                                            <parameter name='error-message' value='Error removing CUUP PLMNInfoList. Aborting RPC executiopn'/>
-                                                                        </set>
-                                                                        <return status='failure'>
-                                                                            <parameter name='ack-final' value='Y'/>
-                                                                            <parameter name='error-code' value='500'/>
-                                                                            <parameter name='error-message' value='Error removing CUUP PLMNInfo. Aborting RPC executiopn'/>
-                                                                        </return>
-                                                                    </block>
-                                                                </outcome>
-                                                                <outcome value='success'>
-                                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
-                                                                        <parameter name="level" value="info" />
-                                                                        <parameter name="field1" value="Successfully removed - gNBCUUP rrmpolicy Entry from configdb"/>
-                                                                    </record>
-                                                                </outcome>
-                                                            </execute>
+                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                <parameter name="level" value="info" />
+                                                                <parameter name="field1" value="idx cuup "/>
+                                                                <parameter name="field2" value="`$tmp.CUUPRRMPolicyMember_id`"/>
+                                                            </record>
                                                         </block>
                                                     </for>
                                                 </block>
@@ -1984,7 +2085,7 @@
                                                     </record>
                                                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                         <parameter name='outputPath' value='tmp.cellDUList_length' />
-                                                        <parameter name='source' value="`'getNFNSSIRIC-configdb-response.[' + $idy +'].GNBDUFunction[' + $id-du +'].NRCellDU_length'`" />
+                                                        <parameter name='source' value="`'getNFNSSIRIC-cps-response.[' + $idy +'].GNBDUFunction[' + $id-du +'].NRCellDU_length'`" />
                                                     </execute>
                                                     <for index='id-celldu' start='0' end='`$tmp.cellDUList_length`' >
                                                         <block atomic='true'>
@@ -2075,7 +2176,7 @@
                                                                                                     </switch>
                                                                                                     <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                                                                         <parameter name='outputPath' value='tmp.cellDULocalId' />
-                                                                                                        <parameter name='source' value="`'getNFNSSIRIC-configdb-response.['+ $idy +'].gNBDUList['+ $id-du +'].cellDUList['+ $id-celldu +'].cellLocalId'`" />
+                                                                                                        <parameter name='source' value="`'getNFNSSIRIC-cps-response.['+ $idy +'].GNBDUFunction['+ $id-du +'].NRCellDU['+ $id-celldu +'].idNRCellDU'`" />
                                                                                                     </execute>
                                                                                                     <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                                                         <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
@@ -2433,6 +2534,9 @@
                                                                                                         </record>
                                                                                                         <for index='iddu-rrm' start='0' end='`$tmp.rrmPolicyRatioDUList_length`' >
                                                                                                             <block atomic='true'>
+                                                                                                                <set>
+                                                                                                                    <parameter name='tmp.setboolflagdu' value="false" />
+                                                                                                                </set>
                                                                                                                 <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                                                                                     <parameter name='outputPath' value='tmp.cellDURRMPolicyRatio_id' />
                                                                                                                     <parameter name='source' value="`'get-rrmpolicyratio-du-response.attributes.RRMPolicyRatio['+ $iddu-rrm+'].id'`" />
@@ -2449,9 +2553,16 @@
                                                                                                                 </record>
                                                                                                                 <for index='iddu-rrm2' start='0' end='`$tmp.DURRMPolicyMembersLength`' >
                                                                                                                     <block atomic='true'>
-                                                                                                                        <switch test='`$tmp.DURRMPolicyMembersLength > 0`'>
+                                                                                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                                                                                            <parameter name='outputPath' value='tmp.CellDURRMPolicyMember_id' />
+                                                                                                                            <parameter name='source' value="`'get-rrmpolicyratio-du-response.attributes.RRMPolicyRatio['+ $iddu-rrm+'].attributes.rRMPolicyMemberList['+ $iddu-rrm2 +'].idx'`" />
+                                                                                                                        </execute>
+                                                                                                                        <switch test='`$tmp.DURRMPolicyMembersLength == 1`'>
                                                                                                                             <outcome value='true'>
                                                                                                                                 <block atomic='true'>
+                                                                                                                                    <set>
+                                                                                                                                        <parameter name='tmp.setboolflagdu' value="true" />
+                                                                                                                                    </set>
                                                                                                                                     <switch test='`$prop.ransim-mounted`'>
                                                                                                                                         <outcome value='false'>
                                                                                                                                             <block atomic='true'>
@@ -2484,14 +2595,21 @@
                                                                                                                             </outcome>
                                                                                                                             <outcome value='false'>
                                                                                                                                 <block atomic='true'>
-                                                                                                                                    <set>
-                                                                                                                                        <parameter name='tmp.cellDURRMPolicyMember_sNSSAI' value="`'$get-rrmpolicyratio-du-response.attributes.RRMPolicyRatio['+ $iddu-rrm+'].attributes.rRMPolicyMemberList['+ $iddu-rrm2 +'].sNSSAI'`" />
-                                                                                                                                    </set>
+                                                                                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                                                                                                        <parameter name='outputPath' value='tmp.cellDURRMPolicyMember_sNSSAI' />
+                                                                                                                                        <parameter name='source' value="`'get-rrmpolicyratio-du-response.attributes.RRMPolicyRatio['+ $iddu-rrm+'].attributes.rRMPolicyMemberList['+ $iddu-rrm2 +'].sNSSAI'`" />
+                                                                                                                                    </execute>
+                                                                                                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                        <parameter name="level" value="info" />
+                                                                                                                                        <parameter name="field1" value="RRMPolicyMember nssai du"/>
+                                                                                                                                        <parameter name="field2" value="`$tmp.cellDURRMPolicyMember_sNSSAI`"/>
+                                                                                                                                    </record>
                                                                                                                                     <switch test='`$tmp.cellDURRMPolicyMember_sNSSAI==$tmp.sNSSAI`'>
-                                                                                                                                        <outcome value='success'>
+                                                                                                                                        <outcome value='true'>
                                                                                                                                             <block atomic='true'>
                                                                                                                                                 <set>
-                                                                                                                                                    <parameter name='tmp.CellDURRMPolicyMember_id' value="`'$get-rrmpolicyratio-du-response.attributes.RRMPolicyRatio['+ $iddu-rrm+'].attributes.rRMPolicyMemberList['+ $iddu-rrm2 +'].idx'`" />
+                                                                                                                                                    <parameter name='tmp.setboolflagdu' value="true" />
                                                                                                                                                 </set>
                                                                                                                                                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                                                                                                     <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
@@ -2527,6 +2645,18 @@
                                                                                                                                                 </switch>
                                                                                                                                             </block>
                                                                                                                                         </outcome>
+                                                                                                                                        <outcome value='false'>
+                                                                                                                                            <block atomic='true'>
+                                                                                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                    <parameter name="level" value="info" />
+                                                                                                                                                    <parameter name="field1" value="snssai not found"/>
+                                                                                                                                                </record>
+                                                                                                                                                <set>
+                                                                                                                                                    <parameter name='tmp.setboolflagdu' value="false" />
+                                                                                                                                                </set>
+                                                                                                                                            </block>
+                                                                                                                                        </outcome>
                                                                                                                                     </switch>
                                                                                                                                 </block>
                                                                                                                             </outcome>
@@ -2553,8 +2683,135 @@
                                                                                                                             <parameter name="source" value="`$tmp.deleteRRMPolicyRatio-DU.url`"/>
                                                                                                                             <parameter name="outputPath" value="tmp.deleteRRMPolicyRatio-DU.url"/>
                                                                                                                             <parameter name="target" value="{idx}"/>
-                                                                                                                            <parameter name="replacement" value="`$tmp.cellDURRMPolicyMember_sNSSAI`"/>
+                                                                                                                            <parameter name="replacement" value="`$tmp.CellDURRMPolicyMember_id`"/>
                                                                                                                         </execute>
+                                                                                                                        <switch test='`$tmp.setboolflagdu == true`'>
+                                                                                                                            <outcome value='true'>
+                                                                                                                                <block atomic='true'>
+                                                                                                                                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                                                                                                        <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.deleteRRMPolicyRatio-DU.url`"/>
+                                                                                                                                        <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                                                                                                                        <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                                                                                                                        <parameter name="httpMethod" value="DELETE"/>
+                                                                                                                                        <parameter name="responsePrefix" value="delete-cellDU-RRMPolicyRatio-response"/>
+                                                                                                                                        <parameter name='contentType' value='application/json' />
+                                                                                                                                        <parameter name='format' value='json' />
+                                                                                                                                        <outcome value='success'>
+                                                                                                                                            <block atomic='true'>
+                                                                                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                    <parameter name="level" value="info" />
+                                                                                                                                                    <parameter name="field1" value="Successfully removed - cellDU RRMpolicyRatio"/>
+                                                                                                                                                </record>
+                                                                                                                                            </block>
+                                                                                                                                        </outcome>
+                                                                                                                                        <outcome value='failure'>
+                                                                                                                                            <block atomic='true'>
+                                                                                                                                                <block atomic='true'>
+                                                                                                                                                    <set>
+                                                                                                                                                        <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
+                                                                                                                                                        <parameter name="tmp.status" value="success"/>
+                                                                                                                                                        <parameter name="tmp.reason" value="`$error-message`"/>
+                                                                                                                                                        <parameter name="tmp.requestID" value="`$terminate-r-a-n-slice-input.common-header.request-id `"/>
+                                                                                                                                                        <parameter name="tmp.action" value="`$terminate-r-a-n-slice-instance-input.action`"/>
+                                                                                                                                                    </set>
+                                                                                                                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
+                                                                                                                                                        <parameter name="level" value="info" />
+                                                                                                                                                        <parameter name="field1" value="URL for SO Callback Response"/>
+                                                                                                                                                        <parameter name='field2' value="`$tmp.so.callbackURL`" />
+                                                                                                                                                        <parameter name='field3' value="`$tmp.status`" />
+                                                                                                                                                        <parameter name='field4' value="`$tmp.reason`" />
+                                                                                                                                                        <parameter name='field5' value="`$tmp.requestID`" />
+                                                                                                                                                        <parameter name='field6' value="`$tmp.action`" />
+                                                                                                                                                    </record>
+                                                                                                                                                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                                                                                                                        <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
+                                                                                                                                                        <parameter name="restapiUrl" value="`$payloadJson.input.callbackURL`"/>
+                                                                                                                                                        <parameter name="httpMethod" value="POST"/>
+                                                                                                                                                        <parameter name="responsePrefix" value="so-callback-terminate-response"/>
+                                                                                                                                                        <parameter name='contentType' value='application/json' />
+                                                                                                                                                        <parameter name='format' value='json' />
+                                                                                                                                                        <parameter name='accept' value='*/*' />
+                                                                                                                                                        <parameter name="convertResponse" value="true"/>
+                                                                                                                                                        <parameter name="restapiUser" value="`$prop.restapi.so.user`" />
+                                                                                                                                                        <parameter name="restapiPassword" value="`$prop.restapi.so.password`"/>
+                                                                                                                                                        <outcome value='failure'>
+                                                                                                                                                            <block>
+                                                                                                                                                                <return status='failure'>
+                                                                                                                                                                    <parameter name='ack-final' value='Y'/>
+                                                                                                                                                                    <parameter name="error-code" value="500" />
+                                                                                                                                                                    <parameter name="error-message" value="Error sending SO Response" />
+                                                                                                                                                                </return>
+                                                                                                                                                            </block>
+                                                                                                                                                        </outcome>
+                                                                                                                                                        <outcome value='success'>
+                                                                                                                                                            <block>
+                                                                                                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                                    <parameter name="level" value="info" />
+                                                                                                                                                                    <parameter name="field1" value="SO Response Sent "/>
+                                                                                                                                                                </record>
+                                                                                                                                                            </block>
+                                                                                                                                                        </outcome>
+                                                                                                                                                    </execute>
+                                                                                                                                                </block>
+                                                                                                                                                <set>
+                                                                                                                                                    <parameter name='error-code' value='500'/>
+                                                                                                                                                    <parameter name='error-message' value='Error removing cellDU RRMPolicyRatio. Aborting RPC executiopn'/>
+                                                                                                                                                </set>
+                                                                                                                                                <return status='failure'>
+                                                                                                                                                    <parameter name='ack-final' value='Y'/>
+                                                                                                                                                    <parameter name='error-code' value='500'/>
+                                                                                                                                                    <parameter name='error-message' value='Error removing RRMPolicyRatio for NRCellDU. Aborting RPC executiopn'/>
+                                                                                                                                                </return>
+                                                                                                                                            </block>
+                                                                                                                                        </outcome>
+                                                                                                                                    </execute>
+                                                                                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                                                                        <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                                                                                                                        <parameter name="outputPath" value="tmp.cps.deletenssai.du.rrmpolicy.url"/>
+                                                                                                                                        <parameter name="target" value="{schemaSet}"/>
+                                                                                                                                        <parameter name="replacement" value="`$tmp.schemaset.name`"/>
+                                                                                                                                    </execute>
+                                                                                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                                                                                                        <parameter name="source" value="`$tmp.cps.deletenssai.du.rrmpolicy.url`"/>
+                                                                                                                                        <parameter name="outputPath" value="tmp.cps.deletenssai.du.rrmpolicy.url"/>
+                                                                                                                                        <parameter name="target" value="{templateId}"/>
+                                                                                                                                        <parameter name="replacement" value="`$prop.tbdmt.template.delete-nssai-from-du-rrmpolicy`"/>
+                                                                                                                                    </execute>
+                                                                                                                                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                                                                                                        <parameter name="restapiUrl" value="`$tmp.cps.deletenssai.du.rrmpolicy.url`"/>
+                                                                                                                                        <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/delete-celldu-rrm-nssai.json '`" />
+                                                                                                                                        <parameter name="httpMethod" value="POST"/>
+                                                                                                                                        <parameter name="responsePrefix" value="cps-du-rrm-nssai-delete-response"/>
+                                                                                                                                        <parameter name='contentType' value='application/json' />
+                                                                                                                                        <parameter name='format' value='json' />
+                                                                                                                                        <parameter name='accept' value='application/json' />
+                                                                                                                                        <parameter name="convertResponse" value="true"/>
+                                                                                                                                        <outcome value='failure'>
+                                                                                                                                            <block atomic='true'></block>
+                                                                                                                                        </outcome>
+                                                                                                                                        <outcome value='success'>
+                                                                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                                <parameter name="level" value="info" />
+                                                                                                                                                <parameter name="field1" value="Successfully removed - gNBDU rrmpolicy Entry from configdb"/>
+                                                                                                                                            </record>
+                                                                                                                                        </outcome>
+                                                                                                                                    </execute>
+                                                                                                                                </block>
+                                                                                                                            </outcome>
+                                                                                                                            <outcome value='false'>
+                                                                                                                                <block atomic='true'>
+                                                                                                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                                                                                        <parameter name="level" value="info" />
+                                                                                                                                        <parameter name="field1" value="flag false no deletion"/>
+                                                                                                                                    </record>
+                                                                                                                                </block>
+                                                                                                                            </outcome>
+                                                                                                                        </switch>
                                                                                                                     </block>
                                                                                                                 </for>
                                                                                                                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
@@ -2564,119 +2821,9 @@
                                                                                                                     <parameter name="field2" value="`$tmp.deleteRRMPolicyRatio-DU.url`"/>
                                                                                                                     <parameter name="field3" value="RRMPolicyRatio id"/>
                                                                                                                     <parameter name="field4" value="`$tmp.cellDURRMPolicyRatio_id`"/>
+                                                                                                                    <parameter name="field5" value="RRMPolicyMember id"/>
+                                                                                                                    <parameter name="field6" value="`$tmp.CellDURRMPolicyMember_id`"/>
                                                                                                                 </record>
-                                                                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                                                    <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.deleteRRMPolicyRatio-DU.url`"/>
-                                                                                                                    <parameter name="restapiUser" value="`$prop.controller.user`" />
-                                                                                                                    <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
-                                                                                                                    <parameter name="httpMethod" value="DELETE"/>
-                                                                                                                    <parameter name="responsePrefix" value="delete-cellDU-RRMPolicyRatio-response"/>
-                                                                                                                    <parameter name='contentType' value='application/json' />
-                                                                                                                    <parameter name='format' value='json' />
-                                                                                                                    <outcome value='success'>
-                                                                                                                        <block atomic='true'>
-                                                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
-                                                                                                                                <parameter name="level" value="info" />
-                                                                                                                                <parameter name="field1" value="Successfully removed - cellDU RRMpolicyRatio"/>
-                                                                                                                            </record>
-                                                                                                                        </block>
-                                                                                                                    </outcome>
-                                                                                                                    <outcome value='failure'>
-                                                                                                                        <block atomic='true'>
-                                                                                                                            <block atomic='true'>
-                                                                                                                                <set>
-                                                                                                                                    <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
-                                                                                                                                    <parameter name="tmp.status" value="success"/>
-                                                                                                                                    <parameter name="tmp.reason" value="`$error-message`"/>
-                                                                                                                                    <parameter name="tmp.requestID" value="`$terminate-r-a-n-slice-input.common-header.request-id `"/>
-                                                                                                                                    <parameter name="tmp.action" value="`$terminate-r-a-n-slice-instance-input.action`"/>
-                                                                                                                                </set>
-                                                                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                                                                    <parameter name="level" value="info" />
-                                                                                                                                    <parameter name="field1" value="URL for SO Callback Response"/>
-                                                                                                                                    <parameter name='field2' value="`$tmp.so.callbackURL`" />
-                                                                                                                                    <parameter name='field3' value="`$tmp.status`" />
-                                                                                                                                    <parameter name='field4' value="`$tmp.reason`" />
-                                                                                                                                    <parameter name='field5' value="`$tmp.requestID`" />
-                                                                                                                                    <parameter name='field6' value="`$tmp.action`" />
-                                                                                                                                </record>
-                                                                                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                                                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
-                                                                                                                                    <parameter name="restapiUrl" value="`$payloadJson.input.callbackURL`"/>
-                                                                                                                                    <parameter name="httpMethod" value="POST"/>
-                                                                                                                                    <parameter name="responsePrefix" value="so-callback-terminate-response"/>
-                                                                                                                                    <parameter name='contentType' value='application/json' />
-                                                                                                                                    <parameter name='format' value='json' />
-                                                                                                                                    <parameter name='accept' value='*/*' />
-                                                                                                                                    <parameter name="convertResponse" value="true"/>
-                                                                                                                                    <parameter name="restapiUser" value="`$prop.restapi.so.user`" />
-                                                                                                                                    <parameter name="restapiPassword" value="`$prop.restapi.so.password`"/>
-                                                                                                                                    <outcome value='failure'>
-                                                                                                                                        <block>
-                                                                                                                                            <return status='failure'>
-                                                                                                                                                <parameter name='ack-final' value='Y'/>
-                                                                                                                                                <parameter name="error-code" value="500" />
-                                                                                                                                                <parameter name="error-message" value="Error sending SO Response" />
-                                                                                                                                            </return>
-                                                                                                                                        </block>
-                                                                                                                                    </outcome>
-                                                                                                                                    <outcome value='success'>
-                                                                                                                                        <block>
-                                                                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
-                                                                                                                                                <parameter name="level" value="info" />
-                                                                                                                                                <parameter name="field1" value="SO Response Sent "/>
-                                                                                                                                            </record>
-                                                                                                                                        </block>
-                                                                                                                                    </outcome>
-                                                                                                                                </execute>
-                                                                                                                            </block>
-                                                                                                                            <set>
-                                                                                                                                <parameter name='error-code' value='500'/>
-                                                                                                                                <parameter name='error-message' value='Error removing cellDU RRMPolicyRatio. Aborting RPC executiopn'/>
-                                                                                                                            </set>
-                                                                                                                            <return status='failure'>
-                                                                                                                                <parameter name='ack-final' value='Y'/>
-                                                                                                                                <parameter name='error-code' value='500'/>
-                                                                                                                                <parameter name='error-message' value='Error removing RRMPolicyRatio for NRCellDU. Aborting RPC executiopn'/>
-                                                                                                                            </return>
-                                                                                                                        </block>
-                                                                                                                    </outcome>
-                                                                                                                </execute>
-                                                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                                                                    <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
-                                                                                                                    <parameter name="outputPath" value="tmp.cps.deletenssai.du.rrmpolicy.url"/>
-                                                                                                                    <parameter name="target" value="{schemaSet}"/>
-                                                                                                                    <parameter name="replacement" value="`$tmp.schemaset.name`"/>
-                                                                                                                </execute>
-                                                                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                                                                    <parameter name="source" value="`$tmp.cps.deletenssai.du.rrmpolicy.url`"/>
-                                                                                                                    <parameter name="outputPath" value="tmp.cps.deletenssai.du.rrmpolicy.url"/>
-                                                                                                                    <parameter name="target" value="{templateId}"/>
-                                                                                                                    <parameter name="replacement" value="`$prop.tbdmt.template.delete-nssai-from-du-rrmpolicy`"/>
-                                                                                                                </execute>
-                                                                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                                                    <parameter name="restapiUrl" value="`$tmp.cps.deletenssai.du.rrmpolicy.url`"/>
-                                                                                                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/delete-celldu-rrm-nssai.json '`" />
-                                                                                                                    <parameter name="httpMethod" value="POST"/>
-                                                                                                                    <parameter name="responsePrefix" value="cps-du-rrm-nssai-delete-response"/>
-                                                                                                                    <parameter name='contentType' value='application/json' />
-                                                                                                                    <parameter name='format' value='json' />
-                                                                                                                    <parameter name='accept' value='application/json' />
-                                                                                                                    <parameter name="convertResponse" value="true"/>
-                                                                                                                    <outcome value='failure'>
-                                                                                                                        <block atomic='true'></block>
-                                                                                                                    </outcome>
-                                                                                                                    <outcome value='success'>
-                                                                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
-                                                                                                                            <parameter name="level" value="info" />
-                                                                                                                            <parameter name="field1" value="Successfully removed - gNBDU rrmpolicy Entry from configdb"/>
-                                                                                                                        </record>
-                                                                                                                    </outcome>
-                                                                                                                </execute>
                                                                                                             </block>
                                                                                                         </for>
                                                                                                     </block>

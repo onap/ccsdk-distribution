@@ -3,13 +3,35 @@
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='ran-slice-api' version='${project.version}'>
     <method rpc='terminateRANSliceInstance' mode='sync'>
         <block atomic='true'>
+            <execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >
+                <parameter name='fileName' value='/opt/onap/ccsdk/data/properties/ran-slice-api-dg.properties' />
+                <parameter name='contextPrefix' value='prop' />
+            </execute>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="Properties read .. controller details "/>
+                <parameter name="field2" value="`$prop.controller.user`"/>
+                <parameter name="field3" value="`$prop.controller.pwd`"/>
+                <parameter name="field4" value="`$prop.controller.url`"/>
+                <parameter name="field5" value="ransim-mounted (true/false): "/>
+                <parameter name="field6" value="`$prop.ransim-mounted`"/>
+                <parameter name="field7" value="config DB deployed (true/false): "/>
+                <parameter name="field8" value="`$prop.configdb-deployed`"/>
+            </record>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="value of configdb deployed"/>
+                <parameter name="field2" value='`$prop.configdb-deployed`'/>
+            </record>
             <switch test='`$prop.configdb-deployed`'>
                 <outcome value='true'>
                     <block atomic='true'>
                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                             <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
                             <parameter name="level" value="info" />
-                            <parameter name="field1" value="Calling instantiateRANSliceModifyAllocate-CPS "/>
+                            <parameter name="field1" value="Calling terminateranslice-Configdb "/>
                         </record>
                         <call module='ran-slice-api' rpc='terminateRANSliceInstance-configDb' mode='sync' ></call>
                     </block>
@@ -19,7 +41,7 @@
                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                             <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
                             <parameter name="level" value="info" />
-                            <parameter name="field1" value="Calling instantiateRANSliceModifyAllocate-CPS "/>
+                            <parameter name="field1" value="Calling terminateranslice-CPS "/>
                         </record>
                         <call module='ran-slice-api' rpc='terminateRANSliceInstance-cps' mode='sync' ></call>
                     </block>
