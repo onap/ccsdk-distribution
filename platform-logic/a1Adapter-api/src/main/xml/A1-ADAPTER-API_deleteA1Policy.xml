@@ -10,7 +10,7 @@
                 <parameter name="field2" value="`$delete-a1-policy-input.near-rt-ric-url`"/>
             </record>
             <set>
-                <parameter name='response-code' value='200' />
+                <parameter name='tmp-response-code' value='200' />
                 <parameter name='response-message' value='deletePolicy executed successfully' />
             </set>
             <execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >
@@ -68,7 +68,7 @@
                             </record>
                             <set>
                                 <parameter name='body' value='`$a1MediatorRsp.httpResponse`'/>
-                                <parameter name='response-code' value='`$a1MediatorRsp.response-code`'/>
+                                <parameter name='tmp-response-code' value='`$a1MediatorRsp.response-code`'/>
                                 <parameter name='response-message' value='`$a1MediatorRsp.response-message`'/>
                             </set>
                         </block>
@@ -93,8 +93,8 @@
                     <parameter name="ack-final-indicator" value="Y" />
                     <parameter name="error-code" value="200" />
                     <parameter name="error-message" value="`$error-message`" />
-                    <parameter name='response-code' value='200' />
-                    <parameter name='response-message' value='deletePolicyInstance executed successfully'/>
+                    <parameter name='response-code' value="`$tmp-response-code`" />
+                    <parameter name='response-message' value="Delete Policy Instance executed successfully"/>
                     <parameter name='ack-final' value='Y'/>
                 </return>
             </block>
