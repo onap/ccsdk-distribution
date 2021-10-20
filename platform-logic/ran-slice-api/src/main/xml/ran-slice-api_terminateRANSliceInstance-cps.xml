@@ -458,6 +458,10 @@
                                                 <parameter name='outputPath' value='tmp.RICPLMNEntries' />
                                                 <parameter name='source' value="`'getNFNSSIRIC-cps-response.['+ $idy +'].attributes.pLMNInfoList_length'`" />
                                             </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                <parameter name='outputPath' value='tmp.nearRTRICId' />
+                                                <parameter name='source' value="`'getNFNSSIRIC-cps-response.[' + $idy + '].idNearRTRIC'`" />
+                                            </execute>
                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
                                                 <parameter name="level" value="info" />
@@ -496,10 +500,6 @@
                                                                         <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                                             <parameter name='outputPath' value='tmp.ric.sNSSAIremoved' />
                                                                             <parameter name='source' value="`'getNFNSSIRIC-cps-response.['+ $idy +'].attributes.pLMNInfoList['+$id-ric+'].sNSSAIList['+$id-ric-snssai+'].sNssai'`" />
-                                                                        </execute>
-                                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
-                                                                            <parameter name='outputPath' value='tmp.nearRTRICId' />
-                                                                            <parameter name='source' value="`'getNFNSSIRIC-cps-response.[' + $idy + '].idNearRTRIC'`" />
                                                                         </execute>
                                                                         <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                                                             <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
@@ -728,7 +728,7 @@
                                                                                                                     <parameter name="replacement" value="`$tmp.sNSSAI`"/>
                                                                                                                 </execute>
                                                                                                                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSliceModifyAllocate.log" />
+                                                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
                                                                                                                     <parameter name="level" value="info" />
                                                                                                                     <parameter name="field1" value="patch cellCU NSSAI parameters"/>
                                                                                                                     <parameter name="field2" value="`$tmp.nearRTRICId`"/>
@@ -2851,6 +2851,183 @@
                                                     </for>
                                                 </block>
                                             </for>
+                                        </block>
+                                        <block atomic='true'>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                                <parameter name="outputPath" value="tmp.cps.getInventory.url"/>
+                                                <parameter name="target" value="{schemaSet}"/>
+                                                <parameter name="replacement" value="`$prop.inventory.schemaset`"/>
+                                            </execute>
+                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                <parameter name="source" value="`$tmp.cps.getInventory.url`"/>
+                                                <parameter name="outputPath" value="tmp.cps.getInventory.url"/>
+                                                <parameter name="target" value="{templateId}"/>
+                                                <parameter name="replacement" value="`$prop.tbdmt.template.get-ran-slices`"/>
+                                            </execute>
+                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                <parameter name="level" value="info" />
+                                                <parameter name="field1" value="URL for CPS TDBMT to get inventory details - CPS"/>
+                                                <parameter name='field2' value="`$tmp.cps.getInventory.url`" />
+                                            </record>
+                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                <parameter name="restapiUrl" value="`$tmp.cps.getInventory.url`"/>
+                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-terminate-rannfnssi-ran-inventory.json'`" />
+                                                <parameter name="httpMethod" value="POST"/>
+                                                <parameter name="responsePrefix" value="get-inventory-cps-response"/>
+                                                <parameter name='contentType' value='application/json' />
+                                                <parameter name='format' value='json' />
+                                                <parameter name='accept' value='application/json' />
+                                                <parameter name="convertResponse" value="true"/>
+                                                <outcome value='failure'>
+                                                    <block>
+                                                        <set>
+                                                            <parameter name='error-code' value='500'/>
+                                                            <parameter name='error-message' value='Error updating RAN Inventory. Aborting RPC executiopn'/>
+                                                        </set>
+                                                        <return status='failure'>
+                                                            <parameter name='ack-final' value='Y'/>
+                                                            <parameter name='error-code' value='500'/>
+                                                            <parameter name='error-message' value='Error updating inventory in ConfigDB. Aborting RPC executiopn'/>
+                                                        </return>
+                                                    </block>
+                                                </outcome>
+                                                <outcome value='success'>
+                                                    <block>
+                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                            <parameter name="level" value="info" />
+                                                            <parameter name="field1" value="Successfully Updated inventory"/>
+                                                        </record>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                                                            <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-terminateRANSlice-configrsp-context.log' />
+                                                        </execute>
+                                                    </block>
+                                                </outcome>
+                                            </execute>
+                                            <set>
+                                                <parameter name='tmp.profiles_length' value='`$get-inventory-cps-response.sliceProfilesList_length`'/>
+                                            </set>
+                                            <switch test='`$tmp.profiles_length == 1`'>
+                                                <outcome value='true'>
+                                                    <block atomic='true'>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                                            <parameter name="outputPath" value="tmp.cps.delete.rannfnssi.url"/>
+                                                            <parameter name="target" value="{schemaSet}"/>
+                                                            <parameter name="replacement" value="`$prop.inventory.schemaset`"/>
+                                                        </execute>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$tmp.cps.delete.rannfnssi.url`"/>
+                                                            <parameter name="outputPath" value="tmp.cps.delete.rannfnssi.url"/>
+                                                            <parameter name="target" value="{templateId}"/>
+                                                            <parameter name="replacement" value="`$prop.tbdmt.template.delete-rannfnssi`"/>
+                                                        </execute>
+                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                            <parameter name="level" value="info" />
+                                                            <parameter name="field1" value="URL for CPS TDBMT to delete inventory in CPS"/>
+                                                            <parameter name='field2' value="`$tmp.cps.delete.rannfnssi.url`" />
+                                                        </record>
+                                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                            <parameter name="restapiUrl" value="`$tmp.cps.delete.rannfnssi.url`"/>
+                                                            <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-terminate-rannfnssi-ran-inventory.json'`" />
+                                                            <parameter name="httpMethod" value="POST"/>
+                                                            <parameter name="responsePrefix" value="delete-inventory-cps-response"/>
+                                                            <parameter name='contentType' value='application/json' />
+                                                            <parameter name='format' value='json' />
+                                                            <parameter name='accept' value='application/json' />
+                                                            <parameter name="convertResponse" value="true"/>
+                                                            <outcome value='failure'>
+                                                                <block>
+                                                                    <set>
+                                                                        <parameter name='error-code' value='500'/>
+                                                                        <parameter name='error-message' value='Error updating RAN Inventory. Aborting RPC executiopn'/>
+                                                                    </set>
+                                                                    <return status='failure'>
+                                                                        <parameter name='ack-final' value='Y'/>
+                                                                        <parameter name='error-code' value='500'/>
+                                                                        <parameter name='error-message' value='Error updating inventory in ConfigDB. Aborting RPC executiopn'/>
+                                                                    </return>
+                                                                </block>
+                                                            </outcome>
+                                                            <outcome value='success'>
+                                                                <block>
+                                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                        <parameter name="level" value="info" />
+                                                                        <parameter name="field1" value="Successfully fetched inventory details"/>
+                                                                    </record>
+                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                                                                        <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-terminateRANSlice-configrsp-context.log' />
+                                                                    </execute>
+                                                                </block>
+                                                            </outcome>
+                                                        </execute>
+                                                    </block>
+                                                </outcome>
+                                                <outcome value='false'>
+                                                    <block atomic='true'>
+                                                        <set>
+                                                            <parameter name='tmp.payload.sliceProfileId' value='`$tmp.sliceprofileid`'/>
+                                                        </set>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                                            <parameter name="outputPath" value="tmp.cps.delete.snssai.url"/>
+                                                            <parameter name="target" value="{schemaSet}"/>
+                                                            <parameter name="replacement" value="`$prop.inventory.schemaset`"/>
+                                                        </execute>
+                                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                                            <parameter name="source" value="`$tmp.cps.delete.snssai.url`"/>
+                                                            <parameter name="outputPath" value="tmp.cps.delete.snssai.url"/>
+                                                            <parameter name="target" value="{templateId}"/>
+                                                            <parameter name="replacement" value="`$prop.tbdmt.template.delete-slice-profile`"/>
+                                                        </execute>
+                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                            <parameter name="level" value="info" />
+                                                            <parameter name="field1" value="URL for CPS TDBMT to delete inventory in CPS"/>
+                                                            <parameter name='field2' value="`$tmp.cps.delete.snssai.url`" />
+                                                        </record>
+                                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                                            <parameter name="restapiUrl" value="`$tmp.cps.delete.snssai.url`"/>
+                                                            <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-terminate-snssai-ran-inventory.json'`" />
+                                                            <parameter name="httpMethod" value="POST"/>
+                                                            <parameter name="responsePrefix" value="delete-inventory-cps-response"/>
+                                                            <parameter name='contentType' value='application/json' />
+                                                            <parameter name='format' value='json' />
+                                                            <parameter name='accept' value='application/json' />
+                                                            <parameter name="convertResponse" value="true"/>
+                                                            <outcome value='failure'>
+                                                                <block>
+                                                                    <set>
+                                                                        <parameter name='error-code' value='500'/>
+                                                                        <parameter name='error-message' value='Error updating RAN Inventory. Aborting RPC executiopn'/>
+                                                                    </set>
+                                                                    <return status='failure'>
+                                                                        <parameter name='ack-final' value='Y'/>
+                                                                        <parameter name='error-code' value='500'/>
+                                                                        <parameter name='error-message' value='Error updating inventory in ConfigDB. Aborting RPC executiopn'/>
+                                                                    </return>
+                                                                </block>
+                                                            </outcome>
+                                                            <outcome value='success'>
+                                                                <block>
+                                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/terminateRANSlice.log" />
+                                                                        <parameter name="level" value="info" />
+                                                                        <parameter name="field1" value="Successfully Updated inventory"/>
+                                                                    </record>
+                                                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                                                                        <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-terminateRANSlice-configrsp-context.log' />
+                                                                    </execute>
+                                                                </block>
+                                                            </outcome>
+                                                        </execute>
+                                                    </block>
+                                                </outcome>
+                                            </switch>
                                         </block>
                                     </for>
                                 </block>
