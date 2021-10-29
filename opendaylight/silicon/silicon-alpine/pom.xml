@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.onap.ccsdk.distribution</groupId>
         <artifactId>distribution-odl-silicon</artifactId>
-        <version>1.2.4-SNAPSHOT</version>
+        <version>1.3.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>distribution-odl-silicon-docker</artifactId>
@@ -20,8 +20,9 @@
     <properties>
         <image.name>onap/ccsdk-odl-silicon-alpine-image</image.name>
         <odl.karaf.artifactId>onap-karaf</odl.karaf.artifactId>
-        <odl.shiro.version>0.13.3</odl.shiro.version>
-        <odl.ops4j.version>7.3.13</odl.ops4j.version>
+        <odl.shiro.version>0.13.5</odl.shiro.version>
+        <odl.ops4j.version>7.3.16</odl.ops4j.version>
+        <odl.netconf.version>1.13.4</odl.netconf.version>
     </properties>
 
     <build>
@@ -81,14 +82,6 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>com.highstreet-technologies.aaa</groupId>
-                                    <artifactId>aaa-shiro</artifactId>
-                                    <version>${odl.shiro.version}</version>
-                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/opendaylight/aaa/aaa-shiro/${odl.shiro.version}</outputDirectory>
-                                    <destFileName>aaa-shiro-${odl.shiro.version}.jar</destFileName>
-                                    <excludes>*</excludes>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>com.highstreet-technologies.aaa</groupId>
                                     <artifactId>aaa-authn-api</artifactId>
                                     <version>${odl.shiro.version}</version>
                                     <outputDirectory>${project.build.directory}/docker-stage/system/org/opendaylight/aaa/aaa-authn-api/${odl.shiro.version}</outputDirectory>
@@ -101,6 +94,22 @@
                                     <version>${odl.ops4j.version}</version>
                                     <outputDirectory>${project.build.directory}/docker-stage/system/org/ops4j/pax/web/pax-web-jetty/${odl.ops4j.version}</outputDirectory>
                                     <destFileName>pax-web-jetty-${odl.ops4j.version}.jar</destFileName>
+                                    <excludes>*</excludes>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.highstreet-technologies.netconf</groupId>
+                                    <artifactId>netconf-util</artifactId>
+                                    <version>${odl.netconf.version}</version>
+                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/opendaylight/netconf/netconf-util/${odl.netconf.version}</outputDirectory>
+                                    <destFileName>netconf-util-${odl.netconf.version}.jar</destFileName>
+                                    <excludes>*</excludes>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.highstreet-technologies.netconf</groupId>
+                                    <artifactId>sal-netconf-connector</artifactId>
+                                    <version>${odl.netconf.version}</version>
+                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/opendaylight/netconf/sal-netconf-connector/${odl.netconf.version}</outputDirectory>
+                                    <destFileName>sal-netconf-connector-${odl.netconf.version}.jar</destFileName>
                                     <excludes>*</excludes>
                                 </artifactItem>
                             </artifactItems>
