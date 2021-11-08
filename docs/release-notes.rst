@@ -85,11 +85,11 @@ tag 1.0-STAGING-latest to pull the latest daily Guilin build
 +---------------------------------------+--------------------------------------------+---------+
 | Image name                            | Description                                | Version |
 +=======================================+============================================+=========+
-| onap/ccsdk-alpine-j11-image           | Base Alpine Linux image for CCSDK          | 1.2.2   |
+| onap/ccsdk-alpine-j11-image           | Base Alpine Linux image for CCSDK          | 1.2.3   |
 +---------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-ansible-server-image       | Ansible server image                       | 1.2.2   |
+| onap/ccsdk-ansible-server-image       | Ansible server image                       | 1.2.3   |
 +---------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-apps-ms-neng               | Naming microservice                        | 1.2.0   |
+| onap/ccsdk-apps-ms-neng               | Naming microservice                        | 1.2.1   |
 +---------------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-blueprints-processor       | CDS blueprint processor                    | 1.2.1   |
 +---------------------------------------+--------------------------------------------+---------+
@@ -99,17 +99,17 @@ tag 1.0-STAGING-latest to pull the latest daily Guilin build
 +---------------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-controllerblueprint        | CDS controller blueprints                  | 1.2.1   |
 +---------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-dgbuilder-image            | Directed graph builder                     | 1.2.2   |
+| onap/ccsdk-dgbuilder-image            | Directed graph builder                     | 1.2.3   |
 +---------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-odl-silicon-alpine-image   | Alpine based OpenDaylight Silicon image    | 1.2.2   |
+| onap/ccsdk-odl-silicon-alpine-image   | Alpine based OpenDaylight Silicon image    | 1.2.3   |
 +---------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-odlsli-alpine-image        | Alpine based OpenDaylight image with CCSDK | 1.2.2   |
+| onap/ccsdk-odlsli-alpine-image        | Alpine based OpenDaylight image with CCSDK | 1.2.3   |
 +---------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-saltstack-server-image     | Saltstack server                           | 1.2.2   |
+| onap/ccsdk-saltstack-server-image     | Saltstack server                           | 1.2.3   |
 +---------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-sdclistener                | CDS SDC listener                           | 1.2.2   |
+| onap/ccsdk-sdclistener                | CDS SDC listener                           | 1.2.3   |
 +---------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-ubuntu-image               | Base Ubuntu image for CCSDK                | 1.2.2   |
+| onap/ccsdk-ubuntu-image               | Base Ubuntu image for CCSDK                | 1.2.3   |
 +---------------------------------------+--------------------------------------------+---------+
 
 Maven Artifacts
