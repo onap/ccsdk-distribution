@@ -1,36 +1,36 @@
 [
     {
-        "id": "cbeeb2b4.08be",
+        "id": "41b06fc3.c6cf9",
         "type": "method",
         "name": "method",
         "xml": "<method rpc='activateRANSliceInstance' mode='sync'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 127.77777099609375,
-        "y": 262.1111030578613,
-        "z": "bd96de55.9bb33",
+        "x": 116,
+        "y": 205.00000095367432,
+        "z": "6776f36d.c22a9c",
         "wires": [
             [
-                "4934df84.366e5"
+                "9b4d44b1.794e98"
             ]
         ]
     },
     {
-        "id": "83fc8fd.86fe57",
+        "id": "f29e25a8.beb6b8",
         "type": "dgstart",
         "name": "DGSTART",
         "outputs": 1,
-        "x": 130.77777099609375,
-        "y": 112.11109924316406,
-        "z": "bd96de55.9bb33",
+        "x": 119,
+        "y": 54.99999713897705,
+        "z": "6776f36d.c22a9c",
         "wires": [
             [
-                "80b48287.4a7dc"
+                "31594d05.bd6432"
             ]
         ]
     },
     {
-        "id": "80b48287.4a7dc",
+        "id": "31594d05.bd6432",
         "type": "service-logic",
         "name": "ran-slice-api ${project.version}",
         "module": "ran-slice-api",
@@ -38,182 +38,197 @@
         "comments": "",
         "xml": "<service-logic xmlns='http://www.onap.org/sdnc/svclogic' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.onap.org/sdnc/svclogic ./svclogic.xsd' module='ran-slice-api' version='${project.version}'>",
         "outputs": 1,
-        "x": 188.7777557373047,
-        "y": 173.1111946105957,
-        "z": "bd96de55.9bb33",
+        "x": 176.99998474121094,
+        "y": 116.00009250640869,
+        "z": "6776f36d.c22a9c",
         "wires": [
             [
-                "cbeeb2b4.08be"
+                "41b06fc3.c6cf9"
             ]
         ]
     },
     {
-        "id": "4934df84.366e5",
+        "id": "9b4d44b1.794e98",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 281.77777099609375,
-        "y": 339.11109924316406,
-        "z": "bd96de55.9bb33",
+        "x": 123.3333511352539,
+        "y": 268.6666669845581,
+        "z": "6776f36d.c22a9c",
         "wires": [
             [
-                "792d5f61.e1a"
+                "16518179.756a3f",
+                "ca0173b6.09cc5"
             ]
         ]
     },
     {
-        "id": "792d5f61.e1a",
+        "id": "16518179.756a3f",
         "type": "switchNode",
         "name": "switch configdb deployed",
         "xml": "<switch test='`$prop.configdb-deployed`'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 454.7777786254883,
-        "y": 269.1111030578613,
-        "z": "bd96de55.9bb33",
+        "x": 428.0000991821289,
+        "y": 265.33334827423096,
+        "z": "6776f36d.c22a9c",
         "wires": [
             [
-                "3f02381e.f83f98",
-                "39b8dcff.f57854"
+                "7b67f3ed.7b795c",
+                "cc77d342.b6b6d"
             ]
         ]
     },
     {
-        "id": "3f02381e.f83f98",
+        "id": "7b67f3ed.7b795c",
         "type": "outcome",
         "name": "ConfigDB Deployed",
         "xml": "<outcome value='true'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 705.7778015136719,
-        "y": 244.11106872558594,
-        "z": "bd96de55.9bb33",
+        "x": 694.0000305175781,
+        "y": 186.99996662139893,
+        "z": "6776f36d.c22a9c",
         "wires": [
             [
-                "f5e5b350.07f74"
+                "bcdeea5a.e54548"
             ]
         ]
     },
     {
-        "id": "39b8dcff.f57854",
+        "id": "cc77d342.b6b6d",
         "type": "outcome",
         "name": "CPS Deployed",
         "xml": "<outcome value='false'>\n",
         "comments": "",
         "outputs": 1,
-        "x": 660.7777786254883,
-        "y": 393.11110496520996,
-        "z": "bd96de55.9bb33",
+        "x": 649.0000076293945,
+        "y": 336.00000286102295,
+        "z": "6776f36d.c22a9c",
         "wires": [
             [
-                "6ba3a8da.c6fb28"
+                "5df863d6.72391c"
             ]
         ]
     },
     {
-        "id": "6ba3a8da.c6fb28",
+        "id": "5df863d6.72391c",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 881.7777824401855,
-        "y": 389.1110806465149,
-        "z": "bd96de55.9bb33",
+        "x": 870.0000114440918,
+        "y": 331.9999785423279,
+        "z": "6776f36d.c22a9c",
         "wires": [
             [
-                "8bbc92db.7c75",
-                "d10e4755.9fd258"
+                "b9de8079.aaf7",
+                "c9947444.0e0038"
             ]
         ]
     },
     {
-        "id": "f5e5b350.07f74",
+        "id": "bcdeea5a.e54548",
         "type": "block",
         "name": "block : atomic",
         "xml": "<block atomic='true'>",
         "atomic": "true",
         "comments": "",
         "outputs": 1,
-        "x": 918.7777709960938,
-        "y": 253.11109924316406,
-        "z": "bd96de55.9bb33",
+        "x": 907,
+        "y": 195.99999713897705,
+        "z": "6776f36d.c22a9c",
         "wires": [
             [
-                "16326111.d238cf",
-                "f00a9827.ca6c88"
+                "d4cde26c.0168d",
+                "51a14a74.134ba4"
             ]
         ]
     },
     {
-        "id": "16326111.d238cf",
+        "id": "d4cde26c.0168d",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Calling instantiateRANSliceModifyAllocate-CPS \"/>",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Calling activateRANSliceInstance-configDB \"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1102.7777709960938,
-        "y": 210.11109924316406,
-        "z": "bd96de55.9bb33",
+        "x": 1091,
+        "y": 152.99999713897705,
+        "z": "6776f36d.c22a9c",
         "wires": [
             []
         ]
     },
     {
-        "id": "f00a9827.ca6c88",
+        "id": "51a14a74.134ba4",
         "type": "call",
         "name": "call activateRanslice-configdb",
         "xml": "<call module='ran-slice-api' rpc='activateRANSliceInstance-configDb' mode='sync' >\n",
         "comments": "",
         "outputs": 1,
-        "x": 1186.2344970703125,
-        "y": 264.8611354827881,
-        "z": "bd96de55.9bb33",
+        "x": 1174.4567260742188,
+        "y": 207.75003337860107,
+        "z": "6776f36d.c22a9c",
         "wires": [
             []
         ]
     },
     {
-        "id": "8bbc92db.7c75",
+        "id": "b9de8079.aaf7",
         "type": "record",
         "name": "record",
-        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Calling instantiateRANSliceModifyAllocate-CPS \"/>",
+        "xml": "<record plugin=\"org.onap.ccsdk.sli.core.sli.recording.FileRecorder\">\n<parameter name=\"file\" value=\"/opt/opendaylight/current/data/log/instantiateRANSlice.log\" />\n<parameter name=\"level\" value=\"info\" />\n<parameter name=\"field1\" value=\"Calling activateRANSliceInstance-cps \"/>",
         "comments": "",
         "outputs": 1,
-        "x": 1085.7777709960938,
-        "y": 388.11109924316406,
-        "z": "bd96de55.9bb33",
+        "x": 1074,
+        "y": 330.99999713897705,
+        "z": "6776f36d.c22a9c",
         "wires": [
             []
         ]
     },
     {
-        "id": "d10e4755.9fd258",
+        "id": "c9947444.0e0038",
         "type": "call",
         "name": "call activateRanslice-cps",
         "xml": "<call module='ran-slice-api' rpc='activateRANSliceInstance-cps' mode='sync' >\n",
         "comments": "",
         "outputs": 1,
-        "x": 1171.4566688537598,
-        "y": 442.8611068725586,
-        "z": "bd96de55.9bb33",
+        "x": 1159.678897857666,
+        "y": 385.7500047683716,
+        "z": "6776f36d.c22a9c",
         "wires": [
             []
         ]
     },
     {
-        "id": "78b5a044.95fba",
+        "id": "d97ce952.92ce08",
         "type": "comment",
         "name": "activateRANSliceInstance",
         "info": "",
         "comments": "",
-        "x": 665.7777709960938,
-        "y": 51.11109924316406,
-        "z": "bd96de55.9bb33",
+        "x": 610.6667022705078,
+        "y": 44,
+        "z": "6776f36d.c22a9c",
         "wires": []
+    },
+    {
+        "id": "ca0173b6.09cc5",
+        "type": "execute",
+        "name": "execute",
+        "xml": "<execute plugin='org.onap.ccsdk.sli.plugins.prop.PropertiesNode' method='readProperties' >\n    <parameter name='fileName' value='/opt/onap/ccsdk/data/properties/ran-slice-api-dg.properties' />\n    <parameter name='contextPrefix' value='prop' />",
+        "comments": "",
+        "outputs": 1,
+        "x": 383.1111259460449,
+        "y": 211.33332347869873,
+        "z": "6776f36d.c22a9c",
+        "wires": [
+            []
+        ]
     }
 ]
