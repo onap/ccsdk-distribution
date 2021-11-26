@@ -42,6 +42,18 @@
             <set>
                 <parameter name='tmp.sNSSAI' value="`$payloadJson.input.sNSSAI`" />
             </set>
+            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                <parameter name="source" value="`$tmp.sNSSAI`"/>
+                <parameter name="outputPath" value="tmp.sNSSAI"/>
+                <parameter name="target" value="["/>
+                <parameter name="replacement" value=""/>
+            </execute>
+            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                <parameter name="source" value="`$tmp.sNSSAI`"/>
+                <parameter name="outputPath" value="tmp.sNSSAI"/>
+                <parameter name="target" value="]"/>
+                <parameter name="replacement" value=""/>
+            </execute>
             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
                 <parameter name='filename' value='/opt/opendaylight/current/data/log/ranSlice-activateRANSlice-context.log' />
             </execute>
@@ -631,6 +643,15 @@
                                                                                                 </block>
                                                                                             </outcome>
                                                                                         </execute>
+                                                                                    </block>
+                                                                                </outcome>
+                                                                                <outcome value='false'>
+                                                                                    <block atomic='true'>
+                                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/activateRANSlice.log" />
+                                                                                            <parameter name="level" value="info" />
+                                                                                            <parameter name="field1" value="Desn't match"/>
+                                                                                        </record>
                                                                                     </block>
                                                                                 </outcome>
                                                                             </switch>
