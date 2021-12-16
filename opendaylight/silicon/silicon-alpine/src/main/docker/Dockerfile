@@ -27,6 +27,14 @@ COPY system $ODL_HOME/system
 #COPY configure_cluster.sh configure-cluster-ipdetect.sh custom_shard_config.txt set_persistence.sh $ODL_HOME/bin/
 #RUN chmod 755 $ODL_HOME/bin/configure_cluster.sh $ODL_HOME/bin/configure-cluster-ipdetect.sh $ODL_HOME/bin/set_persistence.sh $ODL_HOME/bin/custom_shard_config.txt
 
+
+# Remove vulnerable version of ops4j logging
+COPY framework-${odl.karaf.framework.version}-features.xml $ODL_HOME/system/org/apache/karaf/features/framework/${odl.karaf.framework.version}/framework-${odl.karaf.framework.version}-features.xml
+COPY startup.properties $ODL_HOME/etc/startup.properties
+RUN rm -rf $ODL_HOME/system/org/ops4j/pax/logging/pax-logging-log4j2/${odl.pax.logging.version}
+RUN rm -rf $ODL_HOME/system/org/ops4j/pax/logging/pax-logging-logback/${odl.pax.logging.version}
+RUN rm -rf $ODL_HOME/system/org/ops4j/pax/logging/pax-logging-api/${odl.pax.logging.version}
+
 # Changing ownership and permission of /opt
 RUN chown -R odl:odl /opt && chmod -R 755 /opt
 
