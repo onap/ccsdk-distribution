@@ -40,6 +40,14 @@
                 <parameter name="prop.oofpcipoc-dmaap-config-resp.requestID" value="`$generic-neighbor-configuration-input.requestID`"/>
                 <parameter name="prop.oofpcipoc-dmaap-config-resp.subrequestID" value="`$generic-neighbor-configuration-input.subRequestID`"/>
             </set>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="DMAAP Message Header stored in properties file "/>
+                <parameter name="field2" value="`$prop.oofpcipoc-dmaap-config-resp.timestamp`"/>
+                <parameter name="field3" value="`$prop.oofpcipoc-dmaap-config-resp.requestID`"/>
+                <parameter name="field4" value="`$prop.oofpcipoc-dmaap-config-resp.subrequestID`"/>
+            </record>
             <switch test='`$prop.ransim-mounted`'>
                 <outcome value='false'>
                     <for index='idx' start='0' end="`$generic-neighbor-configuration-input.lte-cell-number-of-entries`" >
@@ -256,6 +264,27 @@
                                 <parameter name="tmp.pnf-name" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`"/>
                                 <parameter name="tmp.blacklisted" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].blacklisted`"/>
                             </set>
+                            <switch test='`$tmp.blacklisted`'>
+                                <outcome value='true'>
+                                    <block atomic='true'>
+                                        <set>
+                                            <parameter name='tmp.isHOAllowed' value='false' />
+                                        </set>
+                                    </block>
+                                </outcome>
+                                <outcome value='false'>
+                                    <block atomic='true'>
+                                        <set>
+                                            <parameter name='tmp.isHOAllowed' value='true' />
+                                        </set>
+                                    </block>
+                                </outcome>
+                            </switch>
+                            <set>
+                                <parameter name="tmp.idNRCellCU" value="`$generic-neighbor-configuration-input.alias`"/>
+                                <parameter name="tmp.idNRCellRelation" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].cid`"/>
+                                <parameter name="tmp.idGNBCUCPFunction" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`"/>
+                            </set>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                 <parameter name="level" value="info" />
@@ -266,43 +295,47 @@
                                 <parameter name="field5" value="`$tmp.phy-cell-id`"/>
                                 <parameter name="field6" value="`$tmp.pnf-name`"/>
                                 <parameter name="field7" value="`$tmp.blacklisted`"/>
+                                <parameter name="field8" value="`tmp.idGNBCUCPFunction`"/>
+                                <parameter name="field9" value="`tmp.idNRCellCU`"/>
+                                <parameter name="field10" value="`tmp.idNRCellRelation`"/>
+                                <parameter name="field11" value="`$tmp.isHOAllowed`"/>
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                 <parameter name="source" value="`$prop.restapi.lte-ran-neighbor-in-use.ransim-mounted`"/>
                                 <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
-                                <parameter name="target" value="{alias}"/>
-                                <parameter name="replacement" value="`$tmp.alias`"/>
-                            </execute>
-                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
-                                <parameter name="level" value="info" />
-                                <parameter name="field1" value="Config Neighbor List URL"/>
-                                <parameter name="field2" value="`$tmp.config-neighbor-service-url`"/>
-                            </record>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
-                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
-                                <parameter name="target" value="{pnf-name}"/>
-                                <parameter name="replacement" value="`$tmp.pnf-name`"/>
-                            </execute>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
-                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
-                                <parameter name="target" value="{plmnid}"/>
+                                <parameter name="target" value="{idNearRTRIC}"/>
                                 <parameter name="replacement" value="`$tmp.plmnid`"/>
                             </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
+                                <parameter name="target" value="{mountName}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBCUCPFunction`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
+                                <parameter name="target" value="{idGNBCUCPFunction}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBCUCPFunction`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
+                                <parameter name="target" value="{idNRCellCU}"/>
+                                <parameter name="replacement" value="`$tmp.idNRCellCU`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
+                                <parameter name="target" value="{idNRCellRelation}"/>
+                                <parameter name="replacement" value="`$tmp.idNRCellRelation`"/>
+                            </execute>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                 <parameter name="level" value="info" />
                                 <parameter name="field1" value="Config Neighbor List URL"/>
                                 <parameter name="field2" value="`$tmp.config-neighbor-service-url`"/>
                             </record>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
-                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
-                                <parameter name="target" value="{cid}"/>
-                                <parameter name="replacement" value="`$tmp.cid`"/>
-                            </execute>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
                                 <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.config-neighbor-service-url`"/>
                                 <parameter name="restapiUser" value="`$prop.controller.user`" />
@@ -477,7 +510,7 @@
                             <return status='failure'>
                                 <parameter name='ack-final' value='Y'/>
                                 <parameter name="error-code" value="500" />
-                                <parameter name="error-message" value="Error creating SDNR response payload string. Aborting PCI configuration" />
+                                <parameter name="error-message" value="Error creating SDNR response payload string. Aborting Generic neighbor  configuration" />
                             </return>
                         </block>
                     </outcome>
@@ -503,7 +536,7 @@
                             <return status='failure'>
                                 <parameter name='ack-final' value='Y'/>
                                 <parameter name="error-code" value="500" />
-                                <parameter name="error-message" value="Error removing lines from SDNR response payload string. Aborting PCI configuration" />
+                                <parameter name="error-message" value="Error removing lines from SDNR response payload string. Aborting Generic neighbor  configuration" />
                             </return>
                         </block>
                     </outcome>
@@ -529,7 +562,7 @@
                             <return status='failure'>
                                 <parameter name='ack-final' value='Y'/>
                                 <parameter name="error-code" value="500" />
-                                <parameter name="error-message" value="Error removing tabs from SDNR response payload string. Aborting PCI configuration" />
+                                <parameter name="error-message" value="Error removing tabs from SDNR response payload string. Aborting Generic neighbor configuration" />
                             </return>
                         </block>
                     </outcome>
@@ -539,6 +572,95 @@
                 <set>
                     <parameter name='tmp.oofpcipoc-dmaap-config-resp.rpc-name' value='`$prop.oofpcipoc-dmaap-config-resp.rpc-name.modifyconfiganr`'/>
                 </set>
+                <block atomic='true'>
+                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replaceAll' >
+                        <parameter name="source" value="`$prop.oofpcipoc-dmaap-config-resp.timestamp`"/>
+                        <parameter name="outputPath" value="prop.oofpcipoc-dmaap-config-resp.timestamp"/>
+                        <parameter name="target" value='"'/>
+                        <parameter name="replacement" value=''/>
+                        <outcome value='success'>
+                            <block atomic='true'>
+                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                    <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                    <parameter name="level" value="info" />
+                                    <parameter name="field1" value="Quotation removed from timestamp for DMAAP response header \r"/>
+                                    <parameter name="field2" value="`$prop.oofpcipoc-dmaap-config-resp.timestamp`"/>
+                                </record>
+                            </block>
+                        </outcome>
+                        <outcome value='failure'>
+                            <block>
+                                <return status='failure'>
+                                    <parameter name='ack-final' value='Y'/>
+                                    <parameter name="error-code" value="500" />
+                                    <parameter name="error-message" value="Error removing quotation from timestamp for DMAAP response header. Aborting Generic neighbor  configuration" />
+                                </return>
+                            </block>
+                        </outcome>
+                    </execute>
+                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replaceAll' >
+                        <parameter name="source" value="`$prop.oofpcipoc-dmaap-config-resp.requestID`"/>
+                        <parameter name="outputPath" value="prop.oofpcipoc-dmaap-config-resp.requestID"/>
+                        <parameter name="target" value='"'/>
+                        <parameter name="replacement" value=''/>
+                        <outcome value='success'>
+                            <block atomic='true'>
+                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                    <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                    <parameter name="level" value="info" />
+                                    <parameter name="field1" value="Quotation removed from requestID for DMAAP response header \r"/>
+                                    <parameter name="field2" value="`$prop.oofpcipoc-dmaap-config-resp.requestID`"/>
+                                </record>
+                            </block>
+                        </outcome>
+                        <outcome value='failure'>
+                            <block>
+                                <return status='failure'>
+                                    <parameter name='ack-final' value='Y'/>
+                                    <parameter name="error-code" value="500" />
+                                    <parameter name="error-message" value="Error removing quotation from requestID for DMAAP response header. Aborting Generic neighbor  configuration" />
+                                </return>
+                            </block>
+                        </outcome>
+                    </execute>
+                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replaceAll' >
+                        <parameter name="source" value="`$prop.oofpcipoc-dmaap-config-resp.subrequestID`"/>
+                        <parameter name="outputPath" value="prop.oofpcipoc-dmaap-config-resp.subrequestID"/>
+                        <parameter name="target" value='"'/>
+                        <parameter name="replacement" value=''/>
+                        <outcome value='success'>
+                            <block atomic='true'>
+                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                    <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                    <parameter name="level" value="info" />
+                                    <parameter name="field1" value="Quotation removed from subRequestID for DMAAP response header \r"/>
+                                    <parameter name="field2" value="`$prop.oofpcipoc-dmaap-config-resp.subrequestID`"/>
+                                </record>
+                            </block>
+                        </outcome>
+                        <outcome value='failure'>
+                            <block>
+                                <return status='failure'>
+                                    <parameter name='ack-final' value='Y'/>
+                                    <parameter name="error-code" value="500" />
+                                    <parameter name="error-message" value="Error removing quotation from timestamp for DMAAP response header. Aborting Generic neighbor  configuration" />
+                                </return>
+                            </block>
+                        </outcome>
+                    </execute>
+                </block>
+                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                    <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                    <parameter name="level" value="info" />
+                    <parameter name="field1" value="__TIMESTAMP__"/>
+                    <parameter name="field2" value="Before DMAAP Event - template file name, restapiURL"/>
+                    <parameter name='field3' value="`$prop.restapi.templateDir + '/' + $prop.restapi.dmaap-publish-config-response.template`" />
+                    <parameter name='field4' value="`$prop.dmaap-message-router.url + '/' + $prop.oofpcipoc-dmaap-configuration-response.topic`" />
+                    <parameter name="field5" value="Before DMAAP Event - Timestamp, RequestID, subRequestID"/>
+                    <parameter name="field6" value="`$prop.oofpcipoc-dmaap-config-resp.timestamp`"/>
+                    <parameter name="field7" value="`$prop.oofpcipoc-dmaap-config-resp.requestID`"/>
+                    <parameter name="field8" value="`$prop.oofpcipoc-dmaap-config-resp.subrequestID`"/>
+                </record>
                 <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
                     <parameter name='templateFileName' value="`$prop.restapi.templateDir + '/' + $prop.restapi.dmaap-publish-config-response.template`" />
                     <parameter name='restapiUrl' value="`$prop.dmaap-message-router.url + '/' + $prop.oofpcipoc-dmaap-configuration-response.topic`" />

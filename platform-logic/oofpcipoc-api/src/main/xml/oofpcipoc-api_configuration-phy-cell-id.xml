@@ -223,17 +223,22 @@
                                 <parameter name="tmp.phy-cell-id-in-use" value="`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`"/>
                                 <parameter name="tmp.pnf-name" value="`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`"/>
                             </set>
+                            <set>
+                                <parameter name="tmp.idNRCellDU" value="`$configuration-phy-cell-id-input.fap-service[$idx].alias`"/>
+                                <parameter name="tmp.idGNBDUFunction" value="`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`"/>
+                                <parameter name="tmp.nRPCI" value="`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`"/>
+                            </set>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                 <parameter name="source" value="`$prop.restapi.fap-service.ransim-mounted`"/>
                                 <parameter name="outputPath" value="tmp.fap-service-url"/>
-                                <parameter name="target" value="{alias}"/>
-                                <parameter name="replacement" value="`$tmp.alias`"/>
+                                <parameter name="target" value="{mountName}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                 <parameter name="source" value="`$tmp.fap-service-url`"/>
                                 <parameter name="outputPath" value="tmp.fap-service-url"/>
-                                <parameter name="target" value="{pnf-name}"/>
-                                <parameter name="replacement" value="`$tmp.pnf-name`"/>
+                                <parameter name="target" value="{idGNBDUFunction}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
                             </execute>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
@@ -276,14 +281,20 @@
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                 <parameter name="source" value="`$prop.restapi.x-005b9-lte.ransim-mounted`"/>
                                 <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
-                                <parameter name="target" value="{alias}"/>
-                                <parameter name="replacement" value="`$tmp.alias`"/>
+                                <parameter name="target" value="{mountName}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                 <parameter name="source" value="`$tmp.oofpcipoc.patch.pci.url`"/>
                                 <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
-                                <parameter name="target" value="{pnf-name}"/>
-                                <parameter name="replacement" value="`$tmp.pnf-name`"/>
+                                <parameter name="target" value="{idGNBDUFunction}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.oofpcipoc.patch.pci.url`"/>
+                                <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
+                                <parameter name="target" value="{idNRCellDU}"/>
+                                <parameter name="replacement" value="`$tmp.idNRCellDU`"/>
                             </execute>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
@@ -350,6 +361,13 @@
                                 </outcome>
                             </execute>
                             <switch test='`$prop.configdb-deployed`'>
+                                <outcome value='false'>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="ConfigDB Update Skipped"/>
+                                    </record>
+                                </outcome>
                                 <outcome value='true'>
                                     <block atomic='true'>
                                         <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
