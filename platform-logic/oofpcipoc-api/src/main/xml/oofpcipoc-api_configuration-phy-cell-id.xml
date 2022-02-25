@@ -41,6 +41,157 @@
                 <parameter name="prop.oofpcipoc-dmaap-config-resp.requestID" value="`$configuration-phy-cell-id-input.requestID`"/>
                 <parameter name="prop.oofpcipoc-dmaap-config-resp.subrequestID" value="`$configuration-phy-cell-id-input.subRequestID`"/>
             </set>
+            <set>
+                <parameter name="tmp.idGNBDU" value="`$configuration-phy-cell-id-input.fap-service[0].pnf-name`"/>
+            </set>
+            <set>
+                <parameter name='tmp.getAnchors.URL' value="`$prop.restapi.cps.anchors.endpoint`"/>
+            </set>
+            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                <parameter name="level" value="info" />
+                <parameter name="field1" value="URL to fetch the anchors"/>
+                <parameter name="field2" value="`$tmp.getAnchors.URL`"/>
+            </record>
+            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                <parameter name="restapiUrl" value="`$tmp.getAnchors.URL`"/>
+                <parameter name="httpMethod" value="GET"/>
+                <parameter name="restapiUser" value="cpsuser" />
+                <parameter name="restapiPassword" value="cpsr0cks!"/>
+                <parameter name="responsePrefix" value="get-anchors-cps-response"/>
+                <parameter name='contentType' value='application/json' />
+                <parameter name='format' value='json' />
+                <parameter name='accept' value='application/json' />
+                <parameter name="convertResponse" value="true"/>
+                <outcome value='failure'>
+                    <block>
+                        <set>
+                            <parameter name='error-code' value='500'/>
+                            <parameter name='error-message' value='Error Getting Info from CPS. Aborting RPC executiopn'/>
+                        </set>
+                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                            <parameter name="level" value="info" />
+                            <parameter name="field1" value="Failed to fetch anchors from CPS"/>
+                        </record>
+                    </block>
+                </outcome>
+                <outcome value='success'>
+                    <block atomic='true'>
+                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                            <parameter name="level" value="info" />
+                            <parameter name="field1" value="Successfully Obtained anchors from CPS"/>
+                            <parameter name="field2" value="`$get-anchors-cps-response._length`"/>
+                        </record>
+                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                            <parameter name='filename' value='/opt/opendaylight/current/data/log/configuration-phy-cell-id-context.log' />
+                        </execute>
+                    </block>
+                </outcome>
+            </execute>
+            <set>
+                <parameter name='tmp.anchors.length' value="`$get-anchors-cps-response._length`"/>
+            </set>
+            <set>
+                <parameter name='tmp.RIC.length' value="0"/>
+            </set>
+            <for index='anc' start='0' end='`$tmp.anchors.length`'>
+                <block atomic='true'>
+                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                        <parameter name='outputPath' value='tmp.schemaset.name' />
+                        <parameter name='source' value="`'get-anchors-cps-response.['+$anc+'].schemaSetName'`" />
+                    </execute>
+                    <switch test='`$tmp.schemaset.name`'>
+                        <outcome value='ran-network'>
+                            <block atomic='true'>
+                                <set>
+                                    <parameter name='tmp.RIC.length' value="`$tmp.RIC.length+1`"/>
+                                </set>
+                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                    <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                    <parameter name="level" value="info" />
+                                    <parameter name="field1" value="Applicable RIC length"/>
+                                    <parameter name="field2" value="`$tmp.RIC.length`"/>
+                                </record>
+                            </block>
+                        </outcome>
+                    </switch>
+                </block>
+            </for>
+            <for index='anc' start='0' end='`$tmp.anchors.length`'>
+                <block atomic='true'>
+                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                        <parameter name='outputPath' value='tmp.schemaset.name' />
+                        <parameter name='source' value="`'get-anchors-cps-response.['+$anc+'].schemaSetName'`" />
+                    </execute>
+                    <switch test='`$tmp.schemaset.name`'>
+                        <outcome value='ran-network'>
+                            <block atomic='true'>
+                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                    <parameter name='outputPath' value='tmp.anchor.name' />
+                                    <parameter name='source' value="`'get-anchors-cps-response.['+$anc+'].name'`" />
+                                </execute>
+                                <block atomic='true'>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                        <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                        <parameter name="outputPath" value="tmp.cps.getNearRTRICByidGNBDUFunction.url"/>
+                                        <parameter name="target" value="{schemaSet}"/>
+                                        <parameter name="replacement" value="`$tmp.anchor.name`"/>
+                                    </execute>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                        <parameter name="source" value="`$tmp.cps.getNearRTRICByidGNBDUFunction.url`"/>
+                                        <parameter name="outputPath" value="tmp.cps.getNearRTRICByidGNBDUFunction.url"/>
+                                        <parameter name="target" value="{templateId}"/>
+                                        <parameter name="replacement" value="`$prop.tbdmt.template.get-nearrtric-by-idgnbdufunction`"/>
+                                    </execute>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="URL for CPS TDBMT to Get NearRTRIC for idGNBDUFunction"/>
+                                        <parameter name='field2' value="`$tmp.cps.getNearRTRICByidGNBDUFunction.url`" />
+                                    </record>
+                                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                        <parameter name="restapiUrl" value="`$tmp.cps.getNearRTRICByidGNBDUFunction.url`"/>
+                                        <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-get-nearrtric-by-idgnbdufunction.json'`" />
+                                        <parameter name="httpMethod" value="POST"/>
+                                        <parameter name="responsePrefix" value="getNFNSSIRIC-cps-response"/>
+                                        <parameter name='contentType' value='application/json' />
+                                        <parameter name='format' value='json' />
+                                        <parameter name='accept' value='application/json' />
+                                        <parameter name="convertResponse" value="true"/>
+                                        <outcome value='failure'>
+                                            <block>
+                                                <set>
+                                                    <parameter name='error-code' value='500'/>
+                                                    <parameter name='error-message' value='Error Getting Info from CPS. Aborting RPC executiopn'/>
+                                                </set>
+                                            </block>
+                                        </outcome>
+                                        <outcome value='success'>
+                                            <block atomic='true'>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
+                                                    <parameter name='outputPath' value='tmp.nearRTRICId' />
+                                                    <parameter name='source' value="`'getNFNSSIRIC-cps-response.[0]'`" />
+                                                </execute>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="Successfully Obtained NearRTRIC ID info from CPS"/>
+                                                    <parameter name="field2" value="`$tmp.nearRTRICId`"/>
+                                                </record>
+                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='printContext' >
+                                                    <parameter name='filename' value='/opt/opendaylight/current/data/log/configuration-phy-cell-id-context.log' />
+                                                </execute>
+                                            </block>
+                                        </outcome>
+                                    </execute>
+                                </block>
+                            </block>
+                        </outcome>
+                    </switch>
+                </block>
+            </for>
             <switch test='`$prop.ransim-mounted`'>
                 <outcome value='false'>
                     <for index='idx' start='0' end="`$configuration-phy-cell-id-input.fap-service-number-of-entries`" >
@@ -281,6 +432,12 @@
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                 <parameter name="source" value="`$prop.restapi.x-005b9-lte.ransim-mounted`"/>
                                 <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
+                                <parameter name="target" value="{idNearRTRIC}"/>
+                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
                                 <parameter name="target" value="{mountName}"/>
                                 <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
                             </execute>
