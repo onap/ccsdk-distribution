@@ -395,6 +395,22 @@
                                     </call>
                                 </block>
                             </outcome>
+                            <outcome value='reconfigure'>
+                                <block atomic="true">
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Calling instantiateRANSliceReconfigure-cps "/>
+                                    </record>
+                                    <call module='ran-slice-api' rpc='instantiateRANSliceReconfigure-cps' mode='sync' >
+                                        <outcome value='failure'>
+                                            <return status='failure'>
+                                                <parameter name='ack-final' value='Y' />
+                                            </return>
+                                        </outcome>
+                                    </call>
+                                </block>
+                            </outcome>
                         </switch>
                     </block>
                 </outcome>
