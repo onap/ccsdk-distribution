@@ -415,6 +415,17 @@
                                 <parameter name="tmp.pnf-name" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`"/>
                                 <parameter name="tmp.blacklisted" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].blacklisted`"/>
                             </set>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="Temporary varaibles set. Neighbor #:  "/>
+                                <parameter name="field2" value="`$idx`"/>
+                                <parameter name="field3" value="`$tmp.plmnid`"/>
+                                <parameter name="field4" value="`$tmp.cid`"/>
+                                <parameter name="field5" value="`$tmp.phy-cell-id`"/>
+                                <parameter name="field6" value="`$tmp.pnf-name`"/>
+                                <parameter name="field7" value="`$tmp.blacklisted`"/>
+                            </record>
                             <switch test='`$tmp.blacklisted`'>
                                 <outcome value='true'>
                                     <block atomic='true'>
@@ -439,17 +450,14 @@
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                 <parameter name="level" value="info" />
-                                <parameter name="field1" value="Temporary varaibles set. Neighbor #:  "/>
-                                <parameter name="field2" value="`$idx`"/>
-                                <parameter name="field3" value="`$tmp.plmnid`"/>
-                                <parameter name="field4" value="`$tmp.cid`"/>
-                                <parameter name="field5" value="`$tmp.phy-cell-id`"/>
-                                <parameter name="field6" value="`$tmp.pnf-name`"/>
-                                <parameter name="field7" value="`$tmp.blacklisted`"/>
-                                <parameter name="field8" value="`tmp.idGNBCUCPFunction`"/>
-                                <parameter name="field9" value="`tmp.idNRCellCU`"/>
-                                <parameter name="field10" value="`tmp.idNRCellRelation`"/>
-                                <parameter name="field11" value="`$tmp.isHOAllowed`"/>
+                                <parameter name="field1" value="idGNBCUCPFunction"/>
+                                <parameter name="field2" value="`$tmp.idGNBCUCPFunction`"/>
+                                <parameter name="field3" value="idNRCellCU"/>
+                                <parameter name="field4" value="`$tmp.idNRCellCU`"/>
+                                <parameter name="field5" value="idNRCellRelation"/>
+                                <parameter name="field6" value="`$tmp.idNRCellRelation`"/>
+                                <parameter name="field7" value="isHOAllowed"/>
+                                <parameter name="field8" value="`$tmp.isHOAllowed`"/>
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                 <parameter name="source" value="`$prop.restapi.lte-ran-neighbor-in-use.ransim-mounted`"/>

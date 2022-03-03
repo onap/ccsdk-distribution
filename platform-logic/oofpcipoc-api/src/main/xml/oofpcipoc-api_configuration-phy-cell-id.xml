@@ -379,8 +379,24 @@
                                 <parameter name="tmp.idGNBDUFunction" value="`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`"/>
                                 <parameter name="tmp.nRPCI" value="`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`"/>
                             </set>
+                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                <parameter name="level" value="info" />
+                                <parameter name="field1" value="idNRCellDU"/>
+                                <parameter name="field2" value="`$tmp.idNRCellDU`"/>
+                                <parameter name="field3" value="idGNBDUFunction"/>
+                                <parameter name="field4" value="`$tmp.idGNBDUFunction`"/>
+                                <parameter name="field5" value="nRPCI"/>
+                                <parameter name="field6" value="`$tmp.nRPCI`"/>
+                            </record>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                 <parameter name="source" value="`$prop.restapi.fap-service.ransim-mounted`"/>
+                                <parameter name="outputPath" value="tmp.fap-service-url"/>
+                                <parameter name="target" value="{idNearRTRIC}"/>
+                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.fap-service-url`"/>
                                 <parameter name="outputPath" value="tmp.fap-service-url"/>
                                 <parameter name="target" value="{mountName}"/>
                                 <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
