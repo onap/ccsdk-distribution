@@ -363,6 +363,22 @@
                 <outcome value='false'>
                     <block atomic='true'>
                         <switch test='`$instantiate-r-a-n-slice-input.action`'>
+                            <outcome value='allocate'>
+                                <block atomic="true">
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Calling instantiateRANSliceAllocate "/>
+                                    </record>
+                                    <call module='ran-slice-api' rpc='instantiateRANSliceAllocate-CPS' mode='sync' >
+                                        <outcome value='failure'>
+                                            <return status='failure'>
+                                                <parameter name='ack-final' value='Y' />
+                                            </return>
+                                        </outcome>
+                                    </call>
+                                </block>
+                            </outcome>
                             <outcome value='modify-allocate'>
                                 <block atomic="true">
                                     <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
