@@ -64,6 +64,28 @@ The full list of `bugs fixed in the CCSDK  Istanbul release <https://jira.onap.o
 
 The full list of `known issues in CCSDK <https://jira.onap.org/issues/?filter=11341>`_ is maintained on the `ONAP Jira`_.
 
+It should be noted that several CCSDK repositories have a transitive dependency on log4j version 1.x.  While this version
+is not vulnerable to the recent 'log4shell' vulnerability, there are other known vulnerabilities in this
+version.  The following table summarizes where log4j 1.x is currently used in CCSDK:
+
++----------------+-----------------------------------------------------------------------------------+
+| Repository     | Transitive dependencies                                                           |
++================+===================================================================================+
+| ccsdk/apps     | org.onap.aaf.authz:aaf-misc-env:2.1.21 -> log4j:log4j:1.2.17                      |
++----------------+-----------------------------------------------------------------------------------+
+| ccsdk/cds      | org.hibernate:hibernate-testing:jar:5.4.32.Final -> log4j:log4j:1.2.17            |
++----------------+-----------------------------------------------------------------------------------+
+|                | org.onap.dmaap.messagerouter.dmaapclient:dmaapClient:1.1.5 -> log4j:log4j:1.2.17  |
++----------------+-----------------------------------------------------------------------------------+
+| ccsdk/features | org.onap.aaf.authz:aaf-misc-env:2.1.21 -> log4j:log4j:1.2.17                      |
++----------------+-----------------------------------------------------------------------------------+
+|                | org.onap.dmaap.messagerouter.dmaapclient:dmaapClient:1.1.12 -> log4j:log4j:1.2.17 |
++----------------+-----------------------------------------------------------------------------------+
+| ccsdk/sli      | org.onap.dmaap.messagerouter.dmaapclient:dmaapClient:1.1.12 -> log4j:log4j:1.2.17 |                                                                                |
++----------------+-----------------------------------------------------------------------------------+
+
+
+
 Deliverables
 ------------
 
