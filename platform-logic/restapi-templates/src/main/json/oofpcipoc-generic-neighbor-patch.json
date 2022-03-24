@@ -1,16 +1,21 @@
 {
-    "ietf-yang-patch:yang-patch": {
-        "patch-id": "Patch 2",
-        "comment": "patch for configuring neighbor ",
-        "edit": [
-            {
-                "edit-id": "patch blacklisted",
-                "operation": "merge",
-                "target": "/ran-network:isHOAllowed",
-                "value": {
-                    "isHOAllowed": ${tmp.isHOAllowed}
-                }
-            }
-        ]
-    }
+        "ietf-yang-patch:yang-patch": {
+                "patch-id": "Patch 2",
+                "comment": "patch for isHOAllowed for a cell",
+                "edit": [{
+                        "edit-id": "edit1",
+                        "operation": "merge",
+                        "target": "/ran-network:nRTCI",
+                        "value": {
+                             "nRTCI": ${tmp.nRTCI}
+                        }
+                 },{
+                        "edit-id": "edit2",
+                        "operation": "merge",
+                        "target": "/ran-network:isHOAllowed",
+                        "value": {
+                             "isHOAllowed": ${tmp.isHOAllowed}
+                        }
+                 }]
+        }
 }

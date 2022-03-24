@@ -211,22 +211,65 @@
                                 <parameter name="tmp.pnf-name" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`"/>
                                 <parameter name="tmp.blacklisted" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].blacklisted`"/>
                             </set>
+                            <switch test='`$tmp.blacklisted`'>
+                                <outcome value='true'>
+                                    <block atomic='true'>
+                                        <set>
+                                            <parameter name='tmp.isHOAllowed' value='false' />
+                                        </set>
+                                    </block>
+                                </outcome>
+                                <outcome value='false'>
+                                    <block atomic='true'>
+                                        <set>
+                                            <parameter name='tmp.isHOAllowed' value='true' />
+                                        </set>
+                                    </block>
+                                </outcome>
+                            </switch>
+                            <set>
+                                <parameter name="tmp.idNRCellCU" value="`$generic-neighbor-configuration-input.alias`"/>
+                                <parameter name="tmp.idNRCellRelation" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].cid`"/>
+                                <parameter name="tmp.idGNBCUCPFunction" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`"/>
+                                <parameter name="tmp.nRTCI" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].phy-cell-id`"/>
+                            </set>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                 <parameter name="level" value="info" />
-                                <parameter name="field1" value="Temporary varaibles set. Neighbor #:  "/>
-                                <parameter name="field2" value="`$idx`"/>
-                                <parameter name="field3" value="`$tmp.plmnid`"/>
-                                <parameter name="field4" value="`$tmp.cid`"/>
-                                <parameter name="field5" value="`$tmp.phy-cell-id`"/>
-                                <parameter name="field6" value="`$tmp.pnf-name`"/>
-                                <parameter name="field7" value="`$tmp.blacklisted`"/>
+                                <parameter name="field1" value="idGNBCUCPFunction"/>
+                                <parameter name="field2" value="`$tmp.idGNBCUCPFunction`"/>
+                                <parameter name="field3" value="idNRCellCU"/>
+                                <parameter name="field4" value="`$tmp.idNRCellCU`"/>
+                                <parameter name="field5" value="idNRCellRelation"/>
+                                <parameter name="field6" value="`$tmp.idNRCellRelation`"/>
+                                <parameter name="field7" value="isHOAllowed"/>
+                                <parameter name="field8" value="`$tmp.isHOAllowed`"/>
+                                <parameter name="field9" value="nRTCI"/>
+                                <parameter name="field10" value="`$tmp.nRTCI`"/>
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$prop.restapi.lte-ran-neighbor-in-use`"/>
+                                <parameter name="source" value="`$prop.restapi.patchNRCellRelation`"/>
                                 <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
-                                <parameter name="target" value="{alias}"/>
-                                <parameter name="replacement" value="`$tmp.alias`"/>
+                                <parameter name="target" value="{idNearRTRIC}"/>
+                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
+                                <parameter name="target" value="{idGNBCUCPFunction}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBCUCPFunction`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
+                                <parameter name="target" value="{idNRCellCU}"/>
+                                <parameter name="replacement" value="`$tmp.idNRCellCU`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
+                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
+                                <parameter name="target" value="{idNRCellRelation}"/>
+                                <parameter name="replacement" value="`$tmp.idNRCellRelation`"/>
                             </execute>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
@@ -234,24 +277,6 @@
                                 <parameter name="field1" value="Config Neighbor List URL"/>
                                 <parameter name="field2" value="`$tmp.config-neighbor-service-url`"/>
                             </record>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
-                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
-                                <parameter name="target" value="{plmnid}"/>
-                                <parameter name="replacement" value="`$tmp.plmnid`"/>
-                            </execute>
-                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
-                                <parameter name="level" value="info" />
-                                <parameter name="field1" value="Config Neighbor List URL"/>
-                                <parameter name="field2" value="`$tmp.config-neighbor-service-url`"/>
-                            </record>
-                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
-                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
-                                <parameter name="target" value="{cid}"/>
-                                <parameter name="replacement" value="`$tmp.cid`"/>
-                            </execute>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
                                 <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.config-neighbor-service-url`"/>
                                 <parameter name="restapiUser" value="`$prop.controller.user`" />
@@ -273,11 +298,8 @@
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                             <parameter name="level" value="info" />
                                             <parameter name="field1" value="Details about Neighbor Pre-configuration"/>
-                                            <parameter name="field2" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`"/>
-                                            <parameter name="field3" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`"/>
-                                            <parameter name="field4" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`"/>
-                                            <parameter name="field5" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].pnf-name`"/>
-                                            <parameter name="field6" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].blacklisted`"/>
+                                            <parameter name="field2" value="`$oofpci-neighbor-response.attributes.nRTCI`"/>
+                                            <parameter name="field3" value="`$oofpci-neighbor-response.attributes.isHOAllowed`"/>
                                         </record>
                                     </block>
                                 </outcome>
@@ -332,22 +354,71 @@
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                             <parameter name="level" value="info" />
                                             <parameter name="field1" value="Details about Neighbor Post-configuration"/>
-                                            <parameter name="field2" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`"/>
-                                            <parameter name="field3" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`"/>
-                                            <parameter name="field4" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`"/>
-                                            <parameter name="field5" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].pnf-name`"/>
-                                            <parameter name="field6" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].blacklisted`"/>
+                                            <parameter name="field2" value="`$oofpci-neighbor-response.attributes.nRTCI`"/>
+                                            <parameter name="field3" value="`$oofpci-neighbor-response.attributes.isHOAllowed`"/>
                                         </record>
                                     </block>
                                 </outcome>
                             </execute>
                             <switch test='`$prop.configdb-deployed`'>
                                 <outcome value='false'>
-                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                        <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
-                                        <parameter name="level" value="info" />
-                                        <parameter name="field1" value="ConfigDB Update Skipped"/>
-                                    </record>
+                                    <block atomic='true'>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="CPS is Deployed, ConfigDB Skipped"/>
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                            <parameter name="outputPath" value="tmp.cps.putho.nrcellrelation.url"/>
+                                            <parameter name="target" value="{schemaSet}"/>
+                                            <parameter name="replacement" value="`$tmp.schemaset.name`"/>
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$tmp.cps.putho.nrcellrelation.url`"/>
+                                            <parameter name="outputPath" value="tmp.cps.putho.nrcellrelation.url"/>
+                                            <parameter name="target" value="{templateId}"/>
+                                            <parameter name="replacement" value="`$prop.tbdmt.template.put-ho-nrcellrelation`"/>
+                                        </execute>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="URL for CPS TDBMT to put ho NRCellRelation"/>
+                                            <parameter name='field2' value="`$tmp.cps.putho.nrcellrelation.url`" />
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                            <parameter name="restapiUrl" value="`$tmp.cps.putho.nrcellrelation.url`"/>
+                                            <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-put-ho.json'`" />
+                                            <parameter name="httpMethod" value="POST"/>
+                                            <parameter name="responsePrefix" value="cps-put-ho-nrcellrelation-response"/>
+                                            <parameter name='contentType' value='application/json' />
+                                            <parameter name='format' value='json' />
+                                            <parameter name='accept' value='application/json' />
+                                            <parameter name="convertResponse" value="true"/>
+                                            <outcome value='failure'>
+                                                <block atomic='true'>
+                                                    <set>
+                                                        <parameter name='error-code' value='500'/>
+                                                        <parameter name='error-message' value='Error updating nearRTRIC info in CPS. Aborting RPC executiopn'/>
+                                                    </set>
+                                                    <return status='failure'>
+                                                        <parameter name='ack-final' value='Y'/>
+                                                        <parameter name='error-code' value='500'/>
+                                                        <parameter name='error-message' value='Error updating nearRTRIC info in ConfigDB. Aborting RPC executiopn'/>
+                                                    </return>
+                                                </block>
+                                            </outcome>
+                                            <outcome value='success'>
+                                                <block atomic='true'>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="Successfully Updated NRCellRelation info in cps"/>
+                                                    </record>
+                                                </block>
+                                            </outcome>
+                                        </execute>
+                                    </block>
                                 </outcome>
                                 <outcome value='true'>
                                     <block atomic='true'>
@@ -415,17 +486,6 @@
                                 <parameter name="tmp.pnf-name" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`"/>
                                 <parameter name="tmp.blacklisted" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].blacklisted`"/>
                             </set>
-                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
-                                <parameter name="level" value="info" />
-                                <parameter name="field1" value="Temporary varaibles set. Neighbor #:  "/>
-                                <parameter name="field2" value="`$idx`"/>
-                                <parameter name="field3" value="`$tmp.plmnid`"/>
-                                <parameter name="field4" value="`$tmp.cid`"/>
-                                <parameter name="field5" value="`$tmp.phy-cell-id`"/>
-                                <parameter name="field6" value="`$tmp.pnf-name`"/>
-                                <parameter name="field7" value="`$tmp.blacklisted`"/>
-                            </record>
                             <switch test='`$tmp.blacklisted`'>
                                 <outcome value='true'>
                                     <block atomic='true'>
@@ -446,6 +506,7 @@
                                 <parameter name="tmp.idNRCellCU" value="`$generic-neighbor-configuration-input.alias`"/>
                                 <parameter name="tmp.idNRCellRelation" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].cid`"/>
                                 <parameter name="tmp.idGNBCUCPFunction" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].pnf-name`"/>
+                                <parameter name="tmp.nRTCI" value="`$generic-neighbor-configuration-input.neighbor-list-in-use[$idx].phy-cell-id`"/>
                             </set>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
@@ -458,9 +519,11 @@
                                 <parameter name="field6" value="`$tmp.idNRCellRelation`"/>
                                 <parameter name="field7" value="isHOAllowed"/>
                                 <parameter name="field8" value="`$tmp.isHOAllowed`"/>
+                                <parameter name="field9" value="nRTCI"/>
+                                <parameter name="field10" value="`$tmp.nRTCI`"/>
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$prop.restapi.lte-ran-neighbor-in-use.ransim-mounted`"/>
+                                <parameter name="source" value="`$prop.restapi.patchNRCellRelation.ransim-mounted`"/>
                                 <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
                                 <parameter name="target" value="{idNearRTRIC}"/>
                                 <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
@@ -516,11 +579,8 @@
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                             <parameter name="level" value="info" />
                                             <parameter name="field1" value="Details about Neighbor Pre-configuration"/>
-                                            <parameter name="field2" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`"/>
-                                            <parameter name="field3" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`"/>
-                                            <parameter name="field4" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`"/>
-                                            <parameter name="field5" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].pnf-name`"/>
-                                            <parameter name="field6" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].blacklisted`"/>
+                                            <parameter name="field2" value="`$oofpci-neighbor-response.attributes.nRTCI`"/>
+                                            <parameter name="field3" value="`$oofpci-neighbor-response.attributes.isHOAllowed`"/>
                                         </record>
                                     </block>
                                 </outcome>
@@ -575,22 +635,71 @@
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
                                             <parameter name="level" value="info" />
                                             <parameter name="field1" value="Details about Neighbor Post-configuration"/>
-                                            <parameter name="field2" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].plmnid`"/>
-                                            <parameter name="field3" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].cid`"/>
-                                            <parameter name="field4" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].phy-cell-id`"/>
-                                            <parameter name="field5" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].pnf-name`"/>
-                                            <parameter name="field6" value="`$oofpci-neighbor-response.lte-ran-neighbor-list-in-use-lte-cell[0].blacklisted`"/>
+                                            <parameter name="field2" value="`$oofpci-neighbor-response.attributes.nRTCI`"/>
+                                            <parameter name="field3" value="`$oofpci-neighbor-response.attributes.isHOAllowed`"/>
                                         </record>
                                     </block>
                                 </outcome>
                             </execute>
                             <switch test='`$prop.configdb-deployed`'>
                                 <outcome value='false'>
-                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                        <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
-                                        <parameter name="level" value="info" />
-                                        <parameter name="field1" value="ConfigDB Update Skipped"/>
-                                    </record>
+                                    <block atomic='true'>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="CPS is Deployed, ConfigDB Skipped"/>
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                            <parameter name="outputPath" value="tmp.cps.putho.nrcellrelation.url"/>
+                                            <parameter name="target" value="{schemaSet}"/>
+                                            <parameter name="replacement" value="`$tmp.schemaset.name`"/>
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$tmp.cps.putho.nrcellrelation.url`"/>
+                                            <parameter name="outputPath" value="tmp.cps.putho.nrcellrelation.url"/>
+                                            <parameter name="target" value="{templateId}"/>
+                                            <parameter name="replacement" value="`$prop.tbdmt.template.put-ho-nrcellrelation`"/>
+                                        </execute>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="URL for CPS TDBMT to put ho NRCellRelation"/>
+                                            <parameter name='field2' value="`$tmp.cps.putho.nrcellrelation.url`" />
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                            <parameter name="restapiUrl" value="`$tmp.cps.putho.nrcellrelation.url`"/>
+                                            <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-put-ho.json'`" />
+                                            <parameter name="httpMethod" value="POST"/>
+                                            <parameter name="responsePrefix" value="cps-put-ho-nrcellrelation-response"/>
+                                            <parameter name='contentType' value='application/json' />
+                                            <parameter name='format' value='json' />
+                                            <parameter name='accept' value='application/json' />
+                                            <parameter name="convertResponse" value="true"/>
+                                            <outcome value='failure'>
+                                                <block atomic='true'>
+                                                    <set>
+                                                        <parameter name='error-code' value='500'/>
+                                                        <parameter name='error-message' value='Error updating nearRTRIC info in CPS. Aborting RPC executiopn'/>
+                                                    </set>
+                                                    <return status='failure'>
+                                                        <parameter name='ack-final' value='Y'/>
+                                                        <parameter name='error-code' value='500'/>
+                                                        <parameter name='error-message' value='Error updating nearRTRIC info in ConfigDB. Aborting RPC executiopn'/>
+                                                    </return>
+                                                </block>
+                                            </outcome>
+                                            <outcome value='success'>
+                                                <block atomic='true'>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/generic-neighbor-config.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="Successfully Updated NRCellRelation info in cps"/>
+                                                    </record>
+                                                </block>
+                                            </outcome>
+                                        </execute>
+                                    </block>
                                 </outcome>
                                 <outcome value='true'>
                                     <block atomic='true'>
@@ -727,6 +836,11 @@
                     </outcome>
                 </execute>
             </block>
+            <return status='success'>
+                <parameter name="ack-final-indicator" value="Y" />
+                <parameter name="error-code" value="200" />
+                <parameter name="error-message" value="SUCCESSFUL Execution" />
+            </return>
             <block atomic='true'>
                 <set>
                     <parameter name='tmp.oofpcipoc-dmaap-config-resp.rpc-name' value='`$prop.oofpcipoc-dmaap-config-resp.rpc-name.modifyconfiganr`'/>
@@ -847,11 +961,6 @@
                     </outcome>
                 </execute>
             </block>
-            <return status='success'>
-                <parameter name="ack-final-indicator" value="Y" />
-                <parameter name="error-code" value="200" />
-                <parameter name="error-message" value="SUCCESSFUL Execution" />
-            </return>
         </block>
     </method>
 </service-logic>

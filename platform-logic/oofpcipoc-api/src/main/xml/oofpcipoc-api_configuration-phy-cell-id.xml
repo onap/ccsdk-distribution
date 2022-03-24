@@ -202,29 +202,45 @@
                                 <parameter name="tmp.phy-cell-id-in-use" value="`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`"/>
                                 <parameter name="tmp.pnf-name" value="`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`"/>
                             </set>
+                            <set>
+                                <parameter name="tmp.idNRCellDU" value="`$configuration-phy-cell-id-input.fap-service[$idx].alias`"/>
+                                <parameter name="tmp.idGNBDUFunction" value="`$configuration-phy-cell-id-input.fap-service[$idx].pnf-name`"/>
+                                <parameter name="tmp.nRPCI" value="`$configuration-phy-cell-id-input.fap-service[$idx].phy-cell-id-in-use`"/>
+                            </set>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$prop.restapi.fap-service`"/>
-                                <parameter name="outputPath" value="tmp.fap-service-url"/>
-                                <parameter name="target" value="{alias}"/>
-                                <parameter name="replacement" value="`$tmp.alias`"/>
+                                <parameter name="source" value="`$prop.restapi.getGNBDUFunction`"/>
+                                <parameter name="outputPath" value="tmp.getGNBDUFunction-url"/>
+                                <parameter name="target" value="{idNearRTRIC}"/>
+                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.getGNBDUFunction-url`"/>
+                                <parameter name="outputPath" value="tmp.getGNBDUFunction-url"/>
+                                <parameter name="target" value="{mountName}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.getGNBDUFunction-url`"/>
+                                <parameter name="outputPath" value="tmp.getGNBDUFunction-url"/>
+                                <parameter name="target" value="{idGNBDUFunction}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
                             </execute>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
                                 <parameter name="level" value="info" />
                                 <parameter name="field1" value="Setting variables for GET operation"/>
-                                <parameter name="field2" value="`$tmp.fap-service-url`"/>
-                                <parameter name="field3" value="`$tmp.alias`"/>
-                                <parameter name="field4" value="`$tmp.cid`"/>
-                                <parameter name="field5" value="`$tmp.phy-cell-id-in-use`"/>
-                                <parameter name="field6" value="`$tmp.pnf-name`"/>
+                                <parameter name="field2" value="`$tmp.getGNBDUFunction-url`"/>
+                                <parameter name="field3" value="`$tmp.idNRCellDU`"/>
+                                <parameter name="field4" value="`$tmp.idGNBDUFunction`"/>
+                                <parameter name="field5" value="`$tmp.nRPCI`"/>
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.getGNBDUFunction-url`"/>
                                 <parameter name="restapiUser" value="`$prop.controller.user`" />
                                 <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
                                 <parameter name="format" value="json"/>
                                 <parameter name="httpMethod" value="GET"/>
-                                <parameter name="responsePrefix" value="oofpcigetfapservice"/>
+                                <parameter name="responsePrefix" value="getgnbdufunction"/>
                                 <parameter name='contentType' value='application/json' />
                                 <outcome value='failure'>
                                     <return status='failure'>
@@ -238,26 +254,37 @@
                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
                                             <parameter name="level" value="info" />
-                                            <parameter name="field1" value="Initial FAP Service PCI PARMS"/>
-                                            <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
-                                            <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
-                                            <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
+                                            <parameter name="field1" value="Initial NRCELLDU PCI PARMS"/>
+                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
+                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].idNRCellDU`"/>
+                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].attributes.nRPCI`"/>
                                         </record>
                                     </block>
                                 </outcome>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$prop.restapi.x-005b9-lte`"/>
-                                <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
-                                <parameter name="target" value="{alias}"/>
-                                <parameter name="replacement" value="`$tmp.alias`"/>
+                                <parameter name="source" value="`$prop.restapi.patchNRCellDU`"/>
+                                <parameter name="outputPath" value="tmp.nrcelldu.patch.pci.url"/>
+                                <parameter name="target" value="{idNearRTRIC}"/>
+                                <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.nrcelldu.patch.pci.url`"/>
+                                <parameter name="outputPath" value="tmp.nrcelldu.patch.pci.url"/>
+                                <parameter name="target" value="{idGNBDUFunction}"/>
+                                <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
+                            </execute>
+                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                <parameter name="source" value="`$tmp.nrcelldu.patch.pci.url`"/>
+                                <parameter name="outputPath" value="tmp.nrcelldu.patch.pci.url"/>
+                                <parameter name="target" value="{idNRCellDU}"/>
+                                <parameter name="replacement" value="`$tmp.idNRCellDU`"/>
                             </execute>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
                                 <parameter name="level" value="info" />
-                                <parameter name="field1" value="URL and Target for PCI patch URL"/>
+                                <parameter name="field1" value="URL for PCI patch URL"/>
                                 <parameter name='field2' value="`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`" />
-                                <parameter name='field3' value="`$prop.oofpcipoc.patch.pci.target`" />
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
                                 <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/oofpcipoc-pci-patch.json'`" />
@@ -289,12 +316,12 @@
                                 </outcome>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.getGNBDUFunction-url`"/>
                                 <parameter name="restapiUser" value="`$prop.controller.user`" />
                                 <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
                                 <parameter name="format" value="json"/>
                                 <parameter name="httpMethod" value="GET"/>
-                                <parameter name="responsePrefix" value="oofpcigetfapservice"/>
+                                <parameter name="responsePrefix" value="getgnbdufunction"/>
                                 <parameter name='contentType' value='application/json' />
                                 <outcome value='failure'>
                                     <return status='failure'>
@@ -309,9 +336,9 @@
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
                                             <parameter name="level" value="info" />
                                             <parameter name="field1" value="Post Reconfig FAP Service PCI PARMS"/>
-                                            <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
-                                            <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
-                                            <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
+                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
+                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].idNRCellDU`"/>
+                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].attributes.nRPCI`"/>
                                         </record>
                                     </block>
                                 </outcome>
@@ -361,6 +388,65 @@
                                         </execute>
                                     </block>
                                 </outcome>
+                                <outcome value='false'>
+                                    <block atomic='true'>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="CPS is Deployed, ConfigDB Skipped"/>
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                            <parameter name="outputPath" value="tmp.cps.putnrpci.nrcelldu.url"/>
+                                            <parameter name="target" value="{schemaSet}"/>
+                                            <parameter name="replacement" value="`$tmp.schemaset.name`"/>
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$tmp.cps.putnrpci.nrcelldu.url`"/>
+                                            <parameter name="outputPath" value="tmp.cps.putnrpci.nrcelldu.url"/>
+                                            <parameter name="target" value="{templateId}"/>
+                                            <parameter name="replacement" value="`$prop.tbdmt.template.put-nrpci-nrcelldu`"/>
+                                        </execute>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="URL for CPS TDBMT to put nRPCI NRCellDU"/>
+                                            <parameter name='field2' value="`$tmp.cps.putnrpci.nrcelldu.url`" />
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                            <parameter name="restapiUrl" value="`$tmp.cps.putnrpci.nrcelldu.url`"/>
+                                            <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-put-nrpci.json'`" />
+                                            <parameter name="httpMethod" value="POST"/>
+                                            <parameter name="responsePrefix" value="cps-put-nrpci-nrcelldu-response"/>
+                                            <parameter name='contentType' value='application/json' />
+                                            <parameter name='format' value='json' />
+                                            <parameter name='accept' value='application/json' />
+                                            <parameter name="convertResponse" value="true"/>
+                                            <outcome value='failure'>
+                                                <block atomic='true'>
+                                                    <set>
+                                                        <parameter name='error-code' value='500'/>
+                                                        <parameter name='error-message' value='Error updating nearRTRIC info in CPS. Aborting RPC executiopn'/>
+                                                    </set>
+                                                    <return status='failure'>
+                                                        <parameter name='ack-final' value='Y'/>
+                                                        <parameter name='error-code' value='500'/>
+                                                        <parameter name='error-message' value='Error updating nearRTRIC info in ConfigDB. Aborting RPC executiopn'/>
+                                                    </return>
+                                                </block>
+                                            </outcome>
+                                            <outcome value='success'>
+                                                <block atomic='true'>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="Successfully Updated NRCellDU info in cps"/>
+                                                    </record>
+                                                </block>
+                                            </outcome>
+                                        </execute>
+                                    </block>
+                                </outcome>
                             </switch>
                         </block>
                     </for>
@@ -390,20 +476,20 @@
                                 <parameter name="field6" value="`$tmp.nRPCI`"/>
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$prop.restapi.fap-service.ransim-mounted`"/>
-                                <parameter name="outputPath" value="tmp.fap-service-url"/>
+                                <parameter name="source" value="`$prop.restapi.getGNBDUFunction.ransim-mounted`"/>
+                                <parameter name="outputPath" value="tmp.getGNBDUFunction-url"/>
                                 <parameter name="target" value="{idNearRTRIC}"/>
                                 <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.fap-service-url`"/>
-                                <parameter name="outputPath" value="tmp.fap-service-url"/>
+                                <parameter name="source" value="`$tmp.getGNBDUFunction-url`"/>
+                                <parameter name="outputPath" value="tmp.getGNBDUFunction-url"/>
                                 <parameter name="target" value="{mountName}"/>
                                 <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.fap-service-url`"/>
-                                <parameter name="outputPath" value="tmp.fap-service-url"/>
+                                <parameter name="source" value="`$tmp.getGNBDUFunction-url`"/>
+                                <parameter name="outputPath" value="tmp.getGNBDUFunction-url"/>
                                 <parameter name="target" value="{idGNBDUFunction}"/>
                                 <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
                             </execute>
@@ -411,19 +497,18 @@
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
                                 <parameter name="level" value="info" />
                                 <parameter name="field1" value="Setting variables for GET operation"/>
-                                <parameter name="field2" value="`$tmp.fap-service-url`"/>
-                                <parameter name="field3" value="`$tmp.alias`"/>
-                                <parameter name="field4" value="`$tmp.cid`"/>
-                                <parameter name="field5" value="`$tmp.phy-cell-id-in-use`"/>
-                                <parameter name="field6" value="`$tmp.pnf-name`"/>
+                                <parameter name="field2" value="`$tmp.getGNBDUFunction-url`"/>
+                                <parameter name="field3" value="`$tmp.idNRCellDU`"/>
+                                <parameter name="field4" value="`$tmp.idGNBDUFunction`"/>
+                                <parameter name="field5" value="`$tmp.nRPCI`"/>
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.getGNBDUFunction-url`"/>
                                 <parameter name="restapiUser" value="`$prop.controller.user`" />
                                 <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
                                 <parameter name="format" value="json"/>
                                 <parameter name="httpMethod" value="GET"/>
-                                <parameter name="responsePrefix" value="oofpcigetfapservice"/>
+                                <parameter name="responsePrefix" value="getgnbdufunction"/>
                                 <parameter name='contentType' value='application/json' />
                                 <outcome value='failure'>
                                     <return status='failure'>
@@ -437,52 +522,51 @@
                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
                                             <parameter name="level" value="info" />
-                                            <parameter name="field1" value="Initial FAP Service PCI PARMS"/>
-                                            <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
-                                            <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
-                                            <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
+                                            <parameter name="field1" value="Initial NRCellDU PCI PARMS"/>
+                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
+                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].idNRCellDU`"/>
+                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].attributes.nRPCI`"/>
                                         </record>
                                     </block>
                                 </outcome>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$prop.restapi.x-005b9-lte.ransim-mounted`"/>
-                                <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
+                                <parameter name="source" value="`$prop.restapi.patchNRCellDU.ransim-mounted`"/>
+                                <parameter name="outputPath" value="tmp.nrcelldu.patch.pci.url"/>
                                 <parameter name="target" value="{idNearRTRIC}"/>
                                 <parameter name="replacement" value="`$tmp.nearRTRICId`"/>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.config-neighbor-service-url`"/>
-                                <parameter name="outputPath" value="tmp.config-neighbor-service-url"/>
+                                <parameter name="source" value="`$tmp.nrcelldu.patch.pci.url`"/>
+                                <parameter name="outputPath" value="tmp.nrcelldu.patch.pci.url"/>
                                 <parameter name="target" value="{mountName}"/>
                                 <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.oofpcipoc.patch.pci.url`"/>
-                                <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
+                                <parameter name="source" value="`$tmp.nrcelldu.patch.pci.url`"/>
+                                <parameter name="outputPath" value="tmp.nrcelldu.patch.pci.url"/>
                                 <parameter name="target" value="{idGNBDUFunction}"/>
                                 <parameter name="replacement" value="`$tmp.idGNBDUFunction`"/>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                <parameter name="source" value="`$tmp.oofpcipoc.patch.pci.url`"/>
-                                <parameter name="outputPath" value="tmp.oofpcipoc.patch.pci.url"/>
+                                <parameter name="source" value="`$tmp.nrcelldu.patch.pci.url`"/>
+                                <parameter name="outputPath" value="tmp.nrcelldu.patch.pci.url"/>
                                 <parameter name="target" value="{idNRCellDU}"/>
                                 <parameter name="replacement" value="`$tmp.idNRCellDU`"/>
                             </execute>
                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                 <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
                                 <parameter name="level" value="info" />
-                                <parameter name="field1" value="URL and Target for PCI patch URL"/>
-                                <parameter name='field2' value="`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`" />
-                                <parameter name='field3' value="`$prop.oofpcipoc.patch.pci.target`" />
+                                <parameter name="field1" value="URL for PCI patch URL"/>
+                                <parameter name='field2' value="`$prop.controller.url + $tmp.nrcelldu.patch.pci.url`" />
                             </record>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
                                 <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/oofpcipoc-pci-patch.json'`" />
-                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.oofpcipoc.patch.pci.url`"/>
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.nrcelldu.patch.pci.url`"/>
                                 <parameter name="restapiUser" value="`$prop.controller.user`" />
                                 <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
                                 <parameter name="httpMethod" value="PATCH"/>
-                                <parameter name="responsePrefix" value="oofpci-patch-response"/>
+                                <parameter name="responsePrefix" value="nrcelldu-patch-response"/>
                                 <parameter name='contentType' value='application/yang.patch+json' />
                                 <parameter name='format' value='json' />
                                 <parameter name='accept' value='application/yang.patch-status+json' />
@@ -506,12 +590,12 @@
                                 </outcome>
                             </execute>
                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.fap-service-url`"/>
+                                <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.getGNBDUFunction-url`"/>
                                 <parameter name="restapiUser" value="`$prop.controller.user`" />
                                 <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
                                 <parameter name="format" value="json"/>
                                 <parameter name="httpMethod" value="GET"/>
-                                <parameter name="responsePrefix" value="oofpcigetfapservice"/>
+                                <parameter name="responsePrefix" value="getgnbdufunction"/>
                                 <parameter name='contentType' value='application/json' />
                                 <outcome value='failure'>
                                     <return status='failure'>
@@ -525,21 +609,73 @@
                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                             <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
                                             <parameter name="level" value="info" />
-                                            <parameter name="field1" value="Post Reconfig FAP Service PCI PARMS"/>
-                                            <parameter name="field2" value="`$oofpcigetfapservice.fap-service[0].alias`"/>
-                                            <parameter name="field3" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.phy-cell-id-in-use`"/>
-                                            <parameter name="field4" value="`$oofpcigetfapservice.fap-service[0].x-0005b9-lte.pnf-name`"/>
+                                            <parameter name="field1" value="Post Reconfig NRCELLDU PCI PARMS"/>
+                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
+                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].idNRCellDU`"/>
+                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].attributes.nRPCI`"/>
                                         </record>
                                     </block>
                                 </outcome>
                             </execute>
                             <switch test='`$prop.configdb-deployed`'>
                                 <outcome value='false'>
-                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                        <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                                        <parameter name="level" value="info" />
-                                        <parameter name="field1" value="ConfigDB Update Skipped"/>
-                                    </record>
+                                    <block atomic='true'>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="CPS is Deployed, ConfigDB Skipped"/>
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
+                                            <parameter name="outputPath" value="tmp.cps.putnrpci.nrcelldu.url"/>
+                                            <parameter name="target" value="{schemaSet}"/>
+                                            <parameter name="replacement" value="`$tmp.schemaset.name`"/>
+                                        </execute>
+                                        <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                            <parameter name="source" value="`$tmp.cps.putnrpci.nrcelldu.url`"/>
+                                            <parameter name="outputPath" value="tmp.cps.putnrpci.nrcelldu.url"/>
+                                            <parameter name="target" value="{templateId}"/>
+                                            <parameter name="replacement" value="`$prop.tbdmt.template.put-nrpci-nrcelldu`"/>
+                                        </execute>
+                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                            <parameter name="level" value="info" />
+                                            <parameter name="field1" value="URL for CPS TDBMT to put nRPCI NRCellDU"/>
+                                            <parameter name='field2' value="`$tmp.cps.putnrpci.nrcelldu.url`" />
+                                        </record>
+                                        <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                            <parameter name="restapiUrl" value="`$tmp.cps.putnrpci.nrcelldu.url`"/>
+                                            <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-put-nrpci.json'`" />
+                                            <parameter name="httpMethod" value="POST"/>
+                                            <parameter name="responsePrefix" value="cps-put-nrpci-nrcelldu-response"/>
+                                            <parameter name='contentType' value='application/json' />
+                                            <parameter name='format' value='json' />
+                                            <parameter name='accept' value='application/json' />
+                                            <parameter name="convertResponse" value="true"/>
+                                            <outcome value='failure'>
+                                                <block atomic='true'>
+                                                    <set>
+                                                        <parameter name='error-code' value='500'/>
+                                                        <parameter name='error-message' value='Error updating nearRTRIC info in CPS. Aborting RPC executiopn'/>
+                                                    </set>
+                                                    <return status='failure'>
+                                                        <parameter name='ack-final' value='Y'/>
+                                                        <parameter name='error-code' value='500'/>
+                                                        <parameter name='error-message' value='Error updating nearRTRIC info in ConfigDB. Aborting RPC executiopn'/>
+                                                    </return>
+                                                </block>
+                                            </outcome>
+                                            <outcome value='success'>
+                                                <block atomic='true'>
+                                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                        <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                                        <parameter name="level" value="info" />
+                                                        <parameter name="field1" value="Successfully Updated NRCellDU info in cps"/>
+                                                    </record>
+                                                </block>
+                                            </outcome>
+                                        </execute>
+                                    </block>
                                 </outcome>
                                 <outcome value='true'>
                                     <block atomic='true'>
