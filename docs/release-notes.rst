@@ -81,7 +81,7 @@ version.  The following table summarizes where log4j 1.x is currently used in CC
 +----------------+-----------------------------------------------------------------------------------+
 |                | org.onap.dmaap.messagerouter.dmaapclient:dmaapClient:1.1.12 -> log4j:log4j:1.2.17 |
 +----------------+-----------------------------------------------------------------------------------+
-| ccsdk/sli      | org.onap.dmaap.messagerouter.dmaapclient:dmaapClient:1.1.12 -> log4j:log4j:1.2.17 |                                                                                |
+| ccsdk/sli      | org.onap.dmaap.messagerouter.dmaapclient:dmaapClient:1.1.12 -> log4j:log4j:1.2.17 | 
 +----------------+-----------------------------------------------------------------------------------+
 
 
