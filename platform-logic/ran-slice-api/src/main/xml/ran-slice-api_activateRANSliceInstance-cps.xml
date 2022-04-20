@@ -440,6 +440,10 @@
                                                 <switch test='`$tmp.ric.sNSSAI == $tmp.sNSSAI`'>
                                                     <outcome value='true'>
                                                         <block atomic='true'>
+                                                            <set>
+                                                                <parameter name='tmp.payload.sNSSAI' value="`$tmp.sNSSAI`"/>
+                                                                <parameter name='tmp.status' value="`$tmp.status`"/>
+                                                            </set>
                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                                                 <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
                                                                 <parameter name="outputPath" value="tmp.cps.putstatus.rtric.url"/>
@@ -457,6 +461,7 @@
                                                                 <parameter name="level" value="info" />
                                                                 <parameter name="field1" value="URL for CPS TDBMT to put status NearRTRIC"/>
                                                                 <parameter name='field2' value="`$tmp.cps.putstatus.rtric.url`" />
+                                                                <parameter name='field3' value="`$prop.tbdmt.template.put-status-rtric`" />
                                                             </record>
                                                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
                                                                 <parameter name="restapiUrl" value="`$tmp.cps.putstatus.rtric.url`"/>
@@ -762,6 +767,12 @@
                                                                                                 </block>
                                                                                             </outcome>
                                                                                         </execute>
+                                                                                        <set>
+                                                                                            <parameter name='tmp.gNBCUCPList.gNBCUName' value="`$tmp.CUCPName`"/>
+                                                                                            <parameter name='tmp.cellCULocalId' value="`$tmp.NRCellCUID`"/>
+                                                                                            <parameter name='tmp.payload.sNSSAI' value="`$tmp.sNSSAI`"/>
+                                                                                            <parameter name='tmp.status' value="`$tmp.status`"/>
+                                                                                        </set>
                                                                                         <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                                                                             <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
                                                                                             <parameter name="outputPath" value="tmp.cps.putstatus.nrcellcu.url"/>
@@ -1471,6 +1482,12 @@
                                                                                     </block>
                                                                                 </outcome>
                                                                             </execute>
+                                                                            <set>
+                                                                                <parameter name='tmp.gNBDUList.gNBDUId' value="`$tmp.GNBDUId`"/>
+                                                                                <parameter name='tmp.cellLocalId' value="`$tmp.NRCellDUID`"/>
+                                                                                <parameter name='tmp.payload.sNSSAI' value="`$tmp.sNSSAI`"/>
+                                                                                <parameter name='tmp.status' value="`$tmp.status`"/>
+                                                                            </set>
                                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                                                                 <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
                                                                                 <parameter name="outputPath" value="tmp.cps.putstatus.nrcelldu.url"/>
