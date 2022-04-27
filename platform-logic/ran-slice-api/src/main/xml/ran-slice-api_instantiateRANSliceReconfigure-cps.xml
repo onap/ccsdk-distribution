@@ -6,7 +6,7 @@
             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                 <parameter name="file" value="/opt/opendaylight/current/data/log/instantiateRANSlice.log" />
                 <parameter name="level" value="info" />
-                <parameter name="field1" value="Reached instantiateRANSliceReconfigure "/>
+                <parameter name="field1" value="Reached instantiateRANSliceReconfigure-cps "/>
             </record>
             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='contains' emitsOutcome='true' >
                 <parameter name='source' value='`$instantiate-r-a-n-slice-input.payload`' />
@@ -387,7 +387,7 @@
                                                                 <parameter name="source" value="`$tmp.cps.getPLMNID.url`"/>
                                                                 <parameter name="outputPath" value="tmp.cps.getPLMNID.url"/>
                                                                 <parameter name="target" value="{templateId}"/>
-                                                                <parameter name="replacement" value="`$prop.tbdmt.template.get-plmnid-mcc`"/>
+                                                                <parameter name="replacement" value="`$prop.tbdmt.template.get-plmnid`"/>
                                                             </execute>
                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
@@ -399,7 +399,7 @@
                                                                 <parameter name="restapiUrl" value="`$tmp.cps.getPLMNID.url`"/>
                                                                 <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-get-plmnid.json'`" />
                                                                 <parameter name="httpMethod" value="POST"/>
-                                                                <parameter name="responsePrefix" value="getplmnmccid-cps-response"/>
+                                                                <parameter name="responsePrefix" value="getplmnid-cps-response"/>
                                                                 <parameter name='contentType' value='application/json' />
                                                                 <parameter name='format' value='json' />
                                                                 <parameter name='accept' value='application/json' />
@@ -413,7 +413,7 @@
                                                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                             <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                                                             <parameter name="level" value="info" />
-                                                                            <parameter name="field1" value="UNSuccessfully Obtained MCC info from CPS"/>
+                                                                            <parameter name="field1" value="Failed to obtain MCC, MNC info from CPS"/>
                                                                             <parameter name="field2" value="`$cps-get-plmnid.json`"/>
                                                                         </record>
                                                                         <return status='failure'>
@@ -476,118 +476,19 @@
                                                                     <block atomic='true'>
                                                                         <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                                             <parameter name='outputPath' value='tmp.plmn.mcc' />
-                                                                            <parameter name='source' value="`'getplmnmccid-cps-response.[0]'`" />
+                                                                            <parameter name='source' value="`'getplmnid-cps-response.[0].mcc'`" />
                                                                         </execute>
-                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
-                                                                            <parameter name="level" value="info" />
-                                                                            <parameter name="field1" value="Successfully Obtained MCC info from CPS"/>
-                                                                            <parameter name="field2" value="`$getplmnmccid-cps-response.httpResponse`"/>
-                                                                        </record>
-                                                                    </block>
-                                                                </outcome>
-                                                            </execute>
-                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
-                                                                <parameter name="outputPath" value="tmp.cps.getPLMNMNCID.url"/>
-                                                                <parameter name="target" value="{schemaSet}"/>
-                                                                <parameter name="replacement" value="`$tmp.schemaset.name`"/>
-                                                            </execute>
-                                                            <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                <parameter name="source" value="`$tmp.cps.getPLMNMNCID.url`"/>
-                                                                <parameter name="outputPath" value="tmp.cps.getPLMNMNCID.url"/>
-                                                                <parameter name="target" value="{templateId}"/>
-                                                                <parameter name="replacement" value="`$prop.tbdmt.template.get-plmnid-mnc`"/>
-                                                            </execute>
-                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
-                                                                <parameter name="level" value="info" />
-                                                                <parameter name="field1" value="URL for CPS TDBMT to Get plmnid from sliceprofile"/>
-                                                                <parameter name='field2' value="`$tmp.cps.getPLMNMNCID.url`" />
-                                                            </record>
-                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                <parameter name="restapiUrl" value="`$tmp.cps.getPLMNMNCID.url`"/>
-                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-get-plmnid.json'`" />
-                                                                <parameter name="httpMethod" value="POST"/>
-                                                                <parameter name="responsePrefix" value="getplmnmncid-cps-response"/>
-                                                                <parameter name='contentType' value='application/json' />
-                                                                <parameter name='format' value='json' />
-                                                                <parameter name='accept' value='application/json' />
-                                                                <parameter name="convertResponse" value="true"/>
-                                                                <outcome value='success'>
-                                                                    <block atomic='true'>
                                                                         <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                                             <parameter name='outputPath' value='tmp.plmn.mnc' />
-                                                                            <parameter name='source' value="`'getplmnmncid-cps-response.[0]'`" />
+                                                                            <parameter name='source' value="`'getplmnid-cps-response.[0].mnc'`" />
                                                                         </execute>
                                                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                             <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                                                             <parameter name="level" value="info" />
-                                                                            <parameter name="field1" value="Successfully Obtained MNC info from Cps"/>
-                                                                            <parameter name="field2" value="`$getplmnmncid-cps-response.httpResponse`"/>
+                                                                            <parameter name="field1" value="Successfully Obtained MCC, MNC info from CPS"/>
+                                                                            <parameter name="field2" value="`$tmp.plmn.mcc`"/>
+                                                                            <parameter name="field3" value="`$tmp.plmn.mnc`"/>
                                                                         </record>
-                                                                    </block>
-                                                                </outcome>
-                                                                <outcome value='failure'>
-                                                                    <block>
-                                                                        <block atomic='true'>
-                                                                            <set>
-                                                                                <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
-                                                                                <parameter name="tmp.status" value="`$error-code`"/>
-                                                                                <parameter name="tmp.reason" value="`$error-message`"/>
-                                                                                <parameter name="tmp.requestID" value="`$instantiateRANSlice-input.common-header.request-id`"/>
-                                                                                <parameter name="tmp.action" value="`$instantiateRANSlice-input.action`"/>
-                                                                            </set>
-                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                <parameter name="level" value="info" />
-                                                                                <parameter name="field1" value="URL for SO Callback Response"/>
-                                                                                <parameter name='field2' value="`$tmp.so.callbackURL`" />
-                                                                                <parameter name='field3' value="`$tmp.status`" />
-                                                                                <parameter name='field4' value="`$tmp.reason`" />
-                                                                                <parameter name='field5' value="`$tmp.requestID`" />
-                                                                                <parameter name='field6' value="`$tmp.action`" />
-                                                                                <parameter name='field7' value="`$tmp.CUCPList`" />
-                                                                                <parameter name='field8' value="`$tmp.CUUPList`" />
-                                                                                <parameter name='field9' value="`$tmp.DUList`" />
-                                                                            </record>
-                                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
-                                                                                <parameter name="restapiUrl" value="`$tmp.so.callbackURL`"/>
-                                                                                <parameter name="httpMethod" value="POST"/>
-                                                                                <parameter name="responsePrefix" value="so-callback-response"/>
-                                                                                <parameter name='contentType' value='application/json' />
-                                                                                <parameter name='format' value='json' />
-                                                                                <parameter name='accept' value='*/*' />
-                                                                                <outcome value='failure'>
-                                                                                    <block>
-                                                                                        <return status='failure'>
-                                                                                            <parameter name='ack-final' value='Y'/>
-                                                                                            <parameter name="error-code" value="500" />
-                                                                                            <parameter name="error-message" value="Error sending SO Response" />
-                                                                                        </return>
-                                                                                    </block>
-                                                                                </outcome>
-                                                                                <outcome value='success'>
-                                                                                    <block>
-                                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                            <parameter name="level" value="info" />
-                                                                                            <parameter name="field1" value="SO Response Sent "/>
-                                                                                        </record>
-                                                                                    </block>
-                                                                                </outcome>
-                                                                            </execute>
-                                                                        </block>
-                                                                        <set>
-                                                                            <parameter name='error-code' value='500'/>
-                                                                            <parameter name='error-message' value='Error Getting Info from CPS. Aborting RPC executiopn'/>
-                                                                        </set>
-                                                                        <return status='failure'>
-                                                                            <parameter name='ack-final' value='Y'/>
-                                                                            <parameter name='error-code' value='500'/>
-                                                                            <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
-                                                                        </return>
                                                                     </block>
                                                                 </outcome>
                                                             </execute>
@@ -638,6 +539,59 @@
                                             </block>
                                         </outcome>
                                     </switch>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                        <parameter name="source" value="`$tmp.restapi.addnSSAIEntry.ToNearRTRIC.url`"/>
+                                        <parameter name="outputPath" value="tmp.restapi.addnSSAIEntry.ToNearRTRIC.url"/>
+                                        <parameter name="target" value="{mcc}"/>
+                                        <parameter name="replacement" value="`$tmp.mcc`"/>
+                                    </execute>
+                                    <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
+                                        <parameter name="source" value="`$tmp.restapi.addnSSAIEntry.ToNearRTRIC.url`"/>
+                                        <parameter name="outputPath" value="tmp.restapi.addnSSAIEntry.ToNearRTRIC.url"/>
+                                        <parameter name="target" value="{mnc}"/>
+                                        <parameter name="replacement" value="`$tmp.mnc`"/>
+                                    </execute>
+                                    <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                        <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
+                                        <parameter name="level" value="info" />
+                                        <parameter name="field1" value="Closed loop API params"/>
+                                        <parameter name="field2" value="`$tmp.nearRTRICId`"/>
+                                        <parameter name="field3" value="`$tmp.mcc`"/>
+                                        <parameter name="field4" value="`$tmp.mnc`"/>
+                                    </record>
+                                    <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
+                                        <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-closed-loop-nearRTRIC-config-patch.json'`" />
+                                        <parameter name="restapiUrl" value="`$prop.controller.url + $tmp.restapi.addnSSAIEntry.ToNearRTRIC.url`"/>
+                                        <parameter name="restapiUser" value="`$prop.controller.user`" />
+                                        <parameter name="restapiPassword" value="`$prop.controller.pwd`"/>
+                                        <parameter name="httpMethod" value="PATCH"/>
+                                        <parameter name="responsePrefix" value="patch-nearRTRIC-config-response"/>
+                                        <parameter name='contentType' value='application/yang.patch+json' />
+                                        <parameter name='accept' value='application/yang.patch-status+json'/>
+                                        <parameter name='format' value='json' />
+                                        <outcome value='success'>
+                                            <block atomic='true'>
+                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
+                                                    <parameter name="level" value="info" />
+                                                    <parameter name="field1" value="Successfully patched NearRTRIC configuration"/>
+                                                </record>
+                                            </block>
+                                        </outcome>
+                                        <outcome value='failure'>
+                                            <block>
+                                                <set>
+                                                    <parameter name='error-code' value='500'/>
+                                                    <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
+                                                </set>
+                                                <return status='failure'>
+                                                    <parameter name='ack-final' value='Y'/>
+                                                    <parameter name='error-code' value='500'/>
+                                                    <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
+                                                </return>
+                                            </block>
+                                        </outcome>
+                                    </execute>
                                     <set>
                                         <parameter name='tmp.getAnchors.URL' value="`$prop.restapi.cps.anchors.endpoint`"/>
                                     </set>
@@ -727,6 +681,8 @@
                                                             <set>
                                                                 <parameter name='tmp.mcc' value='`$tmp.mcc`' />
                                                                 <parameter name='tmp.mnc' value='`$tmp.mnc`' />
+                                                                <parameter name='tmp.configParameter' value='`dLThptPerSlice`' />
+                                                                <parameter name='tmp.configValue' value='`$tmp.dLThptPerSlice`' />
                                                             </set>
                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
@@ -737,29 +693,30 @@
                                                                 <parameter name="field4" value="`$tmp.mnc`"/>
                                                                 <parameter name="field5" value="`$tmp.payload.sNSSAI`"/>
                                                                 <parameter name="field6" value="`$tmp.dLThptPerSlice`"/>
-                                                                <parameter name="field7" value="`$tmp.uLThptPerSlice`"/>
+                                                                <parameter name="field7" value="`$tmp.configParameter`"/>
+                                                                <parameter name="field8" value="`$tmp.configValue`"/>
                                                             </record>
                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                                                 <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
-                                                                <parameter name="outputPath" value="tmp.cps.patchdLThptPerSlice.url"/>
+                                                                <parameter name="outputPath" value="tmp.cps.patchconfigData.url"/>
                                                                 <parameter name="target" value="{schemaSet}"/>
                                                                 <parameter name="replacement" value="`$tmp.schemaset.name`"/>
                                                             </execute>
                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                <parameter name="source" value="`$tmp.cps.patchdLThptPerSlice.url`"/>
-                                                                <parameter name="outputPath" value="tmp.cps.patchdLThptPerSlice.url"/>
+                                                                <parameter name="source" value="`$tmp.cps.patchconfigData.url`"/>
+                                                                <parameter name="outputPath" value="tmp.cps.patchconfigData.url"/>
                                                                 <parameter name="target" value="{templateId}"/>
-                                                                <parameter name="replacement" value="`$prop.tbdmt.template.patch-dLThptPerSlice`"/>
+                                                                <parameter name="replacement" value="`$prop.tbdmt.template.patch-configData`"/>
                                                             </execute>
                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                                                 <parameter name="level" value="info" />
                                                                 <parameter name="field1" value="URL for CPS TDBMT to patch dLThptPerSlice"/>
-                                                                <parameter name='field2' value="`$tmp.cps.patchdLThptPerSlice.url`" />
+                                                                <parameter name='field2' value="`$tmp.cps.patchconfigData.url`" />
                                                             </record>
                                                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                <parameter name="restapiUrl" value="`$tmp.cps.patchdLThptPerSlice.url`"/>
-                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-patch-dLThptPerSlice.json'`" />
+                                                                <parameter name="restapiUrl" value="`$tmp.cps.patchconfigData.url`"/>
+                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-patch-configData.json'`" />
                                                                 <parameter name="httpMethod" value="POST"/>
                                                                 <parameter name="responsePrefix" value="patchdLThptPerSlice-cps-response"/>
                                                                 <parameter name='contentType' value='application/json' />
@@ -768,60 +725,12 @@
                                                                 <parameter name="convertResponse" value="true"/>
                                                                 <outcome value='failure'>
                                                                     <block>
-                                                                        <block atomic='true'>
-                                                                            <set>
-                                                                                <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
-                                                                                <parameter name="tmp.status" value="`$error-code`"/>
-                                                                                <parameter name="tmp.reason" value="`$error-message`"/>
-                                                                                <parameter name="tmp.requestID" value="`$instantiateRANSlice-input.common-header.request-id`"/>
-                                                                                <parameter name="tmp.action" value="`$instantiateRANSlice-input.action`"/>
-                                                                            </set>
-                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                <parameter name="level" value="info" />
-                                                                                <parameter name="field1" value="URL for SO Callback Response"/>
-                                                                                <parameter name='field2' value="`$tmp.so.callbackURL`" />
-                                                                                <parameter name='field3' value="`$tmp.status`" />
-                                                                                <parameter name='field4' value="`$tmp.reason`" />
-                                                                                <parameter name='field5' value="`$tmp.requestID`" />
-                                                                                <parameter name='field6' value="`$tmp.action`" />
-                                                                                <parameter name='field7' value="`$tmp.CUCPList`" />
-                                                                                <parameter name='field8' value="`$tmp.CUUPList`" />
-                                                                                <parameter name='field9' value="`$tmp.DUList`" />
-                                                                            </record>
-                                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
-                                                                                <parameter name="restapiUrl" value="`$tmp.so.callbackURL`"/>
-                                                                                <parameter name="httpMethod" value="POST"/>
-                                                                                <parameter name="responsePrefix" value="so-callback-response"/>
-                                                                                <parameter name='contentType' value='application/json' />
-                                                                                <parameter name='format' value='json' />
-                                                                                <parameter name='accept' value='*/*' />
-                                                                                <outcome value='failure'>
-                                                                                    <block>
-                                                                                        <return status='failure'>
-                                                                                            <parameter name='ack-final' value='Y'/>
-                                                                                            <parameter name="error-code" value="500" />
-                                                                                            <parameter name="error-message" value="Error sending SO Response" />
-                                                                                        </return>
-                                                                                    </block>
-                                                                                </outcome>
-                                                                                <outcome value='success'>
-                                                                                    <block>
-                                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                            <parameter name="level" value="info" />
-                                                                                            <parameter name="field1" value="SO Response Sent "/>
-                                                                                        </record>
-                                                                                    </block>
-                                                                                </outcome>
-                                                                            </execute>
-                                                                        </block>
                                                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                             <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                                                             <parameter name="level" value="info" />
-                                                                            <parameter name="field1" value="Failed to fetch data from CPS"/>
-                                                                            <parameter name="field2" value="`$cps-patch-dLThptPerSlice.json`"/>
+                                                                            <parameter name="field1" value="Failed to update CPS"/>
+                                                                            <parameter name="field2" value="`$cps-patch-configData.json`"/>
+                                                                            <parameter name="field3" value="`$patchdLThptPerSlice-cps-response.httpResponse`"/>
                                                                         </record>
                                                                         <set>
                                                                             <parameter name='error-code' value='500'/>
@@ -845,6 +754,22 @@
                                                                     </block>
                                                                 </outcome>
                                                             </execute>
+                                                            <set>
+                                                                <parameter name='tmp.configParameter' value='`uLThptPerSlice`' />
+                                                                <parameter name='tmp.configValue' value='`$tmp.uLThptPerSlice`' />
+                                                            </set>
+                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
+                                                                <parameter name="level" value="info" />
+                                                                <parameter name="field1" value="Inputs"/>
+                                                                <parameter name="field2" value="`$tmp.nearRTRICId`"/>
+                                                                <parameter name="field3" value="`$tmp.mcc`"/>
+                                                                <parameter name="field4" value="`$tmp.mnc`"/>
+                                                                <parameter name="field5" value="`$tmp.payload.sNSSAI`"/>
+                                                                <parameter name="field6" value="`$tmp.uLThptPerSlice`"/>
+                                                                <parameter name="field7" value="`$tmp.configParameter`"/>
+                                                                <parameter name="field8" value="`$tmp.configValue`"/>
+                                                            </record>
                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
                                                                 <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
                                                                 <parameter name="outputPath" value="tmp.cps.patchuLThptPerSlice.url"/>
@@ -855,7 +780,7 @@
                                                                 <parameter name="source" value="`$tmp.cps.patchuLThptPerSlice.url`"/>
                                                                 <parameter name="outputPath" value="tmp.cps.patchuLThptPerSlice.url"/>
                                                                 <parameter name="target" value="{templateId}"/>
-                                                                <parameter name="replacement" value="`$prop.tbdmt.template.patch-uLThptPerSlice`"/>
+                                                                <parameter name="replacement" value="`$prop.tbdmt.template.patch-configData`"/>
                                                             </execute>
                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
@@ -865,7 +790,7 @@
                                                             </record>
                                                             <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
                                                                 <parameter name="restapiUrl" value="`$tmp.cps.patchuLThptPerSlice.url`"/>
-                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-patch-uLThptPerSlice.json'`" />
+                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-patch-configData.json'`" />
                                                                 <parameter name="httpMethod" value="POST"/>
                                                                 <parameter name="responsePrefix" value="patchuLThptPerSlice-cps-response"/>
                                                                 <parameter name='contentType' value='application/json' />
@@ -874,60 +799,11 @@
                                                                 <parameter name="convertResponse" value="true"/>
                                                                 <outcome value='failure'>
                                                                     <block>
-                                                                        <block atomic='true'>
-                                                                            <set>
-                                                                                <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
-                                                                                <parameter name="tmp.status" value="`$error-code`"/>
-                                                                                <parameter name="tmp.reason" value="`$error-message`"/>
-                                                                                <parameter name="tmp.requestID" value="`$instantiateRANSlice-input.common-header.request-id`"/>
-                                                                                <parameter name="tmp.action" value="`$instantiateRANSlice-input.action`"/>
-                                                                            </set>
-                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                <parameter name="level" value="info" />
-                                                                                <parameter name="field1" value="URL for SO Callback Response"/>
-                                                                                <parameter name='field2' value="`$tmp.so.callbackURL`" />
-                                                                                <parameter name='field3' value="`$tmp.status`" />
-                                                                                <parameter name='field4' value="`$tmp.reason`" />
-                                                                                <parameter name='field5' value="`$tmp.requestID`" />
-                                                                                <parameter name='field6' value="`$tmp.action`" />
-                                                                                <parameter name='field7' value="`$tmp.CUCPList`" />
-                                                                                <parameter name='field8' value="`$tmp.CUUPList`" />
-                                                                                <parameter name='field9' value="`$tmp.DUList`" />
-                                                                            </record>
-                                                                            <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
-                                                                                <parameter name="restapiUrl" value="`$tmp.so.callbackURL`"/>
-                                                                                <parameter name="httpMethod" value="POST"/>
-                                                                                <parameter name="responsePrefix" value="so-callback-response"/>
-                                                                                <parameter name='contentType' value='application/json' />
-                                                                                <parameter name='format' value='json' />
-                                                                                <parameter name='accept' value='*/*' />
-                                                                                <outcome value='failure'>
-                                                                                    <block>
-                                                                                        <return status='failure'>
-                                                                                            <parameter name='ack-final' value='Y'/>
-                                                                                            <parameter name="error-code" value="500" />
-                                                                                            <parameter name="error-message" value="Error sending SO Response" />
-                                                                                        </return>
-                                                                                    </block>
-                                                                                </outcome>
-                                                                                <outcome value='success'>
-                                                                                    <block>
-                                                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                            <parameter name="level" value="info" />
-                                                                                            <parameter name="field1" value="SO Response Sent "/>
-                                                                                        </record>
-                                                                                    </block>
-                                                                                </outcome>
-                                                                            </execute>
-                                                                        </block>
                                                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                             <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                                                             <parameter name="level" value="info" />
-                                                                            <parameter name="field1" value="UNSuccessfully Obtained MCC info from CPS"/>
-                                                                            <parameter name="field2" value="`$cps-get-plmnid.json`"/>
+                                                                            <parameter name="field1" value="Failed to update CPS"/>
+                                                                            <parameter name="field2" value="`$cps-patch-uLThptPerSlice.json`"/>
                                                                         </record>
                                                                         <set>
                                                                             <parameter name='error-code' value='500'/>
@@ -945,8 +821,8 @@
                                                                         <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                             <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                                                             <parameter name="level" value="info" />
-                                                                            <parameter name="field1" value="Successfully patched dLThptPerSlice"/>
-                                                                            <parameter name="field2" value="`$patchdLThptPerSlice-cps-response.httpResponse`"/>
+                                                                            <parameter name="field1" value="Successfully patched uLThptPerSlice"/>
+                                                                            <parameter name="field2" value="`$patchuLThptPerSlice-cps-response.httpResponse`"/>
                                                                         </record>
                                                                     </block>
                                                                 </outcome>
@@ -1094,7 +970,7 @@
                                                                     <parameter name="source" value="`$tmp.cps.getPLMNID.url`"/>
                                                                     <parameter name="outputPath" value="tmp.cps.getPLMNID.url"/>
                                                                     <parameter name="target" value="{templateId}"/>
-                                                                    <parameter name="replacement" value="`$prop.tbdmt.template.get-plmnid-mcc`"/>
+                                                                    <parameter name="replacement" value="`$prop.tbdmt.template.get-plmnid`"/>
                                                                 </execute>
                                                                 <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                     <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
@@ -1106,7 +982,7 @@
                                                                     <parameter name="restapiUrl" value="`$tmp.cps.getPLMNID.url`"/>
                                                                     <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-get-plmnid.json'`" />
                                                                     <parameter name="httpMethod" value="POST"/>
-                                                                    <parameter name="responsePrefix" value="getplmnmccid-cps-response"/>
+                                                                    <parameter name="responsePrefix" value="getplmnid-cps-response"/>
                                                                     <parameter name='contentType' value='application/json' />
                                                                     <parameter name='format' value='json' />
                                                                     <parameter name='accept' value='application/json' />
@@ -1120,7 +996,7 @@
                                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                                                                 <parameter name="level" value="info" />
-                                                                                <parameter name="field1" value="UNSuccessfully Obtained MCC info from CPS"/>
+                                                                                <parameter name="field1" value="Failed to obtain MCC, MNC info from CPS"/>
                                                                                 <parameter name="field2" value="`$cps-get-plmnid.json`"/>
                                                                             </record>
                                                                             <return status='failure'>
@@ -1183,118 +1059,19 @@
                                                                         <block atomic='true'>
                                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                                                 <parameter name='outputPath' value='tmp.plmn.mcc' />
-                                                                                <parameter name='source' value="`'getplmnmccid-cps-response.[0]'`" />
+                                                                                <parameter name='source' value="`'getplmnid-cps-response.[0].mcc'`" />
                                                                             </execute>
-                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
-                                                                                <parameter name="level" value="info" />
-                                                                                <parameter name="field1" value="Successfully Obtained MCC info from CPS"/>
-                                                                                <parameter name="field2" value="`$getplmnmccid-cps-response.httpResponse`"/>
-                                                                            </record>
-                                                                        </block>
-                                                                    </outcome>
-                                                                </execute>
-                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                    <parameter name="source" value="`$prop.restapi.cps.tbdmt.execute.endpoint`"/>
-                                                                    <parameter name="outputPath" value="tmp.cps.getPLMNMNCID.url"/>
-                                                                    <parameter name="target" value="{schemaSet}"/>
-                                                                    <parameter name="replacement" value="`$tmp.schemaset.name`"/>
-                                                                </execute>
-                                                                <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliStringUtils' method='replace' >
-                                                                    <parameter name="source" value="`$tmp.cps.getPLMNMNCID.url`"/>
-                                                                    <parameter name="outputPath" value="tmp.cps.getPLMNMNCID.url"/>
-                                                                    <parameter name="target" value="{templateId}"/>
-                                                                    <parameter name="replacement" value="`$prop.tbdmt.template.get-plmnid-mnc`"/>
-                                                                </execute>
-                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
-                                                                    <parameter name="level" value="info" />
-                                                                    <parameter name="field1" value="URL for CPS TDBMT to Get plmnid from sliceprofile"/>
-                                                                    <parameter name='field2' value="`$tmp.cps.getPLMNMNCID.url`" />
-                                                                </record>
-                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                    <parameter name="restapiUrl" value="`$tmp.cps.getPLMNMNCID.url`"/>
-                                                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/cps-templates/cps-get-plmnid.json'`" />
-                                                                    <parameter name="httpMethod" value="POST"/>
-                                                                    <parameter name="responsePrefix" value="getplmnmncid-cps-response"/>
-                                                                    <parameter name='contentType' value='application/json' />
-                                                                    <parameter name='format' value='json' />
-                                                                    <parameter name='accept' value='application/json' />
-                                                                    <parameter name="convertResponse" value="true"/>
-                                                                    <outcome value='success'>
-                                                                        <block atomic='true'>
                                                                             <execute plugin='org.onap.ccsdk.sli.core.slipluginutils.SliPluginUtils' method='getAttributeValue'>
                                                                                 <parameter name='outputPath' value='tmp.plmn.mnc' />
-                                                                                <parameter name='source' value="`'getplmnmncid-cps-response.[0]'`" />
+                                                                                <parameter name='source' value="`'getplmnid-cps-response.[0].mnc'`" />
                                                                             </execute>
                                                                             <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
                                                                                 <parameter name="file" value="/opt/opendaylight/current/data/log/closedLoop.log" />
                                                                                 <parameter name="level" value="info" />
-                                                                                <parameter name="field1" value="Successfully Obtained MNC info from Cps"/>
-                                                                                <parameter name="field2" value="`$getplmnmncid-cps-response.httpResponse`"/>
+                                                                                <parameter name="field1" value="Successfully Obtained MCC, MNC info from CPS"/>
+                                                                                <parameter name="field2" value="`$tmp.plmn.mcc`"/>
+                                                                                <parameter name="field3" value="`$tmp.plmn.mnc`"/>
                                                                             </record>
-                                                                        </block>
-                                                                    </outcome>
-                                                                    <outcome value='failure'>
-                                                                        <block>
-                                                                            <block atomic='true'>
-                                                                                <set>
-                                                                                    <parameter name="tmp.so.callbackURL" value="`$payloadJson.input.callbackURL`"/>
-                                                                                    <parameter name="tmp.status" value="`$error-code`"/>
-                                                                                    <parameter name="tmp.reason" value="`$error-message`"/>
-                                                                                    <parameter name="tmp.requestID" value="`$instantiateRANSlice-input.common-header.request-id`"/>
-                                                                                    <parameter name="tmp.action" value="`$instantiateRANSlice-input.action`"/>
-                                                                                </set>
-                                                                                <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                    <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                    <parameter name="level" value="info" />
-                                                                                    <parameter name="field1" value="URL for SO Callback Response"/>
-                                                                                    <parameter name='field2' value="`$tmp.so.callbackURL`" />
-                                                                                    <parameter name='field3' value="`$tmp.status`" />
-                                                                                    <parameter name='field4' value="`$tmp.reason`" />
-                                                                                    <parameter name='field5' value="`$tmp.requestID`" />
-                                                                                    <parameter name='field6' value="`$tmp.action`" />
-                                                                                    <parameter name='field7' value="`$tmp.CUCPList`" />
-                                                                                    <parameter name='field8' value="`$tmp.CUUPList`" />
-                                                                                    <parameter name='field9' value="`$tmp.DUList`" />
-                                                                                </record>
-                                                                                <execute plugin='org.onap.ccsdk.sli.plugins.restapicall.RestapiCallNode' method='sendRequest' >
-                                                                                    <parameter name="templateFileName" value="`$prop.restapi.templateDir + '/ranSlice-so-response.json'`" />
-                                                                                    <parameter name="restapiUrl" value="`$tmp.so.callbackURL`"/>
-                                                                                    <parameter name="httpMethod" value="POST"/>
-                                                                                    <parameter name="responsePrefix" value="so-callback-response"/>
-                                                                                    <parameter name='contentType' value='application/json' />
-                                                                                    <parameter name='format' value='json' />
-                                                                                    <parameter name='accept' value='*/*' />
-                                                                                    <outcome value='failure'>
-                                                                                        <block>
-                                                                                            <return status='failure'>
-                                                                                                <parameter name='ack-final' value='Y'/>
-                                                                                                <parameter name="error-code" value="500" />
-                                                                                                <parameter name="error-message" value="Error sending SO Response" />
-                                                                                            </return>
-                                                                                        </block>
-                                                                                    </outcome>
-                                                                                    <outcome value='success'>
-                                                                                        <block>
-                                                                                            <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                                                                                <parameter name="file" value="/opt/opendaylight/current/data/log/so-callback-response.log" />
-                                                                                                <parameter name="level" value="info" />
-                                                                                                <parameter name="field1" value="SO Response Sent "/>
-                                                                                            </record>
-                                                                                        </block>
-                                                                                    </outcome>
-                                                                                </execute>
-                                                                            </block>
-                                                                            <set>
-                                                                                <parameter name='error-code' value='500'/>
-                                                                                <parameter name='error-message' value='Error Getting Info from CPS. Aborting RPC executiopn'/>
-                                                                            </set>
-                                                                            <return status='failure'>
-                                                                                <parameter name='ack-final' value='Y'/>
-                                                                                <parameter name='error-code' value='500'/>
-                                                                                <parameter name='error-message' value='Error Getting Info from ConfigDB. Aborting RPC executiopn'/>
-                                                                            </return>
                                                                         </block>
                                                                     </outcome>
                                                                 </execute>
