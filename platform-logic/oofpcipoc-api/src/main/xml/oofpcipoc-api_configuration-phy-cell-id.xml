@@ -250,15 +250,23 @@
                                     </return>
                                 </outcome>
                                 <outcome value='success'>
-                                    <block>
-                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                                            <parameter name="level" value="info" />
-                                            <parameter name="field1" value="Initial NRCELLDU PCI PARMS"/>
-                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
-                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].idNRCellDU`"/>
-                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].attributes.nRPCI`"/>
-                                        </record>
+                                    <block atomic='true'>
+                                        <for index='idq' start='0' end="`$getgnbdufunction.GNBDUFunction[0].NRCellDU_length`" >
+                                            <block atomic='true'>
+                                                <switch test='`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].idNRCellDU == $tmp.idNRCellDU`'>
+                                                    <outcome value='true'>
+                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                                            <parameter name="level" value="info" />
+                                                            <parameter name="field1" value="Initial NRCELLDU PCI PARMS"/>
+                                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
+                                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].idNRCellDU`"/>
+                                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].attributes.nRPCI`"/>
+                                                        </record>
+                                                    </outcome>
+                                                </switch>
+                                            </block>
+                                        </for>
                                     </block>
                                 </outcome>
                             </execute>
@@ -331,15 +339,23 @@
                                     </return>
                                 </outcome>
                                 <outcome value='success'>
-                                    <block>
-                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                                            <parameter name="level" value="info" />
-                                            <parameter name="field1" value="Post Reconfig FAP Service PCI PARMS"/>
-                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
-                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].idNRCellDU`"/>
-                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].attributes.nRPCI`"/>
-                                        </record>
+                                    <block atomic='true'>
+                                        <for index='idq' start='0' end="`$getgnbdufunction.GNBDUFunction[0].NRCellDU_length`" >
+                                            <block atomic='true'>
+                                                <switch test='`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].idNRCellDU == $tmp.idNRCellDU`'>
+                                                    <outcome value='true'>
+                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                                            <parameter name="level" value="info" />
+                                                            <parameter name="field1" value="Post Reconfig FAP Service PCI PARMS"/>
+                                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
+                                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].idNRCellDU`"/>
+                                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].attributes.nRPCI`"/>
+                                                        </record>
+                                                    </outcome>
+                                                </switch>
+                                            </block>
+                                        </for>
                                     </block>
                                 </outcome>
                             </execute>
@@ -518,15 +534,23 @@
                                     </return>
                                 </outcome>
                                 <outcome value='success'>
-                                    <block>
-                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                                            <parameter name="level" value="info" />
-                                            <parameter name="field1" value="Initial NRCellDU PCI PARMS"/>
-                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
-                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].idNRCellDU`"/>
-                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].attributes.nRPCI`"/>
-                                        </record>
+                                    <block atomic='true'>
+                                        <for index='idq' start='0' end="`$getgnbdufunction.GNBDUFunction[0].NRCellDU_length`" >
+                                            <block atomic='true'>
+                                                <switch test='`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].idNRCellDU == $tmp.idNRCellDU`'>
+                                                    <outcome value='true'>
+                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                                            <parameter name="level" value="info" />
+                                                            <parameter name="field1" value="Initial NRCellDU PCI PARMS"/>
+                                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
+                                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].idNRCellDU`"/>
+                                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].attributes.nRPCI`"/>
+                                                        </record>
+                                                    </outcome>
+                                                </switch>
+                                            </block>
+                                        </for>
                                     </block>
                                 </outcome>
                             </execute>
@@ -605,15 +629,23 @@
                                     </return>
                                 </outcome>
                                 <outcome value='success'>
-                                    <block>
-                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
-                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
-                                            <parameter name="level" value="info" />
-                                            <parameter name="field1" value="Post Reconfig NRCELLDU PCI PARMS"/>
-                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
-                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].idNRCellDU`"/>
-                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[0].attributes.nRPCI`"/>
-                                        </record>
+                                    <block atomic='true'>
+                                        <for index='idq' start='0' end="`$getgnbdufunction.GNBDUFunction[0].NRCellDU_length`" >
+                                            <block atomic='true'>
+                                                <switch test='`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].idNRCellDU == $tmp.idNRCellDU`'>
+                                                    <outcome value='true'>
+                                                        <record plugin="org.onap.ccsdk.sli.core.sli.recording.FileRecorder">
+                                                            <parameter name="file" value="/opt/opendaylight/current/data/log/configuration-phy-cell-id.log" />
+                                                            <parameter name="level" value="info" />
+                                                            <parameter name="field1" value="Post Reconfig NRCELLDU PCI PARMS"/>
+                                                            <parameter name="field2" value="`$getgnbdufunction.GNBDUFunction[0].idGNBDUFunction`"/>
+                                                            <parameter name="field3" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].idNRCellDU`"/>
+                                                            <parameter name="field4" value="`$getgnbdufunction.GNBDUFunction[0].NRCellDU[$idq].attributes.nRPCI`"/>
+                                                        </record>
+                                                    </outcome>
+                                                </switch>
+                                            </block>
+                                        </for>
                                     </block>
                                 </outcome>
                             </execute>
