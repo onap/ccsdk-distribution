@@ -110,9 +110,9 @@ tag 1.3-STAGING-latest to pull the latest daily Jakarta build
 +------------------------------------------+--------------------------------------------+---------+
 | Image name                               | Description                                | Version |
 +==========================================+============================================+=========+
-| onap/ccsdk-alpine-j11-image              | Base Alpine Linux image for CCSDK          | 1.3.3   |
+| onap/ccsdk-alpine-j11-image              | Base Alpine Linux image for CCSDK          | 1.3.4   |
 +------------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-ansible-server-image          | Ansible server image                       | 1.3.3   |
+| onap/ccsdk-ansible-server-image          | Ansible server image                       | 1.3.4   |
 +------------------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-apps-ms-neng                  | Naming microservice                        | 1.3.0   |
 +------------------------------------------+--------------------------------------------+---------+
@@ -124,17 +124,17 @@ tag 1.3-STAGING-latest to pull the latest daily Jakarta build
 +------------------------------------------+--------------------------------------------+---------+
 | onap/ccsdk-controllerblueprint           | CDS controller blueprints                  | 1.3.0   |
 +------------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-dgbuilder-image               | Directed graph builder                     | 1.3.3   |
+| onap/ccsdk-dgbuilder-image               | Directed graph builder                     | 1.3.4   |
 +------------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-odl-phosphorus-alpine-image   | Alpine based OpenDaylight Phosphorus image | 1.3.3   |
+| onap/ccsdk-odl-phosphorus-alpine-image   | Alpine based OpenDaylight Phosphorus image | 1.3.4   |
 +------------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-odlsli-alpine-image           | Alpine based OpenDaylight image with CCSDK | 1.3.3   |
+| onap/ccsdk-odlsli-alpine-image           | Alpine based OpenDaylight image with CCSDK | 1.3.4   |
 +------------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-saltstack-server-image        | Saltstack server                           | 1.3.3   |
+| onap/ccsdk-saltstack-server-image        | Saltstack server                           | 1.3.4   |
 +------------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-sdclistener                   | CDS SDC listener                           | 1.3.1   |
+| onap/ccsdk-sdclistener                   | CDS SDC listener                           | 1.3.0   |
 +------------------------------------------+--------------------------------------------+---------+
-| onap/ccsdk-ubuntu-image                  | Base Ubuntu image for CCSDK                | 1.3.3   |
+| onap/ccsdk-ubuntu-image                  | Base Ubuntu image for CCSDK                | 1.3.4   |
 +------------------------------------------+--------------------------------------------+---------+
 
 Maven Artifacts
@@ -186,6 +186,8 @@ Frankfurt version of each.
 |                       |                               |         | no longer be used due to security issues                                                         |
 +-----------------------+-------------------------------+---------+--------------------------------------------------------------------------------------------------+
 | org.onap.ccsdk.parent | spring-boot-25-starter-parent | 2.3.3   | Parent used in place of spring-boot-starter-parent for Springboot 2.5.x                          |
++-----------------------+-------------------------------+---------+--------------------------------------------------------------------------------------------------+
+| org.onap.ccsdk.parent | spring-boot-26-starter-parent | 2.3.4   | Parent used in place of spring-boot-starter-parent for Springboot 2.6.x                          |
 +-----------------------+-------------------------------+---------+--------------------------------------------------------------------------------------------------+
 | org.onap.ccsdk.parent | spring-boot-starter-parent    | 2.3.3   | Parent used in place of spring-boot-starter-parent for Springboot 2.3.x                          |
 +-----------------------+-------------------------------+---------+--------------------------------------------------------------------------------------------------+
