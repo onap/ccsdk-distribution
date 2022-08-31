@@ -21,7 +21,7 @@ RUN sed -i -e 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL
     && addgroup odl wheel
 
 # Patch some opendaylight artifacts
-#COPY system $ODL_HOME/system
+COPY system $ODL_HOME/system
 
 # Add missing scripts see SDNC-1056
 #COPY configure_cluster.sh configure-cluster-ipdetect.sh custom_shard_config.txt set_persistence.sh $ODL_HOME/bin/
