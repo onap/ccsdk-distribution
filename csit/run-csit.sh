@@ -25,6 +25,11 @@
 # functions
 #
 
+echo "---> run-csit.sh"
+
+# Allow unbound variables
+set +u
+
 function on_exit(){
     rc=$?
     if [[ ${WORKSPACE} ]]; then
