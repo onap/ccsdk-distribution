@@ -25,10 +25,15 @@
 # functions
 #
 
+echo "---> run-csit.sh"
+
+# Allow unbound variables
+set +u
+
 function on_exit(){
     rc=$?
     if [[ ${WORKSPACE} ]]; then
-        if [[ ${WORKDIR} ]]; then
+        if [[ ${WORKDIR:-} ]]; then
             rsync -av "$WORKDIR/" "$WORKSPACE/archives/$TESTPLAN"
         fi
         # Record list of active docker containers
