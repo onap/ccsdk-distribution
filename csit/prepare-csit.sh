@@ -20,21 +20,23 @@
 # Branched from integration/csit to this repository 18.2.2021
 #
 
+echo "---> prepare-csit.sh"
+
 if [ -z "$WORKSPACE" ]; then
     export WORKSPACE=`git rev-parse --show-toplevel`
 fi
 
 TESTPLANDIR=${WORKSPACE}/${TESTPLAN}
 
-# Assume that if ROBOT_VENV is set and virtualenv with system site packages can be activated, 
+# Assume that if ROBOT3_VENV is set and virtualenv with system site packages can be activated,
 # ci-management/jjb/integration/include-raw-integration-install-robotframework.sh has already
 # been executed
 
 if [ -f ${WORKSPACE}/env.properties ]; then
     source ${WORKSPACE}/env.properties
 fi
-if [ -f ${ROBOT_VENV}/bin/activate ]; then
-    source ${ROBOT_VENV}/bin/activate
+if [ -f ${ROBOT3_VENV}/bin/activate ]; then
+    source ${ROBOT3_VENV}/bin/activate
 else
     rm -rf /tmp/ci-management
     rm -f ${WORKSPACE}/env.properties
@@ -44,8 +46,8 @@ else
 fi
 
 # install eteutils
-mkdir -p ${ROBOT_VENV}/src/onap
-rm -rf ${ROBOT_VENV}/src/onap/testsuite
+mkdir -p ${ROBOT3_VENV}/src/onap
+rm -rf ${ROBOT3_VENV}/src/onap/testsuite
 pip install --upgrade --extra-index-url="https://nexus3.onap.org/repository/PyPi.staging/simple" 'robotframework-onap==0.5.1.*' --pre
 
 pip freeze
