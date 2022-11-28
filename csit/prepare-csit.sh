@@ -37,18 +37,18 @@ if [ -f ${WORKSPACE}/env.properties ]; then
 fi
 if [ -f ${ROBOT3_VENV}/bin/activate ]; then
     source ${ROBOT3_VENV}/bin/activate
-else
-    rm -rf /tmp/ci-management
-    rm -f ${WORKSPACE}/env.properties
-    cd /tmp
-    git clone "https://gerrit.onap.org/r/ci-management"
-    source /tmp/ci-management/jjb/integration/include-raw-integration-install-robotframework.sh
+#else
+#    rm -rf /tmp/ci-management
+#    rm -f ${WORKSPACE}/env.properties
+#    cd /tmp
+#    git clone "https://gerrit.onap.org/r/ci-management"
+#    source /tmp/ci-management/jjb/integration/include-raw-integration-install-robotframework.sh
 fi
 
 # install eteutils
 mkdir -p ${ROBOT3_VENV}/src/onap
 rm -rf ${ROBOT3_VENV}/src/onap/testsuite
-pip install --upgrade --extra-index-url="https://nexus3.onap.org/repository/PyPi.staging/simple" 'robotframework-onap==0.5.1.*' --pre
+python3 -m pip install --upgrade --extra-index-url="https://nexus3.onap.org/repository/PyPi.staging/simple" 'robotframework-onap==0.5.1.*' --pre
 
 pip freeze
 

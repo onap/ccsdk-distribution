@@ -21,11 +21,23 @@
 # Branched from integration/csit to this repository 18.2.2021
 #
 
+WORKDIR=$(mktemp -d --suffix=-robot-workdir)
+
 #
 # functions
 #
 
 echo "---> run-csit.sh"
+
+# wrapper for sourcing a file
+function source_safely() {
+    [ -z "$1" ] && return 1
+    relax_set
+    . "$1"
+    load_set
+}
+# Activate the virtualenv containing all the required libraries installed by prepare-csit.sh
+source_safely "${ROBOT3_VENV}/bin/activate"
 
 function on_exit(){
     rc=$?
@@ -110,14 +122,6 @@ function relax_set() {
     set +o pipefail
 }
 
-# wrapper for sourcing a file
-function source_safely() {
-    [ -z "$1" ] && return 1
-    relax_set
-    . "$1"
-    load_set
-}
-
 #
 # main
 #
@@ -157,10 +161,7 @@ TESTPLANDIR="${WORKSPACE}/${TESTPLAN}"
 # Run installation of prerequired libraries
 source_safely "${WORKSPACE}/prepare-csit.sh"
 
-# Activate the virtualenv containing all the required libraries installed by prepare-csit.sh
-source_safely "${ROBOT3_VENV}/bin/activate"
-
-WORKDIR=$(mktemp -d --suffix=-robot-workdir)
+# Use robot framework working directory
 cd "${WORKDIR}"
 
 # Add csit scripts to PATH
@@ -192,7 +193,7 @@ SUITES=$( xargs -a testplan.txt )
 echo ROBOT_VARIABLES="${ROBOT_VARIABLES}"
 echo "Starting Robot test suites ${SUITES} ..."
 relax_set
-python -m robot.run -N ${TESTPLAN} -v WORKSPACE:/tmp ${ROBOT_VARIABLES} ${TESTOPTIONS} ${SUITES}
+python3 -m robot.run -N ${TESTPLAN} -v WORKSPACE:/tmp ${ROBOT_VARIABLES} ${TESTOPTIONS} ${SUITES}
 RESULT=$?
 load_set
 echo "RESULT: $RESULT"
