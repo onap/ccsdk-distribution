@@ -29,7 +29,7 @@ fi
 TESTPLANDIR=${WORKSPACE}/${TESTPLAN}
 
 # Assume that if ROBOT3_VENV is set and virtualenv with system site packages can be activated,
-# ci-management/jjb/integration/include-raw-integration-install-robotframework.sh has already
+# ci-management/jjb/integration/include-raw-integration-install-robotframework-py3.sh has already
 # been executed
 
 if [ -f ${WORKSPACE}/env.properties ]; then
@@ -42,7 +42,7 @@ else
     rm -f ${WORKSPACE}/env.properties
     cd /tmp
     git clone "https://gerrit.onap.org/r/ci-management"
-    source /tmp/ci-management/jjb/integration/include-raw-integration-install-robotframework.sh
+    source /tmp/ci-management/jjb/integration/include-raw-integration-install-robotframework-py3.sh
 fi
 
 # install eteutils
