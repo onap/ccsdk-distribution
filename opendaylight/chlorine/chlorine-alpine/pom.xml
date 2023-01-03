@@ -4,28 +4,23 @@
 
     <parent>
         <groupId>org.onap.ccsdk.distribution</groupId>
-        <artifactId>distribution-odl-phosphorus</artifactId>
+        <artifactId>distribution-odl-chlorine</artifactId>
         <version>1.5.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>distribution-odl-phosphorus-docker</artifactId>
+    <artifactId>distribution-odl-chlorine-docker</artifactId>
     <packaging>pom</packaging>
 
-    <name>ccsdk-distribution :: opendaylight :: phosphorus :: docker</name>
+    <name>ccsdk-distribution :: opendaylight :: chlorine :: docker</name>
     <description>Creates OpenDaylight container</description>
     <organization>
         <name>ONAP</name>
     </organization>
 
     <properties>
-        <image.name>onap/ccsdk-odl-phosphorus-alpine-image</image.name>
+        <image.name>onap/ccsdk-odl-chlorine-alpine-image</image.name>
         <odl.karaf.artifactId>onap-karaf</odl.karaf.artifactId>
-        <odl.shiro.version>0.14.7</odl.shiro.version>
-        <odl.netconf.version>2.0.11</odl.netconf.version>
-        <odl.ops4j.version>7.3.19</odl.ops4j.version>
-        <odl.pax.logging.version>2.0.10</odl.pax.logging.version>
-        <patch.pax.logging.version>2.0.14</patch.pax.logging.version>
-        <odl.karaf.framework.version>4.3.3</odl.karaf.framework.version>
+        <odl.shiro.version>0.15.5</odl.shiro.version>
     </properties>
 
     <build>
@@ -91,46 +86,6 @@
                                     <destFileName>aaa-authn-api-${odl.shiro.version}.jar</destFileName>
                                     <excludes>*</excludes>
                                 </artifactItem>
-                                <artifactItem>
-                                    <groupId>com.highstreet-technologies.ops4j.pax.web</groupId>
-                                    <artifactId>pax-web-jetty</artifactId>
-                                    <version>${odl.ops4j.version}</version>
-                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/ops4j/pax/web/pax-web-jetty/${odl.ops4j.version}</outputDirectory>
-                                    <destFileName>pax-web-jetty-${odl.ops4j.version}.jar</destFileName>
-                                    <excludes>*</excludes>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>com.highstreet-technologies.netconf</groupId>
-                                    <artifactId>sal-netconf-connector</artifactId>
-                                    <version>${odl.netconf.version}</version>
-                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/opendaylight/netconf/sal-netconf-connector/${odl.netconf.version}</outputDirectory>
-                                    <destFileName>sal-netconf-connector-${odl.netconf.version}.jar</destFileName>
-                                    <excludes>*</excludes>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.ops4j.pax.logging</groupId>
-                                    <artifactId>pax-logging-log4j2</artifactId>
-                                    <version>${patch.pax.logging.version}</version>
-                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/ops4j/pax/logging/pax-logging-log4j2/${patch.pax.logging.version}</outputDirectory>
-                                    <destFileName>pax-logging-log4j2-${patch.pax.logging.version}.jar</destFileName>
-                                    <excludes>*</excludes>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.ops4j.pax.logging</groupId>
-                                    <artifactId>pax-logging-logback</artifactId>
-                                    <version>${patch.pax.logging.version}</version>
-                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/ops4j/pax/logging/pax-logging-logback/${patch.pax.logging.version}</outputDirectory>
-                                    <destFileName>pax-logging-logback-${patch.pax.logging.version}.jar</destFileName>
-                                    <excludes>*</excludes>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.ops4j.pax.logging</groupId>
-                                    <artifactId>pax-logging-api</artifactId>
-                                    <version>${patch.pax.logging.version}</version>
-                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/ops4j/pax/logging/pax-logging-api/${patch.pax.logging.version}</outputDirectory>
-                                    <destFileName>pax-logging-api-${patch.pax.logging.version}.jar</destFileName>
-                                    <excludes>*</excludes>
-                                </artifactItem>
                             </artifactItems>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
@@ -166,26 +121,6 @@
                                         <include>*</include>
                                     </includes>
                                     <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-karaf-framework-features</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals><!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources</directory>
-                                    <includes>
-                                        <include>framework-${odl.karaf.framework.version}-features.xml</include>
-                                        <include>startup.properties</include>
-                                    </includes>
-                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
