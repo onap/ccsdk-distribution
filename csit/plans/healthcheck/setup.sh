@@ -53,9 +53,9 @@ curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose
 chmod +x docker-compose
 ./docker-compose up -d
 
-# WAIT 5 minutes maximum and check karaf.log for readiness every 10 seconds
+# WAIT 10 minutes maximum and check karaf.log for readiness every 10 seconds
 
-TIME_OUT=300
+TIME_OUT=600
 INTERVAL=10
 TIME=0
 while [ "$TIME" -lt "$TIME_OUT" ]; do
