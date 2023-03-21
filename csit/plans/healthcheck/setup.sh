@@ -55,7 +55,7 @@ chmod +x docker-compose
 
 # WAIT 5 minutes maximum and check karaf.log for readiness every 10 seconds
 
-TIME_OUT=300
+TIME_OUT=360
 INTERVAL=10
 TIME=0
 while [ "$TIME" -lt "$TIME_OUT" ]; do
@@ -74,6 +74,8 @@ done
 
 if [ "$TIME" -ge "$TIME_OUT" ]; then
    echo TIME OUT: karaf session not started in $TIME_OUT seconds, setup failed
+   echo "karaf.log follows:"
+   docker exec ccsdk_odlsli_container cat /opt/opendaylight/data/log/karaf.log
    exit 1;
 fi
 
