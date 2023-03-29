@@ -4,7 +4,7 @@ FROM ${base.image.name}:${project.docker.latestfulltag.version} AS stage0
 USER root
 
 # Copy the opendaylight credentials
-COPY idmlight.db.mv.db $ODL_HOME/data
+# COPY idmlight.db.mv.db $ODL_HOME/data
 
 # Copy CCSDK mvn artifacts to ODL repository
 COPY system /tmp/system
