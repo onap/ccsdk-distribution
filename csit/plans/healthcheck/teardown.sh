@@ -19,4 +19,8 @@
 #
 
 cd $WORKSPACE/archives/yaml
+echo "karaf.log follows"
+echo "****************************************************"
+docker exec -i ccsdk_odlsli_container cat /opt/opendaylight/data/log/karaf.log
+echo "****************************************************"
 docker-compose down -v
