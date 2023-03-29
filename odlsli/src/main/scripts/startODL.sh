@@ -25,7 +25,8 @@
 # Install SDN-C platform components if not already installed and start container
 
 ODL_HOME=${ODL_HOME:-/opt/opendaylight}
-ODL_ADMIN_PASSWORD=${ODL_ADMIN_PASSWORD:-Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U}
+#ODL_ADMIN_PASSWORD=${ODL_ADMIN_PASSWORD:-Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U}
+ODL_ADMIN_PASSWORD=${ODL_ADMIN_PASSWORD:-admin}
 CCSDK_HOME=${CCSDK_HOME:-/opt/onap/ccsdk}
 SLEEP_TIME=${SLEEP_TIME:-120}
 INSTALLED_DIR=${INSTALLED_FILE:-${ODL_HOME}/current/daexim}

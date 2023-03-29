@@ -32,6 +32,10 @@ function on_exit(){
     if [[ ${WORKSPACE} ]]; then
         if [[ ${WORKDIR} ]]; then
             rsync -av "$WORKDIR/" "$WORKSPACE/archives/$TESTPLAN"
+            if [ -f ${WORKDIR}/log_hc.txt ]; then
+              echo "Healthcheck results:"
+              cat ${WORKDIR}/log_hc.txt
+            fi
         fi
         # Record list of active docker containers
         docker ps --format "{{.Image}}" > "$WORKSPACE/archives/$TESTPLAN/_docker-images.log"
