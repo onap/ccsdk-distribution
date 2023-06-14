@@ -157,8 +157,8 @@ def RunAnsible_Playbook (callback, Id, Inventory, Playbook, NodeList, TestRecord
             f = open(Path + "/" + file, "r")
             resultsData =  f.read()  # Not to pass vnf instance name
             OutputP = json.loads(resultsData)
-            Output['Output'] =  OutputP 
-	    cherrypy.log("Output = " + str(Output['Output']))
+            Output['Output'] =  OutputP
+            cherrypy.log("Output = " + str(Output['Output']))
             #Output['Output'][key] = f.read() # To pass vnf instance name
             f.close()
 
@@ -341,7 +341,7 @@ class TestManager (object):
                 if True:
 
                     if not input_json['Id'] in TestRecord:
-			# check if Id exists in previous run dirctory
+                        # check if Id exists in previous run dirctory
                         # if so retun error
                         s_cmd = 'ls ' + ansible_temp + '/*_' + input_json['Id']
                         #if subprocess.check_output([s_cmd, ]):
@@ -359,7 +359,7 @@ class TestManager (object):
                         #  cherrypy.log("EnvParameter object: " + i)
                         #  cherrypy.log("  EnvParameter Value: " + EnvParameters[ i ])
 
-			# Now get things out of EnvParameters
+                        # Now get things out of EnvParameters
                         VNF_instance   = None
                         VNF_instance = EnvParameters.get('vnf_instance')
 
@@ -392,42 +392,42 @@ class TestManager (object):
                         
                         # Verify VNF_instance was passed in EnvParameters
                         if VNF_instance != None:
-			  cherrypy.log( "Request Decode: VnfInstance      " + VNF_instance)
+                          cherrypy.log( "Request Decode: VnfInstance      " + VNF_instance)
                         else:
-			  cherrypy.log( "StatusCode: 107, StatusMessage: VNF_instance NOT PROVIDED" )
+                          cherrypy.log( "StatusCode: 107, StatusMessage: VNF_instance NOT PROVIDED" )
                           return {"StatusCode": 107,
                                     "StatusMessage": "VNF_instance NOT PROVIDED"}
 
                         if inventory_names != None:
-			  cherrypy.log( "Request Decode: Inventory Names  " + inventory_names)
+                          cherrypy.log( "Request Decode: Inventory Names  " + inventory_names)
                         else:
-			  cherrypy.log( "Request Decode: Inventory Names  " + "Not provided")
+                          cherrypy.log( "Request Decode: Inventory Names  " + "Not provided")
 
-			cherrypy.log( "Request Decode: PlaybookName     " + PlaybookName)
-			PlayBookFunction = PlaybookName.rsplit("/",2)[1]
-			PlayBookFile = PlayBookFunction + "/site.yml"
-			cherrypy.log( "Request Decode: PlaybookFunction " + PlayBookFunction)
-			cherrypy.log( "Request Decode: Playbook file    " + PlayBookFile)
-			
+                        cherrypy.log( "Request Decode: PlaybookName     " + PlaybookName)
+                        PlayBookFunction = PlaybookName.rsplit("/",2)[1]
+                        PlayBookFile = PlayBookFunction + "/site.yml"
+                        cherrypy.log( "Request Decode: PlaybookFunction " + PlayBookFunction)
+                        cherrypy.log( "Request Decode: Playbook file    " + PlayBookFile)
+
                         BaseDir = ansible_path + "/" + PlaybookName.rsplit("/",1)[0]
                         CopyDir = ansible_path + "/" + PlaybookName.rsplit("/",2)[0]
-			cherrypy.log( "Request Decode: Basedir          " + BaseDir)
-			cherrypy.log( "Request Decode: Copydir          " + CopyDir)
-			
+                        cherrypy.log( "Request Decode: Basedir          " + BaseDir)
+                        cherrypy.log( "Request Decode: Copydir          " + CopyDir)
+                        
 
                         PlaybookDir = ansible_temp + "/" + \
                                       VNF_instance + "_" + str_uuid + "_" + str(Id)
 
-			# AnsibleInv is the directory where the host file to be run exsists
+                        # AnsibleInv is the directory where the host file to be run exsists
                         AnsibleInv = ansible_path + "/" + VnfType + "/latest/ansible/inventory/" + VNF_instance
                         ArchiveFlag = False
 
-			# Create base run directory if it doesn't exist
+                        # Create base run directory if it doesn't exist
                         if not os.path.exists(ansible_temp):
                             cherrypy.log( "Creating Base Run Directory: "  + ansible_temp)
                             os.makedirs(ansible_temp)
 
-			if not os.path.exists( CopyDir ):
+                        if not os.path.exists( CopyDir ):
                             cherrypy.log("Playbook Not Found")
                             return {"StatusCode": 101,
                                     "StatusMessage": "PLAYBOOK NOT FOUND"}
@@ -443,7 +443,7 @@ class TestManager (object):
                         cherrypy.log( "PlaybookDir:    " + PlaybookDir)
                         cherrypy.log( "AnsibleInv:     " + AnsibleInv)
 
-			#location of host file
+                        #location of host file
                         #HostFile = PlaybookDir + "/inventory/" + VNF_instance + "hosts"
                         #cherrypy.log("HostFile: " +  HostFile)
 
@@ -467,14 +467,14 @@ class TestManager (object):
                                 #AnsibleInvFail = False # ???
                                 HaveNodeList = True
 
-			###############################################################################
-			##### Host file processing                          ###########################
-			##### 1. Use file delivered with playbook           ###########################
-			##### 2. If HostNames + NodeList generate and use   ###########################
-			##### 3. If HostNames = VM or NVF copy and use.     ###########################
-			###############################################################################
+                        ###############################################################################
+                        ##### Host file processing                          ###########################
+                        ##### 1. Use file delivered with playbook           ###########################
+                        ##### 2. If HostNames + NodeList generate and use   ###########################
+                        ##### 3. If HostNames = VM or NVF copy and use.     ###########################
+                        ###############################################################################
 
-			#location of host file - Default
+                        #location of host file - Default
                         HostFile = PlaybookDir + "/inventory/" + VNF_instance + "hosts"
                         cherrypy.log("HostFile: " +  HostFile)
 
@@ -545,9 +545,9 @@ class TestManager (object):
                         if 'CallBack' in input_json:
                             callback_flag = input_json['CallBack']
 
-			# if AnsibleServer is not set to 'na'  don't send AnsibleServer in PENDING responce.
-			if AnsibleServer != 'na':
-                        	TestRecord[Id] = {'PlaybookName': PlaybookName,
+                        # if AnsibleServer is not set to 'na'  don't send AnsibleServer in PENDING responce.
+                        if AnsibleServer != 'na':
+                                TestRecord[Id] = {'PlaybookName': PlaybookName,
                                           'Version': version,
                                           'NodeList': NodeList,
                                           'HostGroupList': hostgrouplist,
@@ -567,8 +567,8 @@ class TestManager (object):
                                           'Output': {},
                                           'Path': PlaybookDir,
                                           'Mandatory': None}
-			else:
-                        	TestRecord[Id] = {'PlaybookName': PlaybookName,
+                        else:
+                                TestRecord[Id] = {'PlaybookName': PlaybookName,
                                           'Version': version,
                                           'NodeList': NodeList,
                                           'HostGroupList': hostgrouplist,
@@ -601,7 +601,7 @@ class TestManager (object):
                                 
                         
                         # Process playbook
-			if os.path.exists( ansible_path + '/' + PlaybookName):
+                        if os.path.exists( ansible_path + '/' + PlaybookName):
                             AnsiblePlaybookFail = False
                                     
                         if AnsiblePlaybookFail:
@@ -713,8 +713,8 @@ class TestManager (object):
             cherrypy.log("Payload: " + str(input_data) + " Type " + input_data['Type'])
 
             if 'LogRest' in input_data['Type']:
-		sys.stdout.close()
-		sys.stdout = open("/var/log/RestServer.log", "w")
+                sys.stdout.close()
+                sys.stdout = open("/var/log/RestServer.log", "w")
 
             # Just a debug to dump any records
             if 'GetStatus' in input_data['Type']:
@@ -885,7 +885,7 @@ class TestManager (object):
                             else:
                                playbooknametxt = "NA"
 
-			    # Add code to get other items not just output.log from files
+                            # Add code to get other items not just output.log from files
                             if os.path.exists( rdir + "/log.file"):
                                cherrypy.log("Found log.file")
                                out_results = "NA:"
@@ -893,7 +893,7 @@ class TestManager (object):
                                
                                line =  f.readline()
                                while line :
-				 if "fatal" in line:
+                                 if "fatal" in line:
                                    out_results = out_results +  line
                                  elif "RECAP" in line:
                                    out_results = out_results +  line
