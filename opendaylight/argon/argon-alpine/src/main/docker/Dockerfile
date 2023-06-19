@@ -1,6 +1,6 @@
 # Prepare stage for multistage image build
 ## START OF STAGE0 ##
-FROM onap/ccsdk-alpine-j11-image:${project.docker.latestfulltag.version} AS stage0
+FROM onap/ccsdk-alpine-j17-image:${project.docker.latestfulltag.version} AS stage0
 USER root
 
 ENV ODL_HOME /opt/opendaylight/current
