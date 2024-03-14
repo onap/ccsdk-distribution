@@ -4,27 +4,28 @@
 
     <parent>
         <groupId>org.onap.ccsdk.distribution</groupId>
-        <artifactId>distribution-alpine-root</artifactId>
+        <artifactId>distribution-odl-potassium</artifactId>
         <version>1.7.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>distribution-j17-alpine</artifactId>
+    <artifactId>distribution-odl-potassium-alpine</artifactId>
     <packaging>pom</packaging>
 
-    <name>ccsdk-distribution :: alpine :: java17</name>
-    <description>Creates base alpine Docker container</description>
+    <name>ccsdk-distribution :: opendaylight :: potassium :: docker</name>
+    <description>Creates OpenDaylight container</description>
     <organization>
-        <name>openECOMP</name>
+        <name>ONAP</name>
     </organization>
 
     <properties>
-        <image.name>onap/ccsdk-alpine-j17-image</image.name>
-        <base.image>onap/integration-java17</base.image>
-        <base.image.version>12.0.0</base.image.version>
+        <image.name>onap/ccsdk-odl-potassium-alpine-image</image.name>
+        <odl.karaf.artifactId>onap-karaf</odl.karaf.artifactId>
+        <odl.shiro.version>0.18.4</odl.shiro.version>
     </properties>
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>groovy-maven-plugin</artifactId>
@@ -36,11 +37,64 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source>${basedir}/../../src/main/scripts/TagVersion.groovy</source>
+                            <source>${basedir}/../../../src/main/scripts/TagVersion.groovy</source>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>get-odl-distribution</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.opendaylight.integration</groupId>
+                                    <artifactId>${odl.karaf.artifactId}</artifactId>
+                                    <version>${ccsdk.opendaylight.version}</version>
+                                    <type>tar.gz</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-with-alternalte-repo-2</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.highstreet-technologies.aaa</groupId>
+                                    <artifactId>aaa-authn-api</artifactId>
+                                    <version>${odl.shiro.version}</version>
+                                    <outputDirectory>${project.build.directory}/docker-stage/system/org/opendaylight/aaa/aaa-authn-api/${odl.shiro.version}</outputDirectory>
+                                    <destFileName>aaa-authn-api-${odl.shiro.version}.jar</destFileName>
+                                    <excludes>*</excludes>
+                                </artifactItem>
+                            </artifactItems>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
@@ -61,23 +115,10 @@
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-certificates</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals><!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/docker-stage</outputDirectory>
-                            <resources>
                                 <resource>
-                                    <directory>src/main/resources</directory>
+                                    <directory>src/main/odlscripts</directory>
                                     <includes>
-                                        <include>*.pem</include>
-                                        <include>*.md</include>
+                                        <include>*</include>
                                     </includes>
                                     <filtering>false</filtering>
                                 </resource>
@@ -86,6 +127,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 
