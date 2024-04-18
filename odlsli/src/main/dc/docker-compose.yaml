@@ -40,4 +40,30 @@ services:
         max-size: "30m"
         max-file: "5"
 
+  dgbuilder:
+    image: onap/ccsdk-dgbuilder-image:latest
+    depends_on:
+      - db
+    container_name:  odlsli_dgbuilder
+    entrypoint:
+       - "/bin/bash"
+       - "-c"
+       - "cd /opt/onap/ccsdk/dgbuilder/ && ./start.sh sdnc1.0 && wait"
+    ports:
+      - "3200:3100"
+    links:
+      - db:dbhost
+      - db:sdnctldb01
+      - db:sdnctldb02
+    environment:
+      - MYSQL_ROOT_PASSWORD=MySecretPassword
+      - SDNC_CONFIG_DIR=/opt/onap/ccsdk/data/properties
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    logging:
+      driver:   "json-file"
+      options:
+        max-size: "30m"
+        max-file: "5"
 
