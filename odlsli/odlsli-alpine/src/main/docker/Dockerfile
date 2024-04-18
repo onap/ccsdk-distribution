@@ -1,6 +1,6 @@
 # Prepare stage for multistage image build
 ## START OF STAGE0 ##
-FROM ${base.image.name}:${project.docker.latestfulltag.version} AS stage0
+FROM ${base.image.name}:${project.docker.latestfulltag.snapshot.version} AS stage0
 USER root
 
 # Copy the opendaylight credentials

@@ -3,16 +3,16 @@ FROM ${base.image}:${base.image.version}
 MAINTAINER CCSDK  Team (onap-ccsdk@lists.onap.org)
 USER root
 
-ARG http_proxy
-ARG https_proxy
-ARG no_proxy
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+ARG NO_PROXY
 
-ENV HTTP_PROXY $http_proxy
-ENV http_proxy $http_proxy
-ENV HTTPS_PROXY $https_proxy
-ENV https_proxy $https_proxy
-ENV NO_PROXY $no_proxy
-ENV no_proxy $no_proxy
+ENV HTTP_PROXY ${HTTP_PROXY}
+ENV http_proxy ${HTTP_PROXY}
+ENV HTTPS_PROXY ${HTTPS_PROXY}
+ENV https_proxy ${HTTPS_PROXY}
+ENV NO_PROXY ${NO_PROXY}
+ENV no_proxy ${NO_PROXY}
 
 ENV JAVA_HOME /opt/java/openjdk
 
