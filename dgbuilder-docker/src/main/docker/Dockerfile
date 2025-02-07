@@ -5,6 +5,7 @@ USER root
 
 RUN addgroup -S dgbuilder && adduser -S dgbuilder -G dgbuilder \
     && apk update && apk --no-cache add curl gcc g++ make ncurses yarn nodejs \
+    && apk upgrade \
     && node --version
 
 COPY --chown=dgbuilder:dgbuilder opt /opt
