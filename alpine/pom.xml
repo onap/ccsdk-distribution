@@ -101,13 +101,18 @@
                     <plugin>
                         <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.39.0</version>
+                        <version>0.44.0</version>
                         <inherited>false</inherited>
                         <configuration>
                             <images>
                                 <image>
                                     <name>${alpinej21.image.name}</name>
                                     <build>
+                                        <buildx>
+                                            <platforms>
+                                                <platform>${docker.platforms}</platform>
+                                            </platforms>
+                                        </buildx>
                                         <cleanup>try</cleanup>
                                         <noCache>true</noCache>
                                         <contextDir>${basedir}/target/docker-stage</contextDir>
@@ -125,6 +130,11 @@
                                 <image>
                                     <name>${alpinej17.image.name}</name>
                                     <build>
+                                        <buildx>
+                                            <platforms>
+                                                <platform>${docker.platforms}</platform>
+                                            </platforms>
+                                        </buildx>
                                         <cleanup>try</cleanup>
                                         <noCache>true</noCache>
                                         <contextDir>${basedir}/target/docker-stage</contextDir>
@@ -142,6 +152,11 @@
                                 <image>
                                     <name>${alpinej11.image.name}</name>
                                     <build>
+                                        <buildx>
+                                            <platforms>
+                                                <platform>${docker.platforms}</platform>
+                                            </platforms>
+                                        </buildx>
                                         <cleanup>try</cleanup>
                                         <noCache>true</noCache>
                                         <contextDir>${basedir}/target/docker-stage</contextDir>
