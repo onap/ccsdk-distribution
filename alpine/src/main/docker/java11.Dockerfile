@@ -1,6 +1,6 @@
 # Base alpine with added packages needed for open ecomp
 ARG OPENJDK_IMAGE_VERSION
-FROM ${openjdk.image}:${OPENJDK_IMAGE_VERSION}
+FROM ${openjdk.image}:${openjdk11.image.version}
 
 LABEL maintainer="ONAP CCSDK team"
 LABEL Description="Reference CCSDK JAVA image based on alpine"
