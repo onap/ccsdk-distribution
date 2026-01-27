@@ -10,6 +10,6 @@ ASDC-API (2017-02-01)
 
 
 
-.. swaggerv2doc:: https://gerrit.onap.org/r/gitweb?p=ccsdk/sli/northbound.git;a=blob_plain;f=asdcApi/model/src/main/resources/asdc-api.20170201.json
+.. openapi:: specs/asdc-api.json
 
 

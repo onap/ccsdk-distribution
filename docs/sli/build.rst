@@ -16,13 +16,13 @@ To compile this code:
 1. Make sure your local Maven settings file ($HOME/.m2/settings.xml) contains references to the ONAP repositories and OpenDaylight repositories.
 
 2. To compile all of CCSDK SLI code
-    - git clone http://gerrit.onap.org/r/ccsdk/parent
+    - git clone https://gerrit.onap.org/r/ccsdk/parent
     - cd parent ; mvn clean install ; cd ..
     -  mkdir sli ; cd sli
-    - git clone http://gerrit.onap.org/r/ccsdk/sli/core
-    - git clone http://gerrit.onap.org/r/ccsdk/sli/adaptors
-    - git clone http://gerrit.onap.org/r/ccsdk/sli/northbound
-    - git clone http://gerrit.onap.org/r/ccsdk/sli/plugins
+    - git clone https://gerrit.onap.org/r/ccsdk/sli/core
+    - git clone https://gerrit.onap.org/r/ccsdk/sli/adaptors
+    - git clone https://gerrit.onap.org/r/ccsdk/sli/northbound
+    - git clone https://gerrit.onap.org/r/ccsdk/sli/plugins
     - cd core ; mvn clean install
     - cd ../adaptors ; mvn clean install
     - cd ../northbound ; mvn clean install
