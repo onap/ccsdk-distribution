@@ -44,21 +44,21 @@ The CCSDK London release includes the following features:
 
 *
 
-* Upgrade to OpenDaylight Chlorine Release (Jira `CCSDK-3812 <https://jira.onap.org/browse/CCSDK-3812>`_)
-* CCSDK Enhancements for 5G OOF SON use case in London release (Jira `CCSDK-3817 <https://jira.onap.org/browse/CCSDK-3817>`_)
-* A1 Adapter and A1 Policy Managements Enhancements in London Release - CCSDK (Jira `CCSDK-3809 <https://jira.onap.org/browse/CCSDK-3809>`_)
+* Upgrade to OpenDaylight Chlorine Release (Jira `CCSDK-3812 <https://lf-onap.atlassian.net/browse/CCSDK-3812>`_)
+* CCSDK Enhancements for 5G OOF SON use case in London release (Jira `CCSDK-3817 <https://lf-onap.atlassian.net/browse/CCSDK-3817>`_)
+* A1 Adapter and A1 Policy Managements Enhancements in London Release - CCSDK (Jira `CCSDK-3809 <https://lf-onap.atlassian.net/browse/CCSDK-3809>`_)
 
 
-For the complete list of `CCSDK London release epics <https://jira.onap.org/issues/?filter=13112>`_ and
-`CCSDK London release user stories <https://jira.onap.org/issues/?filter=13113>`_ , please see the `ONAP Jira`_.
+For the complete list of `CCSDK London release epics <https://lf-onap.atlassian.net/issues/?filter=13112>`_ and
+`CCSDK London release user stories <https://lf-onap.atlassian.net/issues/?filter=13113>`_ , please see the `ONAP Jira`_.
 
 **Bug fixes**
 
-The full list of `bugs fixed in the CCSDK London release <https://jira.onap.org/issues/?filter=13114>`_ is maintained on the `ONAP Jira`_.
+The full list of `bugs fixed in the CCSDK London release <https://lf-onap.atlassian.net/issues/?filter=13114>`_ is maintained on the `ONAP Jira`_.
 
 **Known Issues**
 
-The full list of `known issues in CCSDK <https://jira.onap.org/issues/?filter=11341>`_ is maintained on the `ONAP Jira`_.
+The full list of `known issues in CCSDK <https://lf-onap.atlassian.net/issues/?filter=11341>`_ is maintained on the `ONAP Jira`_.
 
 It should be noted that several CCSDK repositories have a transitive dependency on log4j version 1.x.  While this version
 is not vulnerable to the recent 'log4shell' vulnerability, there are other known vulnerabilities in this
@@ -288,14 +288,14 @@ Fixed Security Issues
 
 There are no new security fixes in the London release.
 
-.. _secissues :
+.. _secissues:
 
 Known Security Issues
 ~~~~~~~~~~~~~~~~~~~~~
 
 There is currently only one known CCSDK security issue, related to a third party application (netbox) that CCSDK uses:
 
-* `OJSI-160 <https://jira.onap.org/browse/OJSI-160>`_ : netbox-nginx exposes plain text HTTP endpoint using port 30420
+* `OJSI-160 <https://lf-onap.atlassian.net/browse/OJSI-160>`_ : netbox-nginx exposes plain text HTTP endpoint using port 30420
 
 
 
@@ -316,9 +316,9 @@ For more information on the ONAP London release, please see:
 
 
 .. _`ONAP Home Page`: https://www.onap.org
-.. _`ONAP Wiki Page`: https://wiki.onap.org
+.. _`ONAP Wiki Page`: https://lf-onap.atlassian.net/wiki
 .. _`ONAP Documentation`: https://docs.onap.org
 .. _`ONAP Release Downloads`: https://git.onap.org
-.. _`ONAP Jira`: https://jira.onap.org
+.. _`ONAP Jira`: https://lf-onap.atlassian.net
 .. _`CDS user guide`: https://docs.onap.org/en/frankfurt/submodules/ccsdk/cds.git/docs/index.html
 .. _`SDN Controller for Radio user guide`: https://docs.onap.org/en/frankfurt/submodules/ccsdk/features.git/docs/guides/onap-user/home.html
