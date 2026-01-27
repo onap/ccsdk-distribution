@@ -10,6 +10,6 @@ LCM (2018-03-29)
 
 
 
-.. swaggerv2doc:: https://gerrit.onap.org/r/gitweb?p=ccsdk/sli/northbound.git;a=blob_plain;f=lcm/model/src/main/resources/lcm.20180329.json
+.. openapi:: specs/lcm.json
 
 

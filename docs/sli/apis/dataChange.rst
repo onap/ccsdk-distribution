@@ -10,6 +10,6 @@ dataChange(2015-05-19)
 
 
 
-.. swaggerv2doc:: https://gerrit.onap.org/r/gitweb?p=ccsdk/sli/northbound.git;a=blob_plain;f=dataChange/model/src/main/resources/dataChange.20150519.json
+.. openapi:: specs/dataChange.json
 
 

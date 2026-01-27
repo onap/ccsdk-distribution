@@ -10,6 +10,6 @@ SLI-API(2016-11-11)
 
 
 
-.. swaggerv2doc:: https://gerrit.onap.org/r/gitweb?p=ccsdk/sli.git;a=blob_plain;f=core/sliapi/model/swagger/src/main/json/sliapi.json;hb=refs/heads/master
+.. openapi:: specs/sliapi.json
 
 
