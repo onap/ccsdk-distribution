@@ -11,6 +11,10 @@ module.exports = {"flowShareUsers":
 	{
           "name" : "Release sdnc3.0",
           "rootDir" : "sdnc3.0"
+	},
+	{
+          "name" : "Release 1702",
+          "rootDir" : "1702"
 	}
 	]
 }
