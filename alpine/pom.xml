@@ -18,11 +18,7 @@
         <openjdk.image>eclipse-temurin</openjdk.image>
         <openjdk.additional.packages>sudo bash iputils openssl git mysql-client nodejs npm python3 py3-pip graphviz unzip rsync nss</openjdk.additional.packages>
         <alpinej21.image.name>onap/ccsdk-alpine-j21-image</alpinej21.image.name>
-        <alpinej17.image.name>onap/ccsdk-alpine-j17-image</alpinej17.image.name>
-        <alpinej11.image.name>onap/ccsdk-alpine-j11-image</alpinej11.image.name>
         <openjdk21.image.version>21.0.10_7-jre-alpine</openjdk21.image.version>
-        <openjdk17.image.version>17.0.14_7-jre-alpine</openjdk17.image.version>
-        <openjdk11.image.version>11.0.26_4-jre-alpine</openjdk11.image.version>
     </properties>
 
     <build>
@@ -117,44 +113,6 @@
                                         <noCache>true</noCache>
                                         <contextDir>${basedir}/target/docker-stage</contextDir>
                                         <dockerFile>java21.Dockerfile</dockerFile>
-                                        <tags>
-                                            <tag>${project.docker.latestminortag.version}</tag>
-                                            <tag>${project.docker.latestfulltag.version}</tag>
-                                            <tag>${project.docker.latesttagtimestamp.version}</tag>
-                                        </tags>
-                                    </build>
-                                </image>
-                                <image>
-                                    <name>${alpinej17.image.name}</name>
-                                    <build>
-                                        <buildx>
-                                            <platforms>
-                                                <platform>${docker.platforms}</platform>
-                                            </platforms>
-                                        </buildx>
-                                        <cleanup>try</cleanup>
-                                        <noCache>true</noCache>
-                                        <contextDir>${basedir}/target/docker-stage</contextDir>
-                                        <dockerFile>java17.Dockerfile</dockerFile>
-                                        <tags>
-                                            <tag>${project.docker.latestminortag.version}</tag>
-                                            <tag>${project.docker.latestfulltag.version}</tag>
-                                            <tag>${project.docker.latesttagtimestamp.version}</tag>
-                                        </tags>
-                                    </build>
-                                </image>
-                                <image>
-                                    <name>${alpinej11.image.name}</name>
-                                    <build>
-                                        <buildx>
-                                            <platforms>
-                                                <platform>${docker.platforms}</platform>
-                                            </platforms>
-                                        </buildx>
-                                        <cleanup>try</cleanup>
-                                        <noCache>true</noCache>
-                                        <contextDir>${basedir}/target/docker-stage</contextDir>
-                                        <dockerFile>java11.Dockerfile</dockerFile>
                                         <tags>
                                             <tag>${project.docker.latestminortag.version}</tag>
                                             <tag>${project.docker.latestfulltag.version}</tag>
