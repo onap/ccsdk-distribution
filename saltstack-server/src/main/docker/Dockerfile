@@ -1,4 +1,4 @@
-FROM onap/ccsdk-alpine-j11-image:${project.docker.latestfulltag.version}
+FROM onap/ccsdk-alpine-j21-image:${project.docker.latestfulltag.version}
 LABEL maintainer="SDN-C Team (sdnc@lists.openecomp.org)"
 USER root
 
