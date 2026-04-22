@@ -38,7 +38,7 @@ MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-openECOMP1.0}
 # Wait for database
 #
 echo -e "\nWaiting for mysql:(${MYSQL_HOST})"
-until mysql -h ${MYSQL_HOST} -u root -p${MYSQL_ROOT_PASSWORD} mysql &> /dev/null
+until mariadb -h ${MYSQL_HOST} -u root -p${MYSQL_ROOT_PASSWORD} mysql &> /dev/null
 do
   printf "."
   sleep 10
