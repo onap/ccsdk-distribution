@@ -31,7 +31,7 @@ SDNC_DB_DATABASE=${SDN_DB_DATABASE:-sdnctl}
 
 echo -e "\nCreating database:($SDNC_DB_DATABASE) and user:($SDNC_DB_USER)"
 # Create tablespace and user account
-mysql -h ${MYSQL_HOST} -u root -p${MYSQL_ROOT_PASSWORD} mysql <<-END
+mariadb -h ${MYSQL_HOST} -u root -p${MYSQL_ROOT_PASSWORD} mysql <<-END
 CREATE DATABASE IF NOT EXISTS ${SDNC_DB_DATABASE};
 CREATE USER IF NOT EXISTS '${SDNC_DB_USER}'@'localhost' IDENTIFIED BY '${SDNC_DB_PASSWORD}';
 CREATE USER IF NOT EXISTS '${SDNC_DB_USER}'@'%' IDENTIFIED BY '${SDNC_DB_PASSWORD}';
@@ -44,6 +44,6 @@ END
 # load schema
 if [ -f ${CCSDK_HOME}/data/odlsli.dump ]
 then
-    mysql -h ${MYSQL_HOST} -u root -p${MYSQL_ROOT_PASSWORD} ${SDNC_DB_DATABASE} < ${CCSDK_HOME}/data/odlsli.dump
+    mariadb -h ${MYSQL_HOST} -u root -p${MYSQL_ROOT_PASSWORD} ${SDNC_DB_DATABASE} < ${CCSDK_HOME}/data/odlsli.dump
     echo -e "\n ${SDNC_DB_DATABASE} schema loaded."
 fi
