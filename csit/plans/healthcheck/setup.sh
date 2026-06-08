@@ -60,9 +60,9 @@ INTERVAL=10
 TIME=0
 while [ "$TIME" -lt "$TIME_OUT" ]; do
 
-docker exec ccsdk_odlsli_container cat /opt/opendaylight/data/log/karaf.log | grep 'warp coils'
+retcode=$(curl -s -o /dev/null -w "%{http_code}" -u admin:admin http://localhost:8383/rests/operations/SLI-API:healthcheck -H 'Content-Type: application/json' -X POST)
 
-  if [ $? == 0 ] ; then
+  if [ $retcode == 200 ] ; then
     echo CCSDK karaf started in $TIME seconds
     break;
   fi
