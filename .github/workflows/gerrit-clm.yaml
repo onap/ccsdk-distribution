@@ -90,22 +90,27 @@ permissions: {}
 
 jobs:
   # Clear any previous Verified vote so a dispatched change starts from
-  # a clean state. Skipped for schedule and push, which have no change.
+  # a clean state. On schedule and push the job stays present to satisfy
+  # downstream needs, but its Gerrit-only steps are skipped.
   clear-vote:
     name: 'Clear Gerrit Vote'
-    # yamllint disable-line rule:line-length
-    if: github.event_name == 'workflow_dispatch' && inputs.GERRIT_DISABLED != true
     runs-on: ubuntu-latest
     permissions:
       contents: read
     timeout-minutes: 5
     steps:
       - name: 'Harden runner'
+        # Keep the job runnable on all triggers so reusable-workflow jobs
+        # depending on it are not blocked by a skipped need.
+        # yamllint disable-line rule:line-length
+        if: github.event_name == 'workflow_dispatch' && inputs.GERRIT_DISABLED != true
         # yamllint disable-line rule:line-length
         uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920  # v2.20.0
         with:
           egress-policy: audit
       - name: 'Clear votes'
+        # yamllint disable-line rule:line-length
+        if: github.event_name == 'workflow_dispatch' && inputs.GERRIT_DISABLED != true
         # yamllint disable-line rule:line-length
         uses: lfreleng-actions/gerrit-review-action@a1c036a59b94c8ab89de26d378f6a28cc7378b13  # v1.1.2
         with:
@@ -117,6 +122,7 @@ jobs:
           gerrit-patchset-number: ${{ inputs.GERRIT_PATCHSET_NUMBER }}
           vote-type: clear
       - name: 'Allow replication'
+        if: github.event_name == 'workflow_dispatch' && inputs.GERRIT_DISABLED != true
         run: sleep 10s
 
   sonatype-lifecycle:
