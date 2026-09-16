@@ -158,7 +158,7 @@ jobs:
   sonatype-lifecycle:
     name: 'Sonatype Lifecycle/CLM -> Nexus IQ'
     needs: clear-vote
-    if: always()
+    if: ${{ always() && needs.clear-vote.result != 'failure' }}
     permissions:
       contents: read
     # yamllint disable-line rule:line-length
