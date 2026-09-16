@@ -160,7 +160,8 @@ jobs:
     needs: clear-vote
     if: >-
       always()
-      && (needs.clear-vote.result == 'success'
+      && (github.event_name != 'workflow_dispatch'
+          || needs.clear-vote.result == 'success'
           || needs.clear-vote.result == 'skipped')
     permissions:
       contents: read
