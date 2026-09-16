@@ -176,7 +176,9 @@ jobs:
       java_distribution: ${{ inputs.java_distribution || 'temurin' }}
       java_version: ${{ inputs.java_version || '21' }}
       iq_cli_version: ${{ inputs.iq_cli_version || '2.13.0-01' }}
-      application_id: ${{ inputs.application_id || '' }}
+      # Fall back to the historical <owner>-<name> default when callers
+      # do not override the Nexus IQ application id.
+      application_id: ${{ inputs.application_id || format('{0}-{1}', github.repository_owner, github.event.repository.name) }}
       scan_targets: ${{ inputs.scan_targets || '.' }}
       debug: ${{ inputs.debug || false }}
       # Surface a broken pre-scan build instead of scanning whatever
