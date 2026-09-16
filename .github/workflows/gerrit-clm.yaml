@@ -173,12 +173,12 @@ jobs:
       # are skipped.
       build_type: 'maven'
       mvn_params: '-DskipTests -Djib.skip=true --fail-at-end'
-      java_distribution: ${{ inputs.java_distribution }}
-      java_version: ${{ inputs.java_version }}
-      iq_cli_version: ${{ inputs.iq_cli_version }}
-      application_id: ${{ inputs.application_id }}
-      scan_targets: ${{ inputs.scan_targets }}
-      debug: ${{ inputs.debug }}
+      java_distribution: ${{ inputs.java_distribution || 'temurin' }}
+      java_version: ${{ inputs.java_version || '21' }}
+      iq_cli_version: ${{ inputs.iq_cli_version || '2.13.0-01' }}
+      application_id: ${{ inputs.application_id || '' }}
+      scan_targets: ${{ inputs.scan_targets || '.' }}
+      debug: ${{ inputs.debug || false }}
       # Surface a broken pre-scan build instead of scanning whatever
       # happens to have compiled. The reusable defaults this to true, on
       # the reasoning that a partial dependency tree still yields a
