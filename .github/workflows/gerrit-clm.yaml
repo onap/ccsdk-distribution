@@ -105,15 +105,15 @@ on:
 
 concurrency:
   # Group on the Gerrit change when there is one, so a new patchset
-  # supersedes the run for its predecessor. Fall back to the ref rather
-  # than github.run_id: run_id is unique per run, so cancel-in-progress
-  # could never fire for a manual dispatch.
+  # supersedes the run for its predecessor. Manual dispatches without a
+  # Gerrit change id fall back to github.run_id so independent ad hoc
+  # scans do not cancel one another; non-dispatch runs still group by ref.
   #
   # The workflow name is part of the group because the group is
   # repository-wide, and without it separate lanes would cancel each
   # other for the same change.
   # yamllint disable-line rule:line-length
-  group: '${{ github.workflow }}-${{ github.event.inputs.GERRIT_CHANGE_ID || github.ref }}'
+  group: '${{ github.workflow }}-${{ github.event_name == ''workflow_dispatch'' && (github.event.inputs.GERRIT_CHANGE_ID || github.run_id) || github.ref }}'
   cancel-in-progress: true
 
 permissions: {}
