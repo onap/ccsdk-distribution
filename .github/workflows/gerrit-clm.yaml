@@ -72,6 +72,36 @@ on:
         required: false
         default: false
         type: boolean
+      java_distribution:
+        description: 'JAVA SE distribution for the pre-scan build'
+        required: false
+        type: string
+        default: 'temurin'
+      java_version:
+        description: 'Java runtime for the pre-scan build'
+        required: false
+        type: string
+        default: '21'
+      iq_cli_version:
+        description: 'Specific version of Nexus IQ CLI to run'
+        required: false
+        type: string
+        default: '2.13.0-01'
+      application_id:
+        description: 'Organisation and project name in Nexus IQ'
+        required: false
+        type: string
+        default: ''
+      scan_targets:
+        description: 'Location of file(s) or folder(s) to scan'
+        required: false
+        type: string
+        default: '.'
+      debug:
+        description: 'Enable debug logging'
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   # Group on the Gerrit change when there is one, so a new patchset
@@ -143,6 +173,12 @@ jobs:
       # are skipped.
       build_type: 'maven'
       mvn_params: '-DskipTests -Djib.skip=true --fail-at-end'
+      java_distribution: ${{ inputs.java_distribution }}
+      java_version: ${{ inputs.java_version }}
+      iq_cli_version: ${{ inputs.iq_cli_version }}
+      application_id: ${{ inputs.application_id }}
+      scan_targets: ${{ inputs.scan_targets }}
+      debug: ${{ inputs.debug }}
       # Surface a broken pre-scan build instead of scanning whatever
       # happens to have compiled. The reusable defaults this to true, on
       # the reasoning that a partial dependency tree still yields a
@@ -153,9 +189,6 @@ jobs:
       # Maven pulls from artifact CDNs that are impractical to enumerate
       # in the allow-list, and the build shares this job with the scan.
       build_permit_egress_traffic: true
-      # application_id is left unset: the lane derives <owner>-<name>,
-      # giving onap-ccsdk-distribution.
-      #
       # Gerrit-aware checkout. Blank for schedule/push and for a manual
       # GERRIT_DISABLED run, so the lane does a normal checkout.
       # yamllint disable-line rule:line-length
