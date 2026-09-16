@@ -72,40 +72,75 @@ on:
         required: false
         default: false
         type: boolean
+      java_distribution:
+        description: 'JAVA SE distribution for the pre-scan build'
+        required: false
+        type: string
+        default: 'temurin'
+      java_version:
+        description: 'Java runtime for the pre-scan build'
+        required: false
+        type: string
+        default: '21'
+      iq_cli_version:
+        description: 'Specific version of Nexus IQ CLI to run'
+        required: false
+        type: string
+        default: '2.13.0-01'
+      application_id:
+        description: 'Organisation and project name in Nexus IQ'
+        required: false
+        type: string
+        default: ''
+      scan_targets:
+        description: 'Location of file(s) or folder(s) to scan'
+        required: false
+        type: string
+        default: '.'
+      debug:
+        description: 'Enable debug logging'
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   # Group on the Gerrit change when there is one, so a new patchset
-  # supersedes the run for its predecessor. Fall back to the ref rather
-  # than github.run_id: run_id is unique per run, so cancel-in-progress
-  # could never fire for a manual dispatch.
+  # supersedes the run for its predecessor. When there is no Gerrit
+  # change id, fall back to github.run_id so independent manual and
+  # automatic scans do not cancel one another.
   #
   # The workflow name is part of the group because the group is
   # repository-wide, and without it separate lanes would cancel each
   # other for the same change.
   # yamllint disable-line rule:line-length
-  group: '${{ github.workflow }}-${{ github.event.inputs.GERRIT_CHANGE_ID || github.ref }}'
+  group: '${{ github.workflow }}-${{ github.event.inputs.GERRIT_CHANGE_ID || inputs.GERRIT_CHANGE_ID || github.run_id }}'
   cancel-in-progress: true
 
 permissions: {}
 
 jobs:
   # Clear any previous Verified vote so a dispatched change starts from
-  # a clean state. Skipped for schedule and push, which have no change.
+  # a clean state. On schedule and push the job stays present to satisfy
+  # downstream needs, but its Gerrit-only steps are skipped.
   clear-vote:
     name: 'Clear Gerrit Vote'
-    # yamllint disable-line rule:line-length
-    if: github.event_name == 'workflow_dispatch' && inputs.GERRIT_DISABLED != true
     runs-on: ubuntu-latest
     permissions:
       contents: read
     timeout-minutes: 5
     steps:
       - name: 'Harden runner'
+        # Keep the job runnable on all triggers so reusable-workflow jobs
+        # depending on it are not blocked by a skipped need.
+        # yamllint disable-line rule:line-length
+        if: github.event_name == 'workflow_dispatch' && inputs.GERRIT_DISABLED != true
         # yamllint disable-line rule:line-length
         uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920  # v2.20.0
         with:
           egress-policy: audit
       - name: 'Clear votes'
+        # yamllint disable-line rule:line-length
+        if: github.event_name == 'workflow_dispatch' && inputs.GERRIT_DISABLED != true
         # yamllint disable-line rule:line-length
         uses: lfreleng-actions/gerrit-review-action@a1c036a59b94c8ab89de26d378f6a28cc7378b13  # v1.1.2
         with:
@@ -117,15 +152,13 @@ jobs:
           gerrit-patchset-number: ${{ inputs.GERRIT_PATCHSET_NUMBER }}
           vote-type: clear
       - name: 'Allow replication'
+        if: github.event_name == 'workflow_dispatch' && inputs.GERRIT_DISABLED != true
         run: sleep 10s
 
   sonatype-lifecycle:
     name: 'Sonatype Lifecycle/CLM -> Nexus IQ'
     needs: clear-vote
-    if: >-
-      always()
-      && (needs.clear-vote.result == 'success'
-          || needs.clear-vote.result == 'skipped')
+    if: ${{ always() && needs.clear-vote.result != 'failure' }}
     permissions:
       contents: read
     # yamllint disable-line rule:line-length
@@ -137,6 +170,14 @@ jobs:
       # are skipped.
       build_type: 'maven'
       mvn_params: '-DskipTests -Djib.skip=true --fail-at-end'
+      java_distribution: ${{ inputs.java_distribution || 'temurin' }}
+      java_version: ${{ inputs.java_version || '21' }}
+      iq_cli_version: ${{ inputs.iq_cli_version || '2.13.0-01' }}
+      # Fall back to the historical <owner>-<name> default when callers
+      # do not override the Nexus IQ application id.
+      application_id: ${{ inputs.application_id || format('{0}-{1}', github.repository_owner, github.event.repository.name) }}
+      scan_targets: ${{ inputs.scan_targets || '.' }}
+      debug: ${{ inputs.debug || false }}
       # Surface a broken pre-scan build instead of scanning whatever
       # happens to have compiled. The reusable defaults this to true, on
       # the reasoning that a partial dependency tree still yields a
@@ -147,9 +188,6 @@ jobs:
       # Maven pulls from artifact CDNs that are impractical to enumerate
       # in the allow-list, and the build shares this job with the scan.
       build_permit_egress_traffic: true
-      # application_id is left unset: the lane derives <owner>-<name>,
-      # giving onap-ccsdk-distribution.
-      #
       # Gerrit-aware checkout. Blank for schedule/push and for a manual
       # GERRIT_DISABLED run, so the lane does a normal checkout.
       # yamllint disable-line rule:line-length
