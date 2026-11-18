@@ -8,7 +8,11 @@ USER root
 
 # Copy CCSDK mvn artifacts to ODL repository
 COPY system /tmp/system
-RUN rsync -a /tmp/system $ODL_HOME
+# ODL_HOME (/opt/opendaylight/current) is a self-referential symlink created by
+# the base image: current -> /opt/opendaylight. rsync refuses to chdir into it,
+# failing with "Symbolic link loop (40)" and exit code 3. Resolve the symlink to
+# the real directory; the destination is unchanged.
+RUN rsync -a /tmp/system "$(readlink -f "$ODL_HOME")"
 
 # Copy deliverables to opt
 COPY opt /opt
