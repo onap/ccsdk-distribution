@@ -214,10 +214,11 @@ module.exports = function(RED) {
 
 function uploadDG(filePath,moduleName,rpc,res){
 	console.log("called uploadDG...");
-	var exec = require('child_process').exec;
-	var commandToExec = appDir + "/svclogic/svclogic.sh load " + filePath + " " + userDir + "/conf/svclogic.properties";
-	console.log("commandToExec:" + commandToExec);
-        var child = exec(commandToExec ,function (error,stdout,stderr){
+	var execFile = require('child_process').execFile;
+	var commandToExec = appDir + "/svclogic/svclogic.sh";
+	var args = ["load", filePath, userDir + "/conf/svclogic.properties"];
+	console.log("commandToExec:" + commandToExec + " " + args.join(" "));
+        var child = execFile(commandToExec ,args ,function (error,stdout,stderr){
 		//console.log(error);
 		console.log("stdout:" + stdout);
 		console.log("stderr:" +  stderr);
@@ -270,17 +271,17 @@ function uploadDG(filePath,moduleName,rpc,res){
             });
 
 function displayXml(_module,rpc,version,mode,res){
-	var exec = require('child_process').exec;
+	var execFile = require('child_process').execFile;
 	var msg = {
 		'_module' : _module,
 		'rpc' : rpc,
 		'version' : version,
 		'mode' : mode
 	}
-	var commandToExec = appDir + "/svclogic/svclogic.sh get-source "   + _module + " " 
-				+ rpc + " " + mode + " " + version + " " + userDir + "/conf/svclogic.properties";
-	console.log("commandToExec:" + commandToExec);
-        var child = exec(commandToExec ,{'maxBuffer':16*1024*1024},function (error,stdout,stderr){
+	var commandToExec = appDir + "/svclogic/svclogic.sh";
+	var args = ["get-source", _module, rpc, mode, version, userDir + "/conf/svclogic.properties"];
+	console.log("commandToExec:" + commandToExec + " " + args.join(" "));
+        var child = execFile(commandToExec ,args ,{'maxBuffer':16*1024*1024},function (error,stdout,stderr){
                 if(error){
 			console.log("Error occured:" + error);
 			if(stderr){
@@ -321,17 +322,17 @@ function displayXml(_module,rpc,version,mode,res){
             });
 
 function downloadDGXml(_module,rpc,version,mode,res){
-	var exec = require('child_process').exec;
+	var execFile = require('child_process').execFile;
 	var msg = {
 		'_module' : _module,
 		'rpc' : rpc,
 		'version' : version,
 		'mode' : mode
 	}
-	var commandToExec = appDir + "/svclogic/svclogic.sh get-source "   + _module + " " 
-				+ rpc + " " + mode + " " + version + " " + userDir + "/conf/svclogic.properties";
-	console.log("commandToExec:" + commandToExec);
-        var child = exec(commandToExec ,function (error,stdout,stderr){
+	var commandToExec = appDir + "/svclogic/svclogic.sh";
+	var args = ["get-source", _module, rpc, mode, version, userDir + "/conf/svclogic.properties"];
+	console.log("commandToExec:" + commandToExec + " " + args.join(" "));
+        var child = execFile(commandToExec ,args ,function (error,stdout,stderr){
                 if(error){
 			console.log("Error occured:" + error);
 			if(stderr){
@@ -398,24 +399,23 @@ function downloadDGXml(_module,rpc,version,mode,res){
             });
 
 function displayAsGv(_module,rpc,version,mode,res){
-	var exec = require('child_process').exec;
+	var execFile = require('child_process').execFile;
 	var msg = {
 		'_module' : _module,
 		'rpc' : rpc,
 		'version' : version,
 		'mode' : mode
 	}
-	var commandToExec = appDir + "/svclogic/svclogic.sh print " +
-		 _module + " " + rpc + " " + mode + " " + version + " "
- 	    //+ userDir + "/conf/svclogic.properties | dot -Tpng ";
-				//the label="""" is giving an error so replacing it with "null" 
- 	    + userDir + "/conf/svclogic.properties |sed -e 's%label=\"\"\"\"%label=\"null\"%g'| dot -Tsvg ";
-	console.log("commandToExec:" + commandToExec);
- 	    //+ userDir + "/conf/svclogic.properties | dot -Tsvg ";
+	//the label="""" is giving an error so replacing it with "null"
+	//the arguments reach the shell as "$@", so it never parses them
+	var commandToExec = "\"$@\" | sed -e 's%label=\"\"\"\"%label=\"null\"%g' | dot -Tsvg";
+	var args = ["-c", commandToExec, "sh", appDir + "/svclogic/svclogic.sh", "print",
+		_module, rpc, mode, version, userDir + "/conf/svclogic.properties"];
+	console.log("commandToExec:" + args.join(" "));
         //var child = exec(commandToExec ,function (error,stdout,stderr){
         //var child = exec(commandToExec ,{maxBuffer:16*1024*1024},function (error,stdout,stderr){
         //var child = exec(commandToExec ,{encoding:'base64',maxBuffer:20*1024*1024},function (error,stdout,stderr){
-        var child = exec(commandToExec ,{maxBuffer:20*1024*1024},function (error,stdout,stderr){
+        var child = execFile("/bin/sh" ,args ,{maxBuffer:20*1024*1024},function (error,stdout,stderr){
                 if(error){
 			console.log("Error occured:" + error);
 			if(stderr){

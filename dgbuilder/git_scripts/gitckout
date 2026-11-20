@@ -1,15 +1,16 @@
+#!/bin/sh
 if [ "$#" != "2" ]
 then
 	echo "Usage $0 commitId full_path_to_the_source_file"
 	exit
 fi
-fileName=$(basename $2)
-dirName=$(dirname $2)
+fileName=$(basename "$2")
+dirName=$(dirname "$2")
 commitId=$1
-cd $dirName
+cd "$dirName"
 if [ -e "$2" ]
 then
-	rm $2 2>/dev/null
+	rm "$2" 2>/dev/null
 fi
-git checkout $commitId $fileName
-cat $fileName
+git checkout "$commitId" -- "$fileName"
+cat -- "$fileName"

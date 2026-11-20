@@ -1,3 +1,4 @@
+#!/bin/sh
 if [ "$#" != "2" ]
 then
 	echo "Usage $0 gitLocalRepositoryDir branch"
@@ -5,10 +6,10 @@ then
 fi
 branch=$2
 localGitRepository=$1
-cd $localGitRepository
+cd "$localGitRepository"
 if [ -e "$localGitRepository" ]
 then
-	git checkout $branch
+	git checkout "$branch" --
 	echo
 	echo -n  "Now on Branch:"
 	git rev-parse --abbrev-ref HEAD

@@ -1,12 +1,13 @@
+#!/bin/sh
 if [ "$#" != "1" ]
 then
 	echo "Usage $0 full_path_to_the_source_file"
 	exit
 fi
-fileName=$(basename $1)
-dirName=$(dirname $1)
-cd $dirName
-glog=$(git log --pretty=format:'%H %cD %an %s' -n 25 ${fileName}|awk ' ORS=" "{print \
+fileName=$(basename "$1")
+dirName=$(dirname "$1")
+cd "$dirName"
+glog=$(git log --pretty=format:'%H %cD %an %s' -n 25 -- "${fileName}"|awk ' ORS=" "{print \
 "\n{\n" \
 "\"commit\": \"" $1 "\",\n" \
 "\"date\": \""$2 " "$3" "$4" "$5 " "$6 "\",\n" \

@@ -1,3 +1,4 @@
+#!/bin/sh
 if [ -z "$PROJECT_HOME" ] 
 then
 	export PROJECT_HOME=$(pwd)/..

@@ -18,7 +18,7 @@ var express = require('express');
 var util = require('util');
 var multer = require('multer');
 var when = require('when');
-var exec = require('child_process').exec;
+var execFile = require('child_process').execFile;
 
 var createUI = require("./ui");
 var redNodes = require("./nodes");
@@ -243,10 +243,11 @@ function createServer(_server,_settings) {
                 var filePath = req.query.filePath;
                 var fullFilePath = userDir + "/codecloud/" + filePath ;
 		//console.log("fullFilePath:" + fullFilePath);	
-		var exec = require('child_process').exec;
-		var commandToExec = appDir + "/git_scripts/gitlog " + fullFilePath ;
-		console.log("commandToExec:" + commandToExec);
-        	var child = exec(commandToExec ,function (error,stdout,stderr){
+		var execFile = require('child_process').execFile;
+		var commandToExec = appDir + "/git_scripts/gitlog";
+		var args = [fullFilePath];
+		console.log("commandToExec:" + commandToExec + " " + args.join(" "));
+        	var child = execFile(commandToExec ,args ,function (error,stdout,stderr){
                 if(error){
 			console.log("Error occured:" + error);
 			if(stderr){
@@ -277,10 +278,15 @@ function createServer(_server,_settings) {
                 var filePath = req.query.filePath;
                 var fullFilePath = userDir + "/codecloud/" + filePath ;
 		//console.log("fullFilePath:" + fullFilePath);	
-		var exec = require('child_process').exec;
-		var commandToExec = appDir + "/git_scripts/gitckout " + commitId + " " + fullFilePath ;
-		console.log("commandToExec:" + commandToExec);
-        	var child = exec(commandToExec ,{maxBuffer: 1024 * 1024 * 16}, function (error,stdout,stderr){
+		if (!/^[0-9a-fA-F]{4,40}$/.test(commitId)) {
+			res.send(400,{'error':'Invalid commitId'});
+			return;
+		}
+		var execFile = require('child_process').execFile;
+		var commandToExec = appDir + "/git_scripts/gitckout";
+		var args = [commitId, fullFilePath];
+		console.log("commandToExec:" + commandToExec + " " + args.join(" "));
+        	var child = execFile(commandToExec ,args ,{maxBuffer: 1024 * 1024 * 16}, function (error,stdout,stderr){
                 if(error){
 			console.log("Error occured:" + error);
 			if(stderr){
@@ -317,23 +323,13 @@ function createServer(_server,_settings) {
                 //var currTabId = req.query.currTabId;
                 var fullFilePath = gitLocalRepository +"/" + filePath ;
 		//console.log("fullFilePath:" + fullFilePath);	
-		var exec = require('child_process').exec;
-		var commandToExec =  "cat " + fullFilePath ;
-		console.log("commandToExec:" + commandToExec);
-        	var child = exec(commandToExec ,{maxBuffer: 1024 * 1024 * 16}, function (error,stdout,stderr){
+		console.log("reading:" + fullFilePath);
+        	fs.readFile(fullFilePath ,'utf8', function (error,data){
                 if(error){
 			console.log("Error occured:" + error);
-			if(stderr){
-				//console.log("stderr:" + stderr);
-				res.send(500,{'error':error,'stderr':stderr});
-			}else{
-				res.send(500,{'error':error});
-			}
+			res.send(500,{'error':error});
                 }else{
-			if(stderr){
-				console.log("stderr:" + stderr);
-			}
-			if(stdout){
+			if(data){
 				/*
 				var jsonStr= stdout;
 				var jsonStrFormatted=[];
@@ -344,7 +340,7 @@ function createServer(_server,_settings) {
 				fs.writeFileSync( outputDir + "/" +currTabId,JSON.stringify(jsonStrFormatted,null,4) );	
 				*/
 				//console.log("output:" + stdout);
-				res.send(200,{'stdout':stdout,'stderr':stderr});
+				res.send(200,{'stdout':data,'stderr':''});
                 	}
 		}
 		});
@@ -402,10 +398,15 @@ function createServer(_server,_settings) {
 		//console.dir(req);
                 var branch = req.query.branch;
 		//console.log("fullFilePath:" + fullFilePath);	
-		var exec = require('child_process').exec;
-		var commandToExec = appDir + "/git_scripts/gitcheckout " + gitLocalRepository + " " + branch ;
-		console.log("commandToExec:" + commandToExec);
-        	var child = exec(commandToExec ,function (error,stdout,stderr){
+		if (typeof branch != "string" || branch == "" || branch.charAt(0) == "-") {
+			res.json({"output":"Invalid branch name"});
+			return;
+		}
+		var execFile = require('child_process').execFile;
+		var commandToExec = appDir + "/git_scripts/gitcheckout";
+		var args = [gitLocalRepository, branch];
+		console.log("commandToExec:" + commandToExec + " " + args.join(" "));
+        	var child = execFile(commandToExec ,args ,function (error,stdout,stderr){
                 		if(error){
 					console.log("Error occured:" + error);
 					if(stderr){
@@ -431,10 +432,10 @@ function createServer(_server,_settings) {
 		//console.dir(req);
                 var branch = req.query.branch;
 		//console.log("fullFilePath:" + fullFilePath);	
-		var exec = require('child_process').exec;
-		var commandToExec = appDir + "/git_scripts/gitpull " + gitLocalRepository ;
+		var execFile = require('child_process').execFile;
+		var commandToExec = appDir + "/git_scripts/gitpull";
 		console.log("commandToExec:" + commandToExec);
-        	var child = exec(commandToExec ,function (error,stdout,stderr){
+        	var child = execFile(commandToExec ,[gitLocalRepository] ,function (error,stdout,stderr){
                 		if(error){
 					console.log("Error occured:" + error);
 					if(stderr){
@@ -460,10 +461,10 @@ function createServer(_server,_settings) {
 		//console.dir(req);
                 var branch = req.query.branch;
 		//console.log("fullFilePath:" + fullFilePath);	
-		var exec = require('child_process').exec;
-		var commandToExec = appDir + "/git_scripts/gitstatus " + gitLocalRepository ;
+		var execFile = require('child_process').execFile;
+		var commandToExec = appDir + "/git_scripts/gitstatus";
 		console.log("commandToExec:" + commandToExec);
-        	var child = exec(commandToExec ,function (error,stdout,stderr){
+        	var child = execFile(commandToExec ,[gitLocalRepository] ,function (error,stdout,stderr){
                 		if(error){
 					console.log("Error occured:" + error);
 					if(stderr){
@@ -841,10 +842,10 @@ function createServer(_server,_settings) {
 			res.json({"output" : "GIT_LOCAL_REPOSITORY_NOT_SET"});
 			return;
 		}
-		var exec = require('child_process').exec;
-		var commandToExec = appDir + "/git_scripts/gitcurbranch " + gitLocalRepository ;
+		var execFile = require('child_process').execFile;
+		var commandToExec = appDir + "/git_scripts/gitcurbranch";
 			console.log("commandToExec:" + commandToExec);
-        		var child = exec(commandToExec ,function (error,stdout,stderr){
+        		var child = execFile(commandToExec ,[gitLocalRepository] ,function (error,stdout,stderr){
                 		if(error){
 					console.log("Error occured:" + error);
 					if(stderr){
@@ -883,10 +884,10 @@ function createServer(_server,_settings) {
 		   }
 
 		if(performGitPull == "Y"){	
-			var exec = require('child_process').exec;
-			var commandToExec = appDir + "/git_scripts/gitpull " + gitLocalRepository ;
+			var execFile = require('child_process').execFile;
+			var commandToExec = appDir + "/git_scripts/gitpull";
 			console.log("commandToExec:" + commandToExec);
-        		var child = exec(commandToExec ,function (error,stdout,stderr){
+        		var child = execFile(commandToExec ,[gitLocalRepository] ,function (error,stdout,stderr){
                 		if(error){
 					console.log("Error occured:" + error);
 					if(stderr){
@@ -1175,15 +1176,15 @@ function createServer(_server,_settings) {
 				var matchedArr = fileName.match(/.zip$/);
 				if(matchedArr != null && matchedArr.length >0){
 					console.log("uploaded zip file" + fileName);
-					commandToExec = appDir + "/tools/generate_props_from_yangs_zip.sh " + yangFileFullPath ;
+					commandToExec = appDir + "/tools/generate_props_from_yangs_zip.sh";
 				}else{
-					commandToExec = appDir + "/tools/generate_props_from_yang.sh " + yangFileFullPath ;
+					commandToExec = appDir + "/tools/generate_props_from_yang.sh";
 					console.log("uploaded file" + fileName);
 				}
 			}
-			var exec = require('child_process').exec;
-			console.log("commandToExec:" + commandToExec);
-        		var child = exec(commandToExec ,function (error,stdout,stderr){
+			var execFile = require('child_process').execFile;
+			console.log("commandToExec:" + commandToExec + " " + yangFileFullPath);
+        		var child = execFile(commandToExec ,[yangFileFullPath] ,function (error,stdout,stderr){
                 		if(error){
 					console.log("Error occured:" + error);
 					var msg = "File " + fileName + " could not be processed successfully.";
@@ -1398,12 +1399,12 @@ function reportRemovedModules(removedNodes) {
 function installModule(module) { 
     //TODO: ensure module is 'safe'
     return when.promise(function(resolve,reject) {
-        if (/[\s;]/.test(module)) {
+        if (/[\s;]/.test(module) || module.charAt(0) == "-") {
             reject(new Error("Invalid module name"));
             return;
         }
         util.log("[red] Installing module: "+module);
-        var child = exec('npm install --production '+module, function(err, stdin, stdout) {
+        var child = execFile('npm', ['install','--production',module], function(err, stdin, stdout) {
             if (err) {
                 var lookFor404 = new RegExp(" 404 .*"+module+"$","m");
                 if (lookFor404.test(stdout)) {
@@ -1429,12 +1430,12 @@ function installModule(module) {
 function uninstallModule(module) {
     var list = redNodes.removeModule(module);
     return when.promise(function(resolve,reject) {
-        if (/[\s;]/.test(module)) {
+        if (/[\s;]/.test(module) || module.charAt(0) == "-") {
             reject(new Error("Invalid module name"));
             return;
         }
         util.log("[red] Removing module: "+module);
-        var child = exec('npm remove '+module, function(err, stdin, stdout) {
+        var child = execFile('npm', ['remove',module], function(err, stdin, stdout) {
             if (err) {
                 util.log("[red] Removal of module "+module+" failed:");
                 util.log("------------------------------------------");
